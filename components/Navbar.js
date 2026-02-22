@@ -1,37 +1,40 @@
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+
+const navLinks = [
+  { href: "/services", label: "Services" },
+  { href: "/process", label: "Process" },
+  { href: "/about", label: "About" },
+  { href: "/insights", label: "Insights" },
+  { href: "/contact", label: "Contact" },
+];
 
 export default function Navbar() {
   return (
-    <header className="w-full fixed top-0 z-50">
-      <div className="max-w-6xl mx-auto px-6 py-4">
-        <div className="flex items-center justify-between bg-white/70 backdrop-blur-md border border-gray-200 rounded-2xl px-6 py-3 shadow-sm">
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-slate-200/60 bg-white/70 backdrop-blur-sm">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
+        <Link
+          href="/"
+          className="text-lg font-semibold tracking-tight text-slate-900"
+        >
+          ClariVex
+        </Link>
 
-          {/* Logo */}
-          <Link href="/" className="text-xl font-semibold text-[#0F172A]">
-            ClariVex
-          </Link>
+        <nav className="hidden items-center gap-8 text-sm font-medium text-slate-600 md:flex">
+          {navLinks.map((link) => (
+            <Link
+              key={link.label}
+              href={link.href}
+              className="transition-colors duration-200 hover:text-slate-900"
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
 
-          {/* Nav Links */}
-          <nav className="hidden md:flex gap-8 text-sm text-gray-600">
-            <Link href="/" className="hover:text-[#0F172A] transition">
-              Home
-            </Link>
-            <Link href="/services" className="hover:text-[#0F172A] transition">
-              Services
-            </Link>
-            <Link href="/contact" className="hover:text-[#0F172A] transition">
-              Contact
-            </Link>
-          </nav>
-
-          {/* CTA */}
-          <Link
-            href="/contact"
-            className="bg-[var(--primary-blue)] text-white text-sm px-5 py-2.5 rounded-xl hover:opacity-90 transition shadow-sm"
-          >
-            Book Consultation
-          </Link>
-        </div>
+        <Button className="bg-[var(--primary-blue)] hover:bg-[var(--primary-blue)]/90 text-white rounded-xl px-4 py-2 text-sm">
+          Book Consultation
+        </Button>
       </div>
     </header>
   );
