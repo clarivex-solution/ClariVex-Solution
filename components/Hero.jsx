@@ -15,7 +15,34 @@ const chartBars = [
   { key: "w5", height: "84%" },
 ];
 
-export default function Hero() {
+const highlightedPhrase = "Financial Clarity";
+
+function renderHeroHeading(text) {
+  const start = text.indexOf(highlightedPhrase);
+
+  if (start === -1) {
+    return text;
+  }
+
+  const before = text.slice(0, start);
+  const after = text.slice(start + highlightedPhrase.length);
+
+  return (
+    <>
+      {before}
+      <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
+        {highlightedPhrase}
+      </span>
+      {after}
+    </>
+  );
+}
+
+export default function Hero({
+  badgeText = "Trusted by 280+ Businesses Across US, UK, AU & CA",
+  heroH1 = "Empowering Growth Through Financial Clarity",
+  heroSub = "Your outsourced accounting and finance operations partner for US, UK, AU, and CA businesses. We align reporting, compliance, and execution to help you grow with confidence.",
+}) {
   return (
     <section className="relative flex min-h-screen items-center overflow-hidden bg-gradient-to-br from-[#0A1628] to-[#1E3A5F]">
       <div className="absolute left-10 top-20 h-96 w-96 animate-pulse rounded-full bg-cyan-500/20 blur-3xl" />
@@ -26,20 +53,15 @@ export default function Hero() {
           <div>
             <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs text-white/80">
               <span className="h-2 w-2 rounded-full bg-green-400" />
-              Trusted by 280+ Businesses Across US, UK, AU &amp; CA
+              {badgeText}
             </div>
 
             <h1 className="mt-6 text-4xl font-bold leading-tight text-white md:text-6xl">
-              Empowering Growth Through <br />
-              <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
-                Financial Clarity
-              </span>
+              {renderHeroHeading(heroH1)}
             </h1>
 
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/70">
-              Your outsourced accounting and finance operations partner for US, UK,
-              AU, and CA businesses. We align reporting, compliance, and execution to
-              help you grow with confidence.
+              {heroSub}
             </p>
 
             <div className="mt-8 flex flex-wrap gap-4">
