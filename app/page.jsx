@@ -25,19 +25,6 @@ import {
   Users,
 } from "lucide-react";
 
-const trustedSoftware = [
-  "QuickBooks",
-  "Xero",
-  "NetSuite",
-  "Sage",
-  "MYOB",
-  "Gusto",
-  "ADP",
-  "Expensify",
-  "Fathom",
-  "Spotlight",
-];
-
 const processSteps = [
   {
     step: "01",
@@ -220,8 +207,6 @@ const countryCoverage = [
 const formFieldClassName =
   "w-full rounded-xl bg-[#f8f8f6] border border-slate-200 px-5 py-4 text-[#0d0f14] focus:outline-none focus:ring-2 focus:ring-[#5a688e]/50 focus:border-[#5a688e] text-sm";
 
-const scrollingPills = [...trustedSoftware, ...trustedSoftware];
-
 export default function Home() {
   return (
     <main>
@@ -229,27 +214,31 @@ export default function Home() {
         <Hero />
       </section>
 
-      <section className="overflow-hidden border-y border-[#1e2330] bg-[#13161e] py-5">
-        <div className="mx-auto w-full max-w-7xl space-y-3 px-6 lg:px-12">
-          <div className="flex items-center overflow-hidden">
-            <p className="mr-8 shrink-0 text-xs uppercase tracking-widest text-[#8892a4]">
+      <section className="bg-[#13161e] border-y border-[#1e2330] py-5">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+          <div className="flex items-center gap-3 flex-wrap justify-center">
+            <span className="text-[#8892a4] text-xs uppercase tracking-widest shrink-0 mr-4">
               Trusted Software:
-            </p>
-            <div
-              className="flex min-w-max"
-              style={{
-                animation: "scroll 20s linear infinite",
-              }}
-            >
-              {scrollingPills.map((tool, index) => (
-                <span
-                  key={`${tool}-${index}`}
-                  className="mx-2 whitespace-nowrap rounded-full border border-[#1e2330] bg-[#0d0f14] px-5 py-2 text-xs text-[#8892a4] transition-colors hover:border-[#5a688e]/50 hover:text-white"
-                >
-                  {tool}
-                </span>
-              ))}
-            </div>
+            </span>
+            {[
+              "QuickBooks",
+              "Xero",
+              "NetSuite",
+              "Sage",
+              "MYOB",
+              "Gusto",
+              "ADP",
+              "Expensify",
+              "Fathom",
+              "Spotlight",
+            ].map((tool) => (
+              <span
+                key={tool}
+                className="bg-[#0d0f14] border border-[#1e2330] text-[#8892a4] text-xs rounded-full px-4 py-1.5 whitespace-nowrap hover:border-[#5a688e]/50 hover:text-white transition-colors"
+              >
+                {tool}
+              </span>
+            ))}
           </div>
         </div>
       </section>
@@ -641,16 +630,6 @@ export default function Home() {
         </div>
       </section>
 
-      <style>{`
-        @keyframes scroll {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(-50%);
-          }
-        }
-      `}</style>
     </main>
   );
 }
