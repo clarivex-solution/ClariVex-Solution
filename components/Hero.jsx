@@ -31,7 +31,7 @@ export default function Hero({
   const hasCountryHeading = Boolean(h1Line1 || h1Line2);
 
   return (
-    <section className="min-h-screen bg-[#0d0f14] relative overflow-hidden flex items-center">
+    <section className="min-h-screen bg-[#0d0f14] relative overflow-hidden flex items-center pt-24 lg:pt-32">
       <div className="pointer-events-none absolute -right-32 -top-32 h-[600px] w-[600px] rounded-full bg-[#5a688e]/8 blur-[120px]" />
       <div className="pointer-events-none absolute bottom-0 left-0 h-[400px] w-[400px] rounded-full bg-[#6aa595]/8 blur-[100px]" />
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:80px_80px]" />
@@ -53,12 +53,11 @@ export default function Hero({
               </h1>
             ) : (
               <h1 className="mt-8 font-[family-name:var(--font-playfair)] text-6xl font-bold leading-[1.05] text-white lg:text-7xl xl:text-8xl">
-                <span className="block">Empowering</span>
+                <span className="block">Empowering Growth</span>
                 <span className="block">
-                  Growth <span className="text-[#6aa595]">Through</span>
+                  Through <span className="text-[#6aa595]">Financial</span>
                 </span>
-                <span className="block text-[#5a688e]">Financial</span>
-                <span className="block">Clarity.</span>
+                <span className="block text-[#5a688e]">Clarity.</span>
               </h1>
             )}
 

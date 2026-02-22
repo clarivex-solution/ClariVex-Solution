@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ChevronDown, Menu, X } from "lucide-react";
 
 const navLinks = [
@@ -44,10 +45,13 @@ export default function Navbar() {
       <div className="mx-auto flex h-full w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center">
           <span className="mr-3 inline-block h-8 w-0.5 bg-[#c9a96e]" />
-          <span className="font-[family-name:var(--font-playfair)] text-xl font-bold text-white">
-            ClariVex
-            <span className="ml-1 text-[#6aa595]">Solutions</span>
-          </span>
+          <Image
+            src="/logo.png"
+            alt="ClariVex Solutions"
+            width={140}
+            height={40}
+            className="object-contain"
+          />
         </Link>
 
         <nav className="hidden items-center gap-7 lg:flex">
@@ -65,8 +69,7 @@ export default function Navbar() {
         <div className="hidden items-center gap-3 lg:flex">
           <details className="group relative">
             <summary className="flex list-none cursor-pointer items-center gap-1 rounded-full border border-[#1e2330] bg-[#13161e] px-3 py-1.5 text-xs text-[#8892a4] transition-colors duration-200 hover:text-white">
-              <span>{"\uD83C\uDDFA\uD83C\uDDF8"}</span>
-              <span>US</span>
+              <span>{"\uD83C\uDDFA\uD83C\uDDF8 US"}</span>
               <ChevronDown className="h-3.5 w-3.5" />
             </summary>
             <div className="absolute right-0 mt-2 min-w-36 rounded-2xl border border-[#1e2330] bg-[#13161e] p-1 shadow-2xl">

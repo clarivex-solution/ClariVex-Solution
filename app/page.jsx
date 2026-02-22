@@ -1,6 +1,7 @@
 "use client";
 
 import Hero from "@/components/Hero";
+import Image from "next/image";
 import {
   Activity,
   ArrowDownCircle,
@@ -187,10 +188,26 @@ const whyChooseUsCards = [
 ];
 
 const phoneContacts = [
-  { name: "US Desk", phoneDisplay: "+1 646 980 2901", phoneRaw: "+16469802901" },
-  { name: "UK Desk", phoneDisplay: "+44 20 3890 1124", phoneRaw: "+442038901124" },
-  { name: "AU Desk", phoneDisplay: "+61 2 7201 8440", phoneRaw: "+61272018440" },
-  { name: "CA Desk", phoneDisplay: "+1 416 900 4172", phoneRaw: "+14169004172" },
+  {
+    name: "CA. Dhimant Khatri (Chartered Accountant)",
+    phoneDisplay: "+91 9898028812",
+    phoneRaw: "+919898028812",
+  },
+  {
+    name: "Purnesh Patel (Marketing Head)",
+    phoneDisplay: "+91 9727178789",
+    phoneRaw: "+919727178789",
+  },
+  {
+    name: "Jigar Bhavsar (Marketing Head)",
+    phoneDisplay: "+91 9898020609",
+    phoneRaw: "+919898020609",
+  },
+  {
+    name: "Mitul Dalvadi (Team Manager)",
+    phoneDisplay: "+91 9586201415",
+    phoneRaw: "+919586201415",
+  },
 ];
 
 const countryCoverage = [
@@ -214,29 +231,26 @@ export default function Home() {
 
       <section className="overflow-hidden border-y border-[#1e2330] bg-[#13161e] py-5">
         <div className="mx-auto w-full max-w-7xl space-y-3 px-6 lg:px-12">
-          {[0, 1].map((row) => (
-            <div key={row} className="flex items-center overflow-hidden">
-              <p className="mr-8 shrink-0 text-xs uppercase tracking-widest text-[#8892a4]">
-                Trusted Software:
-              </p>
-              <div
-                className="flex min-w-max"
-                style={{
-                  animation: "scroll 20s linear infinite",
-                  animationDelay: row === 0 ? "0s" : "-10s",
-                }}
-              >
-                {scrollingPills.map((tool, index) => (
-                  <span
-                    key={`${tool}-${row}-${index}`}
-                    className="mx-2 whitespace-nowrap rounded-full border border-[#1e2330] bg-[#0d0f14] px-5 py-2 text-xs text-[#8892a4] transition-colors hover:border-[#5a688e]/50 hover:text-white"
-                  >
-                    {tool}
-                  </span>
-                ))}
-              </div>
+          <div className="flex items-center overflow-hidden">
+            <p className="mr-8 shrink-0 text-xs uppercase tracking-widest text-[#8892a4]">
+              Trusted Software:
+            </p>
+            <div
+              className="flex min-w-max"
+              style={{
+                animation: "scroll 20s linear infinite",
+              }}
+            >
+              {scrollingPills.map((tool, index) => (
+                <span
+                  key={`${tool}-${index}`}
+                  className="mx-2 whitespace-nowrap rounded-full border border-[#1e2330] bg-[#0d0f14] px-5 py-2 text-xs text-[#8892a4] transition-colors hover:border-[#5a688e]/50 hover:text-white"
+                >
+                  {tool}
+                </span>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
       </section>
 
@@ -362,8 +376,13 @@ export default function Home() {
         <div className="mx-auto grid w-full max-w-7xl items-center gap-20 px-6 lg:grid-cols-2 lg:px-12">
           <div className="relative rounded-2xl border border-[#1e2330] bg-[#0d0f14] p-10">
             <div className="absolute left-0 top-0 h-20 w-20 rounded-tl-2xl border-l-2 border-t-2 border-[#c9a96e]/40" />
-            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[#5a688e] font-[family-name:var(--font-playfair)] text-2xl font-bold text-white">
-              DK
+            <div className="relative w-24 h-24 rounded-full overflow-hidden ring-2 ring-[#c9a96e]/40 shrink-0">
+              <Image
+                src="/dhimant-khatri.jpg"
+                alt="CA Dhimant Khatri - Chartered Accountant"
+                fill
+                className="w-full h-full object-cover object-top"
+              />
             </div>
             <p className="mt-6 font-[family-name:var(--font-playfair)] text-2xl font-bold text-white">
               Dhimant Khatri
@@ -483,17 +502,18 @@ export default function Home() {
                 <div className="flex items-start gap-3">
                   <MapPin className="mt-0.5 h-5 w-5 text-[#6aa595]" />
                   <p className="text-sm text-[#8892a4]">
-                    Global delivery hub: Ahmedabad, India
+                    421, Shivalik Shilp, Iscon Cross Road, S.G. Highway,
+                    Ahmedabad &ndash; 380058
                   </p>
                 </div>
 
                 <div className="flex items-start gap-3">
                   <Mail className="mt-0.5 h-5 w-5 text-[#6aa595]" />
                   <a
-                    href="mailto:us@clarivexsolutions.com"
+                    href="mailto:info@clarivex.net"
                     className="text-sm text-[#8892a4] transition-colors hover:text-white"
                   >
-                    us@clarivexsolutions.com
+                    info@clarivex.net
                   </a>
                 </div>
 

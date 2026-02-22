@@ -1,4 +1,5 @@
 ﻿import Link from "next/link";
+import Image from "next/image";
 import { MessageCircle } from "lucide-react";
 
 const services = [
@@ -39,10 +40,13 @@ export default function Footer() {
             <div>
               <Link href="/" className="flex items-center">
                 <span className="mr-3 inline-block h-8 w-0.5 bg-[#c9a96e]" />
-                <span className="font-[family-name:var(--font-playfair)] text-xl font-bold text-white">
-                  ClariVex
-                  <span className="ml-1 text-[#6aa595]">Solutions</span>
-                </span>
+                <Image
+                  src="/logo.png"
+                  alt="ClariVex Solutions"
+                  width={160}
+                  height={45}
+                  className="object-contain brightness-0 invert"
+                />
               </Link>
 
               <p className="mt-4 text-sm leading-relaxed text-[#8892a4]">
