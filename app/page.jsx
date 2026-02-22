@@ -186,22 +186,26 @@ const whyChooseUsCards = [
 
 const phoneContacts = [
   {
-    name: "CA. Dhimant Khatri (Chartered Accountant)",
+    name: "CA. Dhimant Khatri",
+    role: "Chartered Accountant",
     phoneDisplay: "+91 9898028812",
     phoneRaw: "+919898028812",
   },
   {
-    name: "Purnesh Patel (Marketing Head)",
+    name: "Purnesh Patel",
+    role: "Marketing Head",
     phoneDisplay: "+91 9727178789",
     phoneRaw: "+919727178789",
   },
   {
-    name: "Jigar Bhavsar (Marketing Head)",
+    name: "Jigar Bhavsar",
+    role: "Marketing Head",
     phoneDisplay: "+91 9898020609",
     phoneRaw: "+919898020609",
   },
   {
-    name: "Mitul Dalvadi (Team Manager)",
+    name: "Mitul Dalvadi",
+    role: "Team Manager",
     phoneDisplay: "+91 9586201415",
     phoneRaw: "+919586201415",
   },
@@ -215,7 +219,7 @@ const countryCoverage = [
 ];
 
 const formFieldClassName =
-  "w-full rounded-xl bg-[#f8f8f6] border border-slate-200 px-5 py-4 text-[#0d0f14] focus:outline-none focus:ring-2 focus:ring-[#5a688e]/50 focus:border-[#5a688e] text-sm";
+  "w-full rounded-xl border border-slate-200 bg-[#f8f8f6] px-5 py-4 text-sm text-[#0d0f14] focus:outline-none focus:border-[#5a688e] focus:ring-1 focus:ring-[#5a688e]/30 transition-colors placeholder:text-[#8892a4]/50";
 
 export default function Home() {
   return (
@@ -483,34 +487,35 @@ export default function Home() {
       </section>
 
       <section id="contact" className="bg-[#f0efe9] py-32">
-        <div className="mx-auto w-full max-w-7xl px-6 lg:px-12">
-          <div className="text-center">
-            <div className="mx-auto h-px w-16 bg-[#c9a96e]" />
-            <p className="mt-6 text-xs uppercase tracking-[0.2em] text-[#5a688e]">
+        <div className="w-full">
+          <div className="mx-auto max-w-6xl px-6">
+            <div className="mx-auto mb-6 h-px w-16 bg-[#c9a96e]" />
+            <p className="text-center text-xs uppercase tracking-[0.2em] text-[#5a688e]">
               GET IN TOUCH
             </p>
-            <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-5xl font-bold text-[#0d0f14]">
+            <h2 className="mt-4 text-center font-[family-name:var(--font-playfair)] text-5xl font-bold text-[#0d0f14]">
               Contact Us
             </h2>
-            <p className="mt-4 text-slate-600">Book a free consultation today</p>
+            <p className="mt-3 text-center text-slate-500">Book a free consultation today</p>
           </div>
 
-          <div className="mt-16 grid gap-16 lg:grid-cols-2">
+          <div className="mx-auto mt-16 grid max-w-6xl gap-12 px-6 lg:grid-cols-2">
             <div className="rounded-2xl border border-[#1e2330] bg-[#0d0f14] p-10">
-              <h3 className="text-lg font-semibold text-white">Contact Information</h3>
-              <div className="mt-3 h-px w-12 bg-[#c9a96e]" />
+              <h3 className="text-xl font-semibold text-white">Contact Information</h3>
+              <div className="mb-8 mt-3 h-px w-10 bg-[#c9a96e]" />
 
-              <div className="mt-8 space-y-6">
+              <div className="space-y-6">
                 <div className="flex items-start gap-3">
-                  <MapPin className="mt-0.5 h-5 w-5 text-[#6aa595]" />
-                  <p className="text-sm text-[#8892a4]">
-                    421, Shivalik Shilp, Iscon Cross Road, S.G. Highway,
-                    Ahmedabad &ndash; 380058
+                  <MapPin className="h-5 w-5 shrink-0 text-[#6aa595]" />
+                  <p className="text-sm leading-relaxed text-[#8892a4]">
+                    421, Shivalik Shilp, Iscon Cross Road,
+                    <br />
+                    S.G. Highway, Ahmedabad &ndash; 380058
                   </p>
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <Mail className="mt-0.5 h-5 w-5 text-[#6aa595]" />
+                  <Mail className="h-5 w-5 shrink-0 text-[#6aa595]" />
                   <a
                     href="mailto:info@clarivex.net"
                     className="text-sm text-[#8892a4] transition-colors hover:text-white"
@@ -518,114 +523,145 @@ export default function Home() {
                     info@clarivex.net
                   </a>
                 </div>
-
-                <div className="flex items-start gap-3">
-                  <Phone className="mt-0.5 h-5 w-5 text-[#6aa595]" />
-                  <div className="space-y-2">
-                    {phoneContacts.map((contact) => (
-                      <p key={contact.phoneRaw} className="text-sm text-[#8892a4]">
-                        <span className="font-medium text-white">{contact.name}:</span>{" "}
-                        <a
-                          href={`tel:${contact.phoneRaw}`}
-                          className="transition-colors hover:text-white"
-                        >
-                          {contact.phoneDisplay}
-                        </a>
-                      </p>
-                    ))}
-                  </div>
-                </div>
               </div>
 
-              <div className="mt-8 border-t border-[#1e2330] pt-6">
-                <p className="text-xs uppercase tracking-[0.16em] text-[#8892a4]">
-                  Country Coverage
-                </p>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {countryCoverage.map((item) => (
-                    <span
-                      key={item.label}
-                      className="rounded-full border border-[#1e2330] bg-[#13161e] px-3 py-1 text-xs text-[#8892a4]"
+              <div className="my-6 h-px w-full bg-[#1e2330]" />
+
+              <p className="mb-4 text-sm font-medium text-white">Our Team</p>
+              <div className="space-y-4">
+                {phoneContacts.map((contact) => (
+                  <div key={contact.phoneRaw} className="flex items-start justify-between gap-3">
+                    <div className="flex items-start gap-2">
+                      <Phone className="mt-0.5 h-4 w-4 shrink-0 text-[#6aa595]" />
+                      <div>
+                        <p className="text-sm font-medium text-white">{contact.name}</p>
+                        <p className="text-xs text-[#8892a4]">{contact.role}</p>
+                      </div>
+                    </div>
+                    <a
+                      href={`tel:${contact.phoneRaw}`}
+                      className="shrink-0 font-mono text-sm text-[#6aa595]"
                     >
-                      {item.label}
-                    </span>
-                  ))}
-                </div>
+                      {contact.phoneDisplay}
+                    </a>
+                  </div>
+                ))}
+              </div>
+
+              <div className="my-6 h-px w-full bg-[#1e2330]" />
+
+              <p className="mb-4 text-sm font-medium text-white">Global Coverage</p>
+              <div className="flex flex-wrap gap-2">
+                {countryCoverage.map((item) => (
+                  <span
+                    key={item.label}
+                    className="rounded-full border border-[#1e2330] bg-[#0d0f14] px-4 py-2 text-xs text-[#8892a4] transition-colors hover:border-[#5a688e]/50 hover:text-white"
+                  >
+                    {item.label}
+                  </span>
+                ))}
               </div>
             </div>
 
             <div className="rounded-2xl border border-slate-200 bg-white p-10 shadow-xl">
-              <form className="space-y-5">
-                <div>
-                  <label
-                    htmlFor="name"
-                    className="mb-2 block text-sm font-medium text-[#0d0f14]"
-                  >
-                    Name
-                  </label>
-                  <input id="name" name="name" type="text" className={formFieldClassName} />
+              <h3 className="text-xl font-semibold text-white">Send us a Message</h3>
+              <p className="mb-8 mt-2 text-sm text-[#8892a4]">
+                We typically respond within 24 hours
+              </p>
+
+              <form className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label
+                      htmlFor="name"
+                      className="mb-2 block text-xs uppercase tracking-wider text-slate-600"
+                    >
+                      Name
+                    </label>
+                    <input
+                      id="name"
+                      name="name"
+                      type="text"
+                      className={formFieldClassName}
+                      placeholder="Your name"
+                    />
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="email"
+                      className="mb-2 block text-xs uppercase tracking-wider text-slate-600"
+                    >
+                      Email
+                    </label>
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      className={formFieldClassName}
+                      placeholder="you@example.com"
+                    />
+                  </div>
                 </div>
 
-                <div>
-                  <label
-                    htmlFor="email"
-                    className="mb-2 block text-sm font-medium text-[#0d0f14]"
-                  >
-                    Email
-                  </label>
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    className={formFieldClassName}
-                  />
-                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label
+                      htmlFor="phone"
+                      className="mb-2 block text-xs uppercase tracking-wider text-slate-600"
+                    >
+                      Phone (optional)
+                    </label>
+                    <input
+                      id="phone"
+                      name="phone"
+                      type="tel"
+                      className={formFieldClassName}
+                      placeholder="+91 9876543210"
+                    />
+                  </div>
 
-                <div>
-                  <label
-                    htmlFor="phone"
-                    className="mb-2 block text-sm font-medium text-[#0d0f14]"
-                  >
-                    Phone (optional)
-                  </label>
-                  <input id="phone" name="phone" type="tel" className={formFieldClassName} />
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="service"
-                    className="mb-2 block text-sm font-medium text-[#0d0f14]"
-                  >
-                    Service
-                  </label>
-                  <select
-                    id="service"
-                    name="service"
-                    className={formFieldClassName}
-                    defaultValue=""
-                  >
-                    <option value="" disabled>
-                      Select a service
-                    </option>
-                    {serviceCards.map((service) => (
-                      <option key={service.title} value={service.title}>
-                        {service.title}
+                  <div>
+                    <label
+                      htmlFor="service"
+                      className="mb-2 block text-xs uppercase tracking-wider text-slate-600"
+                    >
+                      Service
+                    </label>
+                    <select
+                      id="service"
+                      name="service"
+                      className={formFieldClassName}
+                      defaultValue=""
+                    >
+                      <option value="" disabled>
+                        Select service
                       </option>
-                    ))}
-                  </select>
+                      <option value="Bookkeeping">Bookkeeping</option>
+                      <option value="Reconciliation">Reconciliation</option>
+                      <option value="AP Support">AP Support</option>
+                      <option value="AR Support">AR Support</option>
+                      <option value="Payroll">Payroll</option>
+                      <option value="Tax Planning">Tax Planning</option>
+                      <option value="Audit">Audit</option>
+                      <option value="Advisory">Advisory</option>
+                      <option value="Data Security">Data Security</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
                 </div>
 
                 <div>
                   <label
                     htmlFor="message"
-                    className="mb-2 block text-sm font-medium text-[#0d0f14]"
+                    className="mb-2 block text-xs uppercase tracking-wider text-slate-600"
                   >
                     Message
                   </label>
                   <textarea
                     id="message"
                     name="message"
-                    rows={4}
+                    rows={5}
                     className={formFieldClassName}
                     placeholder="Tell us about your current finance operations and goals."
                   />
@@ -633,9 +669,9 @@ export default function Home() {
 
                 <button
                   type="submit"
-                  className="w-full rounded-xl bg-[#5a688e] py-4 font-semibold text-white transition-colors duration-300 hover:bg-[#6aa595]"
+                  className="mt-6 w-full rounded-xl bg-[#5a688e] py-4 text-sm font-semibold tracking-wide text-white transition-all duration-300 hover:bg-[#6aa595] hover:shadow-lg hover:shadow-[#6aa595]/20"
                 >
-                  Send Message
+                  Send Message &rarr;
                 </button>
               </form>
             </div>
