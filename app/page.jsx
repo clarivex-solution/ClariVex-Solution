@@ -2,6 +2,7 @@
 
 import Hero from "@/components/Hero";
 import Image from "next/image";
+import Link from "next/link";
 import {
   Activity,
   ArrowDownCircle,
@@ -60,54 +61,63 @@ const serviceCards = [
   {
     title: "Bookkeeping",
     icon: BookOpen,
+    href: "/services/bookkeeping",
     description:
       "Accurate day-to-day entries, ledger cleanup, and monthly close support to keep your books decision-ready.",
   },
   {
     title: "Reconciliation",
     icon: CreditCard,
+    href: "/services/reconciliation",
     description:
       "Bank and card reconciliation with variance review and documented adjustments for reliable reporting.",
   },
   {
     title: "AP Support",
     icon: ArrowDownCircle,
+    href: "/services/ap-support",
     description:
       "Invoice intake, approvals, payment scheduling, and payable ageing management to protect cash flow.",
   },
   {
     title: "AR Support",
     icon: ArrowUpCircle,
+    href: "/services/ar-support",
     description:
       "Invoice tracking, collections follow-up, and receivable control to improve cash realization.",
   },
   {
     title: "Payroll",
     icon: Users,
+    href: "/services/payroll",
     description:
       "Structured payroll processing, summaries, and compliance-ready records across regions.",
   },
   {
     title: "Tax Planning",
     icon: FileText,
+    href: "/services/tax-planning",
     description:
       "Planning and compliance support to reduce tax risk while maintaining filing discipline.",
   },
   {
     title: "Audit",
     icon: Shield,
+    href: "/services/audit",
     description:
       "Audit-ready schedules, reconciliations, and support packages for internal and external reviews.",
   },
   {
     title: "Advisory",
     icon: Lightbulb,
+    href: "/services/advisory",
     description:
       "Management insights, performance reviews, and strategic finance guidance for growth decisions.",
   },
   {
     title: "Data Security",
     icon: Lock,
+    href: "/services/data-security",
     description:
       "NDA-protected workflows, controlled access, and secure handling of business-critical financial data.",
   },
@@ -287,18 +297,21 @@ export default function Home() {
             {serviceCards.map((service) => (
               <article
                 key={service.title}
-                className="group rounded-xl border border-slate-200 bg-white p-8 transition-all duration-300 hover:border-[#5a688e]/40 hover:shadow-2xl"
+                className="group cursor-pointer rounded-xl border border-slate-200 bg-white p-8 transition-all duration-300 hover:-translate-y-1 hover:border-[#5a688e]/40 hover:shadow-xl"
               >
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#5a688e]/10 transition-colors duration-300 group-hover:bg-[#5a688e]">
-                  <service.icon className="h-5 w-5 text-[#5a688e] transition-colors group-hover:text-white" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#5a688e]/10 text-[#5a688e] transition-colors duration-300 group-hover:bg-[#5a688e] group-hover:text-white">
+                  <service.icon className="h-5 w-5" />
                 </div>
                 <h3 className="mt-6 text-lg font-semibold text-[#0d0f14]">{service.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-slate-500">
                   {service.description}
                 </p>
-                <p className="mt-6 text-sm font-medium text-[#5a688e] transition-colors hover:text-[#6aa595]">
+                <Link
+                  href={service.href}
+                  className="mt-6 inline-block text-sm font-medium text-[#5a688e] transition-colors hover:text-[#6aa595]"
+                >
                   Learn More &rarr;
-                </p>
+                </Link>
               </article>
             ))}
           </div>
