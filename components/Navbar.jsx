@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
 import { ChevronDown, Menu, X } from "lucide-react";
 
 const navLinks = [
@@ -17,20 +16,15 @@ const navLinks = [
 ];
 
 const countries = [
-  { code: "US", flag: "\uD83C\uDDFA\uD83C\uDDF8", label: "United States", href: "/us" },
-  { code: "UK", flag: "\uD83C\uDDEC\uD83C\uDDE7", label: "United Kingdom", href: "/uk" },
-  { code: "AU", flag: "\uD83C\uDDE6\uD83C\uDDFA", label: "Australia", href: "/au" },
-  { code: "CA", flag: "\uD83C\uDDE8\uD83C\uDDE6", label: "Canada", href: "/ca" },
+  { href: "/us", code: "US", flag: "\uD83C\uDDFA\uD83C\uDDF8" },
+  { href: "/uk", code: "UK", flag: "\uD83C\uDDEC\uD83C\uDDE7" },
+  { href: "/au", code: "AU", flag: "\uD83C\uDDE6\uD83C\uDDFA" },
+  { href: "/ca", code: "CA", flag: "\uD83C\uDDE8\uD83C\uDDE6" },
 ];
 
 export default function Navbar() {
-  const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const selectedCountry =
-    countries.find(
-      (country) => pathname === country.href || pathname.startsWith(`${country.href}/`),
-    ) ?? countries[0];
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 60);
@@ -75,9 +69,7 @@ export default function Navbar() {
         <div className="hidden items-center gap-3 lg:flex">
           <details className="group relative">
             <summary className="flex list-none cursor-pointer items-center gap-1 rounded-full border border-[#1e2330] bg-[#13161e] px-3 py-1.5 text-xs text-[#8892a4] transition-colors duration-200 hover:text-white">
-              <span>
-                {selectedCountry.flag} {selectedCountry.code}
-              </span>
+              <span>{"\uD83C\uDDFA\uD83C\uDDF8 US"}</span>
               <ChevronDown className="h-3.5 w-3.5" />
             </summary>
             <div className="absolute right-0 mt-2 min-w-36 rounded-2xl border border-[#1e2330] bg-[#13161e] p-1 shadow-2xl">
