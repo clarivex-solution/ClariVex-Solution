@@ -28,11 +28,12 @@ export default function AUPage() {
     <CountryLandingPage
       countryName="Australia"
       flag="\uD83C\uDDE6\uD83C\uDDFA"
-      heroH1="Financial Clarity for Australian Businesses"
-      heroSub="MYOB and Xero bookkeeping, BAS lodgement, and payroll for Australian businesses."
-      heroBadge="\uD83C\uDDE6\uD83C\uDDFA Finance and compliance operations for Australian businesses"
+      countryLabel="AU OUTSOURCED ACCOUNTING & FINANCE"
+      h1Line1="Financial Clarity"
+      h1Line2="for Australian Businesses"
+      subtitle="MYOB and Xero bookkeeping, BAS lodgement, and payroll support for Australian businesses."
       tools={["MYOB", "Xero", "Spotlight Reporting", "Expensify"]}
-      taxNote="ATO compliance, BAS lodgement, GST and payroll tax support"
+      complianceNote="ATO compliance coverage with BAS lodgement, GST obligations, payroll tax support, and close-cycle finance controls."
     />
   );
 }

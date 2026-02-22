@@ -28,11 +28,12 @@ export default function CAPage() {
     <CountryLandingPage
       countryName="Canada"
       flag="\uD83C\uDDE8\uD83C\uDDE6"
-      heroH1="Financial Clarity for Canadian Businesses"
-      heroSub="QuickBooks and Xero bookkeeping, GST/HST compliance, and payroll for Canadian businesses."
-      heroBadge="\uD83C\uDDE8\uD83C\uDDE6 Remote accounting support across Canada"
+      countryLabel="CA OUTSOURCED ACCOUNTING & FINANCE"
+      h1Line1="Financial Clarity"
+      h1Line2="for Canadian Businesses"
+      subtitle="QuickBooks and Xero bookkeeping, GST/HST compliance, and payroll support for Canadian businesses."
       tools={["QuickBooks Online", "Xero", "Fathom", "ADP"]}
-      taxNote="CRA compliance, GST/HST returns, T4 payroll support"
+      complianceNote="CRA compliance support covering GST/HST returns, payroll reporting, and monthly accounting discipline for Canadian entities."
     />
   );
 }

@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { MessageCircle } from "lucide-react";
 
 const services = [
@@ -24,94 +24,105 @@ const companyLinks = [
 ];
 
 const countryLinks = [
-  { href: "/us", label: "\uD83C\uDDFA\uD83C\uDDF8 United States" },
-  { href: "/uk", label: "\uD83C\uDDEC\uD83C\uDDE7 United Kingdom" },
-  { href: "/au", label: "\uD83C\uDDE6\uD83C\uDDFA Australia" },
-  { href: "/ca", label: "\uD83C\uDDE8\uD83C\uDDE6 Canada" },
+  { href: "/us", label: "US United States" },
+  { href: "/uk", label: "UK United Kingdom" },
+  { href: "/au", label: "AU Australia" },
+  { href: "/ca", label: "CA Canada" },
 ];
 
 export default function Footer() {
   return (
     <>
-      <footer className="bg-[#0A1628] pb-8 pt-16 text-white">
-        <div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-4 lg:px-8">
-          <div>
-            <div className="flex items-center gap-3">
-              <span className="h-6 w-1 rounded-full bg-cyan-400" />
-              <p className="text-xl font-bold">
-                <span>ClariVex</span> <span className="text-blue-400">Solutions</span>
+      <footer className="border-t border-[#1e2330] bg-[#0d0f14]">
+        <div className="mx-auto max-w-7xl px-4 pb-12 pt-20 sm:px-6 lg:px-8">
+          <div className="grid gap-10 lg:grid-cols-[1.35fr_1fr_1fr_1fr]">
+            <div>
+              <Link href="/" className="flex items-center">
+                <span className="mr-3 inline-block h-8 w-0.5 bg-[#c9a96e]" />
+                <span className="font-[family-name:var(--font-playfair)] text-xl font-bold text-white">
+                  ClariVex
+                  <span className="ml-1 text-[#6aa595]">Solutions</span>
+                </span>
+              </Link>
+
+              <p className="mt-4 text-sm leading-relaxed text-[#8892a4]">
+                Elite outsourced accounting and finance operations &mdash;
+                combining expert support and smart technology for businesses
+                across US, UK, AU &amp; CA.
               </p>
-            </div>
-            <p className="mt-4 text-sm text-slate-300">
-              Empowering Growth Through Financial Clarity
-            </p>
-            <p className="mt-3 text-sm text-slate-300">
-              Serving US, UK, AU &amp; CA clients globally
-            </p>
-            <div className="mt-5 flex flex-wrap gap-2">
-              <span className="rounded-full bg-white/10 px-3 py-1 text-xs font-medium">
-                NDA Protected
-              </span>
-              <span className="rounded-full bg-white/10 px-3 py-1 text-xs font-medium">
-                15+ Years
-              </span>
-              <span className="rounded-full bg-white/10 px-3 py-1 text-xs font-medium">
-                280+ Clients
-              </span>
-            </div>
-          </div>
 
-          <div>
-            <h3 className="text-sm font-semibold uppercase tracking-wide text-cyan-300">
-              Services
-            </h3>
-            <ul className="mt-4 space-y-2 text-sm text-slate-300">
+              <div className="mt-6 flex flex-wrap gap-2">
+                <span className="rounded-full border border-[#1e2330] bg-[#13161e] px-3 py-1 text-xs text-[#8892a4]">
+                  NDA Protected
+                </span>
+                <span className="rounded-full border border-[#1e2330] bg-[#13161e] px-3 py-1 text-xs text-[#8892a4]">
+                  15+ Years
+                </span>
+                <span className="rounded-full border border-[#1e2330] bg-[#13161e] px-3 py-1 text-xs text-[#8892a4]">
+                  280+ Clients
+                </span>
+              </div>
+            </div>
+
+            <div>
+              <p className="mb-6 text-xs uppercase tracking-[0.2em] text-[#6aa595]">
+                Services
+              </p>
               {services.map((service) => (
-                <li key={service}>{service}</li>
+                <Link
+                  key={service}
+                  href="/#services"
+                  className="mb-3 block text-sm text-[#8892a4] transition-colors hover:text-white"
+                >
+                  {service}
+                </Link>
               ))}
-            </ul>
-          </div>
+            </div>
 
-          <div>
-            <h3 className="text-sm font-semibold uppercase tracking-wide text-cyan-300">
-              Company
-            </h3>
-            <ul className="mt-4 space-y-2 text-sm text-slate-300">
+            <div>
+              <p className="mb-6 text-xs uppercase tracking-[0.2em] text-[#6aa595]">
+                Company
+              </p>
               {companyLinks.map((link) => (
-                <li key={link.label}>
-                  <Link href={link.href} className="transition hover:text-white">
-                    {link.label}
-                  </Link>
-                </li>
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  className="mb-3 block text-sm text-[#8892a4] transition-colors hover:text-white"
+                >
+                  {link.label}
+                </Link>
               ))}
-            </ul>
+            </div>
+
+            <div>
+              <p className="mb-6 text-xs uppercase tracking-[0.2em] text-[#6aa595]">
+                Global Offices
+              </p>
+              {countryLinks.map((country) => (
+                <Link
+                  key={country.href}
+                  href={country.href}
+                  className="mb-3 block text-sm text-[#8892a4] transition-colors hover:text-white"
+                >
+                  {country.label}
+                </Link>
+              ))}
+            </div>
           </div>
 
-          <div>
-            <h3 className="text-sm font-semibold uppercase tracking-wide text-cyan-300">
-              Countries
-            </h3>
-            <ul className="mt-4 space-y-2 text-sm text-slate-300">
-              {countryLinks.map((link) => (
-                <li key={link.href}>
-                  <Link href={link.href} className="transition hover:text-white">
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
+          <div className="my-2 h-px w-full bg-gradient-to-r from-transparent via-[#c9a96e]/30 to-transparent" />
 
-        <div className="mx-auto mt-12 flex max-w-7xl flex-col gap-3 border-t border-white/10 px-4 pt-6 text-sm text-slate-300 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
-          <p>&copy; 2026 Clarivex Solution. All rights reserved.</p>
-          <div className="flex items-center gap-5">
-            <Link href="/privacy-policy" className="transition hover:text-white">
-              Privacy Policy
-            </Link>
-            <Link href="/terms" className="transition hover:text-white">
-              Terms
-            </Link>
+          <div className="flex flex-col gap-4 pb-8 text-xs text-[#8892a4] sm:flex-row sm:items-center sm:justify-between">
+            <p>&copy; 2026 Clarivex Solution. All rights reserved.</p>
+            <div className="flex items-center gap-2">
+              <Link href="/privacy-policy" className="transition-colors hover:text-white">
+                Privacy Policy
+              </Link>
+              <span>&middot;</span>
+              <Link href="/terms" className="transition-colors hover:text-white">
+                Terms &amp; Conditions
+              </Link>
+            </div>
           </div>
         </div>
       </footer>
@@ -120,7 +131,7 @@ export default function Footer() {
         href="https://wa.me/919104791017"
         target="_blank"
         rel="noreferrer"
-        className="fixed bottom-6 right-6 z-50 rounded-full bg-green-500 p-4 text-white shadow-lg transition hover:scale-105"
+        className="fixed bottom-6 right-6 z-50 rounded-full bg-[#25D366] p-3.5 text-white shadow-2xl transition-transform hover:scale-110"
         aria-label="Chat on WhatsApp"
       >
         <MessageCircle className="h-6 w-6" />

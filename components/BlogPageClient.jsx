@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { ChevronRight, Filter } from "lucide-react";
 
 const categoryOptions = [
   "All",
@@ -26,6 +25,8 @@ const posts = [
     country: "US",
     countryLabel: "US\uD83C\uDDFA\uD83C\uDDF8",
     category: "Bookkeeping",
+    excerpt:
+      "Practical ways to tighten coding standards, automate reconciliations, and speed up month-end close for US operators.",
   },
   {
     slug: "understanding-mtd-uk-businesses-2025",
@@ -33,6 +34,8 @@ const posts = [
     country: "UK",
     countryLabel: "UK\uD83C\uDDEC\uD83C\uDDE7",
     category: "Tax & Compliance",
+    excerpt:
+      "A focused breakdown of MTD obligations, filing readiness, and record-keeping standards for UK businesses.",
   },
   {
     slug: "bas-lodgement-checklist-australia",
@@ -40,6 +43,8 @@ const posts = [
     country: "AU",
     countryLabel: "AU\uD83C\uDDE6\uD83C\uDDFA",
     category: "Tax & Compliance",
+    excerpt:
+      "A compliance-first BAS checklist to reduce lodgement errors and maintain strong GST reporting discipline.",
   },
   {
     slug: "gst-hst-filing-guide-canada-small-business",
@@ -47,6 +52,8 @@ const posts = [
     country: "CA",
     countryLabel: "CA\uD83C\uDDE8\uD83C\uDDE6",
     category: "Tax & Compliance",
+    excerpt:
+      "Key GST/HST filing workflows for Canadian SMBs, including documentation, timing, and control checks.",
   },
   {
     slug: "streamline-payroll-growing-teams",
@@ -54,6 +61,8 @@ const posts = [
     country: "All",
     countryLabel: "All",
     category: "Payroll",
+    excerpt:
+      "How growing teams can structure approvals, calendars, and reporting to reduce payroll risk and rework.",
   },
   {
     slug: "month-end-close-step-by-step-checklist",
@@ -61,21 +70,16 @@ const posts = [
     country: "All",
     countryLabel: "All",
     category: "Bookkeeping",
+    excerpt:
+      "A dependable close framework covering reconciliations, review checkpoints, and management reporting handoff.",
   },
 ];
 
-const categoryBadgeClass = {
-  Bookkeeping: "bg-blue-50 text-blue-700 border-blue-200",
-  "Tax & Compliance": "bg-amber-50 text-amber-700 border-amber-200",
-  Payroll: "bg-emerald-50 text-emerald-700 border-emerald-200",
-  Advisory: "bg-purple-50 text-purple-700 border-purple-200",
-};
-
-function buttonClass(isActive) {
-  return `rounded-full border px-4 py-2 text-sm font-medium transition ${
+function filterPillClass(isActive) {
+  return `rounded-full border px-5 py-2 text-xs transition-colors ${
     isActive
-      ? "border-blue-600 bg-blue-600 text-white shadow-sm"
-      : "border-slate-200 bg-white text-slate-700 hover:border-blue-300 hover:text-blue-600"
+      ? "bg-[#5a688e] text-white border-[#5a688e]"
+      : "bg-[#13161e] border-[#1e2330] text-[#8892a4] hover:border-[#5a688e]/40 hover:text-white"
   }`;
 }
 
@@ -95,45 +99,61 @@ export default function BlogPageClient() {
   }, [activeCategory, activeCountry]);
 
   return (
-    <main className="bg-slate-50 text-[#1E293B]">
-      <section className="bg-gradient-to-br from-[#0A1628] to-[#1E3A5F] py-20 text-white">
-        <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-          <h1 className="text-4xl font-bold md:text-5xl">Accounting &amp; Finance Blog</h1>
-          <p className="mx-auto mt-4 max-w-2xl text-base text-white/75">
+    <main className="bg-[#0d0f14] text-white">
+      <section className="relative overflow-hidden bg-[#0d0f14] py-28">
+        <div className="pointer-events-none absolute -right-20 -top-20 h-[420px] w-[420px] rounded-full bg-[#5a688e]/10 blur-[110px]" />
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:80px_80px]" />
+
+        <div className="relative z-10 mx-auto max-w-7xl px-6 text-center lg:px-12">
+          <div className="mx-auto h-px w-16 bg-[#c9a96e]" />
+          <p className="mt-6 text-xs uppercase tracking-[0.2em] text-[#6aa595]">
+            Insights Library
+          </p>
+          <h1 className="mt-4 font-[family-name:var(--font-playfair)] text-5xl text-white lg:text-6xl">
+            Accounting &amp; Finance Blog
+          </h1>
+          <p className="mx-auto mt-4 max-w-2xl text-[#8892a4]">
             Practical guidance for bookkeeping, tax, payroll, and finance operations
             across global markets.
           </p>
         </div>
       </section>
 
-      <section className="bg-white py-10">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
-            <div className="flex items-center gap-2 text-sm font-semibold text-slate-700">
-              <Filter className="h-4 w-4" />
-              Filter by Category
-            </div>
-            <div className="mt-4 flex flex-wrap gap-2">
+      <section className="border-y border-[#1e2330] bg-[#13161e] py-12">
+        <div className="mx-auto max-w-7xl px-6 lg:px-12">
+          <div className="mb-6 h-px w-16 bg-[#c9a96e]" />
+          <p className="text-xs uppercase tracking-[0.2em] text-[#6aa595]">
+            Filter Posts
+          </p>
+
+          <div className="mt-6">
+            <p className="mb-3 text-xs uppercase tracking-[0.16em] text-[#8892a4]">
+              Category
+            </p>
+            <div className="flex flex-wrap gap-2">
               {categoryOptions.map((category) => (
                 <button
                   key={category}
                   type="button"
-                  className={buttonClass(activeCategory === category)}
+                  className={filterPillClass(activeCategory === category)}
                   onClick={() => setActiveCategory(category)}
                 >
                   {category}
                 </button>
               ))}
             </div>
-            <div className="mt-5 flex items-center gap-2 text-sm font-semibold text-slate-700">
-              <span>Country</span>
-            </div>
-            <div className="mt-3 flex flex-wrap gap-2">
+          </div>
+
+          <div className="mt-6">
+            <p className="mb-3 text-xs uppercase tracking-[0.16em] text-[#8892a4]">
+              Country
+            </p>
+            <div className="flex flex-wrap gap-2">
               {countryOptions.map((country) => (
                 <button
                   key={country.key}
                   type="button"
-                  className={buttonClass(activeCountry === country.key)}
+                  className={filterPillClass(activeCountry === country.key)}
                   onClick={() => setActiveCountry(country.key)}
                 >
                   {country.label}
@@ -141,34 +161,66 @@ export default function BlogPageClient() {
               ))}
             </div>
           </div>
+        </div>
+      </section>
 
-          <div className="mt-10 grid gap-6 lg:grid-cols-3">
-            {filteredPosts.map((post) => (
-              <article
-                key={post.slug}
-                className="rounded-xl bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
-              >
-                <div className="flex items-center justify-between gap-3">
-                  <span
-                    className={`rounded-full border px-3 py-1 text-xs font-semibold ${
-                      categoryBadgeClass[post.category]
-                    }`}
-                  >
-                    {post.category}
-                  </span>
-                  <span className="text-xs font-semibold text-slate-500">{post.countryLabel}</span>
-                </div>
-                <h2 className="mt-4 text-xl font-semibold text-[#0A1628]">{post.title}</h2>
-                <Link
-                  href={`/blog/${post.slug}`}
-                  className="mt-5 inline-flex items-center text-sm font-semibold text-blue-600 hover:text-blue-700"
+      <section className="bg-[#f0efe9] py-14">
+        <div className="mx-auto max-w-7xl px-6 lg:px-12">
+          <div className="mb-6 h-px w-16 bg-[#c9a96e]" />
+          <p className="text-xs uppercase tracking-[0.2em] text-[#5a688e]">
+            Editorial Focus
+          </p>
+          <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-4xl text-[#0d0f14]">
+            Structured Insights for Finance Leaders
+          </h2>
+          <p className="mt-4 max-w-3xl text-slate-600">
+            Filter by category and country to access practical finance guidance tailored
+            to your market and reporting priorities.
+          </p>
+        </div>
+      </section>
+
+      <section className="bg-[#0d0f14] py-16">
+        <div className="mx-auto max-w-7xl px-6 lg:px-12">
+          <div className="mb-6 h-px w-16 bg-[#c9a96e]" />
+          <p className="text-xs uppercase tracking-[0.2em] text-[#6aa595]">
+            Latest Articles
+          </p>
+
+          {filteredPosts.length === 0 ? (
+            <div className="mt-8 rounded-xl border border-[#1e2330] bg-[#13161e] p-8 text-[#8892a4]">
+              No posts found for the selected filters.
+            </div>
+          ) : (
+            <div className="mt-8 grid gap-6 lg:grid-cols-3">
+              {filteredPosts.map((post) => (
+                <article
+                  key={post.slug}
+                  className="rounded-xl border border-[#1e2330] bg-[#13161e] p-6 transition-all hover:border-[#5a688e]/40 hover:shadow-2xl"
                 >
-                  Read More &rarr;
-                  <ChevronRight className="ml-1 h-4 w-4" />
-                </Link>
-              </article>
-            ))}
-          </div>
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="rounded-full bg-[#5a688e]/10 px-3 py-1 text-xs text-[#6aa595]">
+                      {post.category}
+                    </span>
+                    <span className="text-xs text-[#8892a4]">{post.countryLabel}</span>
+                  </div>
+
+                  <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-xl font-semibold text-white">
+                    {post.title}
+                  </h2>
+                  <p className="mt-3 text-sm leading-relaxed text-[#8892a4]">
+                    {post.excerpt}
+                  </p>
+                  <Link
+                    href={`/blog/${post.slug}`}
+                    className="mt-6 inline-flex text-sm text-[#6aa595] transition-colors hover:text-white"
+                  >
+                    Read More &rarr;
+                  </Link>
+                </article>
+              ))}
+            </div>
+          )}
         </div>
       </section>
     </main>

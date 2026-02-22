@@ -133,23 +133,26 @@ export default function NewsArticlePage({ params }) {
   const moreNews = newsPosts.filter((item) => item.slug !== post.slug).slice(0, 3);
 
   return (
-    <main className="bg-white py-12 text-[#1E293B]">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <main className="bg-[#0d0f14] py-14 text-white">
+      <div className="mx-auto max-w-7xl px-6 lg:px-12">
         <Link
           href="/news"
-          className="inline-flex items-center text-sm font-semibold text-blue-600 hover:text-blue-700"
+          className="inline-flex items-center text-sm text-[#6aa595] transition-colors hover:text-white"
         >
           &larr; Back to News
         </Link>
 
-        <div className="mt-6 grid gap-10 lg:grid-cols-[minmax(0,1fr)_300px]">
+        <div className="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1fr)_320px]">
           <article>
             <header className="mx-auto max-w-3xl">
-              <span className="inline-flex rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold text-slate-700">
+              <div className="mb-4 h-px w-12 bg-[#c9a96e]" />
+              <span className="rounded-full bg-[#5a688e]/10 px-3 py-1 text-xs text-[#6aa595]">
                 {post.category}
               </span>
-              <h1 className="mt-4 text-3xl font-bold text-[#0A1628] md:text-4xl">{post.title}</h1>
-              <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-slate-500">
+              <h1 className="mt-5 font-[family-name:var(--font-playfair)] text-4xl text-white md:text-5xl">
+                {post.title}
+              </h1>
+              <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-[#8892a4]">
                 <span className="inline-flex items-center gap-1.5">
                   <User className="h-4 w-4" />
                   ClariVex Team
@@ -161,7 +164,7 @@ export default function NewsArticlePage({ params }) {
               </div>
             </header>
 
-            <div className="mx-auto mt-8 max-w-3xl prose prose-slate">
+            <div className="mx-auto mt-8 max-w-3xl space-y-5 leading-relaxed text-[#8892a4]">
               <p>
                 Regulatory updates are most useful when translated into practical operating
                 steps. Finance teams should evaluate whether policy changes impact payroll
@@ -186,14 +189,17 @@ export default function NewsArticlePage({ params }) {
 
           <aside className="hidden lg:block">
             <div className="sticky top-28 space-y-6">
-              <div className="rounded-xl border border-slate-200 bg-slate-50 p-5">
-                <h2 className="text-lg font-semibold text-[#0A1628]">More News</h2>
+              <div className="rounded-xl border border-[#1e2330] bg-[#13161e] p-6">
+                <div className="mb-4 h-px w-12 bg-[#c9a96e]" />
+                <h2 className="font-[family-name:var(--font-playfair)] text-2xl text-white">
+                  More News
+                </h2>
                 <div className="mt-4 space-y-3">
                   {moreNews.map((item) => (
                     <Link
                       key={item.slug}
                       href={`/news/${item.slug}`}
-                      className="block text-sm font-medium text-slate-700 transition hover:text-blue-600"
+                      className="block text-sm text-[#8892a4] transition-colors hover:text-white"
                     >
                       {item.title}
                     </Link>
@@ -201,14 +207,17 @@ export default function NewsArticlePage({ params }) {
                 </div>
               </div>
 
-              <div className="rounded-xl border border-slate-200 bg-white p-5">
-                <h3 className="text-lg font-semibold text-[#0A1628]">Filter by Country</h3>
+              <div className="rounded-xl border border-[#1e2330] bg-[#13161e] p-6">
+                <div className="mb-4 h-px w-12 bg-[#c9a96e]" />
+                <h2 className="font-[family-name:var(--font-playfair)] text-2xl text-white">
+                  Filter by Country
+                </h2>
                 <div className="mt-4 flex flex-wrap gap-2">
                   {countryLinks.map((country) => (
                     <Link
                       key={country.href}
                       href={country.href}
-                      className="rounded-full border border-slate-200 px-3 py-1 text-xs font-semibold text-slate-700 transition hover:border-blue-300 hover:text-blue-600"
+                      className="rounded-full border border-[#1e2330] bg-[#0d0f14] px-3 py-1 text-xs text-[#8892a4] transition-colors hover:text-white"
                     >
                       {country.label}
                     </Link>

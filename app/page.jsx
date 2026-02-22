@@ -1,3 +1,5 @@
+"use client";
+
 import Hero from "@/components/Hero";
 import {
   Activity,
@@ -22,8 +24,8 @@ import {
   Users,
 } from "lucide-react";
 
-const trustedPartners = [
-  "QuickBooks Online",
+const trustedSoftware = [
+  "QuickBooks",
   "Xero",
   "NetSuite",
   "Sage",
@@ -32,6 +34,7 @@ const trustedPartners = [
   "ADP",
   "Expensify",
   "Fathom",
+  "Spotlight",
 ];
 
 const processSteps = [
@@ -67,65 +70,72 @@ const processSteps = [
 
 const serviceCards = [
   {
-    title: "Bookkeeping & Accounting",
+    title: "Bookkeeping",
     icon: BookOpen,
     description:
-      "Day-to-day transaction processing, general ledger maintenance, expense and income classification.",
+      "Accurate day-to-day entries, ledger cleanup, and monthly close support to keep your books decision-ready.",
   },
   {
-    title: "Bank & Credit Card Reconciliation",
+    title: "Reconciliation",
     icon: CreditCard,
     description:
-      "Monthly reconciliations, variance identification, and clean reconciliation summaries.",
+      "Bank and card reconciliation with variance review and documented adjustments for reliable reporting.",
   },
   {
-    title: "Accounts Payable (AP)",
+    title: "AP Support",
     icon: ArrowDownCircle,
     description:
-      "Vendor invoice processing, payables ageing reports, payment tracking and reconciliation.",
+      "Invoice intake, approvals, payment scheduling, and payable ageing management to protect cash flow.",
   },
   {
-    title: "Accounts Receivable (AR)",
+    title: "AR Support",
     icon: ArrowUpCircle,
     description:
-      "Sales invoice recording, customer ledger management, receivable ageing and follow-up support.",
+      "Invoice tracking, collections follow-up, and receivable control to improve cash realization.",
   },
   {
-    title: "Payroll Processing",
+    title: "Payroll",
     icon: Users,
     description:
-      "Payroll calculations, payslip preparation, payroll summaries and reports.",
+      "Structured payroll processing, summaries, and compliance-ready records across regions.",
   },
   {
-    title: "Tax Planning & Compliance",
+    title: "Tax Planning",
     icon: FileText,
     description:
-      "Strategic tax planning and compliance services to optimize your tax position.",
+      "Planning and compliance support to reduce tax risk while maintaining filing discipline.",
   },
   {
-    title: "Audit Support",
+    title: "Audit",
     icon: Shield,
     description:
-      "Comprehensive audit preparation and support for regulatory compliance.",
+      "Audit-ready schedules, reconciliations, and support packages for internal and external reviews.",
   },
   {
-    title: "Financial Advisory",
+    title: "Advisory",
     icon: Lightbulb,
     description:
-      "Strategic guidance to help you make informed decisions and grow your business.",
+      "Management insights, performance reviews, and strategic finance guidance for growth decisions.",
   },
   {
     title: "Data Security",
     icon: Lock,
     description:
-      "NDA-driven engagements, controlled data access, secure file-sharing protocols.",
+      "NDA-protected workflows, controlled access, and secure handling of business-critical financial data.",
   },
+];
+
+const statsBanner = [
+  { value: "15+", label: "Years of Experience" },
+  { value: "280+", label: "Active Clients" },
+  { value: "22", label: "Industries Served" },
+  { value: "100%", label: "On-Time Close" },
 ];
 
 const softwareColumns = [
   {
     title: "Accounting & ERP",
-    tools: ["QuickBooks Online", "Xero", "NetSuite", "Sage", "MYOB"],
+    tools: ["QuickBooks", "Xero", "NetSuite", "Sage", "MYOB"],
   },
   {
     title: "Payroll & Expense",
@@ -139,7 +149,7 @@ const softwareColumns = [
 
 const whyChooseUsCards = [
   {
-    title: "Expert Team & Experience",
+    title: "Expert Team",
     icon: Star,
     points: [
       "Deep theoretical knowledge",
@@ -166,7 +176,7 @@ const whyChooseUsCards = [
     ],
   },
   {
-    title: "Client-Centric Partnership",
+    title: "Client-Centric",
     icon: Heart,
     points: [
       "Simplify regulations",
@@ -176,152 +186,170 @@ const whyChooseUsCards = [
   },
 ];
 
-const globalContacts = [
-  {
-    badge: "\uD83C\uDDFA\uD83C\uDDF8",
-    country: "United States",
-    location: "US support and operations desk",
-    email: "us@clarivexsolutions.com",
-    phoneDisplay: "+1 646 980 2901",
-    phoneRaw: "+16469802901",
-  },
-  {
-    badge: "\uD83C\uDDEC\uD83C\uDDE7",
-    country: "United Kingdom",
-    location: "UK accounting and compliance support",
-    email: "uk@clarivexsolutions.com",
-    phoneDisplay: "+44 20 3890 1124",
-    phoneRaw: "+442038901124",
-  },
-  {
-    badge: "\uD83C\uDDE6\uD83C\uDDFA",
-    country: "Australia",
-    location: "AU finance operations support desk",
-    email: "au@clarivexsolutions.com",
-    phoneDisplay: "+61 2 7201 8440",
-    phoneRaw: "+61272018440",
-  },
-  {
-    badge: "\uD83C\uDDE8\uD83C\uDDE6",
-    country: "Canada",
-    location: "CA bookkeeping and reporting support",
-    email: "ca@clarivexsolutions.com",
-    phoneDisplay: "+1 416 900 4172",
-    phoneRaw: "+14169004172",
-  },
+const phoneContacts = [
+  { name: "US Desk", phoneDisplay: "+1 646 980 2901", phoneRaw: "+16469802901" },
+  { name: "UK Desk", phoneDisplay: "+44 20 3890 1124", phoneRaw: "+442038901124" },
+  { name: "AU Desk", phoneDisplay: "+61 2 7201 8440", phoneRaw: "+61272018440" },
+  { name: "CA Desk", phoneDisplay: "+1 416 900 4172", phoneRaw: "+14169004172" },
 ];
 
-const fieldClassName =
-  "w-full rounded-lg border border-slate-200 px-4 py-3 text-sm text-slate-700 outline-none transition focus:ring-2 focus:ring-blue-500";
+const countryCoverage = [
+  { label: "\uD83C\uDDFA\uD83C\uDDF8 United States" },
+  { label: "\uD83C\uDDEC\uD83C\uDDE7 United Kingdom" },
+  { label: "\uD83C\uDDE6\uD83C\uDDFA Australia" },
+  { label: "\uD83C\uDDE8\uD83C\uDDE6 Canada" },
+];
+
+const formFieldClassName =
+  "w-full rounded-xl bg-[#f8f8f6] border border-slate-200 px-5 py-4 text-[#0d0f14] focus:outline-none focus:ring-2 focus:ring-[#5a688e]/50 focus:border-[#5a688e] text-sm";
+
+const scrollingPills = [...trustedSoftware, ...trustedSoftware];
 
 export default function Home() {
   return (
-    <main className="bg-white text-[#1E293B]">
-      <section id="home" className="scroll-mt-28">
+    <main>
+      <section id="home">
         <Hero />
       </section>
 
-      <section className="bg-slate-100 py-8">
-        <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 px-4 sm:px-6 lg:px-8">
-          <p className="text-sm text-slate-500">Trusted Software Partners:</p>
-          <div className="flex flex-wrap gap-3">
-            {trustedPartners.map((partner) => (
-              <span
-                key={partner}
-                className="rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-700 shadow-sm"
+      <section className="overflow-hidden border-y border-[#1e2330] bg-[#13161e] py-5">
+        <div className="mx-auto w-full max-w-7xl space-y-3 px-6 lg:px-12">
+          {[0, 1].map((row) => (
+            <div key={row} className="flex items-center overflow-hidden">
+              <p className="mr-8 shrink-0 text-xs uppercase tracking-widest text-[#8892a4]">
+                Trusted Software:
+              </p>
+              <div
+                className="flex min-w-max"
+                style={{
+                  animation: "scroll 20s linear infinite",
+                  animationDelay: row === 0 ? "0s" : "-10s",
+                }}
               >
-                {partner}
-              </span>
-            ))}
-          </div>
+                {scrollingPills.map((tool, index) => (
+                  <span
+                    key={`${tool}-${row}-${index}`}
+                    className="mx-2 whitespace-nowrap rounded-full border border-[#1e2330] bg-[#0d0f14] px-5 py-2 text-xs text-[#8892a4] transition-colors hover:border-[#5a688e]/50 hover:text-white"
+                  >
+                    {tool}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
-      <section id="process" className="scroll-mt-28 bg-white py-20">
-        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-          <p className="text-xs uppercase tracking-widest text-cyan-600">HOW WE WORK</p>
-          <h2 className="mt-3 max-w-3xl text-3xl font-bold text-[#0A1628] md:text-4xl">
+      <section id="process" className="bg-[#0d0f14] py-32">
+        <div className="mx-auto w-full max-w-7xl px-6 lg:px-12">
+          <div className="mb-6 h-px w-16 bg-[#c9a96e]" />
+          <p className="text-xs uppercase tracking-[0.2em] text-[#6aa595]">
+            HOW WE WORK
+          </p>
+          <h2 className="mt-4 max-w-2xl font-[family-name:var(--font-playfair)] text-5xl font-bold text-white">
             A disciplined process for measurable financial control
           </h2>
-          <div className="mt-12 grid gap-6 lg:grid-cols-4">
-            {processSteps.map((item) => (
+
+          <div className="mt-20 grid gap-6 lg:grid-cols-4">
+            {processSteps.map((step) => (
               <article
-                key={item.step}
-                className="rounded-xl border-l-4 border-blue-600 bg-slate-50 p-6 transition hover:shadow-lg"
+                key={step.step}
+                className="group rounded-xl border border-[#1e2330] bg-[#13161e] p-8 transition-all duration-300 hover:border-[#5a688e]/50"
               >
-                <div className="flex items-center justify-between">
-                  <p className="text-sm font-semibold text-blue-600">{item.step}</p>
-                  <item.icon className="h-5 w-5 text-blue-600" />
-                </div>
-                <h3 className="mt-3 text-lg font-semibold text-[#0A1628]">{item.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-slate-600">{item.description}</p>
+                <p className="font-[family-name:var(--font-playfair)] text-5xl font-bold text-[#1e2330] transition-colors group-hover:text-[#5a688e]/20">
+                  {step.step}
+                </p>
+                <step.icon className="mt-4 h-6 w-6 text-[#6aa595]" />
+                <h3 className="mt-3 text-lg font-semibold text-white">{step.title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-[#8892a4]">
+                  {step.description}
+                </p>
               </article>
             ))}
           </div>
         </div>
       </section>
 
-      <section id="services" className="scroll-mt-28 bg-slate-50 py-20">
-        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h2 className="text-center text-3xl font-bold text-[#0A1628] md:text-4xl">
+      <section id="services" className="bg-[#f0efe9] py-32">
+        <div className="mx-auto w-full max-w-7xl px-6 lg:px-12">
+          <div className="mb-6 h-px w-16 bg-[#c9a96e]" />
+          <p className="text-xs uppercase tracking-[0.2em] text-[#5a688e]">
+            OUR SERVICES
+          </p>
+          <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-5xl font-bold text-[#0d0f14]">
             Comprehensive Financial Solutions
           </h2>
-          <div className="mt-12 grid gap-6 lg:grid-cols-3">
+
+          <div className="mt-20 grid gap-6 lg:grid-cols-3">
             {serviceCards.map((service) => (
               <article
                 key={service.title}
-                className="rounded-xl bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+                className="group rounded-xl border border-slate-200 bg-white p-8 transition-all duration-300 hover:border-[#5a688e]/40 hover:shadow-2xl"
               >
-                <div className="inline-flex rounded-lg bg-blue-50 p-2 text-blue-600">
-                  <service.icon className="h-5 w-5" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#5a688e]/10 transition-colors duration-300 group-hover:bg-[#5a688e]">
+                  <service.icon className="h-5 w-5 text-[#5a688e] transition-colors group-hover:text-white" />
                 </div>
-                <h3 className="mt-4 text-lg font-semibold text-[#0A1628]">{service.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-slate-600">{service.description}</p>
-                <p className="mt-4 text-sm font-medium text-blue-600">Learn More &rarr;</p>
+                <h3 className="mt-6 text-lg font-semibold text-[#0d0f14]">{service.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-slate-500">
+                  {service.description}
+                </p>
+                <p className="mt-6 text-sm font-medium text-[#5a688e] transition-colors hover:text-[#6aa595]">
+                  Learn More &rarr;
+                </p>
               </article>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="bg-[#0A1628] py-16">
-        <div className="mx-auto grid w-full max-w-7xl gap-8 px-4 text-center sm:px-6 lg:grid-cols-4 lg:px-8">
-          <div>
-            <p className="text-5xl font-bold text-cyan-400">15+</p>
-            <p className="mt-2 text-sm text-white/60">Years of Experience</p>
-          </div>
-          <div>
-            <p className="text-5xl font-bold text-cyan-400">280+</p>
-            <p className="mt-2 text-sm text-white/60">Active Clients</p>
-          </div>
-          <div>
-            <p className="text-5xl font-bold text-cyan-400">22</p>
-            <p className="mt-2 text-sm text-white/60">Industries Served</p>
-          </div>
-          <div>
-            <p className="text-5xl font-bold text-cyan-400">100%</p>
-            <p className="mt-2 text-sm text-white/60">On-Time Monthly Close</p>
-          </div>
+      <section className="border-y border-[#1e2330] bg-[#13161e] py-24">
+        <div className="mx-auto grid w-full max-w-7xl gap-12 px-6 text-center lg:grid-cols-4 lg:px-12">
+          {statsBanner.map((stat) => (
+            <div key={stat.label}>
+              <p className="font-[family-name:var(--font-playfair)] text-6xl font-bold text-white">
+                {stat.value}
+              </p>
+              <div className="mx-auto mt-3 h-0.5 w-8 bg-[#6aa595]" />
+              <p className="mt-4 text-sm uppercase tracking-wider text-[#8892a4]">
+                {stat.label}
+              </p>
+            </div>
+          ))}
         </div>
       </section>
 
-      <section id="platforms" className="scroll-mt-28 bg-white py-20">
-        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h2 className="text-center text-3xl font-bold text-[#0A1628] md:text-4xl">
+      <section className="bg-[#0d0f14] py-32">
+        <div className="mx-auto w-full max-w-7xl px-6 lg:px-12">
+          <div className="mb-6 h-px w-16 bg-[#c9a96e]" />
+          <p className="text-xs uppercase tracking-[0.2em] text-[#6aa595]">
+            TOOLS &amp; TECHNOLOGY
+          </p>
+          <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-5xl font-bold text-white">
             Software We Work With
           </h2>
-          <div className="mt-12 grid gap-6 lg:grid-cols-3">
+          <p className="mt-4 max-w-2xl text-[#8892a4]">
+            Built on the tools modern finance teams rely on. We adapt to your
+            systems &mdash; no forced migrations, no disruption.
+          </p>
+
+          <div className="mt-20 grid gap-8 lg:grid-cols-3">
             {softwareColumns.map((column) => (
-              <article key={column.title} className="rounded-xl bg-slate-50 p-6">
-                <h3 className="text-lg font-semibold text-[#0A1628]">{column.title}</h3>
-                <div className="mt-4 flex flex-wrap gap-3">
+              <article
+                key={column.title}
+                className="rounded-xl border border-[#1e2330] bg-[#13161e] p-8"
+              >
+                <h3 className="mb-6 border-b border-[#1e2330] pb-4 font-semibold text-white">
+                  {column.title}
+                </h3>
+                <div className="mt-2">
                   {column.tools.map((tool) => (
-                    <span
+                    <div
                       key={tool}
-                      className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm text-slate-700"
+                      className="flex items-center gap-3 border-b border-[#1e2330]/50 py-3 text-sm text-[#8892a4] transition-colors hover:text-white"
                     >
-                      {tool}
-                    </span>
+                      <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#6aa595]" />
+                      <span>{tool}</span>
+                    </div>
                   ))}
                 </div>
               </article>
@@ -330,38 +358,45 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="about" className="scroll-mt-28 bg-slate-50 py-20">
-        <div className="mx-auto grid w-full max-w-7xl gap-16 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
-          <div className="rounded-2xl bg-[#0A1628] p-8 text-white">
-            <div className="flex h-24 w-24 items-center justify-center rounded-full bg-blue-600 text-3xl font-bold">
+      <section id="about" className="bg-[#f0efe9] py-32">
+        <div className="mx-auto grid w-full max-w-7xl items-center gap-20 px-6 lg:grid-cols-2 lg:px-12">
+          <div className="relative rounded-2xl border border-[#1e2330] bg-[#0d0f14] p-10">
+            <div className="absolute left-0 top-0 h-20 w-20 rounded-tl-2xl border-l-2 border-t-2 border-[#c9a96e]/40" />
+            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[#5a688e] font-[family-name:var(--font-playfair)] text-2xl font-bold text-white">
               DK
             </div>
-            <h3 className="mt-6 text-2xl font-bold">Dhimant Khatri</h3>
-            <p className="mt-1 text-cyan-400">Chartered Accountant</p>
-            <span className="mt-4 inline-block rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-slate-100">
-              CA &middot; ICAI Member
-            </span>
-            <div className="mt-6 space-y-3">
-              <div className="flex items-center gap-3 text-sm text-slate-100">
-                <CheckCircle className="h-4 w-4 text-cyan-400" />
+            <p className="mt-6 font-[family-name:var(--font-playfair)] text-2xl font-bold text-white">
+              Dhimant Khatri
+            </p>
+            <p className="mt-1 text-sm text-[#6aa595]">
+              Chartered Accountant &middot; ICAI Member
+            </p>
+            <div className="mt-6 h-px w-12 bg-[#c9a96e]" />
+            <div className="mt-6 space-y-4">
+              <p className="flex items-center gap-3 text-sm text-[#8892a4]">
+                <CheckCircle className="h-4 w-4 text-[#6aa595]" />
                 15+ Years Professional Experience
-              </div>
-              <div className="flex items-center gap-3 text-sm text-slate-100">
-                <CheckCircle className="h-4 w-4 text-cyan-400" />
-                Member, ICAI
-              </div>
-              <div className="flex items-center gap-3 text-sm text-slate-100">
-                <CheckCircle className="h-4 w-4 text-cyan-400" />
-                Audit, Taxation &amp; Compliance
-              </div>
+              </p>
+              <p className="flex items-center gap-3 text-sm text-[#8892a4]">
+                <CheckCircle className="h-4 w-4 text-[#6aa595]" />
+                Member, Institute of Chartered Accountants of India
+              </p>
+              <p className="flex items-center gap-3 text-sm text-[#8892a4]">
+                <CheckCircle className="h-4 w-4 text-[#6aa595]" />
+                Audit, Taxation &amp; Compliance Specialist
+              </p>
             </div>
           </div>
 
-          <div className="flex flex-col justify-center">
-            <h2 className="text-3xl font-bold text-[#0A1628] md:text-4xl">
+          <div>
+            <div className="mb-6 h-px w-16 bg-[#c9a96e]" />
+            <p className="text-xs uppercase tracking-[0.2em] text-[#5a688e]">
+              ABOUT US
+            </p>
+            <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-5xl font-bold text-[#0d0f14]">
               Professional Expertise You Can Trust
             </h2>
-            <p className="mt-5 leading-relaxed text-slate-600">
+            <p className="mt-6 leading-relaxed text-slate-600">
               ClariVex Solutions combines deep accounting discipline with modern process
               control to help leadership teams make faster and safer financial decisions.
               We align books, compliance, and reporting into one reliable operating rhythm.
@@ -371,11 +406,15 @@ export default function Home() {
               reduce friction in finance operations while improving transparency for
               founders, management, and stakeholders.
             </p>
-            <div className="mt-6 flex flex-wrap gap-3">
-              {["Clarity", "Compliance", "Growth"].map((tag) => (
+            <div className="mt-8 flex flex-wrap gap-3">
+              {[
+                "Clarity",
+                "Compliance",
+                "Growth",
+              ].map((tag) => (
                 <span
                   key={tag}
-                  className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700"
+                  className="rounded-full border border-[#5a688e]/20 bg-[#5a688e]/10 px-5 py-2 text-sm font-medium text-[#5a688e]"
                 >
                   {tag}
                 </span>
@@ -385,26 +424,34 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-white py-20">
-        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h2 className="text-center text-3xl font-bold text-[#0A1628] md:text-4xl">
+      <section className="bg-[#0d0f14] py-32">
+        <div className="mx-auto w-full max-w-7xl px-6 lg:px-12">
+          <div className="mb-6 h-px w-16 bg-[#c9a96e]" />
+          <p className="text-xs uppercase tracking-[0.2em] text-[#6aa595]">
+            WHY CLARIVEX
+          </p>
+          <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-5xl font-bold text-white">
             Why Choose ClariVex Solution
           </h2>
-          <div className="mt-12 grid gap-6 lg:grid-cols-2">
+
+          <div className="mt-20 grid gap-6 lg:grid-cols-2">
             {whyChooseUsCards.map((item) => (
               <article
                 key={item.title}
-                className="rounded-xl border border-slate-200 p-6 transition hover:shadow-md"
+                className="group rounded-xl border border-[#1e2330] bg-[#13161e] p-8 transition-all hover:border-[#5a688e]/40"
               >
-                <div className="inline-flex rounded-lg bg-blue-50 p-2 text-blue-600">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#5a688e]/10 text-[#6aa595] transition-colors group-hover:bg-[#5a688e]/20">
                   <item.icon className="h-5 w-5" />
                 </div>
-                <h3 className="mt-4 text-xl font-semibold text-[#0A1628]">{item.title}</h3>
+                <h3 className="mt-6 text-lg font-semibold text-white">{item.title}</h3>
                 <div className="mt-4 space-y-2">
                   {item.points.map((point) => (
-                    <p key={point} className="flex items-start gap-2 text-sm text-slate-600">
-                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-blue-600" />
-                      {point}
+                    <p
+                      key={point}
+                      className="flex items-start gap-2 text-sm leading-relaxed text-[#8892a4]"
+                    >
+                      <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-[#6aa595]" />
+                      <span>{point}</span>
                     </p>
                   ))}
                 </div>
@@ -414,118 +461,176 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="contact" className="scroll-mt-28 bg-slate-50 py-20">
-        <div className="mx-auto grid w-full max-w-7xl gap-16 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
-          <div>
-            <h2 className="text-3xl font-bold text-[#0A1628] md:text-4xl">Contact Us</h2>
-            <p className="mt-4 text-slate-600">
-              Reach our team across the US, UK, AU, and CA for accounting, compliance,
-              and finance operations support.
+      <section id="contact" className="bg-[#f0efe9] py-32">
+        <div className="mx-auto w-full max-w-7xl px-6 lg:px-12">
+          <div className="text-center">
+            <div className="mx-auto h-px w-16 bg-[#c9a96e]" />
+            <p className="mt-6 text-xs uppercase tracking-[0.2em] text-[#5a688e]">
+              GET IN TOUCH
             </p>
-            <div className="mt-4 flex flex-wrap gap-2">
-              {globalContacts.map((item) => (
-                <span
-                  key={item.country}
-                  className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-600"
-                >
-                  {item.badge}
-                </span>
-              ))}
-            </div>
-            <div className="mt-8 space-y-4">
-              {globalContacts.map((item) => (
-                <article key={item.country} className="rounded-xl border border-slate-200 bg-white p-4">
-                  <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
-                    <span>{item.badge}</span>
-                    <span>{item.country}</span>
-                  </div>
-                  <div className="space-y-3 text-sm text-slate-600">
-                    <div className="flex items-center gap-3">
-                      <MapPin className="h-4 w-4 text-blue-600" />
-                      <span>{item.location}</span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <Mail className="h-4 w-4 text-blue-600" />
-                      <a href={`mailto:${item.email}`} className="hover:text-blue-600">
-                        {item.email}
-                      </a>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <Phone className="h-4 w-4 text-blue-600" />
-                      <a href={`tel:${item.phoneRaw}`} className="hover:text-blue-600">
-                        {item.phoneDisplay}
-                      </a>
-                    </div>
-                  </div>
-                </article>
-              ))}
-            </div>
+            <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-5xl font-bold text-[#0d0f14]">
+              Contact Us
+            </h2>
+            <p className="mt-4 text-slate-600">Book a free consultation today</p>
           </div>
 
-          <div className="rounded-2xl bg-white p-6 shadow-sm">
-            <h3 className="text-2xl font-bold text-[#0A1628]">Book Your Consultation</h3>
-            <form className="mt-6 space-y-4">
-              <div>
-                <label htmlFor="name" className="mb-1 block text-sm font-medium text-slate-700">
-                  Name
-                </label>
-                <input id="name" name="name" type="text" className={fieldClassName} required />
+          <div className="mt-16 grid gap-16 lg:grid-cols-2">
+            <div className="rounded-2xl border border-[#1e2330] bg-[#0d0f14] p-10">
+              <h3 className="text-lg font-semibold text-white">Contact Information</h3>
+              <div className="mt-3 h-px w-12 bg-[#c9a96e]" />
+
+              <div className="mt-8 space-y-6">
+                <div className="flex items-start gap-3">
+                  <MapPin className="mt-0.5 h-5 w-5 text-[#6aa595]" />
+                  <p className="text-sm text-[#8892a4]">
+                    Global delivery hub: Ahmedabad, India
+                  </p>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <Mail className="mt-0.5 h-5 w-5 text-[#6aa595]" />
+                  <a
+                    href="mailto:us@clarivexsolutions.com"
+                    className="text-sm text-[#8892a4] transition-colors hover:text-white"
+                  >
+                    us@clarivexsolutions.com
+                  </a>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <Phone className="mt-0.5 h-5 w-5 text-[#6aa595]" />
+                  <div className="space-y-2">
+                    {phoneContacts.map((contact) => (
+                      <p key={contact.phoneRaw} className="text-sm text-[#8892a4]">
+                        <span className="font-medium text-white">{contact.name}:</span>{" "}
+                        <a
+                          href={`tel:${contact.phoneRaw}`}
+                          className="transition-colors hover:text-white"
+                        >
+                          {contact.phoneDisplay}
+                        </a>
+                      </p>
+                    ))}
+                  </div>
+                </div>
               </div>
-              <div>
-                <label htmlFor="email" className="mb-1 block text-sm font-medium text-slate-700">
-                  Email
-                </label>
-                <input id="email" name="email" type="email" className={fieldClassName} required />
-              </div>
-              <div>
-                <label htmlFor="phone" className="mb-1 block text-sm font-medium text-slate-700">
-                  Phone (optional)
-                </label>
-                <input id="phone" name="phone" type="tel" className={fieldClassName} />
-              </div>
-              <div>
-                <label
-                  htmlFor="service"
-                  className="mb-1 block text-sm font-medium text-slate-700"
-                >
-                  Service
-                </label>
-                <select id="service" name="service" className={fieldClassName} defaultValue="">
-                  <option value="" disabled>
-                    Select a service
-                  </option>
-                  {serviceCards.map((service) => (
-                    <option key={service.title} value={service.title}>
-                      {service.title}
-                    </option>
+
+              <div className="mt-8 border-t border-[#1e2330] pt-6">
+                <p className="text-xs uppercase tracking-[0.16em] text-[#8892a4]">
+                  Country Coverage
+                </p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {countryCoverage.map((item) => (
+                    <span
+                      key={item.label}
+                      className="rounded-full border border-[#1e2330] bg-[#13161e] px-3 py-1 text-xs text-[#8892a4]"
+                    >
+                      {item.label}
+                    </span>
                   ))}
-                </select>
+                </div>
               </div>
-              <div>
-                <label
-                  htmlFor="message"
-                  className="mb-1 block text-sm font-medium text-slate-700"
+            </div>
+
+            <div className="rounded-2xl border border-slate-200 bg-white p-10 shadow-xl">
+              <form className="space-y-5">
+                <div>
+                  <label
+                    htmlFor="name"
+                    className="mb-2 block text-sm font-medium text-[#0d0f14]"
+                  >
+                    Name
+                  </label>
+                  <input id="name" name="name" type="text" className={formFieldClassName} />
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="email"
+                    className="mb-2 block text-sm font-medium text-[#0d0f14]"
+                  >
+                    Email
+                  </label>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    className={formFieldClassName}
+                  />
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="phone"
+                    className="mb-2 block text-sm font-medium text-[#0d0f14]"
+                  >
+                    Phone (optional)
+                  </label>
+                  <input id="phone" name="phone" type="tel" className={formFieldClassName} />
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="service"
+                    className="mb-2 block text-sm font-medium text-[#0d0f14]"
+                  >
+                    Service
+                  </label>
+                  <select
+                    id="service"
+                    name="service"
+                    className={formFieldClassName}
+                    defaultValue=""
+                  >
+                    <option value="" disabled>
+                      Select a service
+                    </option>
+                    {serviceCards.map((service) => (
+                      <option key={service.title} value={service.title}>
+                        {service.title}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="message"
+                    className="mb-2 block text-sm font-medium text-[#0d0f14]"
+                  >
+                    Message
+                  </label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    rows={4}
+                    className={formFieldClassName}
+                    placeholder="Tell us about your current finance operations and goals."
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full rounded-xl bg-[#5a688e] py-4 font-semibold text-white transition-colors duration-300 hover:bg-[#6aa595]"
                 >
-                  Message
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  rows={5}
-                  className={fieldClassName}
-                  placeholder="Tell us about your current finance operations and goals."
-                />
-              </div>
-              <button
-                type="submit"
-                className="w-full rounded-lg bg-blue-600 py-3 font-semibold text-white transition hover:bg-blue-700"
-              >
-                Submit
-              </button>
-            </form>
+                  Send Message
+                </button>
+              </form>
+            </div>
           </div>
         </div>
       </section>
+
+      <style>{`
+        @keyframes scroll {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-50%);
+          }
+        }
+      `}</style>
     </main>
   );
 }

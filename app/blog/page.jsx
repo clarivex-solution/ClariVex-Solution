@@ -1,4 +1,4 @@
-import BlogPageClient from "@/components/BlogPageClient";
+﻿import BlogPageClient from "@/components/BlogPageClient";
 
 export function generateMetadata() {
   return {
@@ -11,3 +11,4 @@ export function generateMetadata() {
 export default function BlogPage() {
   return <BlogPageClient />;
 }
+

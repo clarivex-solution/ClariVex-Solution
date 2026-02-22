@@ -26,13 +26,14 @@ export function generateMetadata() {
 export default function UKPage() {
   return (
     <CountryLandingPage
-      countryName="UK"
+      countryName="United Kingdom"
       flag="\uD83C\uDDEC\uD83C\uDDE7"
-      heroH1="Financial Clarity for UK Businesses"
-      heroSub="Xero-certified bookkeeping, VAT compliance, and payroll for British businesses of all sizes."
-      heroBadge="\uD83C\uDDEC\uD83C\uDDE7 Supporting companies across the United Kingdom"
+      countryLabel="UK OUTSOURCED ACCOUNTING & FINANCE"
+      h1Line1="Financial Clarity"
+      h1Line2="for UK Businesses"
+      subtitle="Xero-certified bookkeeping, VAT compliance, and payroll for British businesses of all sizes."
       tools={["Xero", "Sage", "Fathom", "Expensify"]}
-      taxNote="HMRC compliance, VAT returns, Making Tax Digital (MTD) support"
+      complianceNote="HMRC-aligned compliance support with VAT returns, Making Tax Digital obligations, payroll processing, and reporting controls."
     />
   );
 }

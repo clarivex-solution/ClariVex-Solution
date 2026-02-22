@@ -1,4 +1,4 @@
-import NewsPageClient from "@/components/NewsPageClient";
+﻿import NewsPageClient from "@/components/NewsPageClient";
 
 export function generateMetadata() {
   return {
@@ -11,3 +11,4 @@ export function generateMetadata() {
 export default function NewsPage() {
   return <NewsPageClient />;
 }
+

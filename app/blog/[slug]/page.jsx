@@ -40,13 +40,6 @@ const blogPosts = [
   },
 ];
 
-const categoryBadgeClass = {
-  Bookkeeping: "bg-blue-50 text-blue-700 border-blue-200",
-  "Tax & Compliance": "bg-amber-50 text-amber-700 border-amber-200",
-  Payroll: "bg-emerald-50 text-emerald-700 border-emerald-200",
-  Advisory: "bg-purple-50 text-purple-700 border-purple-200",
-};
-
 function slugToTitleCase(slug) {
   return slug
     .split("-")
@@ -83,27 +76,26 @@ export default function BlogArticlePage({ params }) {
   const relatedPosts = blogPosts.filter((item) => item.slug !== post.slug).slice(0, 3);
 
   return (
-    <main className="bg-white py-12 text-[#1E293B]">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <main className="bg-[#0d0f14] py-14 text-white">
+      <div className="mx-auto max-w-7xl px-6 lg:px-12">
         <Link
           href="/blog"
-          className="inline-flex items-center text-sm font-semibold text-blue-600 hover:text-blue-700"
+          className="inline-flex items-center text-sm text-[#6aa595] transition-colors hover:text-white"
         >
           &larr; Back to Blog
         </Link>
 
-        <div className="mt-6 grid gap-10 lg:grid-cols-[minmax(0,1fr)_300px]">
+        <div className="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1fr)_320px]">
           <article>
             <header className="mx-auto max-w-3xl">
-              <span
-                className={`inline-flex rounded-full border px-3 py-1 text-xs font-semibold ${
-                  categoryBadgeClass[post.category]
-                }`}
-              >
+              <div className="mb-4 h-px w-12 bg-[#c9a96e]" />
+              <span className="rounded-full bg-[#5a688e]/10 px-3 py-1 text-xs text-[#6aa595]">
                 {post.category}
               </span>
-              <h1 className="mt-4 text-3xl font-bold text-[#0A1628] md:text-4xl">{post.title}</h1>
-              <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-slate-500">
+              <h1 className="mt-5 font-[family-name:var(--font-playfair)] text-4xl text-white md:text-5xl">
+                {post.title}
+              </h1>
+              <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-[#8892a4]">
                 <span className="inline-flex items-center gap-1.5">
                   <User className="h-4 w-4" />
                   ClariVex Team
@@ -115,7 +107,7 @@ export default function BlogArticlePage({ params }) {
               </div>
             </header>
 
-            <div className="mx-auto mt-8 max-w-3xl prose prose-slate">
+            <div className="mx-auto mt-8 max-w-3xl space-y-5 leading-relaxed text-[#8892a4]">
               <p>
                 Consistent accounting routines are one of the fastest ways for leadership
                 teams to improve confidence in decision-making. A reliable reporting cycle
@@ -142,14 +134,17 @@ export default function BlogArticlePage({ params }) {
 
           <aside className="hidden lg:block">
             <div className="sticky top-28 space-y-6">
-              <div className="rounded-xl border border-slate-200 bg-slate-50 p-5">
-                <h2 className="text-lg font-semibold text-[#0A1628]">Related Posts</h2>
+              <div className="rounded-xl border border-[#1e2330] bg-[#13161e] p-6">
+                <div className="mb-4 h-px w-12 bg-[#c9a96e]" />
+                <h2 className="font-[family-name:var(--font-playfair)] text-2xl text-white">
+                  Related Posts
+                </h2>
                 <div className="mt-4 space-y-3">
                   {relatedPosts.map((item) => (
                     <Link
                       key={item.slug}
                       href={`/blog/${item.slug}`}
-                      className="block text-sm font-medium text-slate-700 transition hover:text-blue-600"
+                      className="block text-sm text-[#8892a4] transition-colors hover:text-white"
                     >
                       {item.title}
                     </Link>
@@ -157,15 +152,18 @@ export default function BlogArticlePage({ params }) {
                 </div>
               </div>
 
-              <div className="rounded-xl bg-blue-600 p-6 text-white">
-                <h3 className="text-lg font-semibold">Book a Consultation</h3>
-                <p className="mt-2 text-sm text-blue-100">
+              <div className="rounded-xl border border-[#1e2330] bg-[#13161e] p-6">
+                <div className="mb-4 h-px w-12 bg-[#c9a96e]" />
+                <h2 className="font-[family-name:var(--font-playfair)] text-2xl text-white">
+                  Book a Consultation
+                </h2>
+                <p className="mt-3 text-sm text-[#8892a4]">
                   Need support with accounting, payroll, or tax compliance? Speak with our
                   team.
                 </p>
                 <Link
                   href="/#contact"
-                  className="mt-4 inline-flex rounded-full bg-white px-4 py-2 text-sm font-semibold text-blue-600 transition hover:bg-blue-50"
+                  className="mt-5 inline-flex rounded-full bg-[#5a688e] px-5 py-2 text-sm text-white transition-colors hover:bg-[#6aa595]"
                 >
                   Talk to an Expert
                 </Link>

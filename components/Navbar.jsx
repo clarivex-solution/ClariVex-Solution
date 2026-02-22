@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { ChevronDown, Menu, X } from "lucide-react";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -15,10 +15,10 @@ const navLinks = [
 ];
 
 const countries = [
-  { href: "/us", label: "US\uD83C\uDDFA\uD83C\uDDF8" },
-  { href: "/uk", label: "UK\uD83C\uDDEC\uD83C\uDDE7" },
-  { href: "/au", label: "AU\uD83C\uDDE6\uD83C\uDDFA" },
-  { href: "/ca", label: "CA\uD83C\uDDE8\uD83C\uDDE6" },
+  { href: "/us", code: "US", flag: "\uD83C\uDDFA\uD83C\uDDF8" },
+  { href: "/uk", code: "UK", flag: "\uD83C\uDDEC\uD83C\uDDE7" },
+  { href: "/au", code: "AU", flag: "\uD83C\uDDE6\uD83C\uDDFA" },
+  { href: "/ca", code: "CA", flag: "\uD83C\uDDE8\uD83C\uDDE6" },
 ];
 
 export default function Navbar() {
@@ -26,7 +26,7 @@ export default function Navbar() {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 80);
+    const handleScroll = () => setIsScrolled(window.scrollY > 60);
 
     handleScroll();
     window.addEventListener("scroll", handleScroll);
@@ -35,25 +35,27 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 border-b border-slate-200/60 backdrop-blur-md transition-all duration-300 ${
-        isScrolled ? "bg-white/95 shadow-lg" : "bg-white/80"
+      className={`fixed left-0 right-0 top-0 z-50 h-20 transition-all duration-500 ${
+        isScrolled
+          ? "border-b border-[#1e2330] bg-[#0d0f14]/95 shadow-2xl backdrop-blur-xl"
+          : "bg-transparent"
       }`}
     >
-      <div className="mx-auto flex h-20 w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="flex items-center gap-3">
-          <span className="h-6 w-1 rounded-full bg-cyan-400" />
-          <span className="text-xl font-bold tracking-tight">
-            <span className="text-[#0A1628]">ClariVex</span>{" "}
-            <span className="text-blue-600">Solutions</span>
+      <div className="mx-auto flex h-full w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        <Link href="/" className="flex items-center">
+          <span className="mr-3 inline-block h-8 w-0.5 bg-[#c9a96e]" />
+          <span className="font-[family-name:var(--font-playfair)] text-xl font-bold text-white">
+            ClariVex
+            <span className="ml-1 text-[#6aa595]">Solutions</span>
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-7 text-sm font-medium text-slate-700 lg:flex">
+        <nav className="hidden items-center gap-7 lg:flex">
           {navLinks.map((link) => (
             <Link
               key={link.label}
               href={link.href}
-              className="transition-colors duration-200 hover:text-blue-600"
+              className="relative text-sm text-[#8892a4] transition-colors duration-200 hover:text-white after:absolute after:-bottom-1 after:left-0 after:h-px after:w-0 after:bg-[#6aa595] after:transition-all after:duration-300 hover:after:w-full"
             >
               {link.label}
             </Link>
@@ -62,18 +64,19 @@ export default function Navbar() {
 
         <div className="hidden items-center gap-3 lg:flex">
           <details className="group relative">
-            <summary className="flex cursor-pointer list-none items-center gap-1 rounded-full border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition hover:border-blue-300 hover:text-blue-600">
-              US\uD83C\uDDFA\uD83C\uDDF8
-              <ChevronDown className="h-4 w-4" />
+            <summary className="flex list-none cursor-pointer items-center gap-1 rounded-full border border-[#1e2330] bg-[#13161e] px-3 py-1.5 text-xs text-[#8892a4] transition-colors duration-200 hover:text-white">
+              <span>{"\uD83C\uDDFA\uD83C\uDDF8"}</span>
+              <span>US</span>
+              <ChevronDown className="h-3.5 w-3.5" />
             </summary>
-            <div className="absolute right-0 mt-2 min-w-32 rounded-xl border border-slate-200 bg-white p-1 shadow-xl">
+            <div className="absolute right-0 mt-2 min-w-36 rounded-2xl border border-[#1e2330] bg-[#13161e] p-1 shadow-2xl">
               {countries.map((country) => (
                 <Link
                   key={country.href}
                   href={country.href}
-                  className="block rounded-lg px-3 py-2 text-sm text-slate-700 transition hover:bg-slate-100 hover:text-blue-600"
+                  className="block rounded-xl px-3 py-2 text-xs text-[#8892a4] transition-colors duration-200 hover:bg-[#181d28] hover:text-white"
                 >
-                  {country.label}
+                  {country.flag} {country.code}
                 </Link>
               ))}
             </div>
@@ -81,7 +84,7 @@ export default function Navbar() {
 
           <Link
             href="/#contact"
-            className="rounded-full bg-blue-600 px-5 py-2 text-sm font-semibold text-white transition duration-200 hover:scale-105 hover:bg-blue-700"
+            className="rounded-full bg-[#5a688e] px-6 py-2.5 text-sm font-medium text-white transition-colors duration-300 hover:bg-[#6aa595]"
           >
             Book a Call
           </Link>
@@ -90,7 +93,7 @@ export default function Navbar() {
         <button
           type="button"
           aria-label="Toggle navigation menu"
-          className="inline-flex items-center justify-center rounded-lg p-2 text-slate-700 transition hover:bg-slate-100 lg:hidden"
+          className="inline-flex items-center justify-center p-2 text-white lg:hidden"
           onClick={() => setIsMobileOpen((prev) => !prev)}
         >
           {isMobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -98,38 +101,38 @@ export default function Navbar() {
       </div>
 
       <div
-        className={`overflow-hidden border-t border-slate-200/70 bg-white/95 transition-all duration-300 lg:hidden ${
-          isMobileOpen ? "max-h-[520px]" : "max-h-0"
+        className={`overflow-hidden border-b border-[#1e2330] bg-[#0d0f14] transition-all duration-500 lg:hidden ${
+          isMobileOpen ? "max-h-[700px]" : "max-h-0"
         }`}
       >
-        <nav className="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-4 sm:px-6">
+        <nav className="mx-auto flex w-full max-w-7xl flex-col px-4 pb-6 sm:px-6">
           {navLinks.map((link) => (
             <Link
               key={link.label}
               href={link.href}
-              className="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 hover:text-blue-600"
+              className="border-b border-[#1e2330]/50 py-4 text-sm text-[#8892a4] transition-colors duration-200 hover:text-white"
               onClick={() => setIsMobileOpen(false)}
             >
               {link.label}
             </Link>
           ))}
 
-          <div className="mt-2 grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-2 py-4">
             {countries.map((country) => (
               <Link
                 key={country.href}
                 href={country.href}
-                className="rounded-lg border border-slate-200 px-3 py-2 text-center text-sm font-medium text-slate-700 transition hover:border-blue-300 hover:text-blue-600"
+                className="rounded-full border border-[#1e2330] bg-[#13161e] px-3 py-2 text-center text-xs text-[#8892a4] transition-colors duration-200 hover:text-white"
                 onClick={() => setIsMobileOpen(false)}
               >
-                {country.label}
+                {country.flag} {country.code}
               </Link>
             ))}
           </div>
 
           <Link
             href="/#contact"
-            className="mt-3 rounded-full bg-blue-600 px-5 py-2 text-center text-sm font-semibold text-white transition hover:bg-blue-700"
+            className="w-full rounded-full bg-[#5a688e] px-6 py-2.5 text-center text-sm font-medium text-white transition-colors duration-300 hover:bg-[#6aa595]"
             onClick={() => setIsMobileOpen(false)}
           >
             Book a Call

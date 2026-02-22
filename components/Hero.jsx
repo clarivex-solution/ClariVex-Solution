@@ -7,106 +7,149 @@ const heroStats = [
   { value: "100%", label: "On-Time" },
 ];
 
-const chartBars = [
-  { key: "w1", height: "36%" },
-  { key: "w2", height: "55%" },
-  { key: "w3", height: "42%" },
-  { key: "w4", height: "68%" },
-  { key: "w5", height: "84%" },
+const reportBars = [
+  { month: "Jun", height: "34%" },
+  { month: "Jul", height: "48%" },
+  { month: "Aug", height: "44%" },
+  { month: "Sep", height: "58%" },
+  { month: "Oct", height: "70%" },
+  { month: "Nov", height: "81%" },
+  { month: "Dec", height: "92%" },
 ];
 
-const highlightedPhrase = "Financial Clarity";
-
-function renderHeroHeading(text) {
-  const start = text.indexOf(highlightedPhrase);
-
-  if (start === -1) {
-    return text;
-  }
-
-  const before = text.slice(0, start);
-  const after = text.slice(start + highlightedPhrase.length);
-
-  return (
-    <>
-      {before}
-      <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
-        {highlightedPhrase}
-      </span>
-      {after}
-    </>
-  );
-}
+const defaultLabel = "OUTSOURCED ACCOUNTING & FINANCE";
+const defaultSubtitle =
+  "Your outsourced accounting and finance operations partner \u2014 combining expert support and smart technology to help US, UK, AU & CA businesses scale with confidence.";
 
 export default function Hero({
-  badgeText = "Trusted by 280+ Businesses Across US, UK, AU & CA",
-  heroH1 = "Empowering Growth Through Financial Clarity",
-  heroSub = "Your outsourced accounting and finance operations partner for US, UK, AU, and CA businesses. We align reporting, compliance, and execution to help you grow with confidence.",
+  countryLabel = defaultLabel,
+  h1Line1,
+  h1Line2,
+  subtitle = defaultSubtitle,
+  flag,
 }) {
-  return (
-    <section className="relative flex min-h-screen items-center overflow-hidden bg-gradient-to-br from-[#0A1628] to-[#1E3A5F]">
-      <div className="absolute left-10 top-20 h-96 w-96 animate-pulse rounded-full bg-cyan-500/20 blur-3xl" />
-      <div className="absolute bottom-20 right-10 h-80 w-80 animate-pulse rounded-full bg-cyan-500/20 blur-3xl" />
+  const hasCountryHeading = Boolean(h1Line1 || h1Line2);
 
-      <div className="mx-auto w-full max-w-7xl px-4 pb-16 pt-28 sm:px-6 lg:px-8">
-        <div className="grid items-center gap-12 lg:grid-cols-2">
+  return (
+    <section className="min-h-screen bg-[#0d0f14] relative overflow-hidden flex items-center">
+      <div className="pointer-events-none absolute -right-32 -top-32 h-[600px] w-[600px] rounded-full bg-[#5a688e]/8 blur-[120px]" />
+      <div className="pointer-events-none absolute bottom-0 left-0 h-[400px] w-[400px] rounded-full bg-[#6aa595]/8 blur-[100px]" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:80px_80px]" />
+
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-6 lg:px-12">
+        <div className="items-center gap-20 lg:grid lg:grid-cols-2">
           <div>
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs text-white/80">
-              <span className="h-2 w-2 rounded-full bg-green-400" />
-              {badgeText}
+            <div className="flex items-center">
+              <span className="mr-3 inline-block h-px w-8 align-middle bg-[#c9a96e]" />
+              <span className="text-xs uppercase tracking-[0.2em] text-[#6aa595]">
+                {flag ? `${flag} ${countryLabel}` : countryLabel}
+              </span>
             </div>
 
-            <h1 className="mt-6 text-4xl font-bold leading-tight text-white md:text-6xl">
-              {renderHeroHeading(heroH1)}
-            </h1>
+            {hasCountryHeading ? (
+              <h1 className="mt-8 font-[family-name:var(--font-playfair)] text-6xl font-bold leading-[1.05] text-white lg:text-7xl xl:text-8xl">
+                <span className="block">{h1Line1}</span>
+                <span className="block text-[#6aa595]">{h1Line2}</span>
+              </h1>
+            ) : (
+              <h1 className="mt-8 font-[family-name:var(--font-playfair)] text-6xl font-bold leading-[1.05] text-white lg:text-7xl xl:text-8xl">
+                <span className="block">Empowering</span>
+                <span className="block">
+                  Growth <span className="text-[#6aa595]">Through</span>
+                </span>
+                <span className="block text-[#5a688e]">Financial</span>
+                <span className="block">Clarity.</span>
+              </h1>
+            )}
 
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/70">
-              {heroSub}
+            <p className="mt-8 max-w-lg text-lg leading-relaxed text-[#8892a4]">
+              {subtitle}
             </p>
 
-            <div className="mt-8 flex flex-wrap gap-4">
+            <div className="mt-10 flex gap-4">
               <Link
                 href="#contact"
-                className="rounded-full bg-blue-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-blue-700"
+                className="rounded-full bg-[#5a688e] px-8 py-4 text-sm font-semibold text-white transition-all duration-300 hover:bg-[#6aa595] hover:shadow-lg hover:shadow-[#6aa595]/25"
               >
                 Talk to Experts
               </Link>
               <Link
                 href="#process"
-                className="rounded-full border border-white/40 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
+                className="rounded-full border border-[#1e2330] px-8 py-4 text-sm text-[#8892a4] transition-all duration-300 hover:border-[#5a688e] hover:text-white"
               >
                 See How It Works
               </Link>
             </div>
 
-            <div className="mt-10 grid grid-cols-2 gap-6 sm:grid-cols-4">
+            <div className="mt-16 grid grid-cols-4 gap-6 border-t border-[#1e2330] pt-8">
               {heroStats.map((stat) => (
                 <div key={stat.label}>
-                  <p className="text-2xl font-bold text-cyan-400">{stat.value}</p>
-                  <p className="text-sm text-white/70">{stat.label}</p>
+                  <p className="font-[family-name:var(--font-playfair)] text-3xl font-bold text-white">
+                    {stat.value}
+                  </p>
+                  <p className="mt-1 text-xs uppercase tracking-wider text-[#8892a4]">
+                    {stat.label}
+                  </p>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="rounded-2xl border border-white/10 bg-white/10 p-6 backdrop-blur">
-            <p className="text-sm font-semibold text-white/80">Monthly Financial Report</p>
-            <div className="mt-8 flex h-52 items-end gap-3">
-              {chartBars.map((bar) => (
-                <div
-                  key={bar.key}
-                  className="w-full rounded-t bg-blue-400/60"
-                  style={{ height: bar.height }}
-                />
-              ))}
-            </div>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <span className="rounded-full bg-green-500/20 px-3 py-1 text-sm font-medium text-green-300">
-                Revenue {"\u2191"}12%
-              </span>
-              <span className="rounded-full bg-red-500/20 px-3 py-1 text-sm font-medium text-red-300">
-                Expenses {"\u2193"}3%
-              </span>
+          <div className="hidden lg:block">
+            <div className="relative rounded-2xl border border-[#1e2330] bg-[#13161e] p-8">
+              <div className="absolute right-0 top-0 h-16 w-16 rounded-tr-2xl border-r-2 border-t-2 border-[#c9a96e]/40" />
+
+              <div className="flex justify-between">
+                <p className="font-semibold text-white">Monthly Report</p>
+                <p className="text-sm text-[#8892a4]">Dec 2025</p>
+              </div>
+
+              <div className="mt-6">
+                <p className="font-[family-name:var(--font-playfair)] text-4xl font-bold text-white">
+                  $284,500
+                </p>
+                <p className="mt-1 text-xs text-[#8892a4]">Total Revenue</p>
+                <div className="mt-2 flex items-center gap-1">
+                  <span className="h-2 w-2 rounded-full bg-[#6aa595]" />
+                  <span className="text-xs text-[#6aa595]">{"\u2191"} 12.4% from last month</span>
+                </div>
+              </div>
+
+              <div className="mt-8 flex h-24 items-end gap-2">
+                {reportBars.map((bar, index) => (
+                  <div
+                    key={bar.month}
+                    className={`flex-1 rounded-t-sm ${
+                      index >= reportBars.length - 2 ? "bg-[#5a688e]" : "bg-[#5a688e]/40"
+                    }`}
+                    style={{ height: bar.height }}
+                  />
+                ))}
+              </div>
+
+              <div className="mt-2 flex gap-2">
+                {reportBars.map((bar) => (
+                  <span
+                    key={bar.month}
+                    className="flex-1 text-center text-[10px] text-[#8892a4]"
+                  >
+                    {bar.month}
+                  </span>
+                ))}
+              </div>
+
+              <div className="mt-6 grid grid-cols-2 gap-4 border-t border-[#1e2330] pt-6">
+                <div>
+                  <p className="text-xs text-[#8892a4]">Expenses</p>
+                  <p className="text-lg font-semibold text-white">$142,200</p>
+                  <p className="text-xs text-[#6aa595]">{"\u2193"} 3.2%</p>
+                </div>
+                <div>
+                  <p className="text-xs text-[#8892a4]">Net Profit</p>
+                  <p className="text-lg font-semibold text-white">$142,300</p>
+                  <p className="text-xs text-[#6aa595]">{"\u2191"} 8.1%</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>

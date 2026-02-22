@@ -26,13 +26,14 @@ export function generateMetadata() {
 export default function USPage() {
   return (
     <CountryLandingPage
-      countryName="USA"
+      countryName="United States"
       flag="\uD83C\uDDFA\uD83C\uDDF8"
-      heroH1="Financial Clarity for US Businesses"
-      heroSub="QuickBooks-certified accounting, payroll, and tax compliance for American startups and SMEs."
-      heroBadge="\uD83C\uDDFA\uD83C\uDDF8 Serving startups and SMEs across the United States"
+      countryLabel="US OUTSOURCED ACCOUNTING & FINANCE"
+      h1Line1="Financial Clarity"
+      h1Line2="for US Businesses"
+      subtitle="QuickBooks-certified accounting, payroll, and tax compliance for American startups and SMEs."
       tools={["QuickBooks Online", "Gusto", "ADP", "Expensify"]}
-      taxNote="IRS compliance, federal and state tax filing support"
+      complianceNote="IRS compliance coverage including federal and state tax filing support, payroll controls, and month-end reporting discipline."
     />
   );
 }

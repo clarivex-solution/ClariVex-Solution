@@ -1,23 +1,35 @@
-import { Inter } from "next/font/google";
+import { Playfair_Display, Inter } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const playfairDisplay = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-playfair",
+  weight: ["400", "700", "900"],
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+});
 
 export const metadata = {
   title: {
     template: "%s | ClariVex Solutions",
-    default: "ClariVex Solutions | Outsourced Accounting & Finance Operations",
+    default: "ClariVex Solutions",
   },
   description:
-    "Your outsourced accounting and finance operations partner for US, UK, AU, and CA businesses.",
+    "Elite outsourced accounting and finance operations for US, UK, AU, and CA businesses.",
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={`${inter.className} bg-white text-[#1E293B] antialiased`}>
+    <html
+      lang="en"
+      className={`${playfairDisplay.variable} ${inter.variable}`}
+    >
+      <body className="bg-[#0d0f14] font-[family-name:var(--font-inter)] text-white">
         <Navbar />
         {children}
         <Footer />

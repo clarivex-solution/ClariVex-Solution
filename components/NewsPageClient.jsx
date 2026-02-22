@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { Mail, Newspaper } from "lucide-react";
 
 const countryTabs = [
   { key: "US", label: "\uD83C\uDDFA\uD83C\uDDF8 US" },
@@ -119,10 +118,10 @@ const newsByCountry = {
 };
 
 function tabClass(active, key) {
-  return `rounded-full border px-4 py-2 text-sm font-semibold transition ${
+  return `rounded-full transition-colors ${
     active === key
-      ? "border-blue-600 bg-blue-600 text-white shadow-sm"
-      : "border-slate-200 bg-white text-slate-700 hover:border-blue-300 hover:text-blue-600"
+      ? "bg-[#5a688e] text-white rounded-full px-5 py-2"
+      : "text-[#8892a4] px-5 py-2 hover:text-white"
   }`;
 }
 
@@ -132,61 +131,102 @@ export default function NewsPageClient() {
   const activeNews = useMemo(() => newsByCountry[activeTab] || [], [activeTab]);
 
   return (
-    <main className="bg-white text-[#1E293B]">
-      <section className="bg-gradient-to-br from-[#0A1628] to-[#1E3A5F] py-20 text-white">
-        <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-          <h1 className="text-4xl font-bold md:text-5xl">Finance &amp; Tax News</h1>
-          <p className="mx-auto mt-4 max-w-2xl text-base text-white/75">
+    <main className="bg-[#0d0f14] text-white">
+      <section className="relative overflow-hidden bg-[#0d0f14] py-28">
+        <div className="pointer-events-none absolute -right-20 -top-20 h-[420px] w-[420px] rounded-full bg-[#5a688e]/10 blur-[110px]" />
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:80px_80px]" />
+
+        <div className="relative z-10 mx-auto max-w-7xl px-6 text-center lg:px-12">
+          <div className="mx-auto h-px w-16 bg-[#c9a96e]" />
+          <p className="mt-6 text-xs uppercase tracking-[0.2em] text-[#6aa595]">
+            Market Intelligence
+          </p>
+          <h1 className="mt-4 font-[family-name:var(--font-playfair)] text-5xl text-white lg:text-6xl">
+            Finance &amp; Tax News
+          </h1>
+          <p className="mx-auto mt-4 max-w-2xl text-[#8892a4]">
             Daily accounting regulations and tax updates by country.
           </p>
         </div>
       </section>
 
-      <section className="sticky top-20 z-30 border-b border-slate-200 bg-white/95 py-4 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl flex-wrap gap-2 px-4 sm:px-6 lg:px-8">
-          {countryTabs.map((tab) => (
-            <button
-              key={tab.key}
-              type="button"
-              className={tabClass(activeTab, tab.key)}
-              onClick={() => setActiveTab(tab.key)}
-            >
-              {tab.label}
-            </button>
-          ))}
+      <section className="border-y border-[#1e2330] bg-[#13161e] py-10">
+        <div className="mx-auto max-w-7xl px-6 lg:px-12">
+          <div className="mb-6 h-px w-16 bg-[#c9a96e]" />
+          <p className="mb-4 text-xs uppercase tracking-[0.2em] text-[#6aa595]">
+            Select Country
+          </p>
+          <div className="inline-flex gap-1 rounded-full border border-[#1e2330] bg-[#13161e] p-1">
+            {countryTabs.map((tab) => (
+              <button
+                key={tab.key}
+                type="button"
+                className={tabClass(activeTab, tab.key)}
+                onClick={() => setActiveTab(tab.key)}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
         </div>
       </section>
 
-      <section className="py-12">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-6 lg:grid-cols-2">
+      <section className="bg-[#f0efe9] py-14">
+        <div className="mx-auto max-w-7xl px-6 lg:px-12">
+          <div className="mb-6 h-px w-16 bg-[#c9a96e]" />
+          <p className="text-xs uppercase tracking-[0.2em] text-[#5a688e]">
+            Regulatory Focus
+          </p>
+          <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-4xl text-[#0d0f14]">
+            Country-Specific Compliance Signals
+          </h2>
+          <p className="mt-4 max-w-3xl text-slate-600">
+            Track policy shifts, filing updates, and practical actions for finance teams
+            operating across the US, UK, AU, and CA.
+          </p>
+        </div>
+      </section>
+
+      <section className="bg-[#0d0f14] py-16">
+        <div className="mx-auto max-w-7xl px-6 lg:px-12">
+          <div className="mb-6 h-px w-16 bg-[#c9a96e]" />
+          <p className="text-xs uppercase tracking-[0.2em] text-[#6aa595]">
+            Latest News
+          </p>
+
+          <div className="mt-8 grid gap-6 lg:grid-cols-2">
             {activeNews.map((item) => (
               <article
                 key={item.slug}
-                className="rounded-xl border border-slate-100 bg-white p-5 shadow-sm"
+                className="rounded-xl border border-[#1e2330] bg-[#13161e] p-6 transition-all hover:border-[#5a688e]/40 hover:shadow-2xl"
               >
-                <div className="flex flex-wrap items-center gap-3 text-xs font-semibold">
-                  <span className="rounded-full bg-slate-100 px-2.5 py-1 text-slate-700">
+                <div className="flex items-center justify-between gap-3">
+                  <span className="rounded-full bg-[#5a688e]/10 px-3 py-1 text-xs text-[#6aa595]">
                     {item.source}
                   </span>
-                  <span className="text-slate-500">{item.date}</span>
+                  <span className="text-xs text-[#8892a4]">{item.date}</span>
                 </div>
-                <h2 className="mt-4 text-xl font-semibold text-[#0A1628]">{item.headline}</h2>
-                <p className="mt-3 text-sm leading-relaxed text-slate-600">{item.summary}</p>
+                <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-xl font-semibold text-white">
+                  {item.headline}
+                </h2>
+                <p className="mt-3 text-sm leading-relaxed text-[#8892a4]">{item.summary}</p>
                 <Link
                   href={`/news/${item.slug}`}
-                  className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-700"
+                  className="mt-6 inline-flex text-sm text-[#6aa595] transition-colors hover:text-white"
                 >
-                  <Newspaper className="h-4 w-4" />
-                  Read Full Story &rarr;
+                  Read More &rarr;
                 </Link>
               </article>
             ))}
           </div>
 
-          <div className="mt-14 rounded-2xl bg-slate-50 p-8 text-center">
-            <h3 className="text-2xl font-bold text-[#0A1628]">Get Daily Finance Updates</h3>
-            <p className="mx-auto mt-3 max-w-xl text-sm text-slate-600">
+          <div className="mt-14 rounded-2xl border border-[#1e2330] bg-[#13161e] p-12 text-center">
+            <div className="mx-auto h-px w-16 bg-[#c9a96e]" />
+            <p className="mt-6 text-xs uppercase tracking-[0.2em] text-[#6aa595]">Subscribe</p>
+            <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-4xl text-white">
+              Get Daily Finance Updates
+            </h2>
+            <p className="mx-auto mt-3 max-w-xl text-sm text-[#8892a4]">
               Subscribe for country-specific accounting and tax regulation news delivered
               to your inbox.
             </p>
@@ -198,13 +238,12 @@ export default function NewsPageClient() {
                 id="news-email"
                 type="email"
                 placeholder="Enter your email"
-                className="w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition focus:ring-2 focus:ring-blue-500"
+                className="w-full rounded-full border border-[#1e2330] bg-[#0d0f14] px-6 py-3 text-white outline-none transition-colors focus:border-[#5a688e]"
               />
               <button
                 type="button"
-                className="inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-blue-700"
+                className="rounded-full bg-[#5a688e] px-8 py-3 text-white transition-colors hover:bg-[#6aa595]"
               >
-                <Mail className="h-4 w-4" />
                 Subscribe
               </button>
             </div>
