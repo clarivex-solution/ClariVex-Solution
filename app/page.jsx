@@ -378,7 +378,7 @@ export default function Home() {
             <div className="absolute left-0 top-0 h-20 w-20 rounded-tl-2xl border-l-2 border-t-2 border-[#c9a96e]/40" />
             <div className="relative w-24 h-24 rounded-full overflow-hidden ring-2 ring-[#c9a96e]/40 shrink-0">
               <Image
-                src="/dhimant-khatri.jpg"
+                src="/dhimant-khatri.png"
                 alt="CA Dhimant Khatri - Chartered Accountant"
                 fill
                 className="w-full h-full object-cover object-top"
