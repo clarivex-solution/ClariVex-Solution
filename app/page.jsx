@@ -150,36 +150,36 @@ const whyChooseUsCards = [
     title: "Expert Team",
     icon: Star,
     points: [
-      "Deep theoretical knowledge",
-      "15+ years leadership",
-      "Proactive approach",
+      "Deep theoretical knowledge across accounting standards",
+      "15+ years of leadership in audit, tax & compliance",
+      "Proactive approach to routine and future challenges",
     ],
   },
   {
     title: "Comprehensive Expertise",
     icon: Award,
     points: [
-      "Company law, accounting standards",
-      "Cost-optimized services",
-      "Audit & advisory",
+      "Company law, accounting standards and taxation",
+      "Efficient, effective and cost-optimized services",
+      "Audit, compliance and advisory engagements",
     ],
   },
   {
     title: "Proven Track Record",
     icon: TrendingUp,
     points: [
-      "Statutory & internal audit",
-      "Tax & BPO support",
-      "Timely execution",
+      "Statutory audit, internal audit and compliance audit",
+      "Taxation and business process outsourcing",
+      "Reliable support with timely execution",
     ],
   },
   {
     title: "Client-Centric",
     icon: Heart,
     points: [
-      "Simplify regulations",
-      "Strengthen compliance",
-      "Sustainable growth",
+      "Simplify complex regulations for your business",
+      "Strengthen compliance frameworks end-to-end",
+      "Support sustainable long-term business growth",
     ],
   },
 ];
@@ -380,7 +380,7 @@ export default function Home() {
             <div className="absolute left-0 top-0 h-20 w-20 rounded-tl-2xl border-l-2 border-t-2 border-[#c9a96e]/40" />
             <div className="relative w-24 h-24 rounded-full overflow-hidden ring-2 ring-[#c9a96e]/40 shrink-0">
               <Image
-                src="/dhimant-khatri.jpg"
+                src="/dhimant-khatri.png"
                 alt="CA Dhimant Khatri - Chartered Accountant"
                 fill
                 className="w-full h-full object-cover object-top"
@@ -429,9 +429,9 @@ export default function Home() {
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               {[
-                "Clarity",
-                "Compliance",
-                "Growth",
+                "Experience",
+                "Trust",
+                "Professionalism",
               ].map((tag) => (
                 <span
                   key={tag}
@@ -459,7 +459,7 @@ export default function Home() {
             {whyChooseUsCards.map((item) => (
               <article
                 key={item.title}
-                className="group rounded-xl border border-[#1e2330] bg-[#13161e] p-8 transition-all hover:border-[#5a688e]/40"
+                className="group rounded-xl border border-[#1e2330] border-l-4 border-l-[#5a688e] bg-[#13161e] p-8 transition-all hover:border-[#5a688e]/40"
               >
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#5a688e]/10 text-[#6aa595] transition-colors group-hover:bg-[#5a688e]/20">
                   <item.icon className="h-5 w-5" />
