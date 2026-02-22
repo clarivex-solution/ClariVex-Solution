@@ -213,10 +213,10 @@ export default function CountryLandingPage({
         />
       </section>
 
-      <section className="bg-[#0d0f14] py-0">
-        <div className="mx-auto my-0 w-full max-w-7xl px-6 lg:px-12">
+      <section className="bg-[#0d0f14] py-8 sm:py-10 lg:py-12">
+        <div className="mx-auto my-0 max-w-7xl px-4 sm:px-6 lg:px-12">
           <div className="rounded-2xl border border-[#5a688e]/30 bg-[#13161e] p-8">
-            <div className="grid gap-10 lg:grid-cols-[1.1fr_1fr] lg:items-center">
+            <div className="grid gap-8 lg:grid-cols-[1.1fr_1fr] lg:items-center">
               <div>
                 <div className="flex items-center gap-3">
                   <div className="h-px w-16 bg-[#c9a96e]" />
@@ -247,15 +247,15 @@ export default function CountryLandingPage({
         </div>
       </section>
 
-      <section id="process" className="bg-[#0d0f14] py-32">
-        <div className="mx-auto w-full max-w-7xl px-6 lg:px-12">
+      <section id="process" className="bg-[#0d0f14] py-16 sm:py-20 lg:py-32">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
           <div className="mb-6 h-px w-16 bg-[#c9a96e]" />
           <p className="text-xs uppercase tracking-[0.2em] text-[#6aa595]">HOW WE WORK</p>
-          <h2 className="mt-4 max-w-2xl font-[family-name:var(--font-playfair)] text-5xl font-bold text-white">
+          <h2 className="mt-4 max-w-2xl font-[family-name:var(--font-playfair)] text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
             A disciplined process for measurable financial control
           </h2>
 
-          <div className="mt-20 grid gap-6 lg:grid-cols-4">
+          <div className="mt-12 grid gap-6 md:grid-cols-2 lg:mt-20 lg:grid-cols-4">
             {processSteps.map((step) => (
               <article
                 key={step.step}
@@ -275,15 +275,15 @@ export default function CountryLandingPage({
         </div>
       </section>
 
-      <section id="services" className="bg-[#f0efe9] py-32">
-        <div className="mx-auto w-full max-w-7xl px-6 lg:px-12">
+      <section id="services" className="bg-[#f0efe9] py-16 sm:py-20 lg:py-32">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
           <div className="mb-6 h-px w-16 bg-[#c9a96e]" />
           <p className="text-xs uppercase tracking-[0.2em] text-[#5a688e]">OUR SERVICES</p>
-          <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-5xl font-bold text-[#0d0f14]">
+          <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-3xl font-bold text-[#0d0f14] sm:text-4xl lg:text-5xl">
             Comprehensive Financial Solutions
           </h2>
 
-          <div className="mt-20 grid gap-6 lg:grid-cols-3">
+          <div className="mt-12 grid gap-6 md:grid-cols-2 lg:mt-20 lg:grid-cols-3">
             {serviceCards.map((service) => (
               <article
                 key={service.title}
@@ -305,11 +305,11 @@ export default function CountryLandingPage({
         </div>
       </section>
 
-      <section className="border-y border-[#1e2330] bg-[#13161e] py-24">
-        <div className="mx-auto grid w-full max-w-7xl gap-12 px-6 text-center lg:grid-cols-4 lg:px-12">
+      <section className="border-y border-[#1e2330] bg-[#13161e] py-16 sm:py-20 lg:py-32">
+        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-8 px-4 text-center sm:px-6 lg:grid-cols-4 lg:gap-12 lg:px-12">
           {statsBanner.map((stat) => (
             <div key={stat.label}>
-              <p className="font-[family-name:var(--font-playfair)] text-6xl font-bold text-white">
+              <p className="font-[family-name:var(--font-playfair)] text-4xl font-bold text-white lg:text-6xl">
                 {stat.value}
               </p>
               <div className="mx-auto mt-3 h-0.5 w-8 bg-[#6aa595]" />
@@ -321,13 +321,13 @@ export default function CountryLandingPage({
         </div>
       </section>
 
-      <section className="bg-[#0d0f14] py-32">
-        <div className="mx-auto w-full max-w-7xl px-6 lg:px-12">
+      <section className="bg-[#0d0f14] py-16 sm:py-20 lg:py-32">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
           <div className="mb-6 h-px w-16 bg-[#c9a96e]" />
           <p className="text-xs uppercase tracking-[0.2em] text-[#6aa595]">
             TOOLS &amp; TECHNOLOGY
           </p>
-          <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-5xl font-bold text-white">
+          <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
             Software We Work With
           </h2>
           <p className="mt-4 max-w-2xl text-[#8892a4]">
@@ -335,7 +335,7 @@ export default function CountryLandingPage({
             forced migrations, no disruption.
           </p>
 
-          <div className="mt-20 grid gap-8 lg:grid-cols-3">
+          <div className="mt-12 grid gap-8 lg:mt-20 lg:grid-cols-3">
             {softwareColumns.map((column) => (
               <article
                 key={column.title}
@@ -361,8 +361,8 @@ export default function CountryLandingPage({
         </div>
       </section>
 
-      <section id="about" className="bg-[#f0efe9] py-32">
-        <div className="mx-auto grid w-full max-w-7xl items-center gap-20 px-6 lg:grid-cols-2 lg:px-12">
+      <section id="about" className="bg-[#f0efe9] py-16 sm:py-20 lg:py-32">
+        <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:gap-20 lg:px-12">
           <div className="relative rounded-2xl border border-[#1e2330] bg-[#0d0f14] p-10">
             <div className="absolute left-0 top-0 h-20 w-20 rounded-tl-2xl border-l-2 border-t-2 border-[#c9a96e]/40" />
             <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[#5a688e] font-[family-name:var(--font-playfair)] text-2xl font-bold text-white">
@@ -394,7 +394,7 @@ export default function CountryLandingPage({
           <div>
             <div className="mb-6 h-px w-16 bg-[#c9a96e]" />
             <p className="text-xs uppercase tracking-[0.2em] text-[#5a688e]">ABOUT US</p>
-            <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-5xl font-bold text-[#0d0f14]">
+            <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-3xl font-bold text-[#0d0f14] sm:text-4xl lg:text-5xl">
               Professional Expertise You Can Trust
             </h2>
             <p className="mt-6 leading-relaxed text-slate-600">
@@ -407,7 +407,7 @@ export default function CountryLandingPage({
               friction in finance operations while improving transparency for founders,
               management, and stakeholders.
             </p>
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-8 flex flex-wrap gap-2">
               {["Clarity", "Compliance", "Growth"].map((tag) => (
                 <span
                   key={tag}
@@ -421,15 +421,15 @@ export default function CountryLandingPage({
         </div>
       </section>
 
-      <section className="bg-[#0d0f14] py-32">
-        <div className="mx-auto w-full max-w-7xl px-6 lg:px-12">
+      <section className="bg-[#0d0f14] py-16 sm:py-20 lg:py-32">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
           <div className="mb-6 h-px w-16 bg-[#c9a96e]" />
           <p className="text-xs uppercase tracking-[0.2em] text-[#6aa595]">WHY CLARIVEX</p>
-          <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-5xl font-bold text-white">
+          <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
             Why Choose ClariVex Solution
           </h2>
 
-          <div className="mt-20 grid gap-6 lg:grid-cols-2">
+          <div className="mt-12 grid gap-6 lg:mt-20 lg:grid-cols-2">
             {whyChooseUsCards.map((item) => (
               <article
                 key={item.title}
@@ -456,18 +456,18 @@ export default function CountryLandingPage({
         </div>
       </section>
 
-      <section id="contact" className="bg-[#f0efe9] py-32">
-        <div className="mx-auto w-full max-w-7xl px-6 lg:px-12">
+      <section id="contact" className="bg-[#f0efe9] py-16 sm:py-20 lg:py-32">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
           <div className="text-center">
             <div className="mx-auto h-px w-16 bg-[#c9a96e]" />
             <p className="mt-6 text-xs uppercase tracking-[0.2em] text-[#5a688e]">GET IN TOUCH</p>
-            <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-5xl font-bold text-[#0d0f14]">
+            <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-3xl font-bold text-[#0d0f14] sm:text-4xl lg:text-5xl">
               Contact Us
             </h2>
             <p className="mt-4 text-slate-600">Book a free consultation today</p>
           </div>
 
-          <div className="mt-16 grid gap-16 lg:grid-cols-2">
+          <div className="mt-16 grid gap-12 lg:grid-cols-2">
             <div className="rounded-2xl border border-[#1e2330] bg-[#0d0f14] p-10">
               <h3 className="text-lg font-semibold text-white">Contact Information</h3>
               <div className="mt-3 h-px w-12 bg-[#c9a96e]" />
@@ -523,53 +523,57 @@ export default function CountryLandingPage({
 
             <div className="rounded-2xl border border-slate-200 bg-white p-10 shadow-xl">
               <form className="space-y-5">
-                <div>
-                  <label
-                    htmlFor="name"
-                    className="mb-2 block text-sm font-medium text-[#0d0f14]"
-                  >
-                    Name
-                  </label>
-                  <input id="name" name="name" type="text" className={formFieldClassName} />
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <div>
+                    <label
+                      htmlFor="name"
+                      className="mb-2 block text-sm font-medium text-[#0d0f14]"
+                    >
+                      Name
+                    </label>
+                    <input id="name" name="name" type="text" className={formFieldClassName} />
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="email"
+                      className="mb-2 block text-sm font-medium text-[#0d0f14]"
+                    >
+                      Email
+                    </label>
+                    <input id="email" name="email" type="email" className={formFieldClassName} />
+                  </div>
                 </div>
 
-                <div>
-                  <label
-                    htmlFor="email"
-                    className="mb-2 block text-sm font-medium text-[#0d0f14]"
-                  >
-                    Email
-                  </label>
-                  <input id="email" name="email" type="email" className={formFieldClassName} />
-                </div>
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <div>
+                    <label
+                      htmlFor="phone"
+                      className="mb-2 block text-sm font-medium text-[#0d0f14]"
+                    >
+                      Phone (optional)
+                    </label>
+                    <input id="phone" name="phone" type="tel" className={formFieldClassName} />
+                  </div>
 
-                <div>
-                  <label
-                    htmlFor="phone"
-                    className="mb-2 block text-sm font-medium text-[#0d0f14]"
-                  >
-                    Phone (optional)
-                  </label>
-                  <input id="phone" name="phone" type="tel" className={formFieldClassName} />
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="service"
-                    className="mb-2 block text-sm font-medium text-[#0d0f14]"
-                  >
-                    Service
-                  </label>
-                  <select id="service" name="service" className={formFieldClassName} defaultValue="">
-                    <option value="" disabled>
-                      Select a service
-                    </option>
-                    {serviceCards.map((service) => (
-                      <option key={service.title} value={service.title}>
-                        {service.title}
+                  <div>
+                    <label
+                      htmlFor="service"
+                      className="mb-2 block text-sm font-medium text-[#0d0f14]"
+                    >
+                      Service
+                    </label>
+                    <select id="service" name="service" className={formFieldClassName} defaultValue="">
+                      <option value="" disabled>
+                        Select a service
                       </option>
-                    ))}
-                  </select>
+                      {serviceCards.map((service) => (
+                        <option key={service.title} value={service.title}>
+                          {service.title}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
 
                 <div>

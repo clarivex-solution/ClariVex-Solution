@@ -76,8 +76,8 @@ export default function BlogArticlePage({ params }) {
   const relatedPosts = blogPosts.filter((item) => item.slug !== post.slug).slice(0, 3);
 
   return (
-    <main className="bg-[#0d0f14] py-14 text-white">
-      <div className="mx-auto max-w-7xl px-6 lg:px-12">
+    <main className="bg-[#0d0f14] py-16 sm:py-20 lg:py-32 text-white">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
         <Link
           href="/blog"
           className="inline-flex items-center text-sm text-[#6aa595] transition-colors hover:text-white"

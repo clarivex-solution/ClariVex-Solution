@@ -31,12 +31,12 @@ export default function Hero({
   const hasCountryHeading = Boolean(h1Line1 || h1Line2);
 
   return (
-    <section className="h-screen bg-[#0d0f14] relative overflow-hidden flex items-center pt-20 lg:pt-24">
+    <section className="relative flex h-screen items-center overflow-hidden bg-[#0d0f14] pt-20 lg:pt-24">
       <div className="pointer-events-none absolute -right-32 -top-32 h-[600px] w-[600px] rounded-full bg-[#5a688e]/8 blur-[120px]" />
       <div className="pointer-events-none absolute bottom-0 left-0 h-[400px] w-[400px] rounded-full bg-[#6aa595]/8 blur-[100px]" />
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:80px_80px]" />
 
-      <div className="relative z-10 mx-auto w-full max-w-7xl px-6 lg:px-12">
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-12">
         <div className="items-center gap-20 lg:grid lg:grid-cols-2">
           <div>
             <div className="flex items-center">
@@ -47,12 +47,12 @@ export default function Hero({
             </div>
 
             {hasCountryHeading ? (
-              <h1 className="mt-8 font-[family-name:var(--font-playfair)] text-4xl font-bold leading-[1.05] text-white lg:text-5xl xl:text-6xl">
+              <h1 className="mt-8 font-[family-name:var(--font-playfair)] text-3xl font-bold leading-[1.05] text-white sm:text-4xl lg:text-5xl xl:text-6xl">
                 <span className="block">{h1Line1}</span>
                 <span className="block text-[#6aa595]">{h1Line2}</span>
               </h1>
             ) : (
-              <h1 className="mt-8 font-[family-name:var(--font-playfair)] text-4xl font-bold leading-[1.05] text-white lg:text-5xl xl:text-6xl">
+              <h1 className="mt-8 font-[family-name:var(--font-playfair)] text-3xl font-bold leading-[1.05] text-white sm:text-4xl lg:text-5xl xl:text-6xl">
                 <span className="block">Empowering Growth</span>
                 <span className="block">
                   Through <span className="text-[#6aa595]">Financial</span>
@@ -61,26 +61,26 @@ export default function Hero({
               </h1>
             )}
 
-            <p className="mt-4 max-w-lg text-lg leading-relaxed text-[#8892a4]">
+            <p className="mt-4 max-w-lg text-base leading-relaxed text-[#8892a4] sm:text-lg">
               {subtitle}
             </p>
 
-            <div className="mt-6 flex gap-4">
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:gap-4">
               <Link
                 href="#contact"
-                className="rounded-full bg-[#5a688e] px-8 py-4 text-sm font-semibold text-white transition-all duration-300 hover:bg-[#6aa595] hover:shadow-lg hover:shadow-[#6aa595]/25"
+                className="w-full rounded-full bg-[#5a688e] px-8 py-4 text-center text-sm font-semibold text-white transition-all duration-300 hover:bg-[#6aa595] hover:shadow-lg hover:shadow-[#6aa595]/25 sm:w-auto"
               >
                 Talk to Experts
               </Link>
               <Link
                 href="#process"
-                className="rounded-full border border-[#1e2330] px-8 py-4 text-sm text-[#8892a4] transition-all duration-300 hover:border-[#5a688e] hover:text-white"
+                className="w-full rounded-full border border-[#1e2330] px-8 py-4 text-center text-sm text-[#8892a4] transition-all duration-300 hover:border-[#5a688e] hover:text-white sm:w-auto"
               >
                 See How It Works
               </Link>
             </div>
 
-            <div className="mt-8 grid grid-cols-4 gap-6 border-t border-[#1e2330] pt-6">
+            <div className="mt-8 grid grid-cols-2 gap-4 border-t border-[#1e2330] pt-6 lg:grid-cols-4 lg:gap-6">
               {heroStats.map((stat) => (
                 <div key={stat.label}>
                   <p className="font-[family-name:var(--font-playfair)] text-3xl font-bold text-white">

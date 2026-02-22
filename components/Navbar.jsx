@@ -25,6 +25,7 @@ const countries = [
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState(countries[0]);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 60);
@@ -34,114 +35,157 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (!isMobileOpen) {
+      return undefined;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [isMobileOpen]);
+
   return (
-    <header
-      className={`fixed left-0 right-0 top-0 z-50 h-20 transition-all duration-500 ${
-        isScrolled
-          ? "border-b border-[#1e2330] bg-[#0d0f14]/95 shadow-2xl backdrop-blur-xl"
-          : "bg-transparent"
-      }`}
-    >
-      <div className="mx-auto flex h-full w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="flex items-center">
-          <span className="mr-3 inline-block h-8 w-0.5 bg-[#c9a96e]" />
-          <Image
-            src="/logo.png"
-            alt="ClariVex Solutions"
-            width={140}
-            height={40}
-            className="object-contain"
-          />
-        </Link>
+    <>
+      <header
+        className={`fixed left-0 right-0 top-0 z-50 h-20 transition-all duration-500 ${
+          isScrolled
+            ? "border-b border-[#1e2330] bg-[#0d0f14]/95 shadow-2xl backdrop-blur-xl"
+            : "bg-transparent"
+        }`}
+      >
+        <div className="mx-auto flex h-full w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-12">
+          <Link href="/" className="flex items-center">
+            <span className="mr-3 inline-block h-8 w-0.5 bg-[#c9a96e]" />
+            <Image
+              src="/logo.png"
+              alt="ClariVex Solutions"
+              width={140}
+              height={40}
+              className="object-contain"
+            />
+          </Link>
 
-        <nav className="hidden items-center gap-7 lg:flex">
-          {navLinks.map((link) => (
+          <nav className="hidden items-center justify-center gap-4 md:flex md:flex-1 lg:gap-7">
+            {navLinks.map((link) => (
+              <Link
+                key={link.label}
+                href={link.href}
+                className="relative text-sm text-[#8892a4] transition-colors duration-200 hover:text-white after:absolute after:-bottom-1 after:left-0 after:h-px after:w-0 after:bg-[#6aa595] after:transition-all after:duration-300 hover:after:w-full"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+
+          <div className="hidden items-center gap-3 md:flex">
+            <details className="group relative hidden lg:block">
+              <summary className="flex list-none cursor-pointer items-center gap-1 rounded-full border border-[#1e2330] bg-[#13161e] px-3 py-1.5 text-xs text-[#8892a4] transition-colors duration-200 hover:text-white">
+                <span>
+                  {selectedCountry.flag} {selectedCountry.code}
+                </span>
+                <ChevronDown className="h-3.5 w-3.5" />
+              </summary>
+              <div className="absolute right-0 mt-2 min-w-36 rounded-2xl border border-[#1e2330] bg-[#13161e] p-1 shadow-2xl">
+                {countries.map((country) => (
+                  <Link
+                    key={country.href}
+                    href={country.href}
+                    className="block rounded-xl px-3 py-2 text-xs text-[#8892a4] transition-colors duration-200 hover:bg-[#181d28] hover:text-white"
+                    onClick={() => setSelectedCountry(country)}
+                  >
+                    {country.flag} {country.code}
+                  </Link>
+                ))}
+              </div>
+            </details>
+
             <Link
-              key={link.label}
-              href={link.href}
-              className="relative text-sm text-[#8892a4] transition-colors duration-200 hover:text-white after:absolute after:-bottom-1 after:left-0 after:h-px after:w-0 after:bg-[#6aa595] after:transition-all after:duration-300 hover:after:w-full"
+              href="/#contact"
+              className="rounded-full bg-[#5a688e] px-5 py-2.5 text-sm font-medium text-white transition-colors duration-300 hover:bg-[#6aa595] lg:px-6"
             >
-              {link.label}
+              Book a Call
             </Link>
-          ))}
-        </nav>
+          </div>
 
-        <div className="hidden items-center gap-3 lg:flex">
-          <details className="group relative">
-            <summary className="flex list-none cursor-pointer items-center gap-1 rounded-full border border-[#1e2330] bg-[#13161e] px-3 py-1.5 text-xs text-[#8892a4] transition-colors duration-200 hover:text-white">
-              <span>{"\uD83C\uDDFA\uD83C\uDDF8 US"}</span>
-              <ChevronDown className="h-3.5 w-3.5" />
-            </summary>
-            <div className="absolute right-0 mt-2 min-w-36 rounded-2xl border border-[#1e2330] bg-[#13161e] p-1 shadow-2xl">
+          <button
+            type="button"
+            aria-label="Open navigation menu"
+            className="inline-flex items-center justify-center p-2 text-white md:hidden"
+            onClick={() => setIsMobileOpen(true)}
+          >
+            <Menu className="h-6 w-6" />
+          </button>
+        </div>
+      </header>
+
+      {isMobileOpen ? (
+        <div className="fixed inset-0 z-[60] bg-[#0d0f14] md:hidden">
+          <div className="mx-auto flex h-full w-full max-w-7xl flex-col px-4 sm:px-6">
+            <div className="flex h-20 items-center justify-between border-b border-[#1e2330]">
+              <Link href="/" className="flex items-center" onClick={() => setIsMobileOpen(false)}>
+                <span className="mr-3 inline-block h-8 w-0.5 bg-[#c9a96e]" />
+                <Image
+                  src="/logo.png"
+                  alt="ClariVex Solutions"
+                  width={140}
+                  height={40}
+                  className="object-contain"
+                />
+              </Link>
+
+              <button
+                type="button"
+                aria-label="Close navigation menu"
+                className="inline-flex items-center justify-center p-2 text-white"
+                onClick={() => setIsMobileOpen(false)}
+              >
+                <X className="h-6 w-6" />
+              </button>
+            </div>
+
+            <nav className="mt-4">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  className="block border-b border-[#1e2330]/60 py-4 text-base text-[#8892a4] transition-colors hover:text-white"
+                  onClick={() => setIsMobileOpen(false)}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
+
+            <div className="mt-5 grid grid-cols-2 gap-2">
               {countries.map((country) => (
                 <Link
                   key={country.href}
                   href={country.href}
-                  className="block rounded-xl px-3 py-2 text-xs text-[#8892a4] transition-colors duration-200 hover:bg-[#181d28] hover:text-white"
+                  className="rounded-full border border-[#1e2330] bg-[#13161e] px-3 py-2 text-center text-xs text-[#8892a4] transition-colors duration-200 hover:text-white"
+                  onClick={() => {
+                    setSelectedCountry(country);
+                    setIsMobileOpen(false);
+                  }}
                 >
                   {country.flag} {country.code}
                 </Link>
               ))}
             </div>
-          </details>
 
-          <Link
-            href="/#contact"
-            className="rounded-full bg-[#5a688e] px-6 py-2.5 text-sm font-medium text-white transition-colors duration-300 hover:bg-[#6aa595]"
-          >
-            Book a Call
-          </Link>
-        </div>
-
-        <button
-          type="button"
-          aria-label="Toggle navigation menu"
-          className="inline-flex items-center justify-center p-2 text-white lg:hidden"
-          onClick={() => setIsMobileOpen((prev) => !prev)}
-        >
-          {isMobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </button>
-      </div>
-
-      <div
-        className={`overflow-hidden border-b border-[#1e2330] bg-[#0d0f14] transition-all duration-500 lg:hidden ${
-          isMobileOpen ? "max-h-[700px]" : "max-h-0"
-        }`}
-      >
-        <nav className="mx-auto flex w-full max-w-7xl flex-col px-4 pb-6 sm:px-6">
-          {navLinks.map((link) => (
             <Link
-              key={link.label}
-              href={link.href}
-              className="border-b border-[#1e2330]/50 py-4 text-sm text-[#8892a4] transition-colors duration-200 hover:text-white"
+              href="/#contact"
+              className="mb-8 mt-auto w-full rounded-full bg-[#5a688e] px-6 py-3 text-center text-sm font-medium text-white transition-colors duration-300 hover:bg-[#6aa595]"
               onClick={() => setIsMobileOpen(false)}
             >
-              {link.label}
+              Book a Call
             </Link>
-          ))}
-
-          <div className="grid grid-cols-2 gap-2 py-4">
-            {countries.map((country) => (
-              <Link
-                key={country.href}
-                href={country.href}
-                className="rounded-full border border-[#1e2330] bg-[#13161e] px-3 py-2 text-center text-xs text-[#8892a4] transition-colors duration-200 hover:text-white"
-                onClick={() => setIsMobileOpen(false)}
-              >
-                {country.flag} {country.code}
-              </Link>
-            ))}
           </div>
-
-          <Link
-            href="/#contact"
-            className="w-full rounded-full bg-[#5a688e] px-6 py-2.5 text-center text-sm font-medium text-white transition-colors duration-300 hover:bg-[#6aa595]"
-            onClick={() => setIsMobileOpen(false)}
-          >
-            Book a Call
-          </Link>
-        </nav>
-      </div>
-    </header>
+        </div>
+      ) : null}
+    </>
   );
 }

@@ -35,9 +35,9 @@ export default function Footer() {
   return (
     <>
       <footer className="border-t border-[#1e2330] bg-[#0d0f14]">
-        <div className="mx-auto max-w-7xl px-4 pb-12 pt-20 sm:px-6 lg:px-8">
-          <div className="grid gap-10 lg:grid-cols-[1.35fr_1fr_1fr_1fr]">
-            <div>
+        <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-12 lg:py-32">
+          <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="sm:col-span-2 lg:col-span-1">
               <Link href="/" className="flex items-center">
                 <span className="mr-3 inline-block h-8 w-0.5 bg-[#c9a96e]" />
                 <Image
@@ -114,9 +114,9 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="my-2 h-px w-full bg-gradient-to-r from-transparent via-[#c9a96e]/30 to-transparent" />
+          <div className="my-8 h-px w-full bg-gradient-to-r from-transparent via-[#c9a96e]/30 to-transparent" />
 
-          <div className="flex flex-col gap-4 pb-8 text-xs text-[#8892a4] sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col items-center gap-4 text-center text-xs text-[#8892a4] lg:flex-row lg:justify-between lg:text-left">
             <p>&copy; 2026 Clarivex Solution. All rights reserved.</p>
             <div className="flex items-center gap-2">
               <Link href="/privacy-policy" className="transition-colors hover:text-white">
@@ -135,7 +135,7 @@ export default function Footer() {
         href="https://wa.me/919104791017"
         target="_blank"
         rel="noreferrer"
-        className="fixed bottom-6 right-6 z-50 rounded-full bg-[#25D366] p-3.5 text-white shadow-2xl transition-transform hover:scale-110"
+        className="fixed bottom-4 right-4 z-50 rounded-full bg-[#25D366] p-3.5 text-white shadow-2xl transition-transform hover:scale-110"
         aria-label="Chat on WhatsApp"
       >
         <MessageCircle className="h-6 w-6" />

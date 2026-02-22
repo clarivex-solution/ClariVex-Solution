@@ -134,8 +134,8 @@ export default async function ServicePage({ params }) {
 
   return (
     <main>
-      <section className="bg-[#0d0f14] py-32">
-        <div className="mx-auto w-full max-w-7xl px-6 lg:px-12">
+      <section className="bg-[#0d0f14] py-16 sm:py-20 lg:py-32">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
           <div className="text-sm text-[#8892a4]">
             <Link href="/" className="transition-colors hover:text-white">
               Home
@@ -148,18 +148,18 @@ export default async function ServicePage({ params }) {
             <span>{service.name}</span>
           </div>
 
-          <h1 className="mt-6 font-[family-name:var(--font-playfair)] text-5xl font-bold text-white">
+          <h1 className="mt-6 font-[family-name:var(--font-playfair)] text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
             {service.name}
           </h1>
         </div>
       </section>
 
-      <section className="bg-[#f0efe9] py-20">
-        <div className="mx-auto w-full max-w-7xl px-6 lg:px-12">
+      <section className="bg-[#f0efe9] py-16 sm:py-20 lg:py-32">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
           <div className="grid gap-16 lg:grid-cols-2">
             <div>
               <p className="text-xs uppercase tracking-[0.2em] text-[#5a688e]">What We Do</p>
-              <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-4xl font-bold text-[#0d0f14]">
+              <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-3xl font-bold text-[#0d0f14] sm:text-4xl">
                 {service.name} for operational clarity and control
               </h2>
 
@@ -216,9 +216,9 @@ export default async function ServicePage({ params }) {
         </div>
       </section>
 
-      <section className="border-y border-[#1e2330] bg-[#13161e] py-16 text-center">
-        <div className="mx-auto w-full max-w-7xl px-6 lg:px-12">
-          <h2 className="font-[family-name:var(--font-playfair)] text-4xl font-bold text-white">
+      <section className="border-y border-[#1e2330] bg-[#13161e] py-16 sm:py-20 lg:py-32 text-center">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
+          <h2 className="font-[family-name:var(--font-playfair)] text-3xl font-bold text-white sm:text-4xl">
             Ready to get started?
           </h2>
           <Link
