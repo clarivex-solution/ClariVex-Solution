@@ -1,4 +1,7 @@
+import Breadcrumbs from "@/components/Breadcrumbs";
+import { BlogPostingSchema } from "@/components/JsonLd";
 import { blogPosts } from "@/lib/blogData";
+import { siteUrl } from "@/lib/constants";
 import { Calendar, User } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -12,12 +15,29 @@ export async function generateMetadata({ params }) {
   const post = blogPosts.find((p) => p.slug === slug);
 
   if (!post) {
-    return { title: "Post Not Found | ClariVex Solutions" };
+    return { title: "Post Not Found" };
   }
 
   return {
-    title: `${post.title} | ClariVex Solutions`,
-    description: `Read ClariVex insights on ${post.category.toLowerCase()} and financial operations best practices.`,
+    title: `${post.title} | ClariVex`,
+    description: post.excerpt,
+    alternates: {
+      canonical: `${siteUrl}/blog/${post.slug}`,
+    },
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      url: `${siteUrl}/blog/${post.slug}`,
+      type: "article",
+      publishedTime: post.isoDate,
+      siteName: "ClariVex Solutions",
+      images: [{ url: `${siteUrl}/og-image.png`, width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.excerpt,
+    },
   };
 }
 
@@ -33,13 +53,15 @@ export default async function BlogArticlePage({ params }) {
 
   return (
     <main className="bg-[#0d0f14] py-16 sm:py-20 lg:py-32 text-white">
+      <BlogPostingSchema post={post} />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
-        <Link
-          href="/blog"
-          className="inline-flex items-center text-sm text-[#6aa595] transition-colors hover:text-white"
-        >
-          &larr; Back to Blog
-        </Link>
+        <Breadcrumbs
+          items={[
+            { name: "Home", href: "/" },
+            { name: "Blog", href: "/blog" },
+            { name: post.title },
+          ]}
+        />
 
         <div className="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1fr)_320px]">
           <article>
@@ -56,10 +78,10 @@ export default async function BlogArticlePage({ params }) {
                   <User className="h-4 w-4" />
                   ClariVex Team
                 </span>
-                <span className="inline-flex items-center gap-1.5">
+                <time dateTime={post.isoDate} className="inline-flex items-center gap-1.5">
                   <Calendar className="h-4 w-4" />
                   {post.date}
-                </span>
+                </time>
               </div>
             </header>
 
@@ -70,16 +92,25 @@ export default async function BlogArticlePage({ params }) {
                 reduces surprises and helps finance teams focus on analysis instead of
                 rework.
               </p>
+              <h2 className="font-[family-name:var(--font-playfair)] text-2xl text-white">
+                Building Reliable Financial Workflows
+              </h2>
               <p>
                 Start by standardizing transaction coding, reconciliation checkpoints, and
                 month-end responsibilities. When every step has clear ownership, teams can
                 close faster and maintain cleaner books throughout the year.
               </p>
+              <h2 className="font-[family-name:var(--font-playfair)] text-2xl text-white">
+                Compliance and Record-Keeping
+              </h2>
               <p>
                 Compliance readiness improves when documentation is organized in real time.
                 Keeping payroll records, tax support files, and audit trails updated each
                 month minimizes risk and reduces pressure during filing deadlines.
               </p>
+              <h2 className="font-[family-name:var(--font-playfair)] text-2xl text-white">
+                Turning Data Into Decisions
+              </h2>
               <p>
                 The strongest finance operations pair technical accuracy with actionable
                 management insights. ClariVex frameworks are built to turn accounting data

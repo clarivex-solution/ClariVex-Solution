@@ -1,3 +1,5 @@
+import Breadcrumbs from "@/components/Breadcrumbs";
+import { siteUrl } from "@/lib/constants";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -9,6 +11,7 @@ const slugTitleOverrides = {
 const services = {
   bookkeeping: {
     name: "Bookkeeping",
+    description: "Expert outsourced bookkeeping services — clean transaction coding, ledger management, and management-ready financial statements.",
     details: [
       "Record day-to-day transactions with clean and consistent categorization.",
       "Maintain ledgers and schedules that support a reliable monthly close.",
@@ -19,6 +22,7 @@ const services = {
   },
   reconciliation: {
     name: "Reconciliation",
+    description: "Accurate bank, card, and payment reconciliation services to reduce reporting errors and strengthen financial controls.",
     details: [
       "Reconcile bank, card, and payment gateway balances every period.",
       "Investigate variances quickly and document corrective journal entries.",
@@ -29,6 +33,7 @@ const services = {
   },
   "ap-support": {
     name: "AP Support",
+    description: "End-to-end accounts payable support — invoice intake, coding, approval routing, and payment run management.",
     details: [
       "Manage invoice intake, coding, and approval routing from end to end.",
       "Track due dates and payment runs to protect vendor relationships.",
@@ -39,6 +44,7 @@ const services = {
   },
   "ar-support": {
     name: "AR Support",
+    description: "Accounts receivable management — accurate invoicing, proactive collections, and improved cash conversion cycles.",
     details: [
       "Create accurate invoices and maintain clean receivable ledgers.",
       "Run proactive collections workflows and customer follow-up schedules.",
@@ -49,6 +55,7 @@ const services = {
   },
   payroll: {
     name: "Payroll",
+    description: "Outsourced payroll processing — accurate pay runs, compliance documentation, and management reporting.",
     details: [
       "Process payroll cycles accurately with documented approvals.",
       "Maintain payroll records, summaries, and compliance support files.",
@@ -59,6 +66,7 @@ const services = {
   },
   "tax-planning": {
     name: "Tax Planning",
+    description: "Strategic tax planning services — filing calendars, position reviews, and scenario-based tax impact analysis.",
     details: [
       "Build filing calendars and quarterly planning checklists.",
       "Review tax positions and reduce exposure with practical controls.",
@@ -69,6 +77,7 @@ const services = {
   },
   audit: {
     name: "Audit",
+    description: "Audit preparation and support — audit-ready schedules, evidence organization, and post-audit control strengthening.",
     details: [
       "Prepare audit-ready schedules and reconciliations across key accounts.",
       "Organize support documentation for faster evidence requests.",
@@ -79,6 +88,7 @@ const services = {
   },
   advisory: {
     name: "Advisory",
+    description: "Finance advisory services — KPI dashboards, cash runway modeling, and strategic recommendations for growth.",
     details: [
       "Translate financial statements into actionable management insights.",
       "Set KPI dashboards and cadence for leadership review meetings.",
@@ -89,6 +99,7 @@ const services = {
   },
   "data-security": {
     name: "Data Security",
+    description: "Finance data security services — secure workflows, role-based access controls, and compliance-aligned protocols.",
     details: [
       "Design secure workflows for handling sensitive finance data.",
       "Apply role-based access controls across systems and reports.",
@@ -99,28 +110,37 @@ const services = {
   },
 };
 
-function slugToTitle(slug) {
-  if (slugTitleOverrides[slug]) {
-    return slugTitleOverrides[slug];
-  }
-
-  return slug
-    .split("-")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-}
-
 export function generateStaticParams() {
   return Object.keys(services).map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
-  const serviceName = services[slug]?.name ?? slugToTitle(slug);
+  const service = services[slug];
+
+  if (!service) {
+    return { title: "Service Not Found" };
+  }
 
   return {
-    title: `${serviceName} | ClariVex Solutions`,
-    description: `Learn how ClariVex delivers ${serviceName.toLowerCase()} services for modern finance teams.`,
+    title: `${service.name} Services | ClariVex`,
+    description: service.description,
+    alternates: {
+      canonical: `${siteUrl}/services/${slug}`,
+    },
+    openGraph: {
+      title: `${service.name} Services | ClariVex Solutions`,
+      description: service.description,
+      url: `${siteUrl}/services/${slug}`,
+      type: "website",
+      siteName: "ClariVex Solutions",
+      images: [{ url: `${siteUrl}/og-image.png`, width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${service.name} Services | ClariVex Solutions`,
+      description: service.description,
+    },
   };
 }
 
@@ -136,21 +156,20 @@ export default async function ServicePage({ params }) {
     <main>
       <section className="bg-white py-16 sm:py-20 lg:py-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
-          <div className="text-sm text-[#5a6478]">
-            <Link href="/" className="transition-colors hover:text-[#1a1a2e]">
-              Home
-            </Link>
-            <span className="mx-2">{"\u2192"}</span>
-            <Link href="/#services" className="transition-colors hover:text-[#1a1a2e]">
-              Services
-            </Link>
-            <span className="mx-2">{"\u2192"}</span>
-            <span>{service.name}</span>
-          </div>
+          <Breadcrumbs
+            items={[
+              { name: "Home", href: "/" },
+              { name: "Services", href: "/#services" },
+              { name: service.name },
+            ]}
+          />
 
           <h1 className="mt-6 font-[family-name:var(--font-playfair)] text-3xl font-bold text-[#1a1a2e] sm:text-4xl lg:text-5xl">
-            {service.name}
+            {service.name} Services
           </h1>
+          <p className="mt-4 max-w-2xl text-lg text-[#5a6478]">
+            {service.description}
+          </p>
         </div>
       </section>
 
@@ -221,6 +240,9 @@ export default async function ServicePage({ params }) {
           <h2 className="font-[family-name:var(--font-playfair)] text-3xl font-bold text-[#1a1a2e] sm:text-4xl">
             Ready to get started?
           </h2>
+          <p className="mx-auto mt-4 max-w-lg text-[#5a6478]">
+            Explore our other <Link href="/#services" className="text-[#6aa595] hover:underline">accounting services</Link> or read our latest <Link href="/blog" className="text-[#6aa595] hover:underline">blog insights</Link>.
+          </p>
           <Link
             href="/#contact"
             className="mt-6 inline-flex rounded-full bg-[#5a688e] px-8 py-3 font-semibold text-white transition-colors hover:bg-[#6aa595]"

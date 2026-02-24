@@ -1,14 +1,10 @@
+import Breadcrumbs from "@/components/Breadcrumbs";
+import { NewsArticleSchema } from "@/components/JsonLd";
+import { siteUrl } from "@/lib/constants";
 import { newsPosts } from "@/lib/newsData";
 import { Calendar, User } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-
-const countryLinks = [
-  { label: "US\uD83C\uDDFA\uD83C\uDDF8", href: "/news" },
-  { label: "UK\uD83C\uDDEC\uD83C\uDDE7", href: "/news" },
-  { label: "AU\uD83C\uDDE6\uD83C\uDDFA", href: "/news" },
-  { label: "CA\uD83C\uDDE8\uD83C\uDDE6", href: "/news" },
-];
 
 export function generateStaticParams() {
   return newsPosts.map((post) => ({ slug: post.slug }));
@@ -19,13 +15,29 @@ export async function generateMetadata({ params }) {
   const post = newsPosts.find((p) => p.slug === slug);
 
   if (!post) {
-    return { title: "News Not Found | ClariVex Solutions" };
+    return { title: "News Not Found" };
   }
 
   return {
-    title: `${post.title} | ClariVex Solutions`,
-    description:
-      "Read country-specific finance, tax, and compliance updates curated by the ClariVex team.",
+    title: `${post.title} | ClariVex`,
+    description: post.summary,
+    alternates: {
+      canonical: `${siteUrl}/news/${post.slug}`,
+    },
+    openGraph: {
+      title: post.title,
+      description: post.summary,
+      url: `${siteUrl}/news/${post.slug}`,
+      type: "article",
+      publishedTime: post.isoDate,
+      siteName: "ClariVex Solutions",
+      images: [{ url: `${siteUrl}/og-image.png`, width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.summary,
+    },
   };
 }
 
@@ -41,13 +53,15 @@ export default async function NewsArticlePage({ params }) {
 
   return (
     <main className="bg-[#0d0f14] py-16 sm:py-20 lg:py-32 text-white">
+      <NewsArticleSchema post={post} />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
-        <Link
-          href="/news"
-          className="inline-flex items-center text-sm text-[#6aa595] transition-colors hover:text-white"
-        >
-          &larr; Back to News
-        </Link>
+        <Breadcrumbs
+          items={[
+            { name: "Home", href: "/" },
+            { name: "News", href: "/news" },
+            { name: post.title },
+          ]}
+        />
 
         <div className="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1fr)_320px]">
           <article>
@@ -62,12 +76,12 @@ export default async function NewsArticlePage({ params }) {
               <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-[#8892a4]">
                 <span className="inline-flex items-center gap-1.5">
                   <User className="h-4 w-4" />
-                  ClariVex Team
+                  {post.source}
                 </span>
-                <span className="inline-flex items-center gap-1.5">
+                <time dateTime={post.isoDate} className="inline-flex items-center gap-1.5">
                   <Calendar className="h-4 w-4" />
                   {post.date}
-                </span>
+                </time>
               </div>
             </header>
 
@@ -77,19 +91,22 @@ export default async function NewsArticlePage({ params }) {
                 steps. Finance teams should evaluate whether policy changes impact payroll
                 configuration, filing schedules, or transaction coding logic.
               </p>
+              <h2 className="font-[family-name:var(--font-playfair)] text-2xl text-white">
+                What This Means for Your Business
+              </h2>
               <p>
                 A structured response plan can reduce compliance risk. Assign ownership for
                 reviewing technical guidance, update internal checklists, and align
                 timelines across accounting, tax, and reporting workflows.
               </p>
+              <h2 className="font-[family-name:var(--font-playfair)] text-2xl text-white">
+                How ClariVex Can Help
+              </h2>
               <p>
                 Businesses that monitor updates proactively avoid last-minute filing issues
-                and can protect reporting accuracy. This is especially important for
-                multi-entity or multi-country operations with different regulatory clocks.
-              </p>
-              <p>
-                ClariVex tracks country-level changes and helps teams operationalize them
-                through clear controls, updated documentation, and routine monitoring.
+                and can protect reporting accuracy. ClariVex tracks country-level changes
+                and helps teams operationalize them through clear controls, updated
+                documentation, and routine monitoring.
               </p>
             </div>
           </article>
@@ -117,19 +134,17 @@ export default async function NewsArticlePage({ params }) {
               <div className="rounded-xl border border-[#1e2330] bg-[#13161e] p-6">
                 <div className="mb-4 h-px w-12 bg-[#c9a96e]" />
                 <h2 className="font-[family-name:var(--font-playfair)] text-2xl text-white">
-                  Filter by Country
+                  Get Expert Support
                 </h2>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {countryLinks.map((country) => (
-                    <Link
-                      key={country.label}
-                      href={country.href}
-                      className="rounded-full border border-[#1e2330] bg-[#0d0f14] px-3 py-1 text-xs text-[#8892a4] transition-colors hover:text-white"
-                    >
-                      {country.label}
-                    </Link>
-                  ))}
-                </div>
+                <p className="mt-3 text-sm text-[#8892a4]">
+                  Need help navigating these changes? Our team can assist with compliance.
+                </p>
+                <Link
+                  href="/#contact"
+                  className="mt-5 inline-flex rounded-full bg-[#5a688e] px-5 py-2 text-sm text-white transition-colors hover:bg-[#6aa595]"
+                >
+                  Talk to an Expert
+                </Link>
               </div>
             </div>
           </aside>

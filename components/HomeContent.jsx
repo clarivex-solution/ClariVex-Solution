@@ -3,6 +3,7 @@
 import ContactForm from "@/components/ContactForm";
 import { useCountry } from "@/components/CountryProvider";
 import Hero from "@/components/Hero";
+import { AccountingServiceSchema } from "@/components/JsonLd";
 import { getContent } from "@/lib/countryContent";
 import { countries } from "@/lib/countryData";
 import {
@@ -26,6 +27,7 @@ export default function HomeContent() {
 
   return (
     <main>
+      <AccountingServiceSchema countryCode={country} content={content} />
       <section id="home">
         <Hero
           countryLabel={content.hero.countryLabel}
