@@ -11,6 +11,81 @@ const defaultLabel = "OUTSOURCED ACCOUNTING & FINANCE";
 const defaultSubtitle =
   "Your outsourced accounting and finance operations partner \u2014 combining expert support and smart technology to help US, UK, AU & CA businesses scale with confidence.";
 
+/* ------------------------------------------------------------------ */
+/*  Hero Skeleton — pulse placeholders, same layout as Hero           */
+/* ------------------------------------------------------------------ */
+
+export function HeroSkeleton() {
+  return (
+    <section className="relative flex h-screen items-center overflow-hidden bg-white pt-20 lg:pt-24">
+      <div className="pointer-events-none absolute -right-32 -top-32 h-[600px] w-[600px] rounded-full bg-[#5a688e]/6 blur-[120px]" />
+      <div className="pointer-events-none absolute bottom-0 left-0 h-[400px] w-[400px] rounded-full bg-[#6aa595]/6 blur-[100px]" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.03)_1px,transparent_1px)] bg-[size:80px_80px]" />
+
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-12">
+        <div className="items-center gap-20 lg:grid lg:grid-cols-2">
+          <div>
+            {/* Label skeleton */}
+            <div className="flex items-center">
+              <span className="mr-3 inline-block h-px w-8 bg-[#e2e4e9]" />
+              <div className="h-3 w-56 animate-pulse rounded bg-[#e2e4e9]" />
+            </div>
+
+            {/* Heading skeleton */}
+            <div className="mt-8 space-y-3">
+              <div className="h-10 w-80 animate-pulse rounded-lg bg-[#e2e4e9] sm:h-12 lg:h-14" />
+              <div className="h-10 w-64 animate-pulse rounded-lg bg-[#e2e4e9] sm:h-12 lg:h-14" />
+            </div>
+
+            {/* Subtitle skeleton */}
+            <div className="mt-4 space-y-2">
+              <div className="h-4 w-full max-w-lg animate-pulse rounded bg-[#e2e4e9]" />
+              <div className="h-4 w-4/5 max-w-lg animate-pulse rounded bg-[#e2e4e9]" />
+            </div>
+
+            {/* CTA skeleton */}
+            <div className="mt-6 flex gap-3">
+              <div className="h-12 w-36 animate-pulse rounded-full bg-[#e2e4e9]" />
+              <div className="h-12 w-40 animate-pulse rounded-full bg-[#e2e4e9]" />
+            </div>
+
+            {/* Stats skeleton */}
+            <div className="mt-8 grid grid-cols-2 gap-4 border-t border-[#e2e4e9] pt-6 lg:grid-cols-4 lg:gap-6">
+              {[1, 2, 3, 4].map((i) => (
+                <div key={i}>
+                  <div className="h-8 w-16 animate-pulse rounded bg-[#e2e4e9]" />
+                  <div className="mt-2 h-3 w-14 animate-pulse rounded bg-[#e2e4e9]" />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Dashboard skeleton */}
+          <div className="hidden lg:block">
+            <div className="rounded-2xl border border-[#e2e4e9] bg-[#f8f9fa] p-8">
+              <div className="h-10 w-full animate-pulse rounded-xl bg-[#e2e4e9]" />
+              <div className="mt-6 grid grid-cols-3 gap-3">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="h-20 animate-pulse rounded-xl bg-[#e2e4e9]" />
+                ))}
+              </div>
+              <div className="mt-5 h-32 animate-pulse rounded-xl bg-[#e2e4e9]" />
+              <div className="mt-5 grid grid-cols-2 gap-3">
+                <div className="h-20 animate-pulse rounded-xl bg-[#e2e4e9]" />
+                <div className="h-20 animate-pulse rounded-xl bg-[#e2e4e9]" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Hero — main component                                            */
+/* ------------------------------------------------------------------ */
+
 export default function Hero({
   countryLabel = defaultLabel,
   h1Line1,
@@ -22,7 +97,12 @@ export default function Hero({
   const hasCountryHeading = Boolean(h1Line1 || h1Line2);
 
   return (
-    <section className="relative flex h-screen items-center overflow-hidden bg-white pt-20 lg:pt-24">
+    <section
+      className="relative flex h-screen items-center overflow-hidden bg-white pt-20 lg:pt-24"
+      style={{ animation: "heroFadeIn 350ms ease-out both" }}
+    >
+      <style>{`@keyframes heroFadeIn { from { opacity: 0 } to { opacity: 1 } }`}</style>
+
       <div className="pointer-events-none absolute -right-32 -top-32 h-[600px] w-[600px] rounded-full bg-[#5a688e]/6 blur-[120px]" />
       <div className="pointer-events-none absolute bottom-0 left-0 h-[400px] w-[400px] rounded-full bg-[#6aa595]/6 blur-[100px]" />
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.03)_1px,transparent_1px)] bg-[size:80px_80px]" />

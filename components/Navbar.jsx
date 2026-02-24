@@ -3,9 +3,10 @@
 import { useCountry } from "@/components/CountryProvider";
 import { countries, generalCountry, getCountryByCode } from "@/lib/countryData";
 import logo from "@/public/logo.png";
-import { ChevronDown, Globe, Menu, X } from "lucide-react";
+import { ChevronDown, Globe, Loader2, LocateFixed, Menu, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 const navLinks = [
@@ -19,6 +20,7 @@ const navLinks = [
 ];
 
 const allOptions = [...countries, generalCountry];
+const COUNTRY_ROUTES = ["us", "uk", "ca", "au"];
 
 function FlagImage({ src, alt, size = 20 }) {
   if (!src) {
@@ -37,7 +39,9 @@ function FlagImage({ src, alt, size = 20 }) {
 }
 
 export default function Navbar() {
-  const { country, setCountry } = useCountry();
+  const { country, setCountry, detecting, detectLocation } = useCountry();
+  const router = useRouter();
+  const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -73,6 +77,25 @@ export default function Navbar() {
 
   function handleSelectCountry(code) {
     setCountry(code);
+    setDropdownOpen(false);
+    setIsMobileOpen(false);
+
+    /* Navigation logic (Fix 3: lives in component, not provider) */
+    if (code !== "general") {
+      router.push(`/${code}`);
+    } else {
+      /* General selected — navigate to / only from country homepages */
+      const isCountryHomepage = COUNTRY_ROUTES.some(
+        (r) => pathname === `/${r}` || pathname === `/${r}/`
+      );
+      if (isCountryHomepage) {
+        router.push("/");
+      }
+    }
+  }
+
+  function handleDetectLocation() {
+    detectLocation();
     setDropdownOpen(false);
     setIsMobileOpen(false);
   }
@@ -158,6 +181,23 @@ export default function Navbar() {
                       )}
                     </button>
                   ))}
+
+                  {/* Detect My Location */}
+                  <button
+                    type="button"
+                    onClick={handleDetectLocation}
+                    disabled={detecting}
+                    className="flex w-full items-center gap-3 px-4 py-3 border-t border-[#e2e4e9] hover:bg-[#f8f9fa] transition-colors group"
+                  >
+                    {detecting ? (
+                      <Loader2 className="h-4 w-4 animate-spin text-[#6aa595]" />
+                    ) : (
+                      <LocateFixed className="h-4 w-4 text-[#5a688e]" />
+                    )}
+                    <span className="text-sm text-[#5a6478] group-hover:text-[#1a1a2e] transition-colors">
+                      {detecting ? "Detecting…" : "Detect my location"}
+                    </span>
+                  </button>
 
                   <div className="px-4 py-3 border-t border-[#e2e4e9]">
                     <p className="text-[#5a6478] text-[10px] leading-relaxed">
@@ -249,6 +289,23 @@ export default function Navbar() {
                   )}
                 </button>
               ))}
+
+              {/* Detect My Location — mobile */}
+              <button
+                type="button"
+                onClick={handleDetectLocation}
+                disabled={detecting}
+                className="flex w-full items-center gap-3 px-4 py-3 border-b border-[#e2e4e9]/50 transition-colors text-[#5a6478]"
+              >
+                {detecting ? (
+                  <Loader2 className="h-5 w-5 animate-spin text-[#6aa595]" />
+                ) : (
+                  <LocateFixed className="h-5 w-5 text-[#5a688e]" />
+                )}
+                <span className="text-sm">
+                  {detecting ? "Detecting…" : "Detect my location"}
+                </span>
+              </button>
             </div>
 
             <Link

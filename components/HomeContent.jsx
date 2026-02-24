@@ -2,41 +2,45 @@
 
 import ContactForm from "@/components/ContactForm";
 import { useCountry } from "@/components/CountryProvider";
-import Hero from "@/components/Hero";
+import Hero, { HeroSkeleton } from "@/components/Hero";
 import { AccountingServiceSchema } from "@/components/JsonLd";
 import { getContent } from "@/lib/countryContent";
 import { countries } from "@/lib/countryData";
 import {
-  phoneContacts,
-  processSteps,
-  serviceCards,
-  whyChooseUsCards
+    phoneContacts,
+    processSteps,
+    serviceCards,
+    whyChooseUsCards
 } from "@/lib/siteData";
 import {
-  CheckCircle,
-  Mail,
-  MapPin,
-  Phone,
+    CheckCircle,
+    Mail,
+    MapPin,
+    Phone,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function HomeContent() {
-  const { country } = useCountry();
+  const { country, ready } = useCountry();
   const content = getContent(country);
 
   return (
     <main>
       <AccountingServiceSchema countryCode={country} content={content} />
       <section id="home">
-        <Hero
-          countryLabel={content.hero.countryLabel}
-          h1Line1={content.hero.h1Line1}
-          h1Line2={content.hero.h1Line2}
-          subtitle={content.hero.subtitle}
-          flagSrc={content.hero.flagSrc}
-          seoH1={content.seo.h1}
-        />
+        {!ready ? (
+          <HeroSkeleton />
+        ) : (
+          <Hero
+            countryLabel={content.hero.countryLabel}
+            h1Line1={content.hero.h1Line1}
+            h1Line2={content.hero.h1Line2}
+            subtitle={content.hero.subtitle}
+            flagSrc={content.hero.flagSrc}
+            seoH1={content.seo.h1}
+          />
+        )}
       </section>
 
       {/* Trusted Software bar */}

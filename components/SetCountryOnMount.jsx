@@ -1,20 +1,19 @@
 "use client";
 
-import { useCountry } from "@/components/CountryProvider";
 import { useEffect } from "react";
 
 /**
- * Client component that forces a country code into context on mount.
- * Used by /us, /uk, /au, /ca route pages.
+ * Client component used by /us, /uk, /au, /ca route pages.
+ * Saves the route country to sessionStorage for continuity
+ * when user navigates away (e.g. /uk → /).
+ * Does NOT call setCountry — the provider reads URL directly.
  */
 export default function SetCountryOnMount({ code, children }) {
-  const { country, setCountry } = useCountry();
-
   useEffect(() => {
-    if (country !== code) {
-      setCountry(code);
-    }
-  }, [code, country, setCountry]);
+    try {
+      sessionStorage.setItem("session-country", code);
+    } catch {}
+  }, [code]);
 
   return <>{children}</>;
 }

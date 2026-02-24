@@ -2,7 +2,11 @@
 
 import { useCountry } from "@/components/CountryProvider";
 import { countries } from "@/lib/countryData";
+import { Loader2, LocateFixed } from "lucide-react";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+
+const COUNTRY_ROUTES = ["us", "uk", "ca", "au"];
 
 const serviceLinks = [
   { href: "/services/bookkeeping", label: "Bookkeeping" },
@@ -24,7 +28,25 @@ const companyLinks = [
 ];
 
 export default function Footer() {
-  const { country, setCountry } = useCountry();
+  const { country, setCountry, detecting, detectLocation } = useCountry();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  function handleSelectCountry(code) {
+    setCountry(code);
+
+    /* Navigation — same logic as Navbar (Fix 3) */
+    if (code !== "general") {
+      router.push(`/${code}`);
+    } else {
+      const isCountryHomepage = COUNTRY_ROUTES.some(
+        (r) => pathname === `/${r}` || pathname === `/${r}/`
+      );
+      if (isCountryHomepage) {
+        router.push("/");
+      }
+    }
+  }
 
   return (
     <>
@@ -55,7 +77,7 @@ export default function Footer() {
                       key={c.code}
                       type="button"
                       title={c.name}
-                      onClick={() => setCountry(c.code)}
+                      onClick={() => handleSelectCountry(c.code)}
                       className={`group relative rounded-md p-1 transition-all duration-200 ${
                         country === c.code
                           ? "ring-2 ring-[#6aa595] bg-[#6aa595]/10"
@@ -76,6 +98,21 @@ export default function Footer() {
                     </button>
                   ))}
                 </div>
+
+                {/* Detect my location */}
+                <button
+                  type="button"
+                  onClick={detectLocation}
+                  disabled={detecting}
+                  className="mt-3 flex items-center gap-1.5 text-xs text-[#5a6478] hover:text-[#6aa595] transition-colors"
+                >
+                  {detecting ? (
+                    <Loader2 className="h-3 w-3 animate-spin text-[#6aa595]" />
+                  ) : (
+                    <LocateFixed className="h-3 w-3" />
+                  )}
+                  <span>{detecting ? "Detecting…" : "Detect my location"}</span>
+                </button>
               </div>
             </div>
 
