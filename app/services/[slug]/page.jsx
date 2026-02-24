@@ -134,32 +134,32 @@ export default async function ServicePage({ params }) {
 
   return (
     <main>
-      <section className="bg-[#0d0f14] py-16 sm:py-20 lg:py-32">
+      <section className="bg-white py-16 sm:py-20 lg:py-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
-          <div className="text-sm text-[#8892a4]">
-            <Link href="/" className="transition-colors hover:text-white">
+          <div className="text-sm text-[#5a6478]">
+            <Link href="/" className="transition-colors hover:text-[#1a1a2e]">
               Home
             </Link>
             <span className="mx-2">{"\u2192"}</span>
-            <Link href="/#services" className="transition-colors hover:text-white">
+            <Link href="/#services" className="transition-colors hover:text-[#1a1a2e]">
               Services
             </Link>
             <span className="mx-2">{"\u2192"}</span>
             <span>{service.name}</span>
           </div>
 
-          <h1 className="mt-6 font-[family-name:var(--font-playfair)] text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
+          <h1 className="mt-6 font-[family-name:var(--font-playfair)] text-3xl font-bold text-[#1a1a2e] sm:text-4xl lg:text-5xl">
             {service.name}
           </h1>
         </div>
       </section>
 
-      <section className="bg-[#f0efe9] py-16 sm:py-20 lg:py-32">
+      <section className="bg-[#f4f3ee] py-16 sm:py-20 lg:py-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
           <div className="grid gap-16 lg:grid-cols-2">
             <div>
               <p className="text-xs uppercase tracking-[0.2em] text-[#5a688e]">What We Do</p>
-              <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-3xl font-bold text-[#0d0f14] sm:text-4xl">
+              <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-3xl font-bold text-[#1a1a2e] sm:text-4xl">
                 {service.name} for operational clarity and control
               </h2>
 
@@ -190,11 +190,11 @@ export default async function ServicePage({ params }) {
             </div>
 
             <div>
-              <div className="rounded-2xl bg-[#0d0f14] p-8">
-                <h3 className="font-[family-name:var(--font-playfair)] text-3xl font-bold text-white">
+              <div className="rounded-2xl bg-[#f8f9fa] border border-[#e2e4e9] p-8 shadow-lg">
+                <h3 className="font-[family-name:var(--font-playfair)] text-3xl font-bold text-[#1a1a2e]">
                   Get This Service
                 </h3>
-                <p className="mt-4 text-[#8892a4]">
+                <p className="mt-4 text-[#5a6478]">
                   Get dedicated support from ClariVex to execute {service.name.toLowerCase()}{" "}
                   with disciplined processes and practical reporting.
                 </p>
@@ -206,9 +206,9 @@ export default async function ServicePage({ params }) {
                   Book a Consultation
                 </Link>
 
-                <div className="mt-8 border-t border-[#1e2330] pt-6">
-                  <p className="text-[#8892a4]">info@clarivex.net</p>
-                  <p className="mt-2 text-[#8892a4]">+91 9898028812</p>
+                <div className="mt-8 border-t border-[#e2e4e9] pt-6">
+                  <p className="text-[#5a6478]">info@clarivex.net</p>
+                  <p className="mt-2 text-[#5a6478]">+91 9898028812</p>
                 </div>
               </div>
             </div>
@@ -216,9 +216,9 @@ export default async function ServicePage({ params }) {
         </div>
       </section>
 
-      <section className="border-y border-[#1e2330] bg-[#13161e] py-16 sm:py-20 lg:py-32 text-center">
+      <section className="border-y border-[#e2e4e9] bg-[#f8f9fa] py-16 sm:py-20 lg:py-32 text-center">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
-          <h2 className="font-[family-name:var(--font-playfair)] text-3xl font-bold text-white sm:text-4xl">
+          <h2 className="font-[family-name:var(--font-playfair)] text-3xl font-bold text-[#1a1a2e] sm:text-4xl">
             Ready to get started?
           </h2>
           <Link

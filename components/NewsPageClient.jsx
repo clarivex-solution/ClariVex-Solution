@@ -1,7 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
 import Link from "next/link";
+import { useMemo, useState } from "react";
 
 const countryTabs = [
   { key: "US", label: "\uD83C\uDDFA\uD83C\uDDF8 US" },
@@ -121,7 +121,7 @@ function tabClass(active, key) {
   return `rounded-full transition-colors ${
     active === key
       ? "bg-[#5a688e] text-white rounded-full px-5 py-2"
-      : "text-[#8892a4] px-5 py-2 hover:text-white"
+      : "text-[#5a6478] px-5 py-2 hover:text-[#1a1a2e]"
   }`;
 }
 
@@ -131,32 +131,32 @@ export default function NewsPageClient() {
   const activeNews = useMemo(() => newsByCountry[activeTab] || [], [activeTab]);
 
   return (
-    <main className="bg-[#0d0f14] text-white">
-      <section className="relative overflow-hidden bg-[#0d0f14] py-16 sm:py-20 lg:py-32">
-        <div className="pointer-events-none absolute -right-20 -top-20 h-[420px] w-[420px] rounded-full bg-[#5a688e]/10 blur-[110px]" />
-        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:80px_80px]" />
+    <main className="bg-white text-[#1a1a2e]">
+      <section className="relative overflow-hidden bg-white py-16 sm:py-20 lg:py-32">
+        <div className="pointer-events-none absolute -right-20 -top-20 h-[420px] w-[420px] rounded-full bg-[#5a688e]/6 blur-[110px]" />
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.03)_1px,transparent_1px)] bg-[size:80px_80px]" />
 
         <div className="relative z-10 mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-12">
           <div className="mx-auto h-px w-16 bg-[#c9a96e]" />
           <p className="mt-6 text-xs uppercase tracking-[0.2em] text-[#6aa595]">
             Market Intelligence
           </p>
-          <h1 className="mt-4 font-[family-name:var(--font-playfair)] text-3xl text-white sm:text-4xl lg:text-6xl">
+          <h1 className="mt-4 font-[family-name:var(--font-playfair)] text-3xl text-[#1a1a2e] sm:text-4xl lg:text-6xl">
             Finance &amp; Tax News
           </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-[#8892a4]">
+          <p className="mx-auto mt-4 max-w-2xl text-[#5a6478]">
             Daily accounting regulations and tax updates by country.
           </p>
         </div>
       </section>
 
-      <section className="border-y border-[#1e2330] bg-[#13161e] py-16 sm:py-20 lg:py-32">
+      <section className="border-y border-[#e2e4e9] bg-[#f8f9fa] py-16 sm:py-20 lg:py-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
           <div className="mb-6 h-px w-16 bg-[#c9a96e]" />
           <p className="mb-4 text-xs uppercase tracking-[0.2em] text-[#6aa595]">
             Select Country
           </p>
-          <div className="flex flex-wrap gap-2 overflow-x-auto rounded-full border border-[#1e2330] bg-[#13161e] p-1">
+          <div className="flex flex-wrap gap-2 overflow-x-auto rounded-full border border-[#e2e4e9] bg-white p-1">
             {countryTabs.map((tab) => (
               <button
                 key={tab.key}
@@ -171,13 +171,13 @@ export default function NewsPageClient() {
         </div>
       </section>
 
-      <section className="bg-[#f0efe9] py-16 sm:py-20 lg:py-32">
+      <section className="bg-[#f4f3ee] py-16 sm:py-20 lg:py-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
           <div className="mb-6 h-px w-16 bg-[#c9a96e]" />
           <p className="text-xs uppercase tracking-[0.2em] text-[#5a688e]">
             Regulatory Focus
           </p>
-          <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-3xl text-[#0d0f14] sm:text-4xl">
+          <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-3xl text-[#1a1a2e] sm:text-4xl">
             Country-Specific Compliance Signals
           </h2>
           <p className="mt-4 max-w-3xl text-slate-600">
@@ -187,7 +187,7 @@ export default function NewsPageClient() {
         </div>
       </section>
 
-      <section className="bg-[#0d0f14] py-16 sm:py-20 lg:py-32">
+      <section className="bg-white py-16 sm:py-20 lg:py-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
           <div className="mb-6 h-px w-16 bg-[#c9a96e]" />
           <p className="text-xs uppercase tracking-[0.2em] text-[#6aa595]">
@@ -198,21 +198,21 @@ export default function NewsPageClient() {
             {activeNews.map((item) => (
               <article
                 key={item.slug}
-                className="rounded-xl border border-[#1e2330] bg-[#13161e] p-6 transition-all hover:border-[#5a688e]/40 hover:shadow-2xl"
+                className="rounded-xl border border-[#e2e4e9] bg-[#f8f9fa] p-6 transition-all hover:border-[#5a688e]/40 hover:shadow-xl"
               >
                 <div className="flex items-center justify-between gap-3">
                   <span className="rounded-full bg-[#5a688e]/10 px-3 py-1 text-xs text-[#6aa595]">
                     {item.source}
                   </span>
-                  <span className="text-xs text-[#8892a4]">{item.date}</span>
+                  <span className="text-xs text-[#5a6478]">{item.date}</span>
                 </div>
-                <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-xl font-semibold text-white">
+                <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-xl font-semibold text-[#1a1a2e]">
                   {item.headline}
                 </h2>
-                <p className="mt-3 text-sm leading-relaxed text-[#8892a4]">{item.summary}</p>
+                <p className="mt-3 text-sm leading-relaxed text-[#5a6478]">{item.summary}</p>
                 <Link
                   href={`/news/${item.slug}`}
-                  className="mt-6 inline-flex text-sm text-[#6aa595] transition-colors hover:text-white"
+                  className="mt-6 inline-flex text-sm text-[#6aa595] transition-colors hover:text-[#1a1a2e]"
                 >
                   Read More &rarr;
                 </Link>
@@ -220,13 +220,13 @@ export default function NewsPageClient() {
             ))}
           </div>
 
-          <div className="mt-14 rounded-2xl border border-[#1e2330] bg-[#13161e] p-12 text-center">
+          <div className="mt-14 rounded-2xl border border-[#e2e4e9] bg-[#f8f9fa] p-12 text-center">
             <div className="mx-auto h-px w-16 bg-[#c9a96e]" />
             <p className="mt-6 text-xs uppercase tracking-[0.2em] text-[#6aa595]">Subscribe</p>
-            <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-4xl text-white">
+            <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-4xl text-[#1a1a2e]">
               Get Daily Finance Updates
             </h2>
-            <p className="mx-auto mt-3 max-w-xl text-sm text-[#8892a4]">
+            <p className="mx-auto mt-3 max-w-xl text-sm text-[#5a6478]">
               Subscribe for country-specific accounting and tax regulation news delivered
               to your inbox.
             </p>
@@ -238,7 +238,7 @@ export default function NewsPageClient() {
                 id="news-email"
                 type="email"
                 placeholder="Enter your email"
-                className="w-full rounded-full border border-[#1e2330] bg-[#0d0f14] px-6 py-3 text-white outline-none transition-colors focus:border-[#5a688e]"
+                className="w-full rounded-full border border-[#e2e4e9] bg-white px-6 py-3 text-[#1a1a2e] outline-none transition-colors focus:border-[#5a688e]"
               />
               <button
                 type="button"

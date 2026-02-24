@@ -1,6 +1,6 @@
-import { Playfair_Display, Inter } from "next/font/google";
-import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import Navbar from "@/components/Navbar";
+import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 
 const playfairDisplay = Playfair_Display({
@@ -29,7 +29,7 @@ export default function RootLayout({ children }) {
       lang="en"
       className={`${playfairDisplay.variable} ${inter.variable}`}
     >
-      <body className="bg-[#0d0f14] font-[family-name:var(--font-inter)] text-white">
+      <body className="bg-white font-[family-name:var(--font-inter)] text-[#1a1a2e]">
         <Navbar />
         {children}
         <Footer />

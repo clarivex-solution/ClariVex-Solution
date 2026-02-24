@@ -1,25 +1,25 @@
 import Hero from "@/components/Hero";
 import {
-  Activity,
-  ArrowDownCircle,
-  ArrowUpCircle,
-  Award,
-  BookOpen,
-  Calendar,
-  CheckCircle,
-  ClipboardList,
-  CreditCard,
-  FileText,
-  Heart,
-  Lightbulb,
-  Lock,
-  Mail,
-  MapPin,
-  Phone,
-  Shield,
-  Star,
-  TrendingUp,
-  Users,
+    Activity,
+    ArrowDownCircle,
+    ArrowUpCircle,
+    Award,
+    BookOpen,
+    Calendar,
+    CheckCircle,
+    ClipboardList,
+    CreditCard,
+    FileText,
+    Heart,
+    Lightbulb,
+    Lock,
+    Mail,
+    MapPin,
+    Phone,
+    Shield,
+    Star,
+    TrendingUp,
+    Users,
 } from "lucide-react";
 
 const processSteps = [
@@ -186,7 +186,7 @@ const countryCoverage = [
 ];
 
 const formFieldClassName =
-  "w-full rounded-xl bg-[#f8f8f6] border border-slate-200 px-5 py-4 text-[#0d0f14] focus:outline-none focus:ring-2 focus:ring-[#5a688e]/50 focus:border-[#5a688e] text-sm";
+  "w-full rounded-xl bg-[#f8f8f6] border border-slate-200 px-5 py-4 text-[#1a1a2e] focus:outline-none focus:ring-2 focus:ring-[#5a688e]/50 focus:border-[#5a688e] text-sm";
 
 export default function CountryLandingPage({
   countryName,
@@ -213,9 +213,9 @@ export default function CountryLandingPage({
         />
       </section>
 
-      <section className="bg-[#0d0f14] py-8 sm:py-10 lg:py-12">
+      <section className="bg-white py-8 sm:py-10 lg:py-12">
         <div className="mx-auto my-0 max-w-7xl px-4 sm:px-6 lg:px-12">
-          <div className="rounded-2xl border border-[#5a688e]/30 bg-[#13161e] p-8">
+          <div className="rounded-2xl border border-[#5a688e]/20 bg-[#f8f9fa] p-8">
             <div className="grid gap-8 lg:grid-cols-[1.1fr_1fr] lg:items-center">
               <div>
                 <div className="flex items-center gap-3">
@@ -224,18 +224,18 @@ export default function CountryLandingPage({
                     {flag} {countryName}
                   </p>
                 </div>
-                <h3 className="mt-4 font-[family-name:var(--font-playfair)] text-2xl text-white">
+                <h3 className="mt-4 font-[family-name:var(--font-playfair)] text-2xl text-[#1a1a2e]">
                   Tax &amp; Compliance Coverage
                 </h3>
               </div>
 
               <div>
-                <p className="text-sm leading-relaxed text-[#8892a4]">{complianceNote}</p>
+                <p className="text-sm leading-relaxed text-[#5a6478]">{complianceNote}</p>
                 <div className="mt-4 flex flex-wrap gap-2">
                   {tools.map((tool) => (
                     <span
                       key={tool}
-                      className="rounded-full border border-[#1e2330] bg-[#0d0f14] px-3 py-1.5 text-xs text-[#8892a4]"
+                      className="rounded-full border border-[#e2e4e9] bg-white px-3 py-1.5 text-xs text-[#5a6478]"
                     >
                       {tool}
                     </span>
@@ -247,11 +247,11 @@ export default function CountryLandingPage({
         </div>
       </section>
 
-      <section id="process" className="bg-[#0d0f14] py-16 sm:py-20 lg:py-32">
+      <section id="process" className="bg-white py-16 sm:py-20 lg:py-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
           <div className="mb-6 h-px w-16 bg-[#c9a96e]" />
           <p className="text-xs uppercase tracking-[0.2em] text-[#6aa595]">HOW WE WORK</p>
-          <h2 className="mt-4 max-w-2xl font-[family-name:var(--font-playfair)] text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
+          <h2 className="mt-4 max-w-2xl font-[family-name:var(--font-playfair)] text-3xl font-bold text-[#1a1a2e] sm:text-4xl lg:text-5xl">
             A disciplined process for measurable financial control
           </h2>
 
@@ -259,14 +259,14 @@ export default function CountryLandingPage({
             {processSteps.map((step) => (
               <article
                 key={step.step}
-                className="group rounded-xl border border-[#1e2330] bg-[#13161e] p-8 transition-all duration-300 hover:border-[#5a688e]/50"
+                className="group rounded-xl border border-[#e2e4e9] bg-[#f8f9fa] p-8 transition-all duration-300 hover:border-[#5a688e]/50 hover:shadow-lg"
               >
-                <p className="font-[family-name:var(--font-playfair)] text-5xl font-bold text-[#1e2330] transition-colors group-hover:text-[#5a688e]/20">
+                <p className="font-[family-name:var(--font-playfair)] text-5xl font-bold text-[#e2e4e9] transition-colors group-hover:text-[#5a688e]/20">
                   {step.step}
                 </p>
                 <step.icon className="mt-4 h-6 w-6 text-[#6aa595]" />
-                <h3 className="mt-3 text-lg font-semibold text-white">{step.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-[#8892a4]">
+                <h3 className="mt-3 text-lg font-semibold text-[#1a1a2e]">{step.title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-[#5a6478]">
                   {step.description}
                 </p>
               </article>
@@ -275,11 +275,11 @@ export default function CountryLandingPage({
         </div>
       </section>
 
-      <section id="services" className="bg-[#f0efe9] py-16 sm:py-20 lg:py-32">
+      <section id="services" className="bg-[#f4f3ee] py-16 sm:py-20 lg:py-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
           <div className="mb-6 h-px w-16 bg-[#c9a96e]" />
           <p className="text-xs uppercase tracking-[0.2em] text-[#5a688e]">OUR SERVICES</p>
-          <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-3xl font-bold text-[#0d0f14] sm:text-4xl lg:text-5xl">
+          <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-3xl font-bold text-[#1a1a2e] sm:text-4xl lg:text-5xl">
             Comprehensive Financial Solutions
           </h2>
 
@@ -292,7 +292,7 @@ export default function CountryLandingPage({
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#5a688e]/10 transition-colors duration-300 group-hover:bg-[#5a688e]">
                   <service.icon className="h-5 w-5 text-[#5a688e] transition-colors group-hover:text-white" />
                 </div>
-                <h3 className="mt-6 text-lg font-semibold text-[#0d0f14]">{service.title}</h3>
+                <h3 className="mt-6 text-lg font-semibold text-[#1a1a2e]">{service.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-slate-500">
                   {service.description}
                 </p>
@@ -305,15 +305,15 @@ export default function CountryLandingPage({
         </div>
       </section>
 
-      <section className="border-y border-[#1e2330] bg-[#13161e] py-16 sm:py-20 lg:py-32">
+      <section className="border-y border-[#e2e4e9] bg-[#f8f9fa] py-16 sm:py-20 lg:py-32">
         <div className="mx-auto grid max-w-7xl grid-cols-2 gap-8 px-4 text-center sm:px-6 lg:grid-cols-4 lg:gap-12 lg:px-12">
           {statsBanner.map((stat) => (
             <div key={stat.label}>
-              <p className="font-[family-name:var(--font-playfair)] text-4xl font-bold text-white lg:text-6xl">
+              <p className="font-[family-name:var(--font-playfair)] text-4xl font-bold text-[#1a1a2e] lg:text-6xl">
                 {stat.value}
               </p>
               <div className="mx-auto mt-3 h-0.5 w-8 bg-[#6aa595]" />
-              <p className="mt-4 text-sm uppercase tracking-wider text-[#8892a4]">
+              <p className="mt-4 text-sm uppercase tracking-wider text-[#5a6478]">
                 {stat.label}
               </p>
             </div>
@@ -321,16 +321,16 @@ export default function CountryLandingPage({
         </div>
       </section>
 
-      <section className="bg-[#0d0f14] py-16 sm:py-20 lg:py-32">
+      <section className="bg-white py-16 sm:py-20 lg:py-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
           <div className="mb-6 h-px w-16 bg-[#c9a96e]" />
           <p className="text-xs uppercase tracking-[0.2em] text-[#6aa595]">
             TOOLS &amp; TECHNOLOGY
           </p>
-          <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
+          <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-3xl font-bold text-[#1a1a2e] sm:text-4xl lg:text-5xl">
             Software We Work With
           </h2>
-          <p className="mt-4 max-w-2xl text-[#8892a4]">
+          <p className="mt-4 max-w-2xl text-[#5a6478]">
             Built on the tools modern finance teams rely on. We adapt to your systems \u2014 no
             forced migrations, no disruption.
           </p>
@@ -339,16 +339,16 @@ export default function CountryLandingPage({
             {softwareColumns.map((column) => (
               <article
                 key={column.title}
-                className="rounded-xl border border-[#1e2330] bg-[#13161e] p-8"
+                className="rounded-xl border border-[#e2e4e9] bg-[#f8f9fa] p-8"
               >
-                <h3 className="mb-6 border-b border-[#1e2330] pb-4 font-semibold text-white">
+                <h3 className="mb-6 border-b border-[#e2e4e9] pb-4 font-semibold text-[#1a1a2e]">
                   {column.title}
                 </h3>
                 <div className="mt-2">
                   {column.tools.map((tool) => (
                     <div
                       key={tool}
-                      className="flex items-center gap-3 border-b border-[#1e2330]/50 py-3 text-sm text-[#8892a4] transition-colors hover:text-white"
+                      className="flex items-center gap-3 border-b border-[#e2e4e9]/50 py-3 text-sm text-[#5a6478] transition-colors hover:text-[#1a1a2e]"
                     >
                       <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#6aa595]" />
                       <span>{tool}</span>
@@ -361,14 +361,14 @@ export default function CountryLandingPage({
         </div>
       </section>
 
-      <section id="about" className="bg-[#f0efe9] py-16 sm:py-20 lg:py-32">
+      <section id="about" className="bg-[#f4f3ee] py-16 sm:py-20 lg:py-32">
         <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:gap-20 lg:px-12">
-          <div className="relative rounded-2xl border border-[#1e2330] bg-[#0d0f14] p-10">
+          <div className="relative rounded-2xl border border-[#e2e4e9] bg-white p-10 shadow-lg">
             <div className="absolute left-0 top-0 h-20 w-20 rounded-tl-2xl border-l-2 border-t-2 border-[#c9a96e]/40" />
             <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[#5a688e] font-[family-name:var(--font-playfair)] text-2xl font-bold text-white">
               DK
             </div>
-            <p className="mt-6 font-[family-name:var(--font-playfair)] text-2xl font-bold text-white">
+            <p className="mt-6 font-[family-name:var(--font-playfair)] text-2xl font-bold text-[#1a1a2e]">
               Dhimant Khatri
             </p>
             <p className="mt-1 text-sm text-[#6aa595]">
@@ -376,15 +376,15 @@ export default function CountryLandingPage({
             </p>
             <div className="mt-6 h-px w-12 bg-[#c9a96e]" />
             <div className="mt-6 space-y-4">
-              <p className="flex items-center gap-3 text-sm text-[#8892a4]">
+              <p className="flex items-center gap-3 text-sm text-[#5a6478]">
                 <CheckCircle className="h-4 w-4 text-[#6aa595]" />
                 15+ Years Professional Experience
               </p>
-              <p className="flex items-center gap-3 text-sm text-[#8892a4]">
+              <p className="flex items-center gap-3 text-sm text-[#5a6478]">
                 <CheckCircle className="h-4 w-4 text-[#6aa595]" />
                 Member, Institute of Chartered Accountants of India
               </p>
-              <p className="flex items-center gap-3 text-sm text-[#8892a4]">
+              <p className="flex items-center gap-3 text-sm text-[#5a6478]">
                 <CheckCircle className="h-4 w-4 text-[#6aa595]" />
                 Audit, Taxation &amp; Compliance Specialist
               </p>
@@ -394,7 +394,7 @@ export default function CountryLandingPage({
           <div>
             <div className="mb-6 h-px w-16 bg-[#c9a96e]" />
             <p className="text-xs uppercase tracking-[0.2em] text-[#5a688e]">ABOUT US</p>
-            <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-3xl font-bold text-[#0d0f14] sm:text-4xl lg:text-5xl">
+            <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-3xl font-bold text-[#1a1a2e] sm:text-4xl lg:text-5xl">
               Professional Expertise You Can Trust
             </h2>
             <p className="mt-6 leading-relaxed text-slate-600">
@@ -421,11 +421,11 @@ export default function CountryLandingPage({
         </div>
       </section>
 
-      <section className="bg-[#0d0f14] py-16 sm:py-20 lg:py-32">
+      <section className="bg-white py-16 sm:py-20 lg:py-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
           <div className="mb-6 h-px w-16 bg-[#c9a96e]" />
           <p className="text-xs uppercase tracking-[0.2em] text-[#6aa595]">WHY CLARIVEX</p>
-          <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
+          <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-3xl font-bold text-[#1a1a2e] sm:text-4xl lg:text-5xl">
             Why Choose ClariVex Solution
           </h2>
 
@@ -433,17 +433,17 @@ export default function CountryLandingPage({
             {whyChooseUsCards.map((item) => (
               <article
                 key={item.title}
-                className="group rounded-xl border border-[#1e2330] bg-[#13161e] p-8 transition-all hover:border-[#5a688e]/40"
+                className="group rounded-xl border border-[#e2e4e9] bg-[#f8f9fa] p-8 transition-all hover:border-[#5a688e]/40 hover:shadow-lg"
               >
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#5a688e]/10 text-[#6aa595] transition-colors group-hover:bg-[#5a688e]/20">
                   <item.icon className="h-5 w-5" />
                 </div>
-                <h3 className="mt-6 text-lg font-semibold text-white">{item.title}</h3>
+                <h3 className="mt-6 text-lg font-semibold text-[#1a1a2e]">{item.title}</h3>
                 <div className="mt-4 space-y-2">
                   {item.points.map((point) => (
                     <p
                       key={point}
-                      className="flex items-start gap-2 text-sm leading-relaxed text-[#8892a4]"
+                      className="flex items-start gap-2 text-sm leading-relaxed text-[#5a6478]"
                     >
                       <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-[#6aa595]" />
                       <span>{point}</span>
@@ -456,33 +456,33 @@ export default function CountryLandingPage({
         </div>
       </section>
 
-      <section id="contact" className="bg-[#f0efe9] py-16 sm:py-20 lg:py-32">
+      <section id="contact" className="bg-[#f4f3ee] py-16 sm:py-20 lg:py-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
           <div className="text-center">
             <div className="mx-auto h-px w-16 bg-[#c9a96e]" />
             <p className="mt-6 text-xs uppercase tracking-[0.2em] text-[#5a688e]">GET IN TOUCH</p>
-            <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-3xl font-bold text-[#0d0f14] sm:text-4xl lg:text-5xl">
+            <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-3xl font-bold text-[#1a1a2e] sm:text-4xl lg:text-5xl">
               Contact Us
             </h2>
             <p className="mt-4 text-slate-600">Book a free consultation today</p>
           </div>
 
           <div className="mt-16 grid gap-12 lg:grid-cols-2">
-            <div className="rounded-2xl border border-[#1e2330] bg-[#0d0f14] p-10">
-              <h3 className="text-lg font-semibold text-white">Contact Information</h3>
+            <div className="rounded-2xl border border-[#e2e4e9] bg-white p-10 shadow-lg">
+              <h3 className="text-lg font-semibold text-[#1a1a2e]">Contact Information</h3>
               <div className="mt-3 h-px w-12 bg-[#c9a96e]" />
 
               <div className="mt-8 space-y-6">
                 <div className="flex items-start gap-3">
                   <MapPin className="mt-0.5 h-5 w-5 text-[#6aa595]" />
-                  <p className="text-sm text-[#8892a4]">Global delivery hub: Ahmedabad, India</p>
+                  <p className="text-sm text-[#5a6478]">Global delivery hub: Ahmedabad, India</p>
                 </div>
 
                 <div className="flex items-start gap-3">
                   <Mail className="mt-0.5 h-5 w-5 text-[#6aa595]" />
                   <a
                     href="mailto:us@clarivexsolutions.com"
-                    className="text-sm text-[#8892a4] transition-colors hover:text-white"
+                    className="text-sm text-[#5a6478] transition-colors hover:text-[#1a1a2e]"
                   >
                     us@clarivexsolutions.com
                   </a>
@@ -492,11 +492,11 @@ export default function CountryLandingPage({
                   <Phone className="mt-0.5 h-5 w-5 text-[#6aa595]" />
                   <div className="space-y-2">
                     {phoneContacts.map((contact) => (
-                      <p key={contact.phoneRaw} className="text-sm text-[#8892a4]">
-                        <span className="font-medium text-white">{contact.name}:</span>{" "}
+                      <p key={contact.phoneRaw} className="text-sm text-[#5a6478]">
+                        <span className="font-medium text-[#1a1a2e]">{contact.name}:</span>{" "}
                         <a
                           href={`tel:${contact.phoneRaw}`}
-                          className="transition-colors hover:text-white"
+                          className="transition-colors hover:text-[#1a1a2e]"
                         >
                           {contact.phoneDisplay}
                         </a>
@@ -506,13 +506,13 @@ export default function CountryLandingPage({
                 </div>
               </div>
 
-              <div className="mt-8 border-t border-[#1e2330] pt-6">
-                <p className="text-xs uppercase tracking-[0.16em] text-[#8892a4]">Country Coverage</p>
+              <div className="mt-8 border-t border-[#e2e4e9] pt-6">
+                <p className="text-xs uppercase tracking-[0.16em] text-[#5a6478]">Country Coverage</p>
                 <div className="mt-3 flex flex-wrap gap-2">
                   {countryCoverage.map((item) => (
                     <span
                       key={item.label}
-                      className="rounded-full border border-[#1e2330] bg-[#13161e] px-3 py-1 text-xs text-[#8892a4]"
+                      className="rounded-full border border-[#e2e4e9] bg-[#f8f9fa] px-3 py-1 text-xs text-[#5a6478]"
                     >
                       {item.label}
                     </span>
@@ -527,7 +527,7 @@ export default function CountryLandingPage({
                   <div>
                     <label
                       htmlFor="name"
-                      className="mb-2 block text-sm font-medium text-[#0d0f14]"
+                      className="mb-2 block text-sm font-medium text-[#1a1a2e]"
                     >
                       Name
                     </label>
@@ -537,7 +537,7 @@ export default function CountryLandingPage({
                   <div>
                     <label
                       htmlFor="email"
-                      className="mb-2 block text-sm font-medium text-[#0d0f14]"
+                      className="mb-2 block text-sm font-medium text-[#1a1a2e]"
                     >
                       Email
                     </label>
@@ -549,7 +549,7 @@ export default function CountryLandingPage({
                   <div>
                     <label
                       htmlFor="phone"
-                      className="mb-2 block text-sm font-medium text-[#0d0f14]"
+                      className="mb-2 block text-sm font-medium text-[#1a1a2e]"
                     >
                       Phone (optional)
                     </label>
@@ -559,7 +559,7 @@ export default function CountryLandingPage({
                   <div>
                     <label
                       htmlFor="service"
-                      className="mb-2 block text-sm font-medium text-[#0d0f14]"
+                      className="mb-2 block text-sm font-medium text-[#1a1a2e]"
                     >
                       Service
                     </label>
@@ -579,7 +579,7 @@ export default function CountryLandingPage({
                 <div>
                   <label
                     htmlFor="message"
-                    className="mb-2 block text-sm font-medium text-[#0d0f14]"
+                    className="mb-2 block text-sm font-medium text-[#1a1a2e]"
                   >
                     Message
                   </label>

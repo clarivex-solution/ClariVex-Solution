@@ -1,6 +1,8 @@
-﻿import Link from "next/link";
-import Image from "next/image";
+﻿import logo from "@/public/logo.png";
 import { MessageCircle } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+
 
 const services = [
   "Bookkeeping",
@@ -34,14 +36,14 @@ const countryLinks = [
 export default function Footer() {
   return (
     <>
-      <footer className="border-t border-[#1e2330] bg-[#0d0f14]">
+      <footer className="border-t border-[#1e2330] bg-[#1a1a2e]">
         <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-12 lg:py-32">
           <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
             <div className="sm:col-span-2 lg:col-span-1">
               <Link href="/" className="flex items-center">
                 <span className="mr-3 inline-block h-8 w-0.5 bg-[#c9a96e]" />
                 <Image
-                  src="/logo.png"
+                  src={logo}
                   alt="ClariVex Solutions"
                   width={160}
                   height={45}
@@ -56,13 +58,13 @@ export default function Footer() {
               </p>
 
               <div className="mt-6 flex flex-wrap gap-2">
-                <span className="rounded-full border border-[#1e2330] bg-[#13161e] px-3 py-1 text-xs text-[#8892a4]">
+                <span className="rounded-full border border-[#2e2e48] bg-[#232340] px-3 py-1 text-xs text-[#8892a4]">
                   NDA Protected
                 </span>
-                <span className="rounded-full border border-[#1e2330] bg-[#13161e] px-3 py-1 text-xs text-[#8892a4]">
+                <span className="rounded-full border border-[#2e2e48] bg-[#232340] px-3 py-1 text-xs text-[#8892a4]">
                   15+ Years
                 </span>
-                <span className="rounded-full border border-[#1e2330] bg-[#13161e] px-3 py-1 text-xs text-[#8892a4]">
+                <span className="rounded-full border border-[#2e2e48] bg-[#232340] px-3 py-1 text-xs text-[#8892a4]">
                   280+ Clients
                 </span>
               </div>
