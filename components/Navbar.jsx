@@ -1,7 +1,9 @@
 "use client";
+
+import { useCountry } from "@/components/CountryProvider";
+import { countries, generalCountry, getCountryByCode } from "@/lib/countryData";
 import logo from "@/public/logo.png";
-import { countries } from "@/lib/countryData";
-import { ChevronDown, Menu, X } from "lucide-react";
+import { ChevronDown, Globe, Menu, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
@@ -16,45 +18,49 @@ const navLinks = [
   { href: "/#contact", label: "Contact" },
 ];
 
+const allOptions = [...countries, generalCountry];
+
+function FlagImage({ src, alt, size = 20 }) {
+  if (!src) {
+    return <Globe className="h-4 w-4 text-[#6aa595]" />;
+  }
+  return (
+    <img
+      src={src}
+      alt={alt}
+      width={size}
+      height={Math.round(size * 0.67)}
+      className="inline-block rounded-sm object-cover"
+      style={{ width: size, height: Math.round(size * 0.67) }}
+    />
+  );
+}
+
 export default function Navbar() {
+  const { country, setCountry } = useCountry();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const [selected, setSelected] = useState(countries[0]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
+  const selected = getCountryByCode(country);
+
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 60);
-
     handleScroll();
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   useEffect(() => {
-    if (!isMobileOpen) {
-      return undefined;
-    }
-
+    if (!isMobileOpen) return undefined;
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-
     return () => {
       document.body.style.overflow = previousOverflow;
     };
   }, [isMobileOpen]);
 
-  // Auto-detect from cookie on mount
-  useEffect(() => {
-    const cookie = document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("preferred-country="))
-      ?.split("=")[1];
-    const match = countries.find((c) => c.code === cookie);
-    if (match) setSelected(match);
-  }, []);
-
-  // Close dropdown on outside click
   useEffect(() => {
     const handleClick = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -64,6 +70,12 @@ export default function Navbar() {
     document.addEventListener("mousedown", handleClick);
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
+
+  function handleSelectCountry(code) {
+    setCountry(code);
+    setDropdownOpen(false);
+    setIsMobileOpen(false);
+  }
 
   return (
     <>
@@ -105,8 +117,10 @@ export default function Navbar() {
                 onClick={() => setDropdownOpen(!dropdownOpen)}
                 className="flex items-center gap-2 bg-[#f8f9fa] border border-[#e2e4e9] rounded-full px-4 py-2 text-xs text-[#5a6478] hover:border-[#5a688e]/50 hover:text-[#1a1a2e] transition-all duration-200"
               >
-                <span>{selected.flag}</span>
-                <span className="font-medium">{selected.label}</span>
+                <FlagImage src={selected.flagSrc} alt={selected.name} size={18} />
+                <span className="font-medium">
+                  {country === "general" ? "Select Country" : selected.label}
+                </span>
                 <ChevronDown className="w-3 h-3" />
               </button>
 
@@ -114,39 +128,35 @@ export default function Navbar() {
                 <div className="absolute right-0 top-full mt-2 w-52 bg-white border border-[#e2e4e9] rounded-xl shadow-2xl shadow-black/10 overflow-hidden z-50">
                   <div className="px-4 py-3 border-b border-[#e2e4e9]">
                     <p className="text-[#5a6478] text-xs uppercase tracking-widest">
-                      Serving 4 Countries
+                      Select Region
                     </p>
                   </div>
 
-                  {countries.map((country) => (
-                    <Link
-                      key={country.code}
-                      href={country.href}
-                      onClick={() => {
-                        setSelected(country);
-                        setDropdownOpen(false);
-                        document.cookie = `preferred-country=${country.code};max-age=86400;path=/`;
-                      }}
-                      className={`flex items-center gap-3 px-4 py-3 hover:bg-[#f8f9fa] transition-colors group ${
-                        selected.code === country.code ? "bg-[#f8f9fa]" : ""
+                  {allOptions.map((opt) => (
+                    <button
+                      key={opt.code}
+                      type="button"
+                      onClick={() => handleSelectCountry(opt.code)}
+                      className={`flex w-full items-center gap-3 px-4 py-3 hover:bg-[#f8f9fa] transition-colors group ${
+                        country === opt.code ? "bg-[#f8f9fa]" : ""
                       }`}
                     >
-                      <span className="text-lg">{country.flag}</span>
-                      <div className="flex-1">
+                      <FlagImage src={opt.flagSrc} alt={opt.name} size={20} />
+                      <div className="flex-1 text-left">
                         <p
                           className={`text-sm font-medium transition-colors ${
-                            selected.code === country.code
+                            country === opt.code
                               ? "text-[#6aa595]"
                               : "text-[#5a6478] group-hover:text-[#1a1a2e]"
                           }`}
                         >
-                          {country.name}
+                          {opt.name}
                         </p>
                       </div>
-                      {selected.code === country.code && (
+                      {country === opt.code && (
                         <div className="w-1.5 h-1.5 rounded-full bg-[#6aa595]" />
                       )}
-                    </Link>
+                    </button>
                   ))}
 
                   <div className="px-4 py-3 border-t border-[#e2e4e9]">
@@ -188,7 +198,7 @@ export default function Navbar() {
               >
                 <span className="mr-3 inline-block h-8 w-0.5 bg-[#c9a96e]" />
                 <Image
-                  src="/logo.png"
+                  src={logo}
                   alt="ClariVex Solutions"
                   width={140}
                   height={40}
@@ -223,27 +233,21 @@ export default function Navbar() {
               <p className="text-[#5a6478] text-xs uppercase tracking-widest px-4 mb-2">
                 Select Your Region
               </p>
-              {countries.map((country) => (
-                <Link
-                  key={country.code}
-                  href={country.href}
-                  onClick={() => {
-                    setSelected(country);
-                    setIsMobileOpen(false);
-                    document.cookie = `preferred-country=${country.code};max-age=86400;path=/`;
-                  }}
-                  className={`flex items-center gap-3 px-4 py-3 border-b border-[#e2e4e9]/50 transition-colors ${
-                    selected.code === country.code
-                      ? "text-[#6aa595]"
-                      : "text-[#5a6478]"
+              {allOptions.map((opt) => (
+                <button
+                  key={opt.code}
+                  type="button"
+                  onClick={() => handleSelectCountry(opt.code)}
+                  className={`flex w-full items-center gap-3 px-4 py-3 border-b border-[#e2e4e9]/50 transition-colors ${
+                    country === opt.code ? "text-[#6aa595]" : "text-[#5a6478]"
                   }`}
                 >
-                  <span>{country.flag}</span>
-                  <span className="text-sm">{country.name}</span>
-                  {selected.code === country.code && (
+                  <FlagImage src={opt.flagSrc} alt={opt.name} size={22} />
+                  <span className="text-sm">{opt.name}</span>
+                  {country === opt.code && (
                     <div className="w-1.5 h-1.5 rounded-full bg-[#6aa595] ml-auto" />
                   )}
-                </Link>
+                </button>
               ))}
             </div>
 

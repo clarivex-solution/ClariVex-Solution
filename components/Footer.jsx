@@ -1,146 +1,163 @@
-﻿import logo from "@/public/logo.png";
-import { MessageCircle } from "lucide-react";
-import Image from "next/image";
+﻿"use client";
+
+import { useCountry } from "@/components/CountryProvider";
+import { countries } from "@/lib/countryData";
 import Link from "next/link";
 
-
-const services = [
-  "Bookkeeping",
-  "Reconciliation",
-  "AP Support",
-  "AR Support",
-  "Payroll",
-  "Tax Planning",
-  "Audit",
-  "Advisory",
-  "Data Security",
+const serviceLinks = [
+  { href: "/services/bookkeeping", label: "Bookkeeping" },
+  { href: "/services/reconciliation", label: "Reconciliation" },
+  { href: "/services/ap-support", label: "AP Support" },
+  { href: "/services/ar-support", label: "AR Support" },
+  { href: "/services/payroll", label: "Payroll" },
+  { href: "/services/tax-planning", label: "Tax Planning" },
+  { href: "/services/audit", label: "Audit" },
+  { href: "/services/advisory", label: "Advisory" },
 ];
 
 const companyLinks = [
-  { href: "/", label: "Home" },
-  { href: "/#process", label: "Process" },
-  { href: "/#services", label: "Services" },
-  { href: "/#about", label: "About" },
-  { href: "/#contact", label: "Contact" },
+  { href: "/#about", label: "About Us" },
+  { href: "/#process", label: "Our Process" },
   { href: "/blog", label: "Blog" },
   { href: "/news", label: "News" },
-];
-
-const countryLinks = [
-  { href: "/us", label: "US United States" },
-  { href: "/uk", label: "UK United Kingdom" },
-  { href: "/au", label: "AU Australia" },
-  { href: "/ca", label: "CA Canada" },
+  { href: "/#contact", label: "Contact" },
 ];
 
 export default function Footer() {
+  const { country, setCountry } = useCountry();
+
   return (
     <>
-      <footer className="border-t border-[#1e2330] bg-[#1a1a2e]">
-        <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-12 lg:py-32">
-          <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
-            <div className="sm:col-span-2 lg:col-span-1">
-              <Link href="/" className="flex items-center">
-                <span className="mr-3 inline-block h-8 w-0.5 bg-[#c9a96e]" />
-                <Image
-                  src={logo}
-                  alt="ClariVex Solutions"
-                  width={160}
-                  height={45}
-                  className="object-contain brightness-0 invert"
-                />
+      <footer className="bg-[#0d0f14] py-16 sm:py-20 lg:py-24 text-[#8892a4]">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
+          <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
+            {/* Brand */}
+            <div className="lg:col-span-1">
+              <Link href="/" className="inline-flex items-center">
+                <span className="mr-2.5 inline-block h-6 w-0.5 bg-[#c9a96e]" />
+                <span className="font-[family-name:var(--font-playfair)] text-xl font-bold text-white">
+                  ClariVex
+                </span>
               </Link>
-
-              <p className="mt-4 text-sm leading-relaxed text-[#8892a4]">
-                Elite outsourced accounting and finance operations &mdash;
-                combining expert support and smart technology for businesses
-                across US, UK, AU &amp; CA.
+              <p className="mt-4 text-sm leading-relaxed">
+                Elite outsourced accounting and finance operations for US, UK,
+                AU, and CA businesses.
               </p>
 
-              <div className="mt-6 flex flex-wrap gap-2">
-                <span className="rounded-full border border-[#2e2e48] bg-[#232340] px-3 py-1 text-xs text-[#8892a4]">
-                  NDA Protected
-                </span>
-                <span className="rounded-full border border-[#2e2e48] bg-[#232340] px-3 py-1 text-xs text-[#8892a4]">
-                  15+ Years
-                </span>
-                <span className="rounded-full border border-[#2e2e48] bg-[#232340] px-3 py-1 text-xs text-[#8892a4]">
-                  280+ Clients
-                </span>
+              {/* Worldwide Presence — clickable flag row */}
+              <div className="mt-6">
+                <p className="mb-3 text-xs uppercase tracking-widest text-[#5a6478]">
+                  Worldwide Presence
+                </p>
+                <div className="flex items-center gap-3">
+                  {countries.map((c) => (
+                    <button
+                      key={c.code}
+                      type="button"
+                      title={c.name}
+                      onClick={() => setCountry(c.code)}
+                      className={`group relative rounded-md p-1 transition-all duration-200 ${
+                        country === c.code
+                          ? "ring-2 ring-[#6aa595] bg-[#6aa595]/10"
+                          : "hover:ring-1 hover:ring-[#5a688e]/50 hover:bg-[#1e2330]"
+                      }`}
+                    >
+                      <img
+                        src={c.flagSrc}
+                        alt={c.name}
+                        width={28}
+                        height={19}
+                        className="rounded-sm"
+                        style={{ width: 28, height: 19, display: "block" }}
+                      />
+                      {country === c.code && (
+                        <span className="absolute -bottom-1.5 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-[#6aa595]" />
+                      )}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
 
+            {/* Services */}
             <div>
-              <p className="mb-6 text-xs uppercase tracking-[0.2em] text-[#6aa595]">
-                Services
-              </p>
-              {services.map((service) => (
-                <Link
-                  key={service}
-                  href="/#services"
-                  className="mb-3 block text-sm text-[#8892a4] transition-colors hover:text-white"
-                >
-                  {service}
-                </Link>
-              ))}
+              <h3 className="mb-4 font-semibold text-white">Services</h3>
+              <div className="space-y-2.5">
+                {serviceLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className="block text-sm transition-colors hover:text-white"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
             </div>
 
+            {/* Company */}
             <div>
-              <p className="mb-6 text-xs uppercase tracking-[0.2em] text-[#6aa595]">
-                Company
-              </p>
-              {companyLinks.map((link) => (
-                <Link
-                  key={link.label}
-                  href={link.href}
-                  className="mb-3 block text-sm text-[#8892a4] transition-colors hover:text-white"
-                >
-                  {link.label}
-                </Link>
-              ))}
+              <h3 className="mb-4 font-semibold text-white">Company</h3>
+              <div className="space-y-2.5">
+                {companyLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className="block text-sm transition-colors hover:text-white"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
             </div>
 
+            {/* Contact */}
             <div>
-              <p className="mb-6 text-xs uppercase tracking-[0.2em] text-[#6aa595]">
-                Global Offices
-              </p>
-              {countryLinks.map((country) => (
-                <Link
-                  key={country.href}
-                  href={country.href}
-                  className="mb-3 block text-sm text-[#8892a4] transition-colors hover:text-white"
+              <h3 className="mb-4 font-semibold text-white">Contact</h3>
+              <div className="space-y-2.5 text-sm">
+                <p>421, Shivalik Shilp, Iscon Cross Road</p>
+                <p>S.G. Highway, Ahmedabad &ndash; 380058</p>
+                <a
+                  href="mailto:info@clarivex.net"
+                  className="block transition-colors hover:text-white"
                 >
-                  {country.label}
-                </Link>
-              ))}
+                  info@clarivex.net
+                </a>
+                <a
+                  href="tel:+919898028812"
+                  className="block transition-colors hover:text-white"
+                >
+                  +91 9898028812
+                </a>
+              </div>
             </div>
           </div>
 
-          <div className="my-8 h-px w-full bg-gradient-to-r from-transparent via-[#c9a96e]/30 to-transparent" />
-
-          <div className="flex flex-col items-center gap-4 text-center text-xs text-[#8892a4] lg:flex-row lg:justify-between lg:text-left">
-            <p>&copy; 2026 Clarivex Solution. All rights reserved.</p>
-            <div className="flex items-center gap-2">
-              <Link href="/privacy-policy" className="transition-colors hover:text-white">
-                Privacy Policy
-              </Link>
-              <span>&middot;</span>
-              <Link href="/terms" className="transition-colors hover:text-white">
-                Terms &amp; Conditions
-              </Link>
+          <div className="mt-14 border-t border-[#1e2330] pt-8">
+            <div className="flex flex-col items-center gap-4 text-center text-xs text-[#8892a4] lg:flex-row lg:justify-between lg:text-left">
+              <p>&copy; 2026 Clarivex Solution. All rights reserved.</p>
+              <div className="flex items-center gap-2">
+                <span className="text-[#8892a4]">Privacy Policy</span>
+                <span>&middot;</span>
+                <span className="text-[#8892a4]">Terms &amp; Conditions</span>
+              </div>
             </div>
           </div>
         </div>
       </footer>
 
+      {/* WhatsApp floating button */}
       <a
         href="https://wa.me/919104791017"
         target="_blank"
-        rel="noreferrer"
+        rel="noopener noreferrer"
         className="fixed bottom-4 right-4 z-50 rounded-full bg-[#25D366] p-3.5 text-white shadow-2xl transition-transform hover:scale-110"
         aria-label="Chat on WhatsApp"
       >
-        <MessageCircle className="h-6 w-6" />
+        <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
+          <path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.553 4.125 1.52 5.867L.054 23.65a.5.5 0 00.622.622l5.782-1.466A11.93 11.93 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75c-1.875 0-3.651-.506-5.19-1.448l-.372-.22-3.858.978.978-3.858-.22-.372A9.725 9.725 0 012.25 12c0-5.384 4.366-9.75 9.75-9.75S21.75 6.616 21.75 12s-4.366 9.75-9.75 9.75z" />
+        </svg>
       </a>
     </>
   );

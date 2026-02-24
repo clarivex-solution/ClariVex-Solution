@@ -1,5 +1,8 @@
 "use client";
 
+import { useCountry } from "@/components/CountryProvider";
+import { blogPosts } from "@/lib/blogData";
+import { countries } from "@/lib/countryData";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
@@ -11,68 +14,10 @@ const categoryOptions = [
   "Advisory",
 ];
 
-const countryOptions = [
-  { key: "US", label: "US\uD83C\uDDFA\uD83C\uDDF8" },
-  { key: "UK", label: "UK\uD83C\uDDEC\uD83C\uDDE7" },
-  { key: "AU", label: "AU\uD83C\uDDE6\uD83C\uDDFA" },
-  { key: "CA", label: "CA\uD83C\uDDE8\uD83C\uDDE6" },
-];
-
-const posts = [
-  {
-    slug: "quickbooks-tips-us-small-business",
-    title: "5 QuickBooks Tips Every US Small Business Should Know",
-    country: "US",
-    countryLabel: "US\uD83C\uDDFA\uD83C\uDDF8",
-    category: "Bookkeeping",
-    excerpt:
-      "Practical ways to tighten coding standards, automate reconciliations, and speed up month-end close for US operators.",
-  },
-  {
-    slug: "understanding-mtd-uk-businesses-2025",
-    title: "Understanding MTD: What UK Businesses Need to Know in 2025",
-    country: "UK",
-    countryLabel: "UK\uD83C\uDDEC\uD83C\uDDE7",
-    category: "Tax & Compliance",
-    excerpt:
-      "A focused breakdown of MTD obligations, filing readiness, and record-keeping standards for UK businesses.",
-  },
-  {
-    slug: "bas-lodgement-checklist-australia",
-    title: "BAS Lodgement Checklist for Australian Businesses",
-    country: "AU",
-    countryLabel: "AU\uD83C\uDDE6\uD83C\uDDFA",
-    category: "Tax & Compliance",
-    excerpt:
-      "A compliance-first BAS checklist to reduce lodgement errors and maintain strong GST reporting discipline.",
-  },
-  {
-    slug: "gst-hst-filing-guide-canada-small-business",
-    title: "GST/HST Filing Guide for Canadian Small Businesses",
-    country: "CA",
-    countryLabel: "CA\uD83C\uDDE8\uD83C\uDDE6",
-    category: "Tax & Compliance",
-    excerpt:
-      "Key GST/HST filing workflows for Canadian SMBs, including documentation, timing, and control checks.",
-  },
-  {
-    slug: "streamline-payroll-growing-teams",
-    title: "How to Streamline Payroll for Growing Teams",
-    country: "All",
-    countryLabel: "All",
-    category: "Payroll",
-    excerpt:
-      "How growing teams can structure approvals, calendars, and reporting to reduce payroll risk and rework.",
-  },
-  {
-    slug: "month-end-close-step-by-step-checklist",
-    title: "Month-End Close: A Step-by-Step Checklist",
-    country: "All",
-    countryLabel: "All",
-    category: "Bookkeeping",
-    excerpt:
-      "A dependable close framework covering reconciliations, review checkpoints, and management reporting handoff.",
-  },
+const countryFilterOptions = [
+  { key: "all", label: "All Countries" },
+  ...countries.map((c) => ({ key: c.code, label: c.label, flagSrc: c.flagSrc })),
+  { key: "general", label: "General" },
 ];
 
 function filterPillClass(isActive) {
@@ -84,19 +29,42 @@ function filterPillClass(isActive) {
 }
 
 export default function BlogPageClient() {
+  const { country } = useCountry();
   const [activeCategory, setActiveCategory] = useState("All");
-  const [activeCountry, setActiveCountry] = useState("US");
+
+  // Default country filter: when a specific country is active, show that + General
+  // When general is active, show all
+  const defaultCountryFilter = country === "general" ? "all" : country;
+  const [activeCountryFilter, setActiveCountryFilter] = useState(defaultCountryFilter);
+
+  // Sync default on country change from context
+  const [prevCountry, setPrevCountry] = useState(country);
+  if (country !== prevCountry) {
+    setPrevCountry(country);
+    setActiveCountryFilter(country === "general" ? "all" : country);
+  }
 
   const filteredPosts = useMemo(() => {
-    return posts.filter((post) => {
+    return blogPosts.filter((post) => {
       const categoryMatch =
-        activeCategory === "All" ? true : post.category === activeCategory;
-      const countryMatch =
-        post.country === "All" ? true : post.country === activeCountry;
+        activeCategory === "All" || post.category === activeCategory;
+
+      let countryMatch = true;
+      if (activeCountryFilter === "all") {
+        countryMatch = true; // show everything
+      } else if (activeCountryFilter === "general") {
+        countryMatch = post.country === "All" || post.country === "General";
+      } else {
+        // Show country-specific + General/All posts
+        countryMatch =
+          post.country === activeCountryFilter.toUpperCase() ||
+          post.country === "All" ||
+          post.country === "General";
+      }
 
       return categoryMatch && countryMatch;
     });
-  }, [activeCategory, activeCountry]);
+  }, [activeCategory, activeCountryFilter]);
 
   return (
     <main className="bg-white text-[#1a1a2e]">
@@ -122,14 +90,10 @@ export default function BlogPageClient() {
       <section className="border-y border-[#e2e4e9] bg-[#f8f9fa] py-16 sm:py-20 lg:py-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
           <div className="mb-6 h-px w-16 bg-[#c9a96e]" />
-          <p className="text-xs uppercase tracking-[0.2em] text-[#6aa595]">
-            Filter Posts
-          </p>
+          <p className="text-xs uppercase tracking-[0.2em] text-[#6aa595]">Filter Posts</p>
 
           <div className="mt-6">
-            <p className="mb-3 text-xs uppercase tracking-[0.16em] text-[#5a6478]">
-              Category
-            </p>
+            <p className="mb-3 text-xs uppercase tracking-[0.16em] text-[#5a6478]">Category</p>
             <div className="flex flex-wrap gap-2 overflow-x-auto pb-2">
               {categoryOptions.map((category) => (
                 <button
@@ -145,18 +109,24 @@ export default function BlogPageClient() {
           </div>
 
           <div className="mt-6">
-            <p className="mb-3 text-xs uppercase tracking-[0.16em] text-[#5a6478]">
-              Country
-            </p>
+            <p className="mb-3 text-xs uppercase tracking-[0.16em] text-[#5a6478]">Country</p>
             <div className="flex flex-wrap gap-2 overflow-x-auto pb-2">
-              {countryOptions.map((country) => (
+              {countryFilterOptions.map((opt) => (
                 <button
-                  key={country.key}
+                  key={opt.key}
                   type="button"
-                  className={filterPillClass(activeCountry === country.key)}
-                  onClick={() => setActiveCountry(country.key)}
+                  className={filterPillClass(activeCountryFilter === opt.key)}
+                  onClick={() => setActiveCountryFilter(opt.key)}
                 >
-                  {country.label}
+                  {opt.flagSrc && (
+                    <img
+                      src={opt.flagSrc}
+                      alt=""
+                      className="mr-1.5 inline-block rounded-sm align-middle"
+                      style={{ width: 16, height: 11 }}
+                    />
+                  )}
+                  {opt.label}
                 </button>
               ))}
             </div>
@@ -164,28 +134,10 @@ export default function BlogPageClient() {
         </div>
       </section>
 
-      <section className="bg-[#f4f3ee] py-16 sm:py-20 lg:py-32">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
-          <div className="mb-6 h-px w-16 bg-[#c9a96e]" />
-          <p className="text-xs uppercase tracking-[0.2em] text-[#5a688e]">
-            Editorial Focus
-          </p>
-          <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-3xl text-[#1a1a2e] sm:text-4xl">
-            Structured Insights for Finance Leaders
-          </h2>
-          <p className="mt-4 max-w-3xl text-slate-600">
-            Filter by category and country to access practical finance guidance tailored
-            to your market and reporting priorities.
-          </p>
-        </div>
-      </section>
-
       <section className="bg-white py-16 sm:py-20 lg:py-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
           <div className="mb-6 h-px w-16 bg-[#c9a96e]" />
-          <p className="text-xs uppercase tracking-[0.2em] text-[#6aa595]">
-            Latest Articles
-          </p>
+          <p className="text-xs uppercase tracking-[0.2em] text-[#6aa595]">Latest Articles</p>
 
           {filteredPosts.length === 0 ? (
             <div className="mt-8 rounded-xl border border-[#e2e4e9] bg-[#f8f9fa] p-8 text-[#5a6478]">
@@ -202,7 +154,7 @@ export default function BlogPageClient() {
                     <span className="rounded-full bg-[#5a688e]/10 px-3 py-1 text-xs text-[#6aa595]">
                       {post.category}
                     </span>
-                    <span className="text-xs text-[#5a6478]">{post.countryLabel}</span>
+                    <CountryBadge country={post.country} />
                   </div>
 
                   <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-xl font-semibold text-[#1a1a2e]">
@@ -224,5 +176,28 @@ export default function BlogPageClient() {
         </div>
       </section>
     </main>
+  );
+}
+
+function CountryBadge({ country }) {
+  if (!country || country === "All" || country === "General") {
+    return (
+      <span className="rounded-full bg-[#6aa595]/10 px-2.5 py-1 text-[10px] font-medium uppercase tracking-wider text-[#6aa595]">
+        General
+      </span>
+    );
+  }
+
+  const code = country.toLowerCase();
+  const match = countries.find((c) => c.code === code);
+  const flagSrc = match?.flagSrc;
+
+  return (
+    <span className="flex items-center gap-1 rounded-full bg-[#5a688e]/10 px-2.5 py-1 text-[10px] font-medium uppercase tracking-wider text-[#5a688e]">
+      {flagSrc && (
+        <img src={flagSrc} alt="" className="rounded-sm" style={{ width: 14, height: 10 }} />
+      )}
+      {country}
+    </span>
   );
 }

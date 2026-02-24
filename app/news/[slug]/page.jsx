@@ -1,125 +1,26 @@
-import Link from "next/link";
+import { newsPosts } from "@/lib/newsData";
 import { Calendar, User } from "lucide-react";
+import Link from "next/link";
+import { notFound } from "next/navigation";
 
 const countryLinks = [
-  { label: "US\uD83C\uDDFA\uD83C\uDDF8", href: "/news?country=US" },
-  { label: "UK\uD83C\uDDEC\uD83C\uDDE7", href: "/news?country=UK" },
-  { label: "AU\uD83C\uDDE6\uD83C\uDDFA", href: "/news?country=AU" },
-  { label: "CA\uD83C\uDDE8\uD83C\uDDE6", href: "/news?country=CA" },
+  { label: "US\uD83C\uDDFA\uD83C\uDDF8", href: "/news" },
+  { label: "UK\uD83C\uDDEC\uD83C\uDDE7", href: "/news" },
+  { label: "AU\uD83C\uDDE6\uD83C\uDDFA", href: "/news" },
+  { label: "CA\uD83C\uDDE8\uD83C\uDDE6", href: "/news" },
 ];
 
-const newsPosts = [
-  {
-    slug: "irs-updated-standard-mileage-rates-2025",
-    title: "IRS Announces Updated Standard Mileage Rates for 2025",
-    country: "US",
-    date: "March 11, 2026",
-    category: "Regulation Update",
-  },
-  {
-    slug: "new-1099k-reporting-threshold-takes-effect",
-    title: "New 1099-K Reporting Threshold Takes Effect",
-    country: "US",
-    date: "March 8, 2026",
-    category: "Tax Compliance",
-  },
-  {
-    slug: "small-business-tax-credits-extended-new-act",
-    title: "Small Business Tax Credits Extended Under New Act",
-    country: "US",
-    date: "March 4, 2026",
-    category: "Policy",
-  },
-  {
-    slug: "hmrc-updates-mtd-itsa-timeline",
-    title: "HMRC Updates MTD for Income Tax Self Assessment Timeline",
-    country: "UK",
-    date: "March 10, 2026",
-    category: "Tax Compliance",
-  },
-  {
-    slug: "national-insurance-changes-2025-26",
-    title: "National Insurance Changes for 2025-26 Tax Year",
-    country: "UK",
-    date: "March 7, 2026",
-    category: "Payroll",
-  },
-  {
-    slug: "hmrc-launches-online-vat-account-features",
-    title: "HMRC Launches New Online VAT Account Features",
-    country: "UK",
-    date: "March 3, 2026",
-    category: "VAT",
-  },
-  {
-    slug: "ato-guidance-contractor-vs-employee",
-    title: "ATO Releases Guidance on Contractor vs Employee Classification",
-    country: "AU",
-    date: "March 9, 2026",
-    category: "Regulation Update",
-  },
-  {
-    slug: "super-guarantee-rate-increase-11-5-confirmed",
-    title: "Super Guarantee Rate Increase to 11.5% Confirmed",
-    country: "AU",
-    date: "March 6, 2026",
-    category: "Payroll",
-  },
-  {
-    slug: "new-ato-small-business-support-measures",
-    title: "New ATO Small Business Support Measures Announced",
-    country: "AU",
-    date: "March 2, 2026",
-    category: "Policy",
-  },
-  {
-    slug: "cra-updates-t4-reporting-requirements-2025",
-    title: "CRA Updates T4 Reporting Requirements for 2025",
-    country: "CA",
-    date: "March 10, 2026",
-    category: "Payroll",
-  },
-  {
-    slug: "gst-hst-rate-changes-digital-services",
-    title: "GST/HST Rate Changes for Digital Services",
-    country: "CA",
-    date: "March 7, 2026",
-    category: "GST/HST",
-  },
-  {
-    slug: "new-cra-my-business-account-features",
-    title: "New CRA My Business Account Features Launched",
-    country: "CA",
-    date: "March 4, 2026",
-    category: "Platform Update",
-  },
-];
-
-function slugToTitleCase(slug) {
-  return slug
-    .split("-")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
+export function generateStaticParams() {
+  return newsPosts.map((post) => ({ slug: post.slug }));
 }
 
-function resolvePost(slug) {
-  const found = newsPosts.find((item) => item.slug === slug);
+export async function generateMetadata({ params }) {
+  const { slug } = await params;
+  const post = newsPosts.find((p) => p.slug === slug);
 
-  if (found) {
-    return found;
+  if (!post) {
+    return { title: "News Not Found | ClariVex Solutions" };
   }
-
-  return {
-    slug,
-    title: slugToTitleCase(slug),
-    country: "Global",
-    date: "February 22, 2026",
-    category: "News",
-  };
-}
-
-export function generateMetadata({ params }) {
-  const post = resolvePost(params.slug);
 
   return {
     title: `${post.title} | ClariVex Solutions`,
@@ -128,8 +29,14 @@ export function generateMetadata({ params }) {
   };
 }
 
-export default function NewsArticlePage({ params }) {
-  const post = resolvePost(params.slug);
+export default async function NewsArticlePage({ params }) {
+  const { slug } = await params;
+  const post = newsPosts.find((p) => p.slug === slug);
+
+  if (!post) {
+    notFound();
+  }
+
   const moreNews = newsPosts.filter((item) => item.slug !== post.slug).slice(0, 3);
 
   return (
@@ -215,7 +122,7 @@ export default function NewsArticlePage({ params }) {
                 <div className="mt-4 flex flex-wrap gap-2">
                   {countryLinks.map((country) => (
                     <Link
-                      key={country.href}
+                      key={country.label}
                       href={country.href}
                       className="rounded-full border border-[#1e2330] bg-[#0d0f14] px-3 py-1 text-xs text-[#8892a4] transition-colors hover:text-white"
                     >

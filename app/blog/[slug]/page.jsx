@@ -1,69 +1,19 @@
-import Link from "next/link";
+import { blogPosts } from "@/lib/blogData";
 import { Calendar, User } from "lucide-react";
+import Link from "next/link";
+import { notFound } from "next/navigation";
 
-const blogPosts = [
-  {
-    slug: "quickbooks-tips-us-small-business",
-    title: "5 QuickBooks Tips Every US Small Business Should Know",
-    category: "Bookkeeping",
-    date: "March 12, 2026",
-  },
-  {
-    slug: "understanding-mtd-uk-businesses-2025",
-    title: "Understanding MTD: What UK Businesses Need to Know in 2025",
-    category: "Tax & Compliance",
-    date: "March 9, 2026",
-  },
-  {
-    slug: "bas-lodgement-checklist-australia",
-    title: "BAS Lodgement Checklist for Australian Businesses",
-    category: "Tax & Compliance",
-    date: "March 5, 2026",
-  },
-  {
-    slug: "gst-hst-filing-guide-canada-small-business",
-    title: "GST/HST Filing Guide for Canadian Small Businesses",
-    category: "Tax & Compliance",
-    date: "March 2, 2026",
-  },
-  {
-    slug: "streamline-payroll-growing-teams",
-    title: "How to Streamline Payroll for Growing Teams",
-    category: "Payroll",
-    date: "February 27, 2026",
-  },
-  {
-    slug: "month-end-close-step-by-step-checklist",
-    title: "Month-End Close: A Step-by-Step Checklist",
-    category: "Bookkeeping",
-    date: "February 22, 2026",
-  },
-];
-
-function slugToTitleCase(slug) {
-  return slug
-    .split("-")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
+export function generateStaticParams() {
+  return blogPosts.map((post) => ({ slug: post.slug }));
 }
 
-function resolvePost(slug) {
-  const found = blogPosts.find((post) => post.slug === slug);
+export async function generateMetadata({ params }) {
+  const { slug } = await params;
+  const post = blogPosts.find((p) => p.slug === slug);
 
-  if (found) {
-    return found;
+  if (!post) {
+    return { title: "Post Not Found | ClariVex Solutions" };
   }
-
-  return {
-    slug,
-    title: slugToTitleCase(slug),
-    category: "Advisory",
-    date: "February 22, 2026",
-  };
-}
-
-export function generateMetadata({ params }) {
-  const post = resolvePost(params.slug);
 
   return {
     title: `${post.title} | ClariVex Solutions`,
@@ -71,8 +21,14 @@ export function generateMetadata({ params }) {
   };
 }
 
-export default function BlogArticlePage({ params }) {
-  const post = resolvePost(params.slug);
+export default async function BlogArticlePage({ params }) {
+  const { slug } = await params;
+  const post = blogPosts.find((p) => p.slug === slug);
+
+  if (!post) {
+    notFound();
+  }
+
   const relatedPosts = blogPosts.filter((item) => item.slug !== post.slug).slice(0, 3);
 
   return (

@@ -1,134 +1,20 @@
 "use client";
 
+import { useCountry } from "@/components/CountryProvider";
+import { newsPosts } from "@/lib/newsData";
 import Link from "next/link";
-import { useMemo, useState } from "react";
-
-const countryTabs = [
-  { key: "US", label: "\uD83C\uDDFA\uD83C\uDDF8 US" },
-  { key: "UK", label: "\uD83C\uDDEC\uD83C\uDDE7 UK" },
-  { key: "AU", label: "\uD83C\uDDE6\uD83C\uDDFA AU" },
-  { key: "CA", label: "\uD83C\uDDE8\uD83C\uDDE6 CA" },
-];
-
-const newsByCountry = {
-  US: [
-    {
-      slug: "irs-updated-standard-mileage-rates-2025",
-      source: "IRS",
-      date: "March 11, 2026",
-      headline: "IRS Announces Updated Standard Mileage Rates for 2025",
-      summary:
-        "The IRS released revised mileage rates for business, medical, and charitable travel, impacting reimbursement and deduction planning.",
-    },
-    {
-      slug: "new-1099k-reporting-threshold-takes-effect",
-      source: "IRS",
-      date: "March 8, 2026",
-      headline: "New 1099-K Reporting Threshold Takes Effect",
-      summary:
-        "Businesses and payment platforms are preparing for updated reporting requirements as 1099-K thresholds shift.",
-    },
-    {
-      slug: "small-business-tax-credits-extended-new-act",
-      source: "US Congress",
-      date: "March 4, 2026",
-      headline: "Small Business Tax Credits Extended Under New Act",
-      summary:
-        "A new legislative package extends selected credits, creating additional planning opportunities for eligible small businesses.",
-    },
-  ],
-  UK: [
-    {
-      slug: "hmrc-updates-mtd-itsa-timeline",
-      source: "HMRC",
-      date: "March 10, 2026",
-      headline: "HMRC Updates MTD for Income Tax Self Assessment Timeline",
-      summary:
-        "HMRC clarified implementation milestones for MTD ITSA and issued fresh guidance for affected sole traders and landlords.",
-    },
-    {
-      slug: "national-insurance-changes-2025-26",
-      source: "HMRC",
-      date: "March 7, 2026",
-      headline: "National Insurance Changes for 2025-26 Tax Year",
-      summary:
-        "Updated National Insurance rates and thresholds have been published for payroll planning in the upcoming tax year.",
-    },
-    {
-      slug: "hmrc-launches-online-vat-account-features",
-      source: "HMRC",
-      date: "March 3, 2026",
-      headline: "HMRC Launches New Online VAT Account Features",
-      summary:
-        "New VAT account capabilities provide improved visibility into submissions, liabilities, and payment status.",
-    },
-  ],
-  AU: [
-    {
-      slug: "ato-guidance-contractor-vs-employee",
-      source: "ATO",
-      date: "March 9, 2026",
-      headline: "ATO Releases Guidance on Contractor vs Employee Classification",
-      summary:
-        "The ATO published updated criteria to help businesses correctly assess worker classification and withholding obligations.",
-    },
-    {
-      slug: "super-guarantee-rate-increase-11-5-confirmed",
-      source: "ATO",
-      date: "March 6, 2026",
-      headline: "Super Guarantee Rate Increase to 11.5% Confirmed",
-      summary:
-        "Employers are preparing payroll systems for the confirmed Super Guarantee rate increase and related compliance checks.",
-    },
-    {
-      slug: "new-ato-small-business-support-measures",
-      source: "ATO",
-      date: "March 2, 2026",
-      headline: "New ATO Small Business Support Measures Announced",
-      summary:
-        "New support measures aim to simplify tax administration and improve payment flexibility for small business taxpayers.",
-    },
-  ],
-  CA: [
-    {
-      slug: "cra-updates-t4-reporting-requirements-2025",
-      source: "CRA",
-      date: "March 10, 2026",
-      headline: "CRA Updates T4 Reporting Requirements for 2025",
-      summary:
-        "The CRA introduced revised T4 filing expectations, including updates to employer reporting workflows and submission standards.",
-    },
-    {
-      slug: "gst-hst-rate-changes-digital-services",
-      source: "CRA",
-      date: "March 7, 2026",
-      headline: "GST/HST Rate Changes for Digital Services",
-      summary:
-        "Businesses providing digital services are reviewing GST/HST treatment under updated rate guidance and location rules.",
-    },
-    {
-      slug: "new-cra-my-business-account-features",
-      source: "CRA",
-      date: "March 4, 2026",
-      headline: "New CRA My Business Account Features Launched",
-      summary:
-        "Recent enhancements to CRA My Business Account expand self-service access and improve account activity visibility.",
-    },
-  ],
-};
-
-function tabClass(active, key) {
-  return `rounded-full transition-colors ${
-    active === key
-      ? "bg-[#5a688e] text-white rounded-full px-5 py-2"
-      : "text-[#5a6478] px-5 py-2 hover:text-[#1a1a2e]"
-  }`;
-}
+import { useMemo } from "react";
 
 export default function NewsPageClient() {
-  const [activeTab, setActiveTab] = useState("US");
+  const { country } = useCountry();
 
-  const activeNews = useMemo(() => newsByCountry[activeTab] || [], [activeTab]);
+  const activeNews = useMemo(() => {
+    if (country === "general") {
+      return newsPosts; // Show all news in general mode
+    }
+    const code = country.toUpperCase();
+    return newsPosts.filter((n) => n.country === code);
+  }, [country]);
 
   return (
     <main className="bg-white text-[#1a1a2e]">
@@ -145,44 +31,9 @@ export default function NewsPageClient() {
             Finance &amp; Tax News
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-[#5a6478]">
-            Daily accounting regulations and tax updates by country.
-          </p>
-        </div>
-      </section>
-
-      <section className="border-y border-[#e2e4e9] bg-[#f8f9fa] py-16 sm:py-20 lg:py-32">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
-          <div className="mb-6 h-px w-16 bg-[#c9a96e]" />
-          <p className="mb-4 text-xs uppercase tracking-[0.2em] text-[#6aa595]">
-            Select Country
-          </p>
-          <div className="flex flex-wrap gap-2 overflow-x-auto rounded-full border border-[#e2e4e9] bg-white p-1">
-            {countryTabs.map((tab) => (
-              <button
-                key={tab.key}
-                type="button"
-                className={tabClass(activeTab, tab.key)}
-                onClick={() => setActiveTab(tab.key)}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-[#f4f3ee] py-16 sm:py-20 lg:py-32">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
-          <div className="mb-6 h-px w-16 bg-[#c9a96e]" />
-          <p className="text-xs uppercase tracking-[0.2em] text-[#5a688e]">
-            Regulatory Focus
-          </p>
-          <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-3xl text-[#1a1a2e] sm:text-4xl">
-            Country-Specific Compliance Signals
-          </h2>
-          <p className="mt-4 max-w-3xl text-slate-600">
-            Track policy shifts, filing updates, and practical actions for finance teams
-            operating across the US, UK, AU, and CA.
+            {country === "general"
+              ? "Accounting regulations and tax updates across all markets."
+              : `Latest accounting and tax updates for ${country.toUpperCase()} businesses.`}
           </p>
         </div>
       </section>
@@ -191,34 +42,40 @@ export default function NewsPageClient() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
           <div className="mb-6 h-px w-16 bg-[#c9a96e]" />
           <p className="text-xs uppercase tracking-[0.2em] text-[#6aa595]">
-            Latest News
+            {country === "general" ? "Global News" : `${country.toUpperCase()} News`}
           </p>
 
-          <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {activeNews.map((item) => (
-              <article
-                key={item.slug}
-                className="rounded-xl border border-[#e2e4e9] bg-[#f8f9fa] p-6 transition-all hover:border-[#5a688e]/40 hover:shadow-xl"
-              >
-                <div className="flex items-center justify-between gap-3">
-                  <span className="rounded-full bg-[#5a688e]/10 px-3 py-1 text-xs text-[#6aa595]">
-                    {item.source}
-                  </span>
-                  <span className="text-xs text-[#5a6478]">{item.date}</span>
-                </div>
-                <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-xl font-semibold text-[#1a1a2e]">
-                  {item.headline}
-                </h2>
-                <p className="mt-3 text-sm leading-relaxed text-[#5a6478]">{item.summary}</p>
-                <Link
-                  href={`/news/${item.slug}`}
-                  className="mt-6 inline-flex text-sm text-[#6aa595] transition-colors hover:text-[#1a1a2e]"
+          {activeNews.length === 0 ? (
+            <div className="mt-8 rounded-xl border border-[#e2e4e9] bg-[#f8f9fa] p-8 text-[#5a6478]">
+              No news available for this region yet.
+            </div>
+          ) : (
+            <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {activeNews.map((item) => (
+                <article
+                  key={item.slug}
+                  className="rounded-xl border border-[#e2e4e9] bg-[#f8f9fa] p-6 transition-all hover:border-[#5a688e]/40 hover:shadow-xl"
                 >
-                  Read More &rarr;
-                </Link>
-              </article>
-            ))}
-          </div>
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="rounded-full bg-[#5a688e]/10 px-3 py-1 text-xs text-[#6aa595]">
+                      {item.source}
+                    </span>
+                    <span className="text-xs text-[#5a6478]">{item.date}</span>
+                  </div>
+                  <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-xl font-semibold text-[#1a1a2e]">
+                    {item.title}
+                  </h2>
+                  <p className="mt-3 text-sm leading-relaxed text-[#5a6478]">{item.summary}</p>
+                  <Link
+                    href={`/news/${item.slug}`}
+                    className="mt-6 inline-flex text-sm text-[#6aa595] transition-colors hover:text-[#1a1a2e]"
+                  >
+                    Read More &rarr;
+                  </Link>
+                </article>
+              ))}
+            </div>
+          )}
 
           <div className="mt-14 rounded-2xl border border-[#e2e4e9] bg-[#f8f9fa] p-12 text-center">
             <div className="mx-auto h-px w-16 bg-[#c9a96e]" />
@@ -227,26 +84,30 @@ export default function NewsPageClient() {
               Get Daily Finance Updates
             </h2>
             <p className="mx-auto mt-3 max-w-xl text-sm text-[#5a6478]">
-              Subscribe for country-specific accounting and tax regulation news delivered
-              to your inbox.
+              Subscribe for country-specific accounting and tax regulation news delivered to your inbox.
             </p>
-            <div className="mx-auto mt-6 flex w-full max-w-xl flex-col gap-3 sm:flex-row">
-              <label htmlFor="news-email" className="sr-only">
-                Email
-              </label>
+            <form
+              className="mx-auto mt-6 flex w-full max-w-xl flex-col gap-3 sm:flex-row"
+              onSubmit={(e) => {
+                e.preventDefault();
+                alert("Thank you for subscribing!");
+              }}
+            >
+              <label htmlFor="news-email" className="sr-only">Email</label>
               <input
                 id="news-email"
                 type="email"
+                required
                 placeholder="Enter your email"
                 className="w-full rounded-full border border-[#e2e4e9] bg-white px-6 py-3 text-[#1a1a2e] outline-none transition-colors focus:border-[#5a688e]"
               />
               <button
-                type="button"
+                type="submit"
                 className="rounded-full bg-[#5a688e] px-8 py-3 text-white transition-colors hover:bg-[#6aa595]"
               >
                 Subscribe
               </button>
-            </div>
+            </form>
           </div>
         </div>
       </section>

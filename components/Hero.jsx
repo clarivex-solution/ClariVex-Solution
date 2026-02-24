@@ -16,7 +16,8 @@ export default function Hero({
   h1Line1,
   h1Line2,
   subtitle = defaultSubtitle,
-  flag,
+  flagSrc,
+  seoH1,
 }) {
   const hasCountryHeading = Boolean(h1Line1 || h1Line2);
 
@@ -26,17 +27,39 @@ export default function Hero({
       <div className="pointer-events-none absolute bottom-0 left-0 h-[400px] w-[400px] rounded-full bg-[#6aa595]/6 blur-[100px]" />
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.03)_1px,transparent_1px)] bg-[size:80px_80px]" />
 
-      <div className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-12">
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-12">
         <div className="items-center gap-20 lg:grid lg:grid-cols-2">
           <div>
             <div className="flex items-center">
               <span className="mr-3 inline-block h-px w-8 align-middle bg-[#c9a96e]" />
               <span className="text-xs uppercase tracking-[0.2em] text-[#6aa595]">
-                {flag ? `${flag} ${countryLabel}` : countryLabel}
+                {flagSrc && <img src={flagSrc} alt="" className="mr-2 inline-block rounded-sm align-middle" style={{ width: 20, height: 14 }} />}
+                {countryLabel}
               </span>
             </div>
 
-            {hasCountryHeading ? (
+            {/* SEO h1: visible and keyword-rich */}
+            {seoH1 ? (
+              <>
+                <h1 className="mt-8 font-[family-name:var(--font-playfair)] text-3xl font-bold leading-[1.05] text-[#1a1a2e] sm:text-4xl lg:text-5xl xl:text-6xl">
+                  {hasCountryHeading ? (
+                    <>
+                      <span className="block">{h1Line1}</span>
+                      <span className="block text-[#6aa595]">{h1Line2}</span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="block">Empowering Growth</span>
+                      <span className="block">
+                        Through <span className="text-[#6aa595]">Financial</span>
+                      </span>
+                      <span className="block text-[#5a688e]">Clarity.</span>
+                    </>
+                  )}
+                </h1>
+                <p className="sr-only">{seoH1}</p>
+              </>
+            ) : hasCountryHeading ? (
               <h1 className="mt-8 font-[family-name:var(--font-playfair)] text-3xl font-bold leading-[1.05] text-[#1a1a2e] sm:text-4xl lg:text-5xl xl:text-6xl">
                 <span className="block">{h1Line1}</span>
                 <span className="block text-[#6aa595]">{h1Line2}</span>

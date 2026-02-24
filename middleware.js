@@ -1,15 +1,9 @@
+import { geoToCountry } from '@/lib/countryData'
 import { NextResponse } from 'next/server'
 
 export function middleware(request) {
   const geo = request.geo?.country || 'US'
-
-  const geoMap = {
-    US: 'us', CA: 'ca',
-    GB: 'uk', IE: 'uk',
-    AU: 'au', NZ: 'au',
-  }
-
-  const detected = geoMap[geo] || 'us'
+  const detected = geoToCountry[geo] || 'us'
   const response = NextResponse.next()
 
   // Only set cookie if user hasn't manually selected
@@ -25,5 +19,5 @@ export function middleware(request) {
 }
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'],
+  matcher: ['/', '/us', '/uk', '/au', '/ca', '/blog/:path*', '/news/:path*', '/services/:path*'],
 }
