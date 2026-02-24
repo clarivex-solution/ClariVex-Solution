@@ -150,21 +150,32 @@ export function CountryProvider({ children }) {
     let cancelled = false;
 
     async function detect() {
-      /* Priority 2 — localStorage manual preference (< 30 days) */
-      try {
-        const stored = localStorage.getItem(LS_COUNTRY);
-        const ts = localStorage.getItem(LS_TIMESTAMP);
-        if (stored && VALID.includes(stored) && ts) {
-          const age = Date.now() - Number(ts);
-          if (age < THIRTY_DAYS_MS) {
-            if (!cancelled) { setCountryState(stored); setReady(true); }
-            return;
+      /*
+       * Determine if we're on the general route (/).
+       * On /, localStorage preference is skipped — IP detection
+       * is the source of truth for the homepage every new session.
+       */
+      const isGeneralRoute =
+        window.location.pathname === "/" || window.location.pathname === "";
+
+      /* Priority 2 — localStorage manual preference (< 30 days)
+       * SKIPPED on / route — only applies to non-homepage routes */
+      if (!isGeneralRoute) {
+        try {
+          const stored = localStorage.getItem(LS_COUNTRY);
+          const ts = localStorage.getItem(LS_TIMESTAMP);
+          if (stored && VALID.includes(stored) && ts) {
+            const age = Date.now() - Number(ts);
+            if (age < THIRTY_DAYS_MS) {
+              if (!cancelled) { setCountryState(stored); setReady(true); }
+              return;
+            }
+            /* Expired — clean up */
+            localStorage.removeItem(LS_COUNTRY);
+            localStorage.removeItem(LS_TIMESTAMP);
           }
-          /* Expired — clean up */
-          localStorage.removeItem(LS_COUNTRY);
-          localStorage.removeItem(LS_TIMESTAMP);
-        }
-      } catch {}
+        } catch {}
+      }
 
       /* Priority 3 — sessionStorage cached IP detection */
       try {
@@ -176,7 +187,7 @@ export function CountryProvider({ children }) {
       } catch {}
 
       /*
-       * Priority 3b — session-country continuity (Fix 1)
+       * Priority 3b — session-country continuity
        * Only applies during in-app navigation (clicking links).
        * If this is a direct URL entry (typed URL, bookmark, new tab)
        * skip session-country and proceed to IP detection.
