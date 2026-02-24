@@ -1,23 +1,10 @@
-import { geoToCountry } from '@/lib/countryData'
-import { NextResponse } from 'next/server'
+// middleware.js — no server-side country detection.
+// Kept minimal for future use (e.g. security headers, redirects).
 
-export function middleware(request) {
-  const geo = request.geo?.country
-  const detected = geo ? (geoToCountry[geo] || 'general') : 'general'
-  const response = NextResponse.next()
-
-  // Only set cookie if user hasn't manually selected
-  const existing = request.cookies.get('preferred-country')
-  if (!existing) {
-    response.cookies.set('preferred-country', detected, {
-      maxAge: 86400,
-      path: '/',
-    })
-  }
-
-  return response
+export function middleware() {
+  // pass-through — country detection is fully client-side via CountryProvider
 }
 
 export const config = {
-  matcher: ['/', '/us', '/uk', '/au', '/ca', '/blog/:path*', '/news/:path*', '/services/:path*'],
+  matcher: [],
 }

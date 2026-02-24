@@ -4,7 +4,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 const CountryContext = createContext({ country: "general", setCountry: () => {} });
 
-const VALID_COUNTRIES = ["us", "uk", "au", "ca"];
+const VALID = ["us", "uk", "au", "ca", "general"];
 
 const GEO_MAP = {
   US: "us",
@@ -15,48 +15,39 @@ const GEO_MAP = {
   NZ: "au",
 };
 
-function readCookie(name) {
-  if (typeof document === "undefined") return null;
-  const match = document.cookie
-    .split("; ")
-    .find((row) => row.startsWith(`${name}=`));
-  return match ? match.split("=")[1] : null;
-}
-
-function writeCookie(name, value) {
-  document.cookie = `${name}=${value};max-age=86400;path=/`;
-}
+const STORAGE_KEY = "preferred-country";
 
 export function CountryProvider({ children }) {
   const [country, setCountryState] = useState("general");
   const [ready, setReady] = useState(false);
 
   function setCountry(code) {
-    const resolved = VALID_COUNTRIES.includes(code) ? code : "general";
+    const resolved = VALID.includes(code) ? code : "general";
     setCountryState(resolved);
-    writeCookie("preferred-country", resolved);
+    try { localStorage.setItem(STORAGE_KEY, resolved); } catch {}
   }
 
   useEffect(() => {
-    const existing = readCookie("preferred-country");
+    // 1. Check localStorage first
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored && VALID.includes(stored)) {
+        setCountryState(stored);
+        setReady(true);
+        return;
+      }
+    } catch {}
 
-    if (existing && (VALID_COUNTRIES.includes(existing) || existing === "general")) {
-      setCountryState(existing);
-      setReady(true);
-      return;
-    }
-
-    // No cookie — detect via IP geolocation
+    // 2. No stored value — detect via client-side IP geolocation
     fetch("https://ipapi.co/json/")
       .then((res) => res.json())
       .then((data) => {
         const detected = GEO_MAP[data.country_code] || "general";
         setCountryState(detected);
-        writeCookie("preferred-country", detected);
+        try { localStorage.setItem(STORAGE_KEY, detected); } catch {}
       })
       .catch(() => {
         setCountryState("general");
-        writeCookie("preferred-country", "general");
       })
       .finally(() => setReady(true));
   }, []);
