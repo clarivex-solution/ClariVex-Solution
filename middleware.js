@@ -2,8 +2,8 @@ import { geoToCountry } from '@/lib/countryData'
 import { NextResponse } from 'next/server'
 
 export function middleware(request) {
-  const geo = request.geo?.country || 'US'
-  const detected = geoToCountry[geo] || 'us'
+  const geo = request.geo?.country
+  const detected = geo ? (geoToCountry[geo] || 'general') : 'general'
   const response = NextResponse.next()
 
   // Only set cookie if user hasn't manually selected
