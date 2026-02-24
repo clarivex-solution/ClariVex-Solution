@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useLayoutEffect, useState } from "react";
 
 /* ------------------------------------------------------------------ */
 /*  Constants                                                         */
@@ -74,21 +74,6 @@ async function fetchIPCountry() {
   }
 }
 
-/**
- * Synchronous URL-path check for useState initializer.
- * Runs before first render — zero skeleton flash on country routes.
- */
-function getInitialCountry() {
-  if (typeof window === "undefined") return null;
-  return countryFromPath(window.location.pathname);
-}
-
-function getInitialReady() {
-  if (typeof window === "undefined") return false;
-  const path = window.location.pathname;
-  return ["/us", "/uk", "/ca", "/au"].some((r) => path.startsWith(r));
-}
-
 /* ------------------------------------------------------------------ */
 /*  Context                                                           */
 /* ------------------------------------------------------------------ */
@@ -106,10 +91,22 @@ const CountryContext = createContext({
 /* ------------------------------------------------------------------ */
 
 export function CountryProvider({ children }) {
-  /* Fix 2 — URL route detection runs synchronously in useState initializer */
-  const [country, setCountryState] = useState(() => getInitialCountry());
-  const [ready, setReady] = useState(() => getInitialReady());
+  const [country, setCountryState] = useState(null);
+  const [ready, setReady] = useState(false);
   const [detecting, setDetecting] = useState(false);
+
+  /* ----------------------------------------------------------------
+   *  Priority 1 — URL route detection (useLayoutEffect)
+   *  Runs synchronously after DOM mount, before browser paint.
+   *  Eliminates skeleton flash on country routes without hydration errors.
+   * ---------------------------------------------------------------- */
+  useLayoutEffect(() => {
+    const path = window.location.pathname;
+    if (path.startsWith("/us")) { setCountryState("us"); setReady(true); }
+    else if (path.startsWith("/uk")) { setCountryState("uk"); setReady(true); }
+    else if (path.startsWith("/ca")) { setCountryState("ca"); setReady(true); }
+    else if (path.startsWith("/au")) { setCountryState("au"); setReady(true); }
+  }, []);
 
   /* ----------------------------------------------------------------
    *  Manual selection — called from Navbar / Footer
