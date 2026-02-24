@@ -3,10 +3,6 @@ import { siteUrl } from "@/lib/constants";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-const slugTitleOverrides = {
-  "ap-support": "AP Support",
-  "ar-support": "AR Support",
-};
 
 const services = {
   bookkeeping: {

@@ -7,7 +7,6 @@ import { createContext, useCallback, useContext, useEffect, useLayoutEffect, use
 /* ------------------------------------------------------------------ */
 
 const VALID = ["us", "uk", "au", "ca", "general"];
-const COUNTRY_ROUTES = ["us", "uk", "ca", "au"];
 
 const GEO_MAP = { US: "us", GB: "uk", CA: "ca", AU: "au" };
 
@@ -27,11 +26,6 @@ function resolve(code) {
   return VALID.includes(code) ? code : "general";
 }
 
-/** Extract country code from a pathname like /uk or /us/services */
-function countryFromPath(pathname) {
-  const seg = (pathname || "").split("/")[1]?.toLowerCase();
-  return COUNTRY_ROUTES.includes(seg) ? seg : null;
-}
 
 /** Check if this page load is a direct/manual URL entry (not in-app navigation) */
 function isDirectNavigation() {

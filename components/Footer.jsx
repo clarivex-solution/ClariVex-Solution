@@ -1,12 +1,11 @@
 ﻿"use client";
 
 import { useCountry } from "@/components/CountryProvider";
-import { countries } from "@/lib/countryData";
+import { countries, COUNTRY_ROUTES } from "@/lib/countryData";
 import { Loader2, LocateFixed } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
-const COUNTRY_ROUTES = ["us", "uk", "ca", "au"];
 
 const serviceLinks = [
   { href: "/services/bookkeeping", label: "Bookkeeping" },

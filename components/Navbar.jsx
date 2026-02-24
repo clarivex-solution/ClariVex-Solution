@@ -1,7 +1,7 @@
 "use client";
 
 import { useCountry } from "@/components/CountryProvider";
-import { countries, generalCountry, getCountryByCode } from "@/lib/countryData";
+import { countries, COUNTRY_ROUTES, generalCountry, getCountryByCode } from "@/lib/countryData";
 import logo from "@/public/logo.png";
 import { ChevronDown, Globe, Loader2, LocateFixed, Menu, X } from "lucide-react";
 import Image from "next/image";
@@ -20,7 +20,6 @@ const navLinks = [
 ];
 
 const allOptions = [...countries, generalCountry];
-const COUNTRY_ROUTES = ["us", "uk", "ca", "au"];
 
 function FlagImage({ src, alt, size = 20 }) {
   if (!src) {
