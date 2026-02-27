@@ -8,7 +8,7 @@ export async function POST(request) {
     const { name, email, phone, service, message } = await request.json();
 
     await resend.emails.send({
-      from: "Clarivex Website <onboarding@resend.dev>",
+      from: "Clarivex Solution <onboarding@resend.dev>",
       to: process.env.CONTACT_EMAIL,
       subject: `New Enquiry from ${name} — ${service}`,
       html: `
