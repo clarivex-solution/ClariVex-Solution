@@ -5,11 +5,42 @@ import { useState } from "react";
 
 export default function ContactForm() {
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    // TODO: Replace with actual form submission (API route, third-party service, etc.)
-    setSubmitted(true);
+    setLoading(true);
+    setError("");
+
+    const formData = new FormData(e.target);
+    const data = {
+      name: formData.get("name"),
+      email: formData.get("email"),
+      phone: formData.get("phone"),
+      service: formData.get("service"),
+      message: formData.get("message"),
+    };
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setSubmitted(true);
+      } else {
+        setError("Something went wrong. Please try again.");
+      }
+    } catch (err) {
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   if (submitted) {
@@ -147,10 +178,12 @@ export default function ContactForm() {
 
         <button
           type="submit"
+          disabled={loading}
           className="mt-6 w-full rounded-xl bg-[#5a688e] py-4 text-sm font-semibold tracking-wide text-white transition-all duration-300 hover:bg-[#6aa595] hover:shadow-lg hover:shadow-[#6aa595]/20"
         >
-          Send Message &rarr;
+          {loading ? "Sending…" : "Send Message \u2192"}
         </button>
+        {error && <p className="mt-2 text-center text-xs text-red-500">{error}</p>}
       </form>
     </div>
   );

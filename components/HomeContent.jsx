@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 
 import ContactForm from "@/components/ContactForm";
 import { useCountry } from "@/components/CountryProvider";
@@ -7,16 +8,17 @@ import { AccountingServiceSchema } from "@/components/JsonLd";
 import { getContent } from "@/lib/countryContent";
 import { countries } from "@/lib/countryData";
 import {
-    phoneContacts,
-    processSteps,
-    serviceCards,
-    whyChooseUsCards
+  phoneContacts,
+  processSteps,
+  serviceCards,
+  whyChooseUsCards
 } from "@/lib/siteData";
 import {
-    CheckCircle,
-    Mail,
-    MapPin,
-    Phone,
+  CheckCircle,
+  Clipboard,
+  Mail,
+  MapPin,
+  Phone,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -24,6 +26,14 @@ import Link from "next/link";
 export default function HomeContent() {
   const { country, ready } = useCountry();
   const content = getContent(country);
+
+  const [emailCopied, setEmailCopied] = useState(false);
+
+  function handleCopyEmail() {
+    navigator.clipboard.writeText(content.contactEmail);
+    setEmailCopied(true);
+    setTimeout(() => setEmailCopied(false), 2000);
+  }
 
   return (
     <main>
@@ -129,16 +139,18 @@ export default function HomeContent() {
           </h2>
           <div className="mt-12 grid gap-6 md:grid-cols-2 lg:mt-20 lg:grid-cols-3">
             {serviceCards.map((service) => (
-              <article key={service.title} className="group cursor-pointer rounded-xl border border-slate-200 bg-white p-8 transition-all duration-300 hover:-translate-y-1 hover:border-[#5a688e]/40 hover:shadow-xl">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#5a688e]/10 text-[#5a688e] transition-colors duration-300 group-hover:bg-[#5a688e] group-hover:text-white">
-                  <service.icon className="h-5 w-5" />
-                </div>
-                <h3 className="mt-6 text-lg font-semibold text-[#1a1a2e]">{service.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-slate-500">{service.description}</p>
-                <Link href={service.href} className="mt-6 inline-block text-sm font-medium text-[#5a688e] transition-colors hover:text-[#6aa595]">
-                  Learn More &rarr;
-                </Link>
-              </article>
+              <Link key={service.title} href={service.href}>
+                <article className="group cursor-pointer rounded-xl border border-slate-200 bg-white p-8 transition-all duration-300 hover:-translate-y-1 hover:border-[#5a688e]/40 hover:shadow-xl">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#5a688e]/10 text-[#5a688e] transition-colors duration-300 group-hover:bg-[#5a688e] group-hover:text-white">
+                    <service.icon className="h-5 w-5" />
+                  </div>
+                  <h3 className="mt-6 text-lg font-semibold text-[#1a1a2e]">{service.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-slate-500">{service.description}</p>
+                  <span className="mt-6 inline-block text-sm font-medium text-[#5a688e] transition-colors group-hover:text-[#6aa595]">
+                    Learn More &rarr;
+                  </span>
+                </article>
+              </Link>
             ))}
           </div>
         </div>
@@ -267,15 +279,34 @@ export default function HomeContent() {
               <div className="space-y-6">
                 <div className="flex items-start gap-3">
                   <MapPin className="h-5 w-5 shrink-0 text-[#6aa595]" />
-                  <p className="text-sm leading-relaxed text-[#5a6478]">
+                  <Link
+                    href="https://maps.google.com/?q=421+Shivalik+Shilp+Iscon+Cross+Road+SG+Highway+Ahmedabad+380058"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm leading-relaxed text-[#5a6478] transition-colors hover:text-[#6aa595] hover:underline"
+                  >
                     421, Shivalik Shilp, Iscon Cross Road,<br />S.G. Highway, Ahmedabad &ndash; 380058
-                  </p>
+                  </Link>
                 </div>
                 <div className="flex items-start gap-3">
                   <Mail className="h-5 w-5 shrink-0 text-[#6aa595]" />
-                  <a href={`mailto:${content.contactEmail}`} className="text-sm text-[#5a6478] transition-colors hover:text-[#1a1a2e]">
-                    {content.contactEmail}
-                  </a>
+                  <div className="flex items-center gap-2">
+                    <a
+                      href={`mailto:${content.contactEmail}`}
+                      className="text-sm text-[#5a6478] transition-colors hover:text-[#6aa595] hover:underline"
+                    >
+                      {content.contactEmail}
+                    </a>
+                    <Clipboard
+                      onClick={handleCopyEmail}
+                      className="h-3.5 w-3.5 text-[#5a6478]/50 hover:text-[#6aa595] cursor-pointer transition-colors"
+                    />
+                    {emailCopied && (
+                      <span className="text-[10px] font-medium text-[#6aa595] bg-[#6aa595]/10 px-2 py-0.5 rounded-full">
+                        Copied!
+                      </span>
+                    )}
+                  </div>
                 </div>
               </div>
               <div className="my-6 h-px w-full bg-[#e2e4e9]" />
