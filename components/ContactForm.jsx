@@ -7,6 +7,7 @@ export default function ContactForm() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [messageLength, setMessageLength] = useState(0);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -175,9 +176,14 @@ export default function ContactForm() {
             name="message"
             rows={5}
             required
+            minLength={10}
+            onChange={(e) => setMessageLength(e.target.value.length)}
             className={formFieldClassName}
             placeholder="Tell us about your current finance operations and goals."
           />
+          <p className={`mt-1 text-[10px] text-right ${messageLength > 0 && messageLength < 10 ? "text-red-400" : messageLength >= 10 ? "text-[#6aa595]" : "text-[#5a6478]/60"}`}>
+            {messageLength}/10 minimum characters
+          </p>
         </div>
 
         <button
