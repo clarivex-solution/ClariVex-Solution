@@ -2,10 +2,27 @@ import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
+const rateLimitMap = new Map();
 
 export async function POST(request) {
+  const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
+  const now = Date.now();
+  let timestamps = rateLimitMap.get(ip) || [];
+  timestamps = timestamps.filter(t => now - t < 60 * 60 * 1000);
+
+  if (timestamps.length >= 3) {
+    return NextResponse.json({ success: false, error: "Too many requests. Please try again later." }, { status: 429 });
+  }
+
+  timestamps.push(now);
+  rateLimitMap.set(ip, timestamps);
+
   try {
-    const { name, email, phone, service, message } = await request.json();
+    const { name, email, phone, service, message, website } = await request.json();
+
+    if (website) {
+      return NextResponse.json({ success: true }, { status: 200 });
+    }
 
     await resend.emails.send({
       from: "Clarivex Solution <onboarding@resend.dev>",

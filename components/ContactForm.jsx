@@ -20,6 +20,7 @@ export default function ContactForm() {
       phone: formData.get("phone"),
       service: formData.get("service"),
       message: formData.get("message"),
+      website: formData.get("website"),
     };
 
     try {
@@ -31,7 +32,9 @@ export default function ContactForm() {
 
       const result = await response.json();
 
-      if (result.success) {
+      if (response.status === 429) {
+        setError("Too many submissions. Please wait an hour before trying again.");
+      } else if (result.success) {
         setSubmitted(true);
       } else {
         setError("Something went wrong. Please try again.");
@@ -76,6 +79,7 @@ export default function ContactForm() {
       </p>
 
       <form className="space-y-4" onSubmit={handleSubmit}>
+        <input name="website" type="text" tabIndex={-1} autoComplete="off" style={{ display: 'none' }} />
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label
