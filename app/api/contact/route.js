@@ -27,6 +27,7 @@ export async function POST(request) {
     await resend.emails.send({
       from: "Clarivex Solution <onboarding@resend.dev>",
       to: process.env.CONTACT_EMAIL,
+      reply_to: email,
       subject: `New Enquiry from ${name} — ${service}`,
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
