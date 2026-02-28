@@ -1,12 +1,42 @@
 "use client";
 
 import { useCountry } from "@/components/CountryProvider";
-import { newsPosts } from "@/lib/newsData";
 import Link from "next/link";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export default function NewsPageClient() {
   const { country } = useCountry();
+  const [newsPosts, setNewsPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    async function fetchNews() {
+      try {
+        const response = await fetch("/api/news");
+        const data = await response.json();
+
+        if (isMounted) {
+          setNewsPosts(Array.isArray(data) ? data : []);
+        }
+      } catch {
+        if (isMounted) {
+          setNewsPosts([]);
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    }
+
+    fetchNews();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const activeNews = useMemo(() => {
     if (country === "general") {
@@ -14,7 +44,7 @@ export default function NewsPageClient() {
     }
     const code = country.toUpperCase();
     return newsPosts.filter((n) => n.country === code);
-  }, [country]);
+  }, [country, newsPosts]);
 
   return (
     <main className="bg-white text-[#1a1a2e]">
@@ -45,7 +75,13 @@ export default function NewsPageClient() {
             {country === "general" ? "Global News" : `${country.toUpperCase()} News`}
           </p>
 
-          {activeNews.length === 0 ? (
+          {loading ? (
+            <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {[1, 2, 3].map((item) => (
+                <div key={item} className="animate-pulse bg-[#e2e4e9] rounded-xl h-32" />
+              ))}
+            </div>
+          ) : activeNews.length === 0 ? (
             <div className="mt-8 rounded-xl border border-[#e2e4e9] bg-[#f8f9fa] p-8 text-[#5a6478]">
               No news available for this region yet.
             </div>

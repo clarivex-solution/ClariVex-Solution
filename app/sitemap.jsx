@@ -1,5 +1,4 @@
 import { siteUrl } from "@/lib/constants";
-import { newsPosts as newsData } from "@/lib/newsData";
 import { prisma } from "@/lib/prisma";
 
 const services = [
@@ -19,6 +18,9 @@ export default async function sitemap() {
   const blogs = await prisma.blog.findMany({
     where: { status: "published" },
     select: { slug: true, updatedAt: true },
+  });
+  const newsArticles = await prisma.newsArticle.findMany({
+    select: { slug: true, publishedAt: true },
   });
 
   const staticRoutes = [
@@ -45,9 +47,9 @@ export default async function sitemap() {
     changeFrequency: "monthly",
   }));
 
-  const newsRoutes = newsData.map((post) => ({
-    url: `${siteUrl}/news/${post.slug}`,
-    lastModified: post.isoDate || now,
+  const newsRoutes = newsArticles.map((article) => ({
+    url: `${siteUrl}/news/${article.slug}`,
+    lastModified: article.publishedAt || now,
     priority: 0.6,
     changeFrequency: "monthly",
   }));

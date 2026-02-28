@@ -1,18 +1,16 @@
+export const dynamic = 'force-dynamic';
+
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { NewsArticleSchema } from "@/components/JsonLd";
 import { siteUrl } from "@/lib/constants";
-import { newsPosts } from "@/lib/newsData";
+import { prisma } from "@/lib/prisma";
 import { Calendar, User } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-export function generateStaticParams() {
-  return newsPosts.map((post) => ({ slug: post.slug }));
-}
-
 export async function generateMetadata({ params }) {
   const { slug } = await params;
-  const post = newsPosts.find((p) => p.slug === slug);
+  const post = await prisma.newsArticle.findUnique({ where: { slug } });
 
   if (!post) {
     return { title: "News Not Found" };
@@ -29,7 +27,7 @@ export async function generateMetadata({ params }) {
       description: post.summary,
       url: `${siteUrl}/news/${post.slug}`,
       type: "article",
-      publishedTime: post.isoDate,
+      publishedTime: post.publishedAt?.toISOString(),
       siteName: "ClariVex Solutions",
       images: [{ url: `${siteUrl}/og-image.png`, width: 1200, height: 630 }],
     },
@@ -43,13 +41,29 @@ export async function generateMetadata({ params }) {
 
 export default async function NewsArticlePage({ params }) {
   const { slug } = await params;
-  const post = newsPosts.find((p) => p.slug === slug);
+  const dbPost = await prisma.newsArticle.findUnique({ where: { slug } });
 
-  if (!post) {
+  if (!dbPost) {
     notFound();
   }
 
-  const moreNews = newsPosts.filter((item) => item.slug !== post.slug).slice(0, 3);
+  const post = {
+    ...dbPost,
+    isoDate: dbPost.publishedAt ? dbPost.publishedAt.toISOString() : undefined,
+    date: dbPost.publishedAt
+      ? new Date(dbPost.publishedAt).toLocaleDateString("en-US", {
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+        })
+      : "",
+  };
+
+  const moreNews = await prisma.newsArticle.findMany({
+    where: { NOT: { slug } },
+    take: 3,
+    select: { slug: true, title: true },
+  });
 
   return (
     <main className="bg-[#0d0f14] py-16 sm:py-20 lg:py-32 text-white">
@@ -86,28 +100,17 @@ export default async function NewsArticlePage({ params }) {
             </header>
 
             <div className="mx-auto mt-8 max-w-3xl space-y-5 leading-relaxed text-[#8892a4]">
-              <p>
-                Regulatory updates are most useful when translated into practical operating
-                steps. Finance teams should evaluate whether policy changes impact payroll
-                configuration, filing schedules, or transaction coding logic.
-              </p>
-              <h2 className="font-[family-name:var(--font-playfair)] text-2xl text-white">
-                What This Means for Your Business
-              </h2>
-              <p>
-                A structured response plan can reduce compliance risk. Assign ownership for
-                reviewing technical guidance, update internal checklists, and align
-                timelines across accounting, tax, and reporting workflows.
-              </p>
-              <h2 className="font-[family-name:var(--font-playfair)] text-2xl text-white">
-                How ClariVex Can Help
-              </h2>
-              <p>
-                Businesses that monitor updates proactively avoid last-minute filing issues
-                and can protect reporting accuracy. ClariVex tracks country-level changes
-                and helps teams operationalize them through clear controls, updated
-                documentation, and routine monitoring.
-              </p>
+              <p>{post.summary}</p>
+              {post.url && (
+                <a
+                  href={post.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#5a688e] px-6 py-2.5 text-sm text-white hover:bg-[#6aa595] transition-colors"
+                >
+                  {"Read Full Article \u2192"}
+                </a>
+              )}
             </div>
           </article>
 
