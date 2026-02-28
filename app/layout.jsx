@@ -1,6 +1,5 @@
 import { CountryProvider } from "@/components/CountryProvider";
-import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
+import ClientLayout from "@/components/ClientLayout";
 import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 
@@ -32,9 +31,9 @@ export default function RootLayout({ children }) {
     >
       <body className="bg-white font-[family-name:var(--font-inter)] text-[#1a1a2e]">
         <CountryProvider>
-          <Navbar />
-          {children}
-          <Footer />
+          <ClientLayout>
+            {children}
+          </ClientLayout>
         </CountryProvider>
       </body>
     </html>

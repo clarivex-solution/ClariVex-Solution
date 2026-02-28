@@ -1,3 +1,4 @@
+export const metadata = { title: 'Admin Panel | ClariVex' }
 import AdminLogoutButton from '@/components/admin/AdminLogoutButton'
 import Link from 'next/link'
 
