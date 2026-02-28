@@ -1,6 +1,5 @@
-export const dynamic = 'force-dynamic'
-import { prisma } from '@/lib/prisma'
-import Link from 'next/link'
+import { prisma } from '@/lib/prisma';
+import Link from 'next/link';
 
 export default async function AdminDashboard() {
   const [totalBlogs, publishedBlogs, draftBlogs, totalNews] = await Promise.all([
