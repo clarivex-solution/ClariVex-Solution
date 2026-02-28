@@ -1,6 +1,6 @@
-import { blogPosts } from "@/lib/blogData";
 import { siteUrl } from "@/lib/constants";
-import { newsPosts } from "@/lib/newsData";
+import { newsPosts as newsData } from "@/lib/newsData";
+import { prisma } from "@/lib/prisma";
 
 const services = [
   "bookkeeping",
@@ -14,8 +14,12 @@ const services = [
   "data-security",
 ];
 
-export default function sitemap() {
+export default async function sitemap() {
   const now = new Date().toISOString();
+  const blogs = await prisma.blog.findMany({
+    where: { status: "published" },
+    select: { slug: true, updatedAt: true },
+  });
 
   const staticRoutes = [
     { url: siteUrl, lastModified: now, priority: 1.0, changeFrequency: "weekly" },
@@ -34,14 +38,14 @@ export default function sitemap() {
     changeFrequency: "monthly",
   }));
 
-  const blogRoutes = blogPosts.map((post) => ({
-    url: `${siteUrl}/blog/${post.slug}`,
-    lastModified: post.isoDate || now,
+  const blogRoutes = blogs.map((blog) => ({
+    url: `${siteUrl}/blog/${blog.slug}`,
+    lastModified: blog.updatedAt || now,
     priority: 0.6,
     changeFrequency: "monthly",
   }));
 
-  const newsRoutes = newsPosts.map((post) => ({
+  const newsRoutes = newsData.map((post) => ({
     url: `${siteUrl}/news/${post.slug}`,
     lastModified: post.isoDate || now,
     priority: 0.6,

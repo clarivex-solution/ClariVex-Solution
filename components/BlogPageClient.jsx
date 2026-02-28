@@ -1,10 +1,9 @@
 "use client";
 
 import { useCountry } from "@/components/CountryProvider";
-import { blogPosts } from "@/lib/blogData";
 import { countries } from "@/lib/countryData";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const categoryOptions = [
   "All",
@@ -31,6 +30,8 @@ function filterPillClass(isActive) {
 export default function BlogPageClient() {
   const { country } = useCountry();
   const [activeCategory, setActiveCategory] = useState("All");
+  const [blogPosts, setBlogPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   // Default country filter: when a specific country is active, show that + General
   // When general is active, show all
@@ -43,6 +44,35 @@ export default function BlogPageClient() {
     setPrevCountry(country);
     setActiveCountryFilter(country === "general" ? "all" : country);
   }
+
+  useEffect(() => {
+    let isMounted = true;
+
+    async function fetchBlogs() {
+      try {
+        const response = await fetch("/api/blog");
+        const data = await response.json();
+
+        if (isMounted) {
+          setBlogPosts(Array.isArray(data) ? data : []);
+        }
+      } catch {
+        if (isMounted) {
+          setBlogPosts([]);
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    }
+
+    fetchBlogs();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const filteredPosts = useMemo(() => {
     return blogPosts.filter((post) => {
@@ -64,7 +94,7 @@ export default function BlogPageClient() {
 
       return categoryMatch && countryMatch;
     });
-  }, [activeCategory, activeCountryFilter]);
+  }, [blogPosts, activeCategory, activeCountryFilter]);
 
   return (
     <main className="bg-white text-[#1a1a2e]">
@@ -139,7 +169,13 @@ export default function BlogPageClient() {
           <div className="mb-6 h-px w-16 bg-[#c9a96e]" />
           <p className="text-xs uppercase tracking-[0.2em] text-[#6aa595]">Latest Articles</p>
 
-          {filteredPosts.length === 0 ? (
+          {loading ? (
+            <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {[1, 2, 3].map((item) => (
+                <div key={item} className="animate-pulse bg-[#e2e4e9] rounded-xl h-48" />
+              ))}
+            </div>
+          ) : filteredPosts.length === 0 ? (
             <div className="mt-8 rounded-xl border border-[#e2e4e9] bg-[#f8f9fa] p-8 text-[#5a6478]">
               No posts found for the selected filters.
             </div>

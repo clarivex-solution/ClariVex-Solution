@@ -1,18 +1,18 @@
+export const dynamic = "force-dynamic";
+
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { BlogPostingSchema } from "@/components/JsonLd";
-import { blogPosts } from "@/lib/blogData";
 import { siteUrl } from "@/lib/constants";
+import { prisma } from "@/lib/prisma";
 import { Calendar, User } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-export function generateStaticParams() {
-  return blogPosts.map((post) => ({ slug: post.slug }));
-}
-
 export async function generateMetadata({ params }) {
   const { slug } = await params;
-  const post = blogPosts.find((p) => p.slug === slug);
+  const post = await prisma.blog.findFirst({
+    where: { slug, status: "published" },
+  });
 
   if (!post) {
     return { title: "Post Not Found" };
@@ -29,7 +29,7 @@ export async function generateMetadata({ params }) {
       description: post.excerpt,
       url: `${siteUrl}/blog/${post.slug}`,
       type: "article",
-      publishedTime: post.isoDate,
+      publishedTime: post.publishedAt?.toISOString(),
       siteName: "ClariVex Solutions",
       images: [{ url: `${siteUrl}/og-image.png`, width: 1200, height: 630 }],
     },
@@ -43,13 +43,31 @@ export async function generateMetadata({ params }) {
 
 export default async function BlogArticlePage({ params }) {
   const { slug } = await params;
-  const post = blogPosts.find((p) => p.slug === slug);
+  const dbPost = await prisma.blog.findFirst({
+    where: { slug, status: "published" },
+  });
 
-  if (!post) {
+  if (!dbPost) {
     notFound();
   }
 
-  const relatedPosts = blogPosts.filter((item) => item.slug !== post.slug).slice(0, 3);
+  const post = {
+    ...dbPost,
+    isoDate: dbPost.publishedAt ? dbPost.publishedAt.toISOString() : undefined,
+    date: dbPost.publishedAt
+      ? new Date(dbPost.publishedAt).toLocaleDateString("en-US", {
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+        })
+      : "",
+  };
+
+  const relatedPosts = await prisma.blog.findMany({
+    where: { status: "published", NOT: { slug } },
+    take: 3,
+    select: { slug: true, title: true },
+  });
 
   return (
     <main className="bg-[#0d0f14] py-16 sm:py-20 lg:py-32 text-white">
@@ -85,38 +103,10 @@ export default async function BlogArticlePage({ params }) {
               </div>
             </header>
 
-            <div className="mx-auto mt-8 max-w-3xl space-y-5 leading-relaxed text-[#8892a4]">
-              <p>
-                Consistent accounting routines are one of the fastest ways for leadership
-                teams to improve confidence in decision-making. A reliable reporting cycle
-                reduces surprises and helps finance teams focus on analysis instead of
-                rework.
-              </p>
-              <h2 className="font-[family-name:var(--font-playfair)] text-2xl text-white">
-                Building Reliable Financial Workflows
-              </h2>
-              <p>
-                Start by standardizing transaction coding, reconciliation checkpoints, and
-                month-end responsibilities. When every step has clear ownership, teams can
-                close faster and maintain cleaner books throughout the year.
-              </p>
-              <h2 className="font-[family-name:var(--font-playfair)] text-2xl text-white">
-                Compliance and Record-Keeping
-              </h2>
-              <p>
-                Compliance readiness improves when documentation is organized in real time.
-                Keeping payroll records, tax support files, and audit trails updated each
-                month minimizes risk and reduces pressure during filing deadlines.
-              </p>
-              <h2 className="font-[family-name:var(--font-playfair)] text-2xl text-white">
-                Turning Data Into Decisions
-              </h2>
-              <p>
-                The strongest finance operations pair technical accuracy with actionable
-                management insights. ClariVex frameworks are built to turn accounting data
-                into practical decisions that support sustainable growth.
-              </p>
-            </div>
+            <div
+              dangerouslySetInnerHTML={{ __html: post.content }}
+              className="mx-auto mt-8 max-w-3xl prose prose-invert prose-headings:font-[family-name:var(--font-playfair)] prose-headings:text-white prose-p:text-[#8892a4] prose-p:leading-relaxed max-w-none"
+            />
           </article>
 
           <aside className="hidden lg:block">
