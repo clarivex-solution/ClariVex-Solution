@@ -8,6 +8,9 @@ export default function NewsPageClient() {
   const { country } = useCountry();
   const [newsPosts, setNewsPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedCountry, setSelectedCountry] = useState("all");
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [visibleCount, setVisibleCount] = useState(9);
 
   useEffect(() => {
     let isMounted = true;
@@ -38,13 +41,23 @@ export default function NewsPageClient() {
     };
   }, []);
 
-  const activeNews = useMemo(() => {
-    if (country === "general") {
-      return newsPosts; // Show all news in general mode
-    }
-    const code = country.toUpperCase();
-    return newsPosts.filter((n) => n.country === code);
-  }, [country, newsPosts]);
+  useEffect(() => {
+    if (country && country !== "general") setSelectedCountry(country.toUpperCase());
+  }, [country]);
+
+  const filteredNews = useMemo(() => {
+    return newsPosts.filter((item) => {
+      const countryOk =
+        selectedCountry === "all" || item.country === selectedCountry || item.country === "General";
+      const catOk = selectedCategory === "All" || item.category === selectedCategory;
+      return countryOk && catOk;
+    });
+  }, [newsPosts, selectedCountry, selectedCategory]);
+
+  useEffect(() => setVisibleCount(9), [selectedCountry, selectedCategory]);
+
+  const visibleNews = filteredNews.slice(0, visibleCount);
+  const hasMore = visibleCount < filteredNews.length;
 
   return (
     <main className="bg-white text-[#1a1a2e]">
@@ -64,6 +77,59 @@ export default function NewsPageClient() {
             {country === "general"
               ? "Accounting regulations and tax updates across all markets."
               : `Latest accounting and tax updates for ${country.toUpperCase()} businesses.`}
+          </p>
+        </div>
+      </section>
+
+      <section className="border-y border-[#e2e4e9] bg-[#f8f9fa] py-10">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
+          <div className="mb-5">
+            <p className="mb-3 text-xs uppercase tracking-[0.16em] text-[#5a6478]">Country</p>
+            <div className="flex flex-wrap gap-2">
+              {[
+                { key: "all", label: "All" },
+                { key: "US", label: "US" },
+                { key: "UK", label: "UK" },
+                { key: "AU", label: "AU" },
+                { key: "CA", label: "CA" },
+                { key: "General", label: "Global" },
+              ].map((opt) => (
+                <button
+                  key={opt.key}
+                  onClick={() => setSelectedCountry(opt.key)}
+                  className={`rounded-full border px-5 py-2 text-xs transition-colors ${
+                    selectedCountry === opt.key
+                      ? "bg-[#5a688e] text-white border-[#5a688e]"
+                      : "bg-white border-[#e2e4e9] text-[#5a6478] hover:border-[#5a688e]/40"
+                  }`}
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <p className="mb-3 text-xs uppercase tracking-[0.16em] text-[#5a6478]">Category</p>
+            <div className="flex flex-wrap gap-2">
+              {["All", "Tax Compliance", "Payroll", "Regulation Update", "Bookkeeping", "Advisory"].map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setSelectedCategory(cat)}
+                  className={`rounded-full border px-5 py-2 text-xs transition-colors ${
+                    selectedCategory === cat
+                      ? "bg-[#5a688e] text-white border-[#5a688e]"
+                      : "bg-white border-[#e2e4e9] text-[#5a6478] hover:border-[#5a688e]/40"
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <p className="mt-4 text-xs text-[#8892a4]">
+            Showing {Math.min(visibleCount, filteredNews.length)} of {filteredNews.length} articles
           </p>
         </div>
       </section>
@@ -92,36 +158,66 @@ export default function NewsPageClient() {
                 </div>
               ))}
             </div>
-          ) : activeNews.length === 0 ? (
+          ) : filteredNews.length === 0 ? (
             <div className="mt-8 rounded-xl border border-[#e2e4e9] bg-[#f8f9fa] p-8 text-[#5a6478]">
               No news available for this region yet.
             </div>
           ) : (
-            <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {activeNews.map((item) => (
-                <article
-                  key={item.slug}
-                  className="rounded-xl border border-[#e2e4e9] bg-[#f8f9fa] p-6 transition-all hover:border-[#5a688e]/40 hover:shadow-xl"
-                >
-                  <div className="flex items-center justify-between gap-3">
-                    <span className="rounded-full bg-[#5a688e]/10 px-3 py-1 text-xs text-[#6aa595]">
-                      {item.source}
-                    </span>
-                    <span className="text-xs text-[#5a6478]">{item.date}</span>
-                  </div>
-                  <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-xl font-semibold text-[#1a1a2e]">
-                    {item.title}
-                  </h2>
-                  <p className="mt-3 text-sm leading-relaxed text-[#5a6478]">{item.summary}</p>
-                  <Link
-                    href={`/news/${item.slug}`}
-                    className="mt-6 inline-flex text-sm text-[#6aa595] transition-colors hover:text-[#1a1a2e]"
+            <>
+              <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {visibleNews.map((item) => (
+                  <article
+                    key={item.slug}
+                    className="rounded-xl border border-[#e2e4e9] bg-[#f8f9fa] p-6 transition-all hover:border-[#5a688e]/40 hover:shadow-xl"
                   >
-                    Read More &rarr;
-                  </Link>
-                </article>
-              ))}
-            </div>
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="rounded-full bg-[#5a688e]/10 px-3 py-1 text-xs text-[#6aa595]">
+                          {item.source}
+                        </span>
+                        <span className="rounded-full bg-[#c9a96e]/10 px-3 py-1 text-xs text-[#c9a96e]">
+                          {item.category}
+                        </span>
+                      </div>
+                      <span className="text-xs text-[#5a6478]">{item.date}</span>
+                    </div>
+                    <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-xl font-semibold text-[#1a1a2e]">
+                      {item.title}
+                    </h2>
+                    <p className="mt-3 text-sm leading-relaxed text-[#5a6478]">{item.summary}</p>
+                    <div className="mt-6 flex items-center">
+                      <Link
+                        href={`/news/${item.slug}`}
+                        className="inline-flex text-sm text-[#6aa595] transition-colors hover:text-[#1a1a2e]"
+                      >
+                        Read More &rarr;
+                      </Link>
+                      {item.url && (
+                        <a
+                          href={item.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="ml-4 text-xs text-[#8892a4] hover:text-[#c9a96e] transition-colors"
+                        >
+                          Source →
+                        </a>
+                      )}
+                    </div>
+                  </article>
+                ))}
+              </div>
+
+              {hasMore && (
+                <div className="mt-10 text-center">
+                  <button
+                    onClick={() => setVisibleCount((v) => v + 9)}
+                    className="rounded-full border border-[#5a688e] px-8 py-3 text-sm font-medium text-[#5a688e] transition-colors hover:bg-[#5a688e] hover:text-white"
+                  >
+                    Load More
+                  </button>
+                </div>
+              )}
+            </>
           )}
 
           <div className="mt-14 rounded-2xl border border-[#e2e4e9] bg-[#f8f9fa] p-12 text-center">

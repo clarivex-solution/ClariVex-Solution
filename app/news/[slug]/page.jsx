@@ -4,7 +4,6 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import { NewsArticleSchema } from "@/components/JsonLd";
 import { siteUrl } from "@/lib/constants";
 import { prisma } from "@/lib/prisma";
-import { Calendar, User } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -81,26 +80,44 @@ export default async function NewsArticlePage({ params }) {
           <article>
             <header className="mx-auto max-w-3xl">
               <div className="mb-4 h-px w-12 bg-[#c9a96e]" />
-              <span className="rounded-full bg-[#5a688e]/10 px-3 py-1 text-xs text-[#6aa595]">
-                {post.category}
-              </span>
+              <div className="flex items-center gap-2">
+                <span className="rounded-full bg-[#5a688e]/10 px-3 py-1 text-xs text-[#6aa595]">
+                  {post.category}
+                </span>
+                {post.country && post.country !== "All" && post.country !== "General" && (
+                  <span className="rounded-full bg-[#5a688e]/10 px-3 py-1 text-xs text-[#5a688e]">
+                    {post.country}
+                  </span>
+                )}
+              </div>
               <h1 className="mt-5 font-[family-name:var(--font-playfair)] text-4xl text-white md:text-5xl">
                 {post.title}
               </h1>
-              <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-[#8892a4]">
-                <span className="inline-flex items-center gap-1.5">
-                  <User className="h-4 w-4" />
-                  {post.source}
-                </span>
-                <time dateTime={post.isoDate} className="inline-flex items-center gap-1.5">
-                  <Calendar className="h-4 w-4" />
-                  {post.date}
-                </time>
+
+              <div className="mt-6 flex flex-wrap items-center gap-6 border-b border-[#1e2330] pb-6">
+                <div>
+                  <p className="text-xs text-[#5a688e] uppercase tracking-wider mb-1">Source</p>
+                  <p className="text-base font-medium text-white flex items-center gap-2">
+                    {post.source}
+                  </p>
+                </div>
+                <div className="w-px h-8 bg-[#1e2330]" />
+                <div>
+                  <p className="text-xs text-[#5a688e] uppercase tracking-wider mb-1">Published</p>
+                  <time dateTime={post.isoDate} className="text-base text-white flex items-center gap-2">
+                    {post.date}
+                  </time>
+                </div>
               </div>
             </header>
 
             <div className="mx-auto mt-8 max-w-3xl space-y-5 leading-relaxed text-[#8892a4]">
-              <p>{post.summary}</p>
+              <p className="text-lg text-white/90 leading-relaxed font-medium">{post.summary}</p>
+
+              <p className="mt-4 text-xs text-[#8892a4] italic">
+                This article is sourced from {post.source}. Click below to read the complete article on their official website.
+              </p>
+
               {post.url && (
                 <a
                   href={post.url}

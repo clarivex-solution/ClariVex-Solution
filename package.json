@@ -7,7 +7,8 @@
     "build": "prisma generate && next build",
     "start": "next start",
     "seed": "node prisma/seed.js",
-    "seed-blogs": "node prisma/seed-blogs.js"
+    "seed-blogs": "node prisma/seed-blogs.js",
+    "seed-news": "node prisma/seed-news.js"
   },
   "dependencies": {
     "@next/env": "^16.1.6",
