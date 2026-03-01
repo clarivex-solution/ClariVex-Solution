@@ -1,13 +1,6 @@
 "use client"
 
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-} from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog'
 import Link from 'next/link'
 import { useCallback, useEffect, useState } from 'react'
 import { toast } from 'sonner'
@@ -49,9 +42,7 @@ export default function AdminBlogPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
   const [deletingId, setDeletingId] = useState(null)
-
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
-  const [itemToDelete, setItemToDelete] = useState(null)
+  const [deleteTarget, setDeleteTarget] = useState(null)
 
   const fetchBlogs = useCallback(async () => {
     setIsLoading(true)
@@ -77,17 +68,7 @@ export default function AdminBlogPage() {
     fetchBlogs()
   }, [fetchBlogs])
 
-  function handleDeleteClick(blogId) {
-    setItemToDelete(blogId)
-    setDeleteDialogOpen(true)
-  }
-
-  async function confirmDelete() {
-    if (!itemToDelete) return
-    const blogId = itemToDelete
-    setDeleteDialogOpen(false)
-    setItemToDelete(null)
-
+  async function handleDelete(blogId) {
     setDeletingId(blogId)
     setError('')
 
@@ -201,7 +182,7 @@ export default function AdminBlogPage() {
                         </Link>
                         <button
                           type="button"
-                          onClick={() => handleDeleteClick(blog.id)}
+                          onClick={() => setDeleteTarget(blog)}
                           disabled={deletingId === blog.id}
                           className="px-3 py-1.5 rounded-md border border-red-900/40 text-xs font-medium text-red-300 hover:bg-red-900/20 disabled:opacity-60 disabled:cursor-not-allowed transition-colors duration-300"
                         >
@@ -216,25 +197,19 @@ export default function AdminBlogPage() {
         </table>
       </div>
 
-      <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
-        <DialogContent>
+      <Dialog open={deleteTarget !== null} onOpenChange={(open) => { if (!open) setDeleteTarget(null) }}>
+        <DialogContent className="bg-[#13161e] border border-[#1e2330] text-white max-w-md">
           <DialogHeader>
-            <DialogTitle>Are you sure?</DialogTitle>
-            <DialogDescription>
-              Are you sure you want to delete this item? This action cannot be undone.
+            <DialogTitle className="text-white">Confirm Delete</DialogTitle>
+            <DialogDescription className="text-[#8892a4]">
+              Are you sure you want to delete "{deleteTarget?.title}"? This cannot be undone.
             </DialogDescription>
           </DialogHeader>
-          <DialogFooter>
-            <button
-              onClick={() => setDeleteDialogOpen(false)}
-              className="px-4 py-2 rounded-md border text-sm font-medium hover:bg-gray-100 dark:hover:bg-[#1e2330]"
-            >
+          <DialogFooter className="gap-2 sm:gap-2">
+            <button onClick={() => setDeleteTarget(null)} className="rounded-lg border border-[#1e2330] px-4 py-2 text-sm font-medium text-[#8892a4] hover:bg-[#1e2330] transition-colors">
               Cancel
             </button>
-            <button
-              onClick={confirmDelete}
-              className="px-4 py-2 rounded-md text-sm font-medium bg-red-500 hover:bg-red-600 text-white"
-            >
+            <button onClick={() => { handleDelete(deleteTarget.id); setDeleteTarget(null) }} className="rounded-lg bg-red-500 hover:bg-red-600 px-4 py-2 text-sm font-medium text-white transition-colors">
               Delete
             </button>
           </DialogFooter>

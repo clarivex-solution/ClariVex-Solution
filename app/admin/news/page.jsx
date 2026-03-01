@@ -1,13 +1,6 @@
 "use client";
 
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -19,9 +12,7 @@ export default function AdminNewsPage() {
   const [countryFilter, setCountryFilter] = useState("All");
   const [typeFilter, setTypeFilter] = useState("All");
   const router = useRouter();
-
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [itemToDelete, setItemToDelete] = useState(null);
+  const [deleteTarget, setDeleteTarget] = useState(null);
 
   const fetchNews = async () => {
     setLoading(true);
@@ -42,17 +33,7 @@ export default function AdminNewsPage() {
     fetchNews();
   }, []);
 
-  const handleDeleteClick = (id) => {
-    setItemToDelete(id);
-    setDeleteDialogOpen(true);
-  };
-
-  const confirmDelete = async () => {
-    if (!itemToDelete) return;
-    const id = itemToDelete;
-    setDeleteDialogOpen(false);
-    setItemToDelete(null);
-
+  const handleDelete = async (id) => {
     try {
       const res = await fetch(`/api/admin/news/${id}`, {
         method: "DELETE",
@@ -184,7 +165,7 @@ export default function AdminNewsPage() {
                           </Link>
                         )}
                         <button
-                          onClick={() => handleDeleteClick(item._id || item.id)}
+                          onClick={() => setDeleteTarget(item)}
                           className="text-red-400 hover:text-red-300 transition"
                         >
                           Delete
@@ -199,25 +180,19 @@ export default function AdminNewsPage() {
         </div>
       )}
 
-      <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
-        <DialogContent>
+      <Dialog open={deleteTarget !== null} onOpenChange={(open) => { if (!open) setDeleteTarget(null) }}>
+        <DialogContent className="bg-[#13161e] border border-[#1e2330] text-white max-w-md">
           <DialogHeader>
-            <DialogTitle>Are you sure?</DialogTitle>
-            <DialogDescription>
-              Are you sure you want to delete this item? This action cannot be undone.
+            <DialogTitle className="text-white">Confirm Delete</DialogTitle>
+            <DialogDescription className="text-[#8892a4]">
+              Are you sure you want to delete "{deleteTarget?.title}"? This cannot be undone.
             </DialogDescription>
           </DialogHeader>
-          <DialogFooter>
-            <button
-              onClick={() => setDeleteDialogOpen(false)}
-              className="px-4 py-2 rounded-md border border-[#1e2330] text-sm font-medium hover:bg-[#1e2330] transition-colors"
-            >
+          <DialogFooter className="gap-2 sm:gap-2">
+            <button onClick={() => setDeleteTarget(null)} className="rounded-lg border border-[#1e2330] px-4 py-2 text-sm font-medium text-[#8892a4] hover:bg-[#1e2330] transition-colors">
               Cancel
             </button>
-            <button
-              onClick={confirmDelete}
-              className="px-4 py-2 rounded-md text-sm font-medium bg-red-500 hover:bg-red-600 text-white transition-colors"
-            >
+            <button onClick={() => { handleDelete(deleteTarget.id); setDeleteTarget(null) }} className="rounded-lg bg-red-500 hover:bg-red-600 px-4 py-2 text-sm font-medium text-white transition-colors">
               Delete
             </button>
           </DialogFooter>
