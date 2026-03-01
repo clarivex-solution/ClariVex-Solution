@@ -1,5 +1,13 @@
 "use client"
 
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog"
 import Link from 'next/link'
 import { useCallback, useEffect, useState } from 'react'
 
@@ -41,6 +49,9 @@ export default function AdminBlogPage() {
   const [error, setError] = useState('')
   const [deletingId, setDeletingId] = useState(null)
 
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+  const [itemToDelete, setItemToDelete] = useState(null)
+
   const fetchBlogs = useCallback(async () => {
     setIsLoading(true)
     setError('')
@@ -65,11 +76,16 @@ export default function AdminBlogPage() {
     fetchBlogs()
   }, [fetchBlogs])
 
-  async function handleDelete(blogId, title) {
-    const confirmed = window.confirm(`Delete "${title}"? This action cannot be undone.`)
-    if (!confirmed) {
-      return
-    }
+  function handleDeleteClick(blogId) {
+    setItemToDelete(blogId)
+    setDeleteDialogOpen(true)
+  }
+
+  async function confirmDelete() {
+    if (!itemToDelete) return
+    const blogId = itemToDelete
+    setDeleteDialogOpen(false)
+    setItemToDelete(null)
 
     setDeletingId(blogId)
     setError('')
@@ -182,7 +198,7 @@ export default function AdminBlogPage() {
                         </Link>
                         <button
                           type="button"
-                          onClick={() => handleDelete(blog.id, blog.title)}
+                          onClick={() => handleDeleteClick(blog.id)}
                           disabled={deletingId === blog.id}
                           className="px-3 py-1.5 rounded-md border border-red-900/40 text-xs font-medium text-red-300 hover:bg-red-900/20 disabled:opacity-60 disabled:cursor-not-allowed transition-colors duration-300"
                         >
@@ -196,6 +212,31 @@ export default function AdminBlogPage() {
           </tbody>
         </table>
       </div>
+
+      <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Are you sure?</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to delete this item? This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <button
+              onClick={() => setDeleteDialogOpen(false)}
+              className="px-4 py-2 rounded-md border text-sm font-medium hover:bg-gray-100 dark:hover:bg-[#1e2330]"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={confirmDelete}
+              className="px-4 py-2 rounded-md text-sm font-medium bg-red-500 hover:bg-red-600 text-white"
+            >
+              Delete
+            </button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

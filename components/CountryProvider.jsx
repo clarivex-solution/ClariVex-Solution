@@ -60,8 +60,8 @@ async function fetchIPCountry() {
     if (!data || typeof data.country_code !== "string") return "general";
 
     return GEO_MAP[data.country_code] || "general";
-  } catch {
-    /* Network error, abort, JSON parse failure — all silently fall back */
+  } catch (err) {
+    /* Silently fail — do not console.error, fall through to default country */
     return "general";
   } finally {
     clearTimeout(timer);

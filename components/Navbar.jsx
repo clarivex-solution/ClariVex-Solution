@@ -2,9 +2,7 @@
 
 import { useCountry } from "@/components/CountryProvider";
 import { countries, COUNTRY_ROUTES, generalCountry, getCountryByCode } from "@/lib/countryData";
-import logo from "@/public/logo.png";
 import { ChevronDown, Globe, Loader2, LocateFixed, Menu, X } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -111,13 +109,9 @@ export default function Navbar() {
         <div className="mx-auto flex h-full w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-12">
           <Link href="/" className="flex items-center">
             <span className="mr-3 inline-block h-8 w-0.5 bg-[#c9a96e]" />
-            <Image
-              src={logo}
-              alt="ClariVex Solutions"
-              width={140}
-              height={40}
-              className="object-contain"
-            />
+            <span className="font-playfair text-2xl font-bold text-[#1a1a2e]">
+              ClariVex Solutions
+            </span>
           </Link>
 
           <nav className="hidden items-center justify-center gap-4 md:flex md:flex-1 lg:gap-7">
@@ -236,13 +230,9 @@ export default function Navbar() {
                 onClick={() => setIsMobileOpen(false)}
               >
                 <span className="mr-3 inline-block h-8 w-0.5 bg-[#c9a96e]" />
-                <Image
-                  src={logo}
-                  alt="ClariVex Solutions"
-                  width={140}
-                  height={40}
-                  className="object-contain"
-                />
+                <span className="font-playfair text-xl font-bold text-[#1a1a2e]">
+                  ClariVex Solutions
+                </span>
               </Link>
 
               <button

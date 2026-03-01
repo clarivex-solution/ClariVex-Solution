@@ -1,5 +1,13 @@
 "use client";
 
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -10,6 +18,9 @@ export default function AdminNewsPage() {
   const [countryFilter, setCountryFilter] = useState("All");
   const [typeFilter, setTypeFilter] = useState("All");
   const router = useRouter();
+
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState(null);
 
   const fetchNews = async () => {
     setLoading(true);
@@ -30,8 +41,16 @@ export default function AdminNewsPage() {
     fetchNews();
   }, []);
 
-  const handleDelete = async (id) => {
-    if (!confirm("Are you sure you want to delete this news article?")) return;
+  const handleDeleteClick = (id) => {
+    setItemToDelete(id);
+    setDeleteDialogOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!itemToDelete) return;
+    const id = itemToDelete;
+    setDeleteDialogOpen(false);
+    setItemToDelete(null);
 
     try {
       const res = await fetch(`/api/admin/news/${id}`, {
@@ -161,7 +180,7 @@ export default function AdminNewsPage() {
                           </Link>
                         )}
                         <button
-                          onClick={() => handleDelete(item._id || item.id)}
+                          onClick={() => handleDeleteClick(item._id || item.id)}
                           className="text-red-400 hover:text-red-300 transition"
                         >
                           Delete
@@ -175,6 +194,31 @@ export default function AdminNewsPage() {
           </table>
         </div>
       )}
+
+      <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Are you sure?</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to delete this item? This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <button
+              onClick={() => setDeleteDialogOpen(false)}
+              className="px-4 py-2 rounded-md border border-[#1e2330] text-sm font-medium hover:bg-[#1e2330] transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={confirmDelete}
+              className="px-4 py-2 rounded-md text-sm font-medium bg-red-500 hover:bg-red-600 text-white transition-colors"
+            >
+              Delete
+            </button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
