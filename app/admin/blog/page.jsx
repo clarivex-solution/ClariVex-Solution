@@ -2,6 +2,7 @@
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog'
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
@@ -42,7 +43,10 @@ export default function AdminBlogPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
   const [deletingId, setDeletingId] = useState(null)
+  const [publishingId, setPublishingId] = useState(null)
   const [deleteTarget, setDeleteTarget] = useState(null)
+  const searchParams = useSearchParams()
+  const filter = searchParams.get('filter')
 
   const fetchBlogs = useCallback(async () => {
     setIsLoading(true)
@@ -92,6 +96,45 @@ export default function AdminBlogPage() {
     }
   }
 
+  async function handlePublish(blogId) {
+    setPublishingId(blogId)
+    setError('')
+
+    try {
+      const response = await fetch(`/api/admin/blogs/${blogId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ status: 'published' }),
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to publish blog')
+      }
+
+      await fetchBlogs()
+      toast.success("Blog post published!")
+    } catch (publishError) {
+      console.error(publishError)
+      setError('Failed to publish blog post. Please try again.')
+    } finally {
+      setPublishingId(null)
+    }
+  }
+
+  const filteredBlogs = blogs.filter((blog) => {
+    if (filter === 'published') {
+      return blog.status === 'published'
+    }
+
+    if (filter === 'draft') {
+      return blog.status === 'draft'
+    }
+
+    return true
+  })
+
   return (
     <div className="max-w-6xl mx-auto space-y-6 animate-in fade-in duration-500">
       <div className="flex items-start justify-between gap-4">
@@ -113,6 +156,16 @@ export default function AdminBlogPage() {
           {error}
         </div>
       ) : null}
+
+      {filter && (
+        <div className="mb-4 flex items-center gap-2">
+          <span className="text-sm text-[#8892a4]">Filter:</span>
+          <span className="rounded-full bg-[#5a688e]/20 px-3 py-1 text-xs capitalize text-[#5a688e]">{filter}</span>
+          <a href="/admin/blog" title="Show all posts" className="text-xs text-[#8892a4] hover:text-white transition-colors">
+            Clear filter ×
+          </a>
+        </div>
+      )}
 
       <div className="overflow-x-auto rounded-xl border border-[#1e2330] bg-[#13161e]">
         <table className="min-w-full">
@@ -152,7 +205,7 @@ export default function AdminBlogPage() {
                 ))
               : null}
 
-            {!isLoading && blogs.length === 0 ? (
+            {!isLoading && filteredBlogs.length === 0 ? (
               <tr className="border-t border-[#1e2330]">
                 <td colSpan={6} className="px-4 py-12 text-center text-sm text-[#8892a4]">
                   No blog posts yet. Create your first post to get started.
@@ -161,7 +214,7 @@ export default function AdminBlogPage() {
             ) : null}
 
             {!isLoading
-              ? blogs.map((blog) => (
+              ? filteredBlogs.map((blog) => (
                   <tr key={blog.id} className="border-t border-[#1e2330]">
                     <td className="px-4 py-4 text-sm text-white">{blog.title}</td>
                     <td className="px-4 py-4 text-sm text-[#8892a4]">{blog.country || '--'}</td>
@@ -180,6 +233,16 @@ export default function AdminBlogPage() {
                         >
                           Edit
                         </Link>
+                        {filter === 'draft' && blog.status === 'draft' ? (
+                          <button
+                            type="button"
+                            onClick={() => handlePublish(blog.id)}
+                            disabled={publishingId === blog.id}
+                            className="px-3 py-1.5 rounded-md border border-[#6aa595] text-xs font-medium text-[#6aa595] hover:bg-[#6aa595] hover:text-white disabled:opacity-60 disabled:cursor-not-allowed transition-colors duration-300"
+                          >
+                            {publishingId === blog.id ? 'Publishing...' : 'Publish'}
+                          </button>
+                        ) : null}
                         <button
                           type="button"
                           onClick={() => setDeleteTarget(blog)}

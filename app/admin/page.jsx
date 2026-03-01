@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
 
@@ -17,10 +19,18 @@ export default async function AdminDashboard() {
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-        <StatCard title="Total Blogs" value={totalBlogs} />
-        <StatCard title="Published" value={publishedBlogs} />
-        <StatCard title="Drafts" value={draftBlogs} />
-        <StatCard title="Total News" value={totalNews} />
+        <Link href="/admin/blog">
+          <StatCard title="Total Blogs" value={totalBlogs} />
+        </Link>
+        <Link href="/admin/blog?filter=published">
+          <StatCard title="Published Blogs" value={publishedBlogs} />
+        </Link>
+        <Link href="/admin/blog?filter=draft">
+          <StatCard title="Draft Blogs" value={draftBlogs} />
+        </Link>
+        <Link href="/admin/news">
+          <StatCard title="Total News" value={totalNews} />
+        </Link>
       </div>
 
       <div className="flex flex-wrap gap-4 pt-4">
@@ -43,7 +53,7 @@ export default async function AdminDashboard() {
 
 function StatCard({ title, value }) {
   return (
-    <div className="bg-[#13161e] border border-[#1e2330] rounded-xl p-6 transition-transform hover:-translate-y-1 duration-300">
+    <div className="bg-[#13161e] border border-[#1e2330] rounded-xl p-6 transition-transform hover:-translate-y-1 duration-300 cursor-pointer transition-all hover:border-[#5a688e]/60 hover:shadow-lg hover:-translate-y-0.5">
       <p className="text-[#8892a4] text-sm font-medium mb-2">{title}</p>
       <p className="text-4xl text-white font-inter font-light">{value}</p>
     </div>

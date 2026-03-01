@@ -62,6 +62,16 @@ export async function PUT(request, { params }) {
   }
 }
 
+export async function PATCH(request, { params }) {
+  const { id } = await params
+  const body = await request.json()
+  const updated = await prisma.blog.update({
+    where: { id },
+    data: { status: body.status }
+  })
+  return NextResponse.json(updated)
+}
+
 export async function DELETE(request, { params }) {
   try {
     const auth = await verifyAdminRequest(request);
