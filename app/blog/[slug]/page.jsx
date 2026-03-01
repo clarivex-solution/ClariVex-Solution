@@ -103,12 +103,6 @@ export default async function BlogArticlePage({ params }) {
               </div>
             </header>
 
-            {post.coverImage && (
-              <div className="mx-auto mt-8 max-w-3xl overflow-hidden rounded-xl">
-                <img src={post.coverImage} alt={post.title} className="w-full h-56 md:h-72 object-cover" />
-              </div>
-            )}
-
             <div
               dangerouslySetInnerHTML={{ __html: post.content }}
               className="mx-auto mt-8 max-w-3xl prose prose-invert prose-headings:font-[family-name:var(--font-playfair)] prose-headings:text-white prose-p:text-[#8892a4] prose-p:leading-relaxed max-w-none"

@@ -197,11 +197,6 @@ export default function BlogPageClient() {
                   key={post.slug}
                   className="rounded-xl border border-[#e2e4e9] bg-[#f8f9fa] p-6 transition-all hover:border-[#5a688e]/40 hover:shadow-xl"
                 >
-                  {post.coverImage && (
-                    <div className="overflow-hidden rounded-lg -mx-6 -mt-6 mb-4">
-                      <img src={post.coverImage} alt={post.title} className="w-full h-36 object-cover" />
-                    </div>
-                  )}
                   <div className="flex items-center justify-between gap-3">
                     <span className="rounded-full bg-[#5a688e]/10 px-3 py-1 text-xs text-[#6aa595]">
                       {post.category}

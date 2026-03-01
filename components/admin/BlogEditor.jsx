@@ -1,11 +1,11 @@
 "use client"
 
-import { useEffect, useMemo, useRef, useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { useEditor, EditorContent } from '@tiptap/react'
-import StarterKit from '@tiptap/starter-kit'
 import Heading from '@tiptap/extension-heading'
 import Underline from '@tiptap/extension-underline'
+import { EditorContent, useEditor } from '@tiptap/react'
+import StarterKit from '@tiptap/starter-kit'
+import { useRouter } from 'next/navigation'
+import { useEffect, useMemo, useState } from 'react'
 import { toast } from 'sonner'
 
 const CATEGORY_OPTIONS = ['Bookkeeping', 'Tax & Compliance', 'Payroll', 'Advisory']
@@ -38,7 +38,6 @@ function ToolbarDivider() {
 
 export default function BlogEditor({ initialData, blogId, mode }) {
   const router = useRouter()
-  const fileInputRef = useRef(null)
   const isEditMode = mode === 'edit'
 
   const [title, setTitle] = useState(initialData?.title || '')
@@ -47,10 +46,8 @@ export default function BlogEditor({ initialData, blogId, mode }) {
   const [excerpt, setExcerpt] = useState(initialData?.excerpt || '')
   const [category, setCategory] = useState(initialData?.category || CATEGORY_OPTIONS[0])
   const [country, setCountry] = useState(initialData?.country || COUNTRY_OPTIONS[0])
-  const [coverImage, setCoverImage] = useState(initialData?.coverImage || '')
   const [status, setStatus] = useState(initialData?.status || 'draft')
 
-  const [isUploadingImage, setIsUploadingImage] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
   const [error, setError] = useState('')
 
@@ -65,7 +62,6 @@ export default function BlogEditor({ initialData, blogId, mode }) {
     setExcerpt(initialData.excerpt || '')
     setCategory(initialData.category || CATEGORY_OPTIONS[0])
     setCountry(initialData.country || COUNTRY_OPTIONS[0])
-    setCoverImage(initialData.coverImage || '')
     setStatus(initialData.status || 'draft')
   }, [initialData])
 
@@ -133,43 +129,6 @@ export default function BlogEditor({ initialData, blogId, mode }) {
     setSlug(slugify(event.target.value))
   }
 
-  async function handleImageChange(event) {
-    const file = event.target.files?.[0]
-    if (!file) {
-      return
-    }
-
-    setIsUploadingImage(true)
-    setError('')
-
-    try {
-      const formData = new FormData()
-      formData.append('file', file)
-
-      const response = await fetch('/api/admin/upload', {
-        method: 'POST',
-        body: formData,
-      })
-
-      if (!response.ok) {
-        throw new Error('Failed to upload image')
-      }
-
-      const data = await response.json()
-      if (!data?.url) {
-        throw new Error('Upload did not return image URL')
-      }
-
-      setCoverImage(data.url)
-    } catch (uploadError) {
-      console.error(uploadError)
-      setError('Failed to upload image. Please try again.')
-    } finally {
-      setIsUploadingImage(false)
-      event.target.value = ''
-    }
-  }
-
   async function handleSubmit(event) {
     event.preventDefault()
     setError('')
@@ -185,7 +144,6 @@ export default function BlogEditor({ initialData, blogId, mode }) {
       slug: normalizedSlug,
       excerpt: excerpt.trim(),
       content: editor.getHTML(),
-      coverImage: coverImage || null,
       category,
       country,
       status,
@@ -359,34 +317,6 @@ export default function BlogEditor({ initialData, blogId, mode }) {
             </select>
           </div>
 
-          <div className="space-y-3">
-            <span className="text-sm font-medium text-[#cdd3df]">Cover Image</span>
-            {coverImage ? (
-              <div className="overflow-hidden rounded-xl border border-[#1e2330] bg-[#0d0f14]">
-                <img src={coverImage} alt="Cover preview" className="h-40 w-full object-cover" />
-              </div>
-            ) : (
-              <div className="rounded-xl border border-dashed border-[#1e2330] bg-[#0d0f14] px-4 py-8 text-center text-sm text-[#5a688e]">
-                No image uploaded
-              </div>
-            )}
-
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-              className="hidden"
-            />
-            <button
-              type="button"
-              onClick={() => fileInputRef.current?.click()}
-              disabled={isUploadingImage}
-              className="px-4 py-2 rounded-lg border border-[#5a688e] text-[#5a688e] hover:bg-[#5a688e] hover:text-white disabled:opacity-60 disabled:cursor-not-allowed transition-colors duration-300"
-            >
-              {isUploadingImage ? 'Uploading...' : 'Upload Image'}
-            </button>
-          </div>
         </div>
 
         <div className="space-y-2">
@@ -486,7 +416,7 @@ export default function BlogEditor({ initialData, blogId, mode }) {
         <div className="flex justify-end">
           <button
             type="submit"
-            disabled={isSaving || isUploadingImage}
+            disabled={isSaving}
             className="px-6 py-2.5 rounded-full border border-[#5a688e] text-[#5a688e] hover:bg-[#5a688e] hover:text-white disabled:opacity-60 disabled:cursor-not-allowed transition-colors duration-300 font-medium"
           >
             {isSaving ? 'Saving...' : isEditMode ? 'Update Post' : 'Create Post'}
