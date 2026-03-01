@@ -11,6 +11,7 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export default function AdminNewsPage() {
   const [news, setNews] = useState([]);
@@ -58,11 +59,14 @@ export default function AdminNewsPage() {
       });
       if (res.ok) {
         fetchNews();
+        toast.success("News article deleted.");
       } else {
+        toast.error("Could not delete. Please try again.");
         alert("Failed to delete the article.");
       }
     } catch (error) {
       console.error("Failed to delete news:", error);
+      toast.error("Could not delete. Please try again.");
     }
   };
 

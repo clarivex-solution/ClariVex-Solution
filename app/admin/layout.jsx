@@ -2,6 +2,7 @@ export const metadata = { title: 'Admin Panel | ClariVex' }
 import AdminLogoutButton from '@/components/admin/AdminLogoutButton'
 import Image from 'next/image'
 import Link from 'next/link'
+import { Toaster } from 'sonner'
 
 export default function AdminLayout({ children }) {
   return (
@@ -45,6 +46,7 @@ export default function AdminLayout({ children }) {
       <main className="ml-64 flex-1 p-8">
         {children}
       </main>
+      <Toaster position="top-right" richColors />
     </div>
   )
 }

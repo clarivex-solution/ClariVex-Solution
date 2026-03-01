@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 export default function AdminLogoutButton() {
   const router = useRouter()
@@ -10,7 +11,10 @@ export default function AdminLogoutButton() {
   const handleLogout = async () => {
     setIsLoading(true)
     try {
-      await fetch('/api/admin/logout', { method: 'POST' })
+      const response = await fetch('/api/admin/logout', { method: 'POST' })
+      if (response.ok) {
+        toast.success("Logged out successfully.")
+      }
       router.push('/admin/login')
     } catch (error) {
       console.error('Logout failed:', error)

@@ -4,6 +4,7 @@
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export default function EditNewsPage() {
   const router = useRouter();
@@ -86,13 +87,16 @@ export default function EditNewsPage() {
         body: JSON.stringify(formData),
       });
       if (res.ok) {
+        toast.success("Article updated.");
         router.push("/admin/news");
       } else {
+        toast.error("Update failed.");
         const error = await res.json();
         alert(`Failed to update: ${error.error || "Unknown error"}`);
       }
     } catch (error) {
       console.error("Failed to update news:", error);
+      toast.error("Update failed.");
       alert("Failed to update. Please try again.");
     } finally {
       setLoading(false);

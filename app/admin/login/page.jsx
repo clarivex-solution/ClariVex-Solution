@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 export default function AdminLogin() {
   const [password, setPassword] = useState('')
@@ -22,11 +23,14 @@ export default function AdminLogin() {
       })
 
       if (res.ok) {
+        toast.success("Welcome back!")
         router.push('/admin')
       } else {
+        toast.error("Invalid password. Please try again.")
         setError('Incorrect password')
       }
     } catch (err) {
+      toast.error("Login failed. Check your connection.")
       setError('An error occurred. Please try again.')
     } finally {
       setIsLoading(false)

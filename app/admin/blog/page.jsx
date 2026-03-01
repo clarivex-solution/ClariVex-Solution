@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dialog"
 import Link from 'next/link'
 import { useCallback, useEffect, useState } from 'react'
+import { toast } from 'sonner'
 
 function formatDate(dateValue) {
   if (!dateValue) {
@@ -96,10 +97,12 @@ export default function AdminBlogPage() {
       })
 
       if (!response.ok) {
+        toast.error("Could not delete. Please try again.")
         throw new Error('Failed to delete blog')
       }
 
       await fetchBlogs()
+      toast.success("Blog post deleted.")
     } catch (deleteError) {
       console.error(deleteError)
       setError('Failed to delete blog post. Please try again.')

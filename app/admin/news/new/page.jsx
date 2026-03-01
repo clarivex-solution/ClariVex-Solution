@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export default function NewNewsPage() {
   const router = useRouter();
@@ -59,13 +60,16 @@ export default function NewNewsPage() {
         body: JSON.stringify(formData),
       });
       if (res.ok) {
+        toast.success("News article added.");
         router.push("/admin/news");
       } else {
+        toast.error("Failed to add. Please try again.");
         const error = await res.json();
         alert(`Failed to save news: ${error.error || "Unknown error"}`);
       }
     } catch (error) {
       console.error("Failed to save news:", error);
+      toast.error("Failed to add. Please try again.");
       alert("Failed to save news. Please try again.");
     } finally {
       setLoading(false);

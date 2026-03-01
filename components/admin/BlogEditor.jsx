@@ -6,6 +6,7 @@ import { EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Heading from '@tiptap/extension-heading'
 import Placeholder from '@tiptap/extension-placeholder'
+import { toast } from 'sonner'
 
 const CATEGORY_OPTIONS = ['Bookkeeping', 'Tax & Compliance', 'Payroll', 'Advisory']
 const COUNTRY_OPTIONS = ['US', 'UK', 'AU', 'CA', 'All']
@@ -198,10 +199,23 @@ export default function BlogEditor({ initialData, blogId, mode }) {
         throw new Error(data?.error || 'Failed to save blog post')
       }
 
+      if (isEditMode) {
+        toast.success("Post updated successfully.")
+      } else if (payload.status === 'published') {
+        toast.success("Blog post published!")
+      } else {
+        toast.success("Draft saved.")
+      }
+
       router.push('/admin/blog')
       router.refresh()
     } catch (saveError) {
       console.error(saveError)
+      if (isEditMode) {
+        toast.error("Update failed. Please try again.")
+      } else {
+        toast.error("Failed to save. Please try again.")
+      }
       setError(saveError.message || 'Failed to save blog post. Please try again.')
     } finally {
       setIsSaving(false)
