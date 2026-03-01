@@ -8,9 +8,11 @@ export default function AdminLogin() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [loading, setLoading] = useState(false)
   const router = useRouter()
 
   const handleSubmit = async (e) => {
+    setLoading(true)
     e.preventDefault()
     setIsLoading(true)
     setError('')
@@ -34,6 +36,7 @@ export default function AdminLogin() {
       setError('An error occurred. Please try again.')
     } finally {
       setIsLoading(false)
+      setLoading(false)
     }
   }
 
@@ -62,10 +65,10 @@ export default function AdminLogin() {
 
           <button
             type="submit"
-            disabled={isLoading}
+            disabled={loading}
             className="w-full bg-[#5a688e] hover:bg-[#4a567a] text-white rounded-full py-3 font-medium transition-colors disabled:opacity-70"
           >
-            {isLoading ? 'Logging in...' : 'Login step'}
+            {loading ? "Signing in..." : "Sign In"}
           </button>
         </form>
       </div>
