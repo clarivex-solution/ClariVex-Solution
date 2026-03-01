@@ -170,7 +170,7 @@ export default function Footer() {
 
           <div className="mt-14 border-t border-[#1e2330] pt-8">
             <div className="flex flex-col items-center gap-4 text-center text-xs text-[#8892a4] lg:flex-row lg:justify-between lg:text-left">
-              <p>&copy; 2026 Clarivex Solution. All rights reserved.</p>
+              <p className="flex items-center justify-center gap-1"><Link href="/admin" className="select-none cursor-default pointer-events-auto text-xl leading-none">&copy;</Link> <span>2026 Clarivex Solution. All rights reserved.</span></p>
               <div className="flex items-center gap-2">
                 <span className="text-[#8892a4]">Privacy Policy</span>
                 <span>&middot;</span>
