@@ -11,6 +11,10 @@ const categoryOptions = [
   "Tax & Compliance",
   "Payroll",
   "Advisory",
+  "Reconciliation",
+  "AP & AR",
+  "Data Security",
+  "General",
 ];
 
 const countryFilterOptions = [
@@ -85,11 +89,8 @@ export default function BlogPageClient() {
       } else if (activeCountryFilter === "general") {
         countryMatch = post.country === "All" || post.country === "General";
       } else {
-        // Show country-specific + General/All posts
-        countryMatch =
-          post.country === activeCountryFilter.toUpperCase() ||
-          post.country === "All" ||
-          post.country === "General";
+        // Show strict country match
+        countryMatch = post.country === activeCountryFilter.toUpperCase();
       }
 
       return categoryMatch && countryMatch;
