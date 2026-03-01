@@ -3,6 +3,7 @@
 import { useCountry } from "@/components/CountryProvider";
 import { countries, COUNTRY_ROUTES } from "@/lib/countryData";
 import { Loader2, LocateFixed } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
@@ -56,9 +57,7 @@ export default function Footer() {
             <div className="lg:col-span-1">
               <Link href="/" className="inline-flex items-center">
                 <span className="mr-2.5 inline-block h-6 w-0.5 bg-[#c9a96e]" />
-                <span className="font-[family-name:var(--font-playfair)] text-xl font-bold text-white">
-                  ClariVex
-                </span>
+                <Image src="/logo-white.png" alt="ClariVex Solutions" width={200} height={58} className="h-11 w-auto object-contain" />
               </Link>
               <p className="mt-4 text-sm leading-relaxed">
                 Elite outsourced accounting and finance operations for US, UK,

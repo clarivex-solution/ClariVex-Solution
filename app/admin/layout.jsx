@@ -1,5 +1,6 @@
 export const metadata = { title: 'Admin Panel | ClariVex' }
 import AdminLogoutButton from '@/components/admin/AdminLogoutButton'
+import Image from 'next/image'
 import Link from 'next/link'
 
 export default function AdminLayout({ children }) {
@@ -8,7 +9,9 @@ export default function AdminLayout({ children }) {
       {/* Sidebar */}
       <aside className="w-64 bg-[#13161e] border-r border-[#1e2330] h-screen fixed left-0 top-0 flex flex-col p-6">
         <div className="mb-10">
-          <h2 className="text-2xl font-playfair text-[#c9a96e] mb-1">ClariVex</h2>
+          <div className="mb-1">
+            <Image src="/logo-white.png" alt="ClariVex Solutions" width={200} height={58} className="h-11 w-auto object-contain" />
+          </div>
           <p className="text-[#6aa595] text-xs font-semibold tracking-wider uppercase">Admin Panel</p>
         </div>
 
