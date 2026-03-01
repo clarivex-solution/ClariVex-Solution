@@ -2,10 +2,10 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { EditorContent, useEditor } from '@tiptap/react'
+import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Heading from '@tiptap/extension-heading'
-import Placeholder from '@tiptap/extension-placeholder'
+import Underline from '@tiptap/extension-underline'
 import { toast } from 'sonner'
 
 const CATEGORY_OPTIONS = ['Bookkeeping', 'Tax & Compliance', 'Payroll', 'Advisory']
@@ -22,14 +22,18 @@ function ToolbarButton({ active, disabled, onClick, children }) {
       onClick={onClick}
       disabled={disabled}
       className={[
-        'px-3 py-1.5 rounded text-sm text-[#8892a4] hover:text-white hover:bg-[#1e2330] transition-colors duration-200',
-        active ? 'bg-[#5a688e] text-white hover:bg-[#5a688e]' : '',
+        'p-2 rounded text-xs font-semibold transition-colors text-[#8892a4] hover:text-white hover:bg-[#1e2330]',
+        active ? 'bg-[#5a688e] text-white' : '',
         disabled ? 'opacity-50 cursor-not-allowed' : '',
       ].join(' ')}
     >
       {children}
     </button>
   )
+}
+
+function ToolbarDivider() {
+  return <div className="w-px h-5 bg-[#1e2330] mx-1 self-center" />
 }
 
 export default function BlogEditor({ initialData, blogId, mode }) {
@@ -70,19 +74,31 @@ export default function BlogEditor({ initialData, blogId, mode }) {
     extensions: [
       StarterKit.configure({
         heading: false,
+        bulletList: {
+          keepMarks: true,
+          keepAttributes: false,
+        },
+        orderedList: {
+          keepMarks: true,
+          keepAttributes: false,
+        },
       }),
       Heading.configure({
         levels: [1, 2, 3],
       }),
-      Placeholder.configure({
-        placeholder: 'Start writing or paste from AI...',
-      }),
+      Underline,
     ],
     content: initialData?.content || '',
     editorProps: {
-      attributes: {
-        class: 'focus:outline-none min-h-[360px] text-[#d9dde7]',
+      transformPastedHTML(html) {
+        return html
       },
+      attributes: {
+        class: 'prose-editor min-h-[320px] focus:outline-none p-4 text-[#8892a4] bg-[#0d0f14]',
+      },
+    },
+    onUpdate: ({ editor }) => {
+      editor.getHTML()
     },
   })
 
@@ -375,62 +391,96 @@ export default function BlogEditor({ initialData, blogId, mode }) {
 
         <div className="space-y-2">
           <label className="text-sm font-medium text-[#cdd3df]">Content</label>
-          <div className="bg-[#13161e] border border-[#1e2330] rounded-xl p-2 flex gap-1 flex-wrap mb-2">
-            <ToolbarButton
-              active={editor?.isActive('bold')}
-              disabled={!editorReady}
-              onClick={() => editor?.chain().focus().toggleBold().run()}
-            >
-              Bold
-            </ToolbarButton>
-            <ToolbarButton
-              active={editor?.isActive('italic')}
-              disabled={!editorReady}
-              onClick={() => editor?.chain().focus().toggleItalic().run()}
-            >
-              Italic
-            </ToolbarButton>
-            <ToolbarButton
-              active={editor?.isActive('heading', { level: 1 })}
-              disabled={!editorReady}
-              onClick={() => editor?.chain().focus().toggleHeading({ level: 1 }).run()}
-            >
-              H1
-            </ToolbarButton>
-            <ToolbarButton
-              active={editor?.isActive('heading', { level: 2 })}
-              disabled={!editorReady}
-              onClick={() => editor?.chain().focus().toggleHeading({ level: 2 }).run()}
-            >
-              H2
-            </ToolbarButton>
-            <ToolbarButton
-              active={editor?.isActive('heading', { level: 3 })}
-              disabled={!editorReady}
-              onClick={() => editor?.chain().focus().toggleHeading({ level: 3 }).run()}
-            >
-              H3
-            </ToolbarButton>
-            <ToolbarButton
-              active={editor?.isActive('bulletList')}
-              disabled={!editorReady}
-              onClick={() => editor?.chain().focus().toggleBulletList().run()}
-            >
-              Bullet List
-            </ToolbarButton>
-            <ToolbarButton
-              active={editor?.isActive('orderedList')}
-              disabled={!editorReady}
-              onClick={() => editor?.chain().focus().toggleOrderedList().run()}
-            >
-              Numbered List
-            </ToolbarButton>
-          </div>
+          <div className="border border-[#1e2330] rounded-xl overflow-hidden bg-[#0d0f14]">
+            <div className="flex flex-wrap items-center gap-1 border-b border-[#1e2330] bg-[#13161e] p-2">
+              <ToolbarButton
+                active={editor?.isActive('heading', { level: 1 }) === true}
+                disabled={!editorReady}
+                onClick={() => editor?.chain().focus().toggleHeading({ level: 1 }).run()}
+              >
+                H1
+              </ToolbarButton>
+              <ToolbarButton
+                active={editor?.isActive('heading', { level: 2 }) === true}
+                disabled={!editorReady}
+                onClick={() => editor?.chain().focus().toggleHeading({ level: 2 }).run()}
+              >
+                H2
+              </ToolbarButton>
+              <ToolbarButton
+                active={editor?.isActive('heading', { level: 3 }) === true}
+                disabled={!editorReady}
+                onClick={() => editor?.chain().focus().toggleHeading({ level: 3 }).run()}
+              >
+                H3
+              </ToolbarButton>
 
-          <EditorContent
-            editor={editor}
-            className="border border-[#1e2330] rounded-xl bg-[#0d0f14] p-4 min-h-[400px] prose prose-invert max-w-none"
-          />
+              <ToolbarDivider />
+
+              <ToolbarButton
+                active={editor?.isActive('bold') === true}
+                disabled={!editorReady}
+                onClick={() => editor?.chain().focus().toggleBold().run()}
+              >
+                Bold
+              </ToolbarButton>
+              <ToolbarButton
+                active={editor?.isActive('italic') === true}
+                disabled={!editorReady}
+                onClick={() => editor?.chain().focus().toggleItalic().run()}
+              >
+                Italic
+              </ToolbarButton>
+              <ToolbarButton
+                active={editor?.isActive('underline') === true}
+                disabled={!editorReady}
+                onClick={() => editor?.chain().focus().toggleUnderline().run()}
+              >
+                Underline
+              </ToolbarButton>
+
+              <ToolbarDivider />
+
+              <ToolbarButton
+                active={editor?.isActive('bulletList') === true}
+                disabled={!editorReady}
+                onClick={() => editor?.chain().focus().toggleBulletList().run()}
+              >
+                Bullet List
+              </ToolbarButton>
+              <ToolbarButton
+                active={editor?.isActive('orderedList') === true}
+                disabled={!editorReady}
+                onClick={() => editor?.chain().focus().toggleOrderedList().run()}
+              >
+                Ordered List
+              </ToolbarButton>
+              <ToolbarButton
+                active={editor?.isActive('blockquote') === true}
+                disabled={!editorReady}
+                onClick={() => editor?.chain().focus().toggleBlockquote().run()}
+              >
+                Blockquote
+              </ToolbarButton>
+
+              <ToolbarDivider />
+
+              <ToolbarButton
+                disabled={!editorReady}
+                onClick={() => editor?.chain().focus().undo().run()}
+              >
+                Undo
+              </ToolbarButton>
+              <ToolbarButton
+                disabled={!editorReady}
+                onClick={() => editor?.chain().focus().redo().run()}
+              >
+                Redo
+              </ToolbarButton>
+            </div>
+
+            <EditorContent editor={editor} />
+          </div>
         </div>
 
         <div className="flex justify-end">
