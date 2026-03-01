@@ -77,8 +77,19 @@ export default function NewsPageClient() {
 
           {loading ? (
             <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {[1, 2, 3].map((item) => (
-                <div key={item} className="animate-pulse bg-[#e2e4e9] rounded-xl h-32" />
+              {[1,2,3,4,5,6].map((i) => (
+                <div key={i} className="rounded-xl border border-[#e2e4e9] bg-[#f8f9fa] p-6 animate-pulse">
+                  <div className="flex items-center justify-between gap-3 mb-4">
+                    <div className="h-5 w-24 rounded-full bg-[#e2e4e9]" />
+                    <div className="h-5 w-16 rounded-full bg-[#e2e4e9]" />
+                  </div>
+                  <div className="h-6 w-full rounded bg-[#e2e4e9] mb-2" />
+                  <div className="h-4 w-4/5 rounded bg-[#e2e4e9] mb-3" />
+                  <div className="h-4 w-full rounded bg-[#e2e4e9] mb-1" />
+                  <div className="h-4 w-full rounded bg-[#e2e4e9] mb-1" />
+                  <div className="h-4 w-2/3 rounded bg-[#e2e4e9] mb-6" />
+                  <div className="h-4 w-20 rounded bg-[#e2e4e9]" />
+                </div>
               ))}
             </div>
           ) : activeNews.length === 0 ? (
