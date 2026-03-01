@@ -110,7 +110,7 @@ export default function Navbar() {
         <div className="mx-auto flex h-full w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-12">
           <Link href="/" className="flex items-center">
             <span className="mr-3 inline-block h-8 w-0.5 bg-[#c9a96e]" />
-            <Image src="/logo-dark.png" alt="ClariVex Solutions" width={220} height={64} className="h-12 w-auto object-contain" />
+            <Image src="/logo-dark.png" alt="ClariVex Solutions" width={220} height={64} className="h-12 w-auto object-contain" priority />
           </Link>
 
           <nav className="hidden items-center justify-center gap-4 md:flex md:flex-1 lg:gap-7">
@@ -229,7 +229,7 @@ export default function Navbar() {
                 onClick={() => setIsMobileOpen(false)}
               >
                 <span className="mr-3 inline-block h-8 w-0.5 bg-[#c9a96e]" />
-                <Image src="/logo-dark.png" alt="ClariVex Solutions" width={220} height={64} className="h-12 w-auto object-contain" />
+                <Image src="/logo-dark.png" alt="ClariVex Solutions" width={220} height={64} className="h-12 w-auto object-contain" priority />
               </Link>
 
               <button
