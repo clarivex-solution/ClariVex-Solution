@@ -59,10 +59,23 @@ export default async function NewsArticlePage({ params }) {
   };
 
   const moreNews = await prisma.newsArticle.findMany({
-    where: { NOT: { slug } },
+    where: { NOT: { slug }, country: post.country },
     take: 3,
-    select: { slug: true, title: true },
-  });
+    orderBy: { publishedAt: 'desc' },
+    select: { slug: true, title: true, country: true, category: true }
+  })
+
+  if (moreNews.length < 3) {
+    const needed = 3 - moreNews.length
+    const usedSlugs = [slug, ...moreNews.map(n => n.slug)]
+    const fill = await prisma.newsArticle.findMany({
+      where: { NOT: { slug: { in: usedSlugs } }, category: post.category },
+      take: needed,
+      orderBy: { publishedAt: 'desc' },
+      select: { slug: true, title: true, country: true, category: true }
+    })
+    moreNews.push(...fill)
+  }
 
   return (
     <main className="bg-[#0d0f14] py-16 sm:py-20 lg:py-32 text-white">

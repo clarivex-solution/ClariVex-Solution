@@ -64,10 +64,23 @@ export default async function BlogArticlePage({ params }) {
   };
 
   const relatedPosts = await prisma.blog.findMany({
-    where: { status: "published", NOT: { slug } },
+    where: { status: 'published', NOT: { slug }, category: post.category },
     take: 3,
-    select: { slug: true, title: true },
-  });
+    orderBy: { publishedAt: 'desc' },
+    select: { slug: true, title: true, category: true }
+  })
+
+  if (relatedPosts.length < 3) {
+    const needed = 3 - relatedPosts.length
+    const usedSlugs = [slug, ...relatedPosts.map(p => p.slug)]
+    const fill = await prisma.blog.findMany({
+      where: { status: 'published', NOT: { slug: { in: usedSlugs } } },
+      take: needed,
+      orderBy: { publishedAt: 'desc' },
+      select: { slug: true, title: true, category: true }
+    })
+    relatedPosts.push(...fill)
+  }
 
   return (
     <main className="bg-[#0d0f14] py-16 sm:py-20 lg:py-32 text-white">
