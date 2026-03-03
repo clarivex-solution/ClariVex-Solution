@@ -2,16 +2,15 @@
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 export default function AdminNewsPage() {
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [fetchingCountry, setFetchingCountry] = useState(null);
   const [countryFilter, setCountryFilter] = useState("All");
   const [typeFilter, setTypeFilter] = useState("All");
-  const router = useRouter();
   const [deleteTarget, setDeleteTarget] = useState(null);
 
   const fetchNews = async () => {
@@ -51,6 +50,34 @@ export default function AdminNewsPage() {
     }
   };
 
+  const handleManualFetch = async (country) => {
+    setFetchingCountry(country);
+    try {
+      const res = await fetch("/api/admin/trigger-news-fetch", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ country }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data?.error || "Failed to fetch news.");
+      }
+
+      const count = Number(data?.saved ?? data?.count ?? data?.newArticles ?? 0);
+      toast.success(`Fetched ${count} new articles for ${country}`);
+      fetchNews();
+    } catch (error) {
+      console.error("Failed to trigger manual fetch:", error);
+      toast.error(error?.message || "Failed to fetch news.");
+    } finally {
+      setFetchingCountry(null);
+    }
+  };
+
   const filteredNews = news.filter((item) => {
     const matchCountry = countryFilter === "All" || item.country === countryFilter;
     const matchType = typeFilter === "All" || item.sourceType?.toLowerCase() === typeFilter.toLowerCase();
@@ -68,6 +95,31 @@ export default function AdminNewsPage() {
         >
           Add Manual News
         </Link>
+      </div>
+
+      <div className="mb-6 rounded-xl border border-[#1e2330] bg-[#13161e] p-5">
+        <h2 className="text-sm font-semibold text-white mb-3">Manual News Fetch</h2>
+        <p className="text-xs text-[#8892a4] mb-4">
+          Manually fetch latest finance news for a specific country
+        </p>
+        <div className="flex flex-wrap gap-2">
+          {["US", "UK", "AU", "CA", "General"].map((country) => {
+            const isLoading = fetchingCountry === country;
+            return (
+              <button
+                key={country}
+                type="button"
+                onClick={() => handleManualFetch(country)}
+                disabled={fetchingCountry !== null}
+                className={`rounded-lg border border-[#1e2330] px-4 py-2 text-xs font-medium text-[#8892a4] hover:border-[#5a688e]/50 hover:text-white transition-colors ${
+                  isLoading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+              >
+                {isLoading ? "Fetching..." : country}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       <div className="flex flex-col md:flex-row gap-4 mb-6">
