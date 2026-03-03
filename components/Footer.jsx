@@ -172,9 +172,9 @@ export default function Footer() {
             <div className="flex flex-col items-center gap-4 text-center text-xs text-[#8892a4] lg:flex-row lg:justify-between lg:text-left">
               <p className="flex items-center justify-center gap-1"><Link href="/admin" className="select-none cursor-default pointer-events-auto text-xl leading-none">&copy;</Link> <span>2026 Clarivex Solution. All rights reserved.</span></p>
               <div className="flex items-center gap-2">
-                <span className="text-[#8892a4]">Privacy Policy</span>
+                <Link href="/privacy" className="text-[#8892a4] transition-colors hover:text-white">Privacy Policy</Link>
                 <span>&middot;</span>
-                <span className="text-[#8892a4]">Terms &amp; Conditions</span>
+                <Link href="/terms" className="text-[#8892a4] transition-colors hover:text-white">Terms &amp; Conditions</Link>
               </div>
             </div>
           </div>

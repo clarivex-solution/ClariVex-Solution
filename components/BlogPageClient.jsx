@@ -97,6 +97,12 @@ export default function BlogPageClient() {
     });
   }, [blogPosts, activeCategory, activeCountryFilter]);
 
+  const [visibleCount, setVisibleCount] = useState(6);
+  const visiblePosts = filteredPosts.slice(0, visibleCount);
+  const hasMore = visibleCount < filteredPosts.length;
+
+  useEffect(() => setVisibleCount(6), [activeCategory, activeCountryFilter]);
+
   return (
     <main className="bg-white text-[#1a1a2e]">
       <section className="relative overflow-hidden bg-white py-16 sm:py-20 lg:py-32">
@@ -193,7 +199,7 @@ export default function BlogPageClient() {
             </div>
           ) : (
             <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {filteredPosts.map((post) => (
+              {visiblePosts.map((post) => (
                 <article
                   key={post.slug}
                   className="rounded-xl border border-[#e2e4e9] bg-[#f8f9fa] p-6 transition-all hover:border-[#5a688e]/40 hover:shadow-xl"
@@ -219,6 +225,20 @@ export default function BlogPageClient() {
                   </Link>
                 </article>
               ))}
+            </div>
+          )}
+
+          {hasMore && (
+            <div className="mt-10 text-center">
+              <button
+                onClick={() => setVisibleCount((v) => v + 6)}
+                className="rounded-full border border-[#5a688e] px-8 py-3 text-sm font-medium text-[#5a688e] transition-colors hover:bg-[#5a688e] hover:text-white"
+              >
+                Load More Articles
+              </button>
+              <p className="mt-3 text-xs text-[#8892a4]">
+                Showing {Math.min(visibleCount, filteredPosts.length)} of {filteredPosts.length} articles
+              </p>
             </div>
           )}
         </div>
