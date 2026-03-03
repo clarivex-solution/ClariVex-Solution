@@ -3,7 +3,7 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
-import { useCallback, useEffect, useState } from 'react'
+import { Suspense, useCallback, useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
 function formatDate(dateValue) {
@@ -38,7 +38,7 @@ function StatusBadge({ status }) {
   )
 }
 
-export default function AdminBlogPage() {
+function AdminBlogPageContent() {
   const [blogs, setBlogs] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
@@ -161,9 +161,9 @@ export default function AdminBlogPage() {
         <div className="mb-4 flex items-center gap-2">
           <span className="text-sm text-[#8892a4]">Filter:</span>
           <span className="rounded-full bg-[#5a688e]/20 px-3 py-1 text-xs capitalize text-[#5a688e]">{filter}</span>
-          <a href="/admin/blog" title="Show all posts" className="text-xs text-[#8892a4] hover:text-white transition-colors">
-            Clear filter ×
-          </a>
+          <Link href="/admin/blog" title="Show all posts" className="text-xs text-[#8892a4] hover:text-white transition-colors">
+            Clear filter &times;
+          </Link>
         </div>
       )}
 
@@ -265,19 +265,40 @@ export default function AdminBlogPage() {
           <DialogHeader>
             <DialogTitle className="text-white">Confirm Delete</DialogTitle>
             <DialogDescription className="text-[#8892a4]">
-              Are you sure you want to delete "{deleteTarget?.title}"? This cannot be undone.
+              Are you sure you want to delete &quot;{deleteTarget?.title}&quot;? This cannot be undone.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="gap-2 sm:gap-2">
             <button onClick={() => setDeleteTarget(null)} className="rounded-lg border border-[#1e2330] px-4 py-2 text-sm font-medium text-[#8892a4] hover:bg-[#1e2330] transition-colors">
               Cancel
             </button>
-            <button onClick={() => { handleDelete(deleteTarget.id); setDeleteTarget(null) }} className="rounded-lg bg-red-500 hover:bg-red-600 px-4 py-2 text-sm font-medium text-white transition-colors">
+            <button
+              onClick={() => {
+                if (!deleteTarget?.id) return
+                handleDelete(deleteTarget.id)
+                setDeleteTarget(null)
+              }}
+              className="rounded-lg bg-red-500 hover:bg-red-600 px-4 py-2 text-sm font-medium text-white transition-colors"
+            >
               Delete
             </button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
     </div>
+  )
+}
+
+export default function AdminBlogPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="max-w-6xl mx-auto rounded-xl border border-[#1e2330] bg-[#13161e] p-6 text-sm text-[#8892a4]">
+          Loading blog admin...
+        </div>
+      }
+    >
+      <AdminBlogPageContent />
+    </Suspense>
   )
 }
