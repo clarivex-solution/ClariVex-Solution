@@ -4,57 +4,52 @@ import { useCountry } from "@/components/CountryProvider";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
+const activePillClass = "rounded-full border px-4 py-1.5 text-xs transition-colors bg-[#5a688e] text-white border-[#5a688e]";
+const inactivePillClass = "rounded-full border px-4 py-1.5 text-xs transition-colors bg-white border-[#e2e4e9] text-[#5a6478] hover:border-[#5a688e]/40";
+
 export default function NewsPageClient() {
-  const { country } = useCountry();
+  const { country: detectedCountry } = useCountry();
   const [newsPosts, setNewsPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCountry, setSelectedCountry] = useState("all");
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [dateFilter, setDateFilter] = useState("all");
   const [visibleCount, setVisibleCount] = useState(9);
 
   useEffect(() => {
-    let isMounted = true;
-
-    async function fetchNews() {
-      try {
-        const response = await fetch("/api/news");
-        const data = await response.json();
-
-        if (isMounted) {
-          setNewsPosts(Array.isArray(data) ? data : []);
-        }
-      } catch {
-        if (isMounted) {
-          setNewsPosts([]);
-        }
-      } finally {
-        if (isMounted) {
-          setLoading(false);
-        }
-      }
+    if (detectedCountry && detectedCountry !== "general") {
+      setSelectedCountry(detectedCountry.toUpperCase());
     }
-
-    fetchNews();
-
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+  }, [detectedCountry]);
 
   useEffect(() => {
-    if (country && country !== "general") setSelectedCountry(country.toUpperCase());
-  }, [country]);
+    const fetchNews = async () => {
+      try {
+        const res = await fetch("/api/news");
+        const data = await res.json();
+        setNewsPosts(Array.isArray(data) ? data : []);
+      } catch {
+        setNewsPosts([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchNews();
+  }, []);
 
   const filteredNews = useMemo(() => {
+    const now = Date.now();
     return newsPosts.filter((item) => {
-      const countryOk =
-        selectedCountry === "all" || item.country === selectedCountry || item.country === "General";
+      const countryOk = selectedCountry === "all" || item.country === selectedCountry || item.country === "General";
       const catOk = selectedCategory === "All" || item.category === selectedCategory;
-      return countryOk && catOk;
+      const age = now - new Date(item.publishedAt).getTime();
+      const dateOk = dateFilter === "today" ? age < 86400000 : dateFilter === "week" ? age < 604800000 : true;
+      return countryOk && catOk && dateOk;
     });
-  }, [newsPosts, selectedCountry, selectedCategory]);
+  }, [newsPosts, selectedCountry, selectedCategory, dateFilter]);
 
-  useEffect(() => setVisibleCount(9), [selectedCountry, selectedCategory]);
+  useEffect(() => setVisibleCount(9), [selectedCountry, selectedCategory, dateFilter]);
 
   const visibleNews = filteredNews.slice(0, visibleCount);
   const hasMore = visibleCount < filteredNews.length;
@@ -67,16 +62,14 @@ export default function NewsPageClient() {
 
         <div className="relative z-10 mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-12">
           <div className="mx-auto h-px w-16 bg-[#c9a96e]" />
-          <p className="mt-6 text-xs uppercase tracking-[0.2em] text-[#6aa595]">
-            Market Intelligence
-          </p>
+          <p className="mt-6 text-xs uppercase tracking-[0.2em] text-[#6aa595]">Market Intelligence</p>
           <h1 className="mt-4 font-[family-name:var(--font-playfair)] text-3xl text-[#1a1a2e] sm:text-4xl lg:text-6xl">
             Finance &amp; Tax News
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-[#5a6478]">
-            {country === "general"
+            {detectedCountry === "general"
               ? "Accounting regulations and tax updates across all markets."
-              : `Latest accounting and tax updates for ${country.toUpperCase()} businesses.`}
+              : `Latest accounting and tax updates for ${detectedCountry?.toUpperCase()} businesses.`}
           </p>
         </div>
       </section>
@@ -84,7 +77,7 @@ export default function NewsPageClient() {
       <section className="border-y border-[#e2e4e9] bg-[#f8f9fa] py-10">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
           <div className="mb-5">
-            <p className="mb-3 text-xs uppercase tracking-[0.16em] text-[#5a6478]">Country</p>
+            <p className="mb-3 text-xs uppercase tracking-[0.16em] text-[#5a6478]">Country:</p>
             <div className="flex flex-wrap gap-2">
               {[
                 { key: "all", label: "All" },
@@ -92,45 +85,54 @@ export default function NewsPageClient() {
                 { key: "UK", label: "UK" },
                 { key: "AU", label: "AU" },
                 { key: "CA", label: "CA" },
-                { key: "General", label: "Global" },
-              ].map((opt) => (
+                { key: "GENERAL", label: "Global" },
+              ].map((option) => (
                 <button
-                  key={opt.key}
-                  onClick={() => setSelectedCountry(opt.key)}
-                  className={`rounded-full border px-5 py-2 text-xs transition-colors ${
-                    selectedCountry === opt.key
-                      ? "bg-[#5a688e] text-white border-[#5a688e]"
-                      : "bg-white border-[#e2e4e9] text-[#5a6478] hover:border-[#5a688e]/40"
-                  }`}
+                  key={option.key}
+                  onClick={() => setSelectedCountry(option.key)}
+                  className={selectedCountry === option.key ? activePillClass : inactivePillClass}
                 >
-                  {opt.label}
+                  {option.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="mb-5">
+            <p className="mb-3 text-xs uppercase tracking-[0.16em] text-[#5a6478]">Category:</p>
+            <div className="flex flex-wrap gap-2">
+              {["All", "Tax Compliance", "Payroll", "Regulation Update", "Bookkeeping"].map((category) => (
+                <button
+                  key={category}
+                  onClick={() => setSelectedCategory(category)}
+                  className={selectedCategory === category ? activePillClass : inactivePillClass}
+                >
+                  {category}
                 </button>
               ))}
             </div>
           </div>
 
           <div>
-            <p className="mb-3 text-xs uppercase tracking-[0.16em] text-[#5a6478]">Category</p>
+            <p className="mb-3 text-xs uppercase tracking-[0.16em] text-[#5a6478]">Date:</p>
             <div className="flex flex-wrap gap-2">
-              {["All", "Tax Compliance", "Payroll", "Regulation Update", "Bookkeeping", "Advisory"].map((cat) => (
+              {[
+                { key: "all", label: "All Time" },
+                { key: "week", label: "This Week" },
+                { key: "today", label: "Today" },
+              ].map((option) => (
                 <button
-                  key={cat}
-                  onClick={() => setSelectedCategory(cat)}
-                  className={`rounded-full border px-5 py-2 text-xs transition-colors ${
-                    selectedCategory === cat
-                      ? "bg-[#5a688e] text-white border-[#5a688e]"
-                      : "bg-white border-[#e2e4e9] text-[#5a6478] hover:border-[#5a688e]/40"
-                  }`}
+                  key={option.key}
+                  onClick={() => setDateFilter(option.key)}
+                  className={dateFilter === option.key ? activePillClass : inactivePillClass}
                 >
-                  {cat}
+                  {option.label}
                 </button>
               ))}
             </div>
           </div>
 
-          <p className="mt-4 text-xs text-[#8892a4]">
-            Showing {Math.min(visibleCount, filteredNews.length)} of {filteredNews.length} articles
-          </p>
+          <p className="mt-3 text-xs text-[#8892a4]">Showing {Math.min(visibleCount, filteredNews.length)} of {filteredNews.length} articles</p>
         </div>
       </section>
 
@@ -138,12 +140,12 @@ export default function NewsPageClient() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
           <div className="mb-6 h-px w-16 bg-[#c9a96e]" />
           <p className="text-xs uppercase tracking-[0.2em] text-[#6aa595]">
-            {country === "general" ? "Global News" : `${country.toUpperCase()} News`}
+            {detectedCountry === "general" ? "Global News" : `${detectedCountry?.toUpperCase()} News`}
           </p>
 
           {loading ? (
             <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {[1,2,3,4,5,6].map((i) => (
+              {[1, 2, 3, 4, 5, 6].map((i) => (
                 <div key={i} className="rounded-xl border border-[#e2e4e9] bg-[#f8f9fa] p-6 animate-pulse">
                   <div className="flex items-center justify-between gap-3 mb-4">
                     <div className="h-5 w-24 rounded-full bg-[#e2e4e9]" />
@@ -167,7 +169,7 @@ export default function NewsPageClient() {
               <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {visibleNews.map((item) => (
                   <article
-                    key={item.slug}
+                    key={item.id || item.slug}
                     className="rounded-xl border border-[#e2e4e9] bg-[#f8f9fa] p-6 transition-all hover:border-[#5a688e]/40 hover:shadow-xl"
                   >
                     <div className="flex items-center justify-between gap-3">
@@ -178,8 +180,13 @@ export default function NewsPageClient() {
                         <span className="rounded-full bg-[#c9a96e]/10 px-3 py-1 text-xs text-[#c9a96e]">
                           {item.category}
                         </span>
+                        <span className="rounded-full bg-[#1a1a2e]/5 px-3 py-1 text-xs text-[#5a6478]">
+                          {item.country}
+                        </span>
                       </div>
-                      <span className="text-xs text-[#5a6478]">{item.date}</span>
+                      <span className="text-xs text-[#5a6478]">
+                        {item.publishedAt ? new Date(item.publishedAt).toLocaleDateString() : ""}
+                      </span>
                     </div>
                     <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-xl font-semibold text-[#1a1a2e]">
                       {item.title}
@@ -197,9 +204,9 @@ export default function NewsPageClient() {
                           href={item.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="ml-4 text-xs text-[#8892a4] hover:text-[#c9a96e] transition-colors"
+                          className="ml-3 text-xs text-[#c9a96e] hover:underline"
                         >
-                          Source →
+                          Source {"\u2192"}
                         </a>
                       )}
                     </div>

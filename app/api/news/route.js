@@ -4,6 +4,19 @@ import { NextResponse } from 'next/server';
 export async function GET() {
   try {
     const newsArticles = await prisma.newsArticle.findMany({
+      select: {
+        id: true,
+        title: true,
+        slug: true,
+        summary: true,
+        url: true,
+        source: true,
+        category: true,
+        country: true,
+        sourceType: true,
+        publishedAt: true,
+        createdAt: true,
+      },
       orderBy: { publishedAt: 'desc' },
     });
 
