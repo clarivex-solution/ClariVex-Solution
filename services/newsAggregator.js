@@ -87,15 +87,10 @@ function normaliseSince(since) {
 }
 
 function getFeeds(country) {
-  const specific = RSS_FEEDS[country] || [];
-  const global = RSS_FEEDS.GENERAL || [];
-  const deduped = new Map();
-
-  for (const feed of [...specific, ...global]) {
-    if (!deduped.has(feed.url)) deduped.set(feed.url, feed);
+  if (country === 'GENERAL') {
+    return RSS_FEEDS.GENERAL || [];
   }
-
-  return Array.from(deduped.values());
+  return RSS_FEEDS[country] || [];
 }
 
 function sourceCountIncrement(sourceCounts, sourceName, amount = 1) {
@@ -155,7 +150,7 @@ function asBool(value) {
 
 async function acquireLock(country) {
   if (memoryLocks.has(country)) {
-    return { acquired: false, release: async () => {} };
+    return { acquired: false, release: async () => { } };
   }
 
   memoryLocks.add(country);
@@ -169,7 +164,7 @@ async function acquireLock(country) {
     if (!row || !asBool(row.acquired)) {
       memoryLocks.delete(country);
       console.log(`[newsAggregator] Lock not acquired for ${country} - another process running`);
-      return { acquired: false, release: async () => {} };
+      return { acquired: false, release: async () => { } };
     }
 
     return {
@@ -359,10 +354,11 @@ export async function fetchAndSaveNews({ country, maxPerSource = 20, since } = {
 
     let allFetched = rssResult.articles;
 
-    if (allFetched.length === 0) {
+    // Trigger GNews if RSS returned nothing OR very few articles (under 3)
+    if (allFetched.length < 3) {
       const gnewsResult = await fetchGnewsFallback(normalizedCountry, maxPerSource);
       mergeSourceCounts(sourceCounts, gnewsResult.sourceCounts);
-      allFetched = gnewsResult.articles;
+      allFetched = [...allFetched, ...gnewsResult.articles];
     }
 
     fetched = allFetched.length;
@@ -451,4 +447,3 @@ export async function fetchAndSaveNews({ country, maxPerSource = 20, since } = {
     await lock.release();
   }
 }
-
