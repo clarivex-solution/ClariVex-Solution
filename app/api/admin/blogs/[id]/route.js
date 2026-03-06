@@ -9,8 +9,7 @@ export async function GET(request, { params }) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const resolvedParams = await params;
-    const { id } = resolvedParams;
+    const { id } = await params;
 
     const blog = await prisma.blog.findUnique({
       where: { id },
@@ -34,8 +33,7 @@ export async function PUT(request, { params }) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const resolvedParams = await params;
-    const { id } = resolvedParams;
+    const { id } = await params;
     const body = await request.json();
 
     const existingBlog = await prisma.blog.findUnique({ where: { id } });
@@ -63,13 +61,19 @@ export async function PUT(request, { params }) {
 }
 
 export async function PATCH(request, { params }) {
-  const { id } = await params
-  const body = await request.json()
+  const auth = await verifyAdminRequest(request);
+  if (!auth.authenticated) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  const { id } = await params;
+  const body = await request.json();
   const updated = await prisma.blog.update({
     where: { id },
-    data: { status: body.status }
-  })
-  return NextResponse.json(updated)
+    data: { status: body.status },
+  });
+
+  return NextResponse.json(updated);
 }
 
 export async function DELETE(request, { params }) {
@@ -79,8 +83,7 @@ export async function DELETE(request, { params }) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const resolvedParams = await params;
-    const { id } = resolvedParams;
+    const { id } = await params;
 
     await prisma.blog.delete({
       where: { id },

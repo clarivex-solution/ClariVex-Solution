@@ -36,13 +36,13 @@ export default async function AdminDashboard() {
       <div className="flex flex-wrap gap-4 pt-4">
         <Link
           href="/admin/blog/new"
-          className="px-6 py-2.5 rounded-full border border-[#5a688e] text-[#5a688e] hover:bg-[#5a688e] hover:text-white transition-colors duration-300 font-medium"
+          className="px-6 py-2.5 rounded-full border border-[#5a688e] text-[#5a688e] cursor-pointer hover:bg-[#5a688e] hover:text-white active:scale-95 transition-colors duration-300 font-medium"
         >
           New Blog Post
         </Link>
         <Link
           href="/admin/news/new"
-          className="px-6 py-2.5 rounded-full border border-[#5a688e] text-[#5a688e] hover:bg-[#5a688e] hover:text-white transition-colors duration-300 font-medium"
+          className="px-6 py-2.5 rounded-full border border-[#5a688e] text-[#5a688e] cursor-pointer hover:bg-[#5a688e] hover:text-white active:scale-95 transition-colors duration-300 font-medium"
         >
           Add News
         </Link>
@@ -53,9 +53,11 @@ export default async function AdminDashboard() {
 
 function StatCard({ title, value }) {
   return (
-    <div className="bg-[#13161e] border border-[#1e2330] rounded-xl p-6 transition-transform hover:-translate-y-1 duration-300 cursor-pointer transition-all hover:border-[#5a688e]/60 hover:shadow-lg hover:-translate-y-0.5">
+    <div className="bg-[#13161e] border border-[#1e2330] rounded-xl p-6 transition-all duration-300 cursor-pointer hover:border-[#5a688e]/60 hover:shadow-lg hover:-translate-y-1">
       <p className="text-[#8892a4] text-sm font-medium mb-2">{title}</p>
       <p className="text-4xl text-white font-inter font-light">{value}</p>
     </div>
   )
 }
+
+

@@ -4,8 +4,8 @@ import { useCountry } from "@/components/CountryProvider";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
-const activePillClass = "rounded-full border px-4 py-1.5 text-xs transition-colors bg-[#5a688e] text-white border-[#5a688e]";
-const inactivePillClass = "rounded-full border px-4 py-1.5 text-xs transition-colors bg-white border-[#e2e4e9] text-[#5a6478] hover:border-[#5a688e]/40";
+const activePillClass = "rounded-full border px-4 py-1.5 text-xs cursor-pointer transition-colors bg-[#5a688e] text-white border-[#5a688e]";
+const inactivePillClass = "rounded-full border px-4 py-1.5 text-xs cursor-pointer transition-colors bg-white border-[#e2e4e9] text-[#5a6478] hover:border-[#5a688e]/40";
 
 export default function NewsPageClient() {
   const { country: detectedCountry } = useCountry();
@@ -15,6 +15,7 @@ export default function NewsPageClient() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [dateFilter, setDateFilter] = useState("all");
   const [visibleCount, setVisibleCount] = useState(9);
+  const [loadingMore, setLoadingMore] = useState(false);
 
   useEffect(() => {
     if (detectedCountry && detectedCountry !== "general") {
@@ -25,8 +26,8 @@ export default function NewsPageClient() {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const res = await fetch("/api/news");
-        const data = await res.json();
+        const response = await fetch("/api/news");
+        const data = await response.json();
         setNewsPosts(Array.isArray(data) ? data : []);
       } catch {
         setNewsPosts([]);
@@ -40,19 +41,40 @@ export default function NewsPageClient() {
 
   const filteredNews = useMemo(() => {
     const now = Date.now();
+
     return newsPosts.filter((item) => {
       const countryOk = selectedCountry === "all" || item.country === selectedCountry || item.country === "General";
-      const catOk = selectedCategory === "All" || item.category === selectedCategory;
-      const age = now - new Date(item.publishedAt).getTime();
-      const dateOk = dateFilter === "today" ? age < 86400000 : dateFilter === "week" ? age < 604800000 : true;
-      return countryOk && catOk && dateOk;
+      const categoryOk = selectedCategory === "All" || item.category === selectedCategory;
+      const ageMs = now - new Date(item.publishedAt).getTime();
+      const dateOk = dateFilter === "today" ? ageMs < 86400000 : dateFilter === "week" ? ageMs < 604800000 : true;
+
+      return countryOk && categoryOk && dateOk;
     });
   }, [newsPosts, selectedCountry, selectedCategory, dateFilter]);
 
-  useEffect(() => setVisibleCount(9), [selectedCountry, selectedCategory, dateFilter]);
+  useEffect(() => {
+    setVisibleCount(9);
+    setLoadingMore(false);
+  }, [selectedCountry, selectedCategory, dateFilter]);
 
   const visibleNews = filteredNews.slice(0, visibleCount);
   const hasMore = visibleCount < filteredNews.length;
+
+  function clearFilters() {
+    setSelectedCountry("all");
+    setSelectedCategory("All");
+    setDateFilter("all");
+  }
+
+  function handleLoadMore() {
+    if (loadingMore) return;
+
+    setLoadingMore(true);
+    setTimeout(() => {
+      setVisibleCount((value) => value + 9);
+      setLoadingMore(false);
+    }, 180);
+  }
 
   return (
     <main className="bg-white text-[#1a1a2e]">
@@ -60,7 +82,7 @@ export default function NewsPageClient() {
         <div className="pointer-events-none absolute -right-20 -top-20 h-[420px] w-[420px] rounded-full bg-[#5a688e]/6 blur-[110px]" />
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.03)_1px,transparent_1px)] bg-[size:80px_80px]" />
 
-        <div className="relative z-10 mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-12">
+        <div className="relative z-10 mx-auto max-w-7xl px-4 text-center animate-in fade-in slide-in-from-bottom-4 duration-700 sm:px-6 lg:px-12">
           <div className="mx-auto h-px w-16 bg-[#c9a96e]" />
           <p className="mt-6 text-xs uppercase tracking-[0.2em] text-[#6aa595]">Market Intelligence</p>
           <h1 className="mt-4 font-[family-name:var(--font-playfair)] text-3xl text-[#1a1a2e] sm:text-4xl lg:text-6xl">
@@ -74,11 +96,11 @@ export default function NewsPageClient() {
         </div>
       </section>
 
-      <section className="border-y border-[#e2e4e9] bg-[#f8f9fa] py-10">
+      <section className="sticky top-20 z-30 border-y border-[#e2e4e9] bg-[#f8f9fa]/95 backdrop-blur-sm py-6">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
           <div className="mb-5">
             <p className="mb-3 text-xs uppercase tracking-[0.16em] text-[#5a6478]">Country:</p>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex gap-2 overflow-x-auto pb-2 snap-x scrollbar-none">
               {[
                 { key: "all", label: "All" },
                 { key: "US", label: "US" },
@@ -89,6 +111,7 @@ export default function NewsPageClient() {
               ].map((option) => (
                 <button
                   key={option.key}
+                  type="button"
                   onClick={() => setSelectedCountry(option.key)}
                   className={selectedCountry === option.key ? activePillClass : inactivePillClass}
                 >
@@ -100,10 +123,11 @@ export default function NewsPageClient() {
 
           <div className="mb-5">
             <p className="mb-3 text-xs uppercase tracking-[0.16em] text-[#5a6478]">Category:</p>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex gap-2 overflow-x-auto pb-2 snap-x scrollbar-none">
               {["All", "Tax Compliance", "Payroll", "Regulation Update", "Bookkeeping"].map((category) => (
                 <button
                   key={category}
+                  type="button"
                   onClick={() => setSelectedCategory(category)}
                   className={selectedCategory === category ? activePillClass : inactivePillClass}
                 >
@@ -115,7 +139,7 @@ export default function NewsPageClient() {
 
           <div>
             <p className="mb-3 text-xs uppercase tracking-[0.16em] text-[#5a6478]">Date:</p>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex gap-2 overflow-x-auto pb-2 snap-x scrollbar-none">
               {[
                 { key: "all", label: "All Time" },
                 { key: "week", label: "This Week" },
@@ -123,6 +147,7 @@ export default function NewsPageClient() {
               ].map((option) => (
                 <button
                   key={option.key}
+                  type="button"
                   onClick={() => setDateFilter(option.key)}
                   className={dateFilter === option.key ? activePillClass : inactivePillClass}
                 >
@@ -132,7 +157,9 @@ export default function NewsPageClient() {
             </div>
           </div>
 
-          <p className="mt-3 text-xs text-[#8892a4]">Showing {Math.min(visibleCount, filteredNews.length)} of {filteredNews.length} articles</p>
+          <p className="mt-3 text-xs text-[#8892a4]">
+            Showing {Math.min(visibleCount, filteredNews.length)} of {filteredNews.length} articles
+          </p>
         </div>
       </section>
 
@@ -144,33 +171,42 @@ export default function NewsPageClient() {
           </p>
 
           {loading ? (
-            <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {[1, 2, 3, 4, 5, 6].map((i) => (
-                <div key={i} className="rounded-xl border border-[#e2e4e9] bg-[#f8f9fa] p-6 animate-pulse">
-                  <div className="flex items-center justify-between gap-3 mb-4">
+            <div className="mt-8 grid gap-6 transition-all duration-300 md:grid-cols-2 lg:grid-cols-3">
+              {[1, 2, 3, 4, 5, 6].map((item) => (
+                <div key={item} className="rounded-xl border border-[#e2e4e9] bg-[#f8f9fa] p-6 animate-pulse">
+                  <div className="mb-4 flex items-center justify-between gap-3">
                     <div className="h-5 w-24 rounded-full bg-[#e2e4e9]" />
                     <div className="h-5 w-16 rounded-full bg-[#e2e4e9]" />
                   </div>
-                  <div className="h-6 w-full rounded bg-[#e2e4e9] mb-2" />
-                  <div className="h-4 w-4/5 rounded bg-[#e2e4e9] mb-3" />
-                  <div className="h-4 w-full rounded bg-[#e2e4e9] mb-1" />
-                  <div className="h-4 w-full rounded bg-[#e2e4e9] mb-1" />
-                  <div className="h-4 w-2/3 rounded bg-[#e2e4e9] mb-6" />
+                  <div className="mb-2 h-6 w-full rounded bg-[#e2e4e9]" />
+                  <div className="mb-3 h-4 w-4/5 rounded bg-[#e2e4e9]" />
+                  <div className="mb-1 h-4 w-full rounded bg-[#e2e4e9]" />
+                  <div className="mb-1 h-4 w-full rounded bg-[#e2e4e9]" />
+                  <div className="mb-6 h-4 w-2/3 rounded bg-[#e2e4e9]" />
                   <div className="h-4 w-20 rounded bg-[#e2e4e9]" />
                 </div>
               ))}
             </div>
           ) : filteredNews.length === 0 ? (
-            <div className="mt-8 rounded-xl border border-[#e2e4e9] bg-[#f8f9fa] p-8 text-[#5a6478]">
-              No news available for this region yet.
+            <div className="mt-8 rounded-xl border border-[#e2e4e9] bg-[#f8f9fa] p-12 text-center">
+              <div className="mx-auto mb-4 h-px w-12 bg-[#c9a96e]" />
+              <p className="text-base font-medium text-[#1a1a2e]">No articles found</p>
+              <p className="mt-2 text-sm text-[#5a6478]">Try adjusting your filters or check back later.</p>
+              <button
+                type="button"
+                onClick={clearFilters}
+                className="mt-4 rounded-full border border-[#5a688e] px-6 py-2 text-sm text-[#5a688e] cursor-pointer hover:bg-[#5a688e] hover:text-white active:scale-95 transition-colors"
+              >
+                Clear all filters
+              </button>
             </div>
           ) : (
             <>
-              <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              <div className="mt-8 grid gap-6 transition-all duration-300 md:grid-cols-2 lg:grid-cols-3">
                 {visibleNews.map((item) => (
                   <article
                     key={item.id || item.slug}
-                    className="rounded-xl border border-[#e2e4e9] bg-[#f8f9fa] p-6 transition-all hover:border-[#5a688e]/40 hover:shadow-xl"
+                    className="rounded-xl border border-[#e2e4e9] bg-[#f8f9fa] p-6 cursor-pointer transition-all duration-300 hover:border-[#5a688e]/40 hover:shadow-xl hover:-translate-y-1"
                   >
                     <div className="flex items-center justify-between gap-3">
                       <div className="flex flex-wrap items-center gap-2">
@@ -188,6 +224,7 @@ export default function NewsPageClient() {
                         {item.publishedAt ? new Date(item.publishedAt).toLocaleDateString() : ""}
                       </span>
                     </div>
+
                     <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-xl font-semibold text-[#1a1a2e]">
                       {item.title}
                     </h2>
@@ -206,7 +243,7 @@ export default function NewsPageClient() {
                           rel="noopener noreferrer"
                           className="ml-3 text-xs text-[#c9a96e] hover:underline"
                         >
-                          Source {"\u2192"}
+                          Source &rarr;
                         </a>
                       )}
                     </div>
@@ -217,10 +254,12 @@ export default function NewsPageClient() {
               {hasMore && (
                 <div className="mt-10 text-center">
                   <button
-                    onClick={() => setVisibleCount((v) => v + 9)}
-                    className="rounded-full border border-[#5a688e] px-8 py-3 text-sm font-medium text-[#5a688e] transition-colors hover:bg-[#5a688e] hover:text-white"
+                    type="button"
+                    disabled={loadingMore}
+                    onClick={handleLoadMore}
+                    className="rounded-full border border-[#5a688e] px-8 py-3 text-sm font-medium text-[#5a688e] cursor-pointer transition-colors hover:bg-[#5a688e] hover:text-white active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
                   >
-                    Load More
+                    {loadingMore ? "Loading..." : "Load More"}
                   </button>
                 </div>
               )}
@@ -238,8 +277,8 @@ export default function NewsPageClient() {
             </p>
             <form
               className="mx-auto mt-6 flex w-full max-w-xl flex-col gap-3 sm:flex-row"
-              onSubmit={(e) => {
-                e.preventDefault();
+              onSubmit={(event) => {
+                event.preventDefault();
                 alert("Thank you for subscribing!");
               }}
             >
@@ -253,7 +292,7 @@ export default function NewsPageClient() {
               />
               <button
                 type="submit"
-                className="rounded-full bg-[#5a688e] px-8 py-3 text-white transition-colors hover:bg-[#6aa595]"
+                className="rounded-full bg-[#5a688e] px-8 py-3 text-white cursor-pointer transition-colors hover:bg-[#6aa595] active:scale-95"
               >
                 Subscribe
               </button>

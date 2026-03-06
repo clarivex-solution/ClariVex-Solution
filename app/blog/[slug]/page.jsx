@@ -19,7 +19,7 @@ export async function generateMetadata({ params }) {
   }
 
   return {
-    title: `${post.title} | ClariVex`,
+    title: post.title,
     description: post.excerpt,
     alternates: {
       canonical: `${siteUrl}/blog/${post.slug}`,
@@ -165,3 +165,4 @@ export default async function BlogArticlePage({ params }) {
     </main>
   );
 }
+

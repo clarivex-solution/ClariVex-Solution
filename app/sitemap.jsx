@@ -31,6 +31,8 @@ export default async function sitemap() {
     { url: `${siteUrl}/ca`, lastModified: now, priority: 0.9, changeFrequency: "monthly" },
     { url: `${siteUrl}/blog`, lastModified: now, priority: 0.8, changeFrequency: "weekly" },
     { url: `${siteUrl}/news`, lastModified: now, priority: 0.8, changeFrequency: "weekly" },
+    { url: `${siteUrl}/terms`, lastModified: now, priority: 0.4, changeFrequency: "yearly" },
+    { url: `${siteUrl}/privacy`, lastModified: now, priority: 0.4, changeFrequency: "yearly" },
   ];
 
   const serviceRoutes = services.map((slug) => ({

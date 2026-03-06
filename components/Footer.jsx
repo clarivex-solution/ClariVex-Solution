@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useCountry } from "@/components/CountryProvider";
 import { countries, COUNTRY_ROUTES } from "@/lib/countryData";
@@ -35,7 +35,7 @@ export default function Footer() {
   function handleSelectCountry(code) {
     setCountry(code);
 
-    /* Navigation — same logic as Navbar (Fix 3) */
+    /* Navigation - same logic as Navbar (Fix 3) */
     if (code !== "general") {
       router.push(`/${code}`);
     } else {
@@ -64,19 +64,19 @@ export default function Footer() {
                 AU, and CA businesses.
               </p>
 
-              {/* Worldwide Presence — clickable flag row */}
+              {/* Worldwide Presence - clickable flag row */}
               <div className="mt-6">
                 <p className="mb-3 text-xs uppercase tracking-widest text-[#5a6478]">
                   Worldwide Presence
                 </p>
-                <div className="flex items-center gap-3">
+                <div className="flex flex-wrap items-center gap-2">
                   {countries.map((c) => (
                     <button
                       key={c.code}
                       type="button"
                       title={c.name}
                       onClick={() => handleSelectCountry(c.code)}
-                      className={`group relative rounded-md p-1 transition-all duration-200 ${
+                      className={`group relative rounded-md p-1 cursor-pointer transition-all duration-200 ${
                         country === c.code
                           ? "ring-2 ring-[#6aa595] bg-[#6aa595]/10"
                           : "hover:ring-1 hover:ring-[#5a688e]/50 hover:bg-[#1e2330]"
@@ -102,14 +102,14 @@ export default function Footer() {
                   type="button"
                   onClick={detectLocation}
                   disabled={detecting}
-                  className="mt-3 flex items-center gap-1.5 text-xs text-[#5a6478] hover:text-[#6aa595] transition-colors"
+                  className="mt-3 flex items-center gap-1.5 text-xs text-[#5a6478] cursor-pointer hover:text-[#6aa595] transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   {detecting ? (
                     <Loader2 className="h-3 w-3 animate-spin text-[#6aa595]" />
                   ) : (
                     <LocateFixed className="h-3 w-3" />
                   )}
-                  <span>{detecting ? "Detecting…" : "Detect my location"}</span>
+                  <span>{detecting ? "Detecting..." : "Detect my location"}</span>
                 </button>
               </div>
             </div>
@@ -170,7 +170,16 @@ export default function Footer() {
 
           <div className="mt-14 border-t border-[#1e2330] pt-8">
             <div className="flex flex-col items-center gap-4 text-center text-xs text-[#8892a4] lg:flex-row lg:justify-between lg:text-left">
-              <p className="flex items-center justify-center gap-1"><Link href="/admin" className="select-none cursor-default pointer-events-auto text-xl leading-none">&copy;</Link> <span>2026 Clarivex Solution. All rights reserved.</span></p>
+              <p className="flex items-center justify-center gap-1">
+                <Link
+                  href="/admin"
+                  className="select-none cursor-default text-[#8892a4] hover:text-[#8892a4]"
+                  style={{ textDecoration: 'none' }}
+                >
+                  &copy;
+                </Link>
+                <span>2025 Clarivex Solutions. All rights reserved.</span>
+              </p>
               <div className="flex items-center gap-2">
                 <Link href="/privacy" className="text-[#8892a4] transition-colors hover:text-white">Privacy Policy</Link>
                 <span>&middot;</span>
@@ -197,3 +206,6 @@ export default function Footer() {
     </>
   );
 }
+
+
+

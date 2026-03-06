@@ -1,9 +1,17 @@
 import HomeContent from "@/components/HomeContent";
 import SetCountryOnMount from "@/components/SetCountryOnMount";
+import { siteUrl } from "@/lib/constants";
 import { generateCountryMetadata } from "@/lib/countryContent";
 
 export function generateMetadata() {
-  return generateCountryMetadata("ca");
+  const metadata = generateCountryMetadata("ca");
+  return {
+    ...metadata,
+    alternates: {
+      ...metadata.alternates,
+      canonical: `${siteUrl}/ca`,
+    },
+  };
 }
 
 export default function CAPage() {

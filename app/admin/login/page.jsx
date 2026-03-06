@@ -7,14 +7,12 @@ import { toast } from 'sonner'
 export default function AdminLogin() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
   const [loading, setLoading] = useState(false)
   const router = useRouter()
 
   const handleSubmit = async (e) => {
     setLoading(true)
     e.preventDefault()
-    setIsLoading(true)
     setError('')
 
     try {
@@ -35,7 +33,6 @@ export default function AdminLogin() {
       toast.error("Login failed. Check your connection.")
       setError('An error occurred. Please try again.')
     } finally {
-      setIsLoading(false)
       setLoading(false)
     }
   }
@@ -66,7 +63,7 @@ export default function AdminLogin() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-[#5a688e] hover:bg-[#4a567a] text-white rounded-full py-3 font-medium transition-colors disabled:opacity-70"
+            className="w-full rounded-full bg-[#5a688e] py-3 font-medium text-white cursor-pointer transition-colors hover:bg-[#4a567a] active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
           >
             {loading ? "Signing in..." : "Sign In"}
           </button>
@@ -75,3 +72,4 @@ export default function AdminLogin() {
     </div>
   )
 }
+

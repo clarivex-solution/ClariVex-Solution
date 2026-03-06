@@ -189,9 +189,9 @@ export default function ContactForm() {
         <button
           type="submit"
           disabled={loading}
-          className="mt-6 w-full rounded-xl bg-[#5a688e] py-4 text-sm font-semibold tracking-wide text-white transition-all duration-300 hover:bg-[#6aa595] hover:shadow-lg hover:shadow-[#6aa595]/20"
+          className="mt-6 w-full rounded-xl bg-[#5a688e] py-4 text-sm font-semibold tracking-wide text-white cursor-pointer transition-all duration-300 hover:bg-[#6aa595] hover:shadow-lg hover:shadow-[#6aa595]/20 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          {loading ? "Sending…" : "Send Message \u2192"}
+          {loading ? "Sending..." : "Send Message ->"}
         </button>
         {error && <p className="mt-2 text-center text-xs text-red-500">{error}</p>}
       </form>

@@ -145,7 +145,7 @@ function AdminBlogPageContent() {
 
         <Link
           href="/admin/blog/new"
-          className="px-5 py-2.5 rounded-full border border-[#5a688e] text-[#5a688e] hover:bg-[#5a688e] hover:text-white transition-colors duration-300 font-medium"
+          className="px-5 py-2.5 rounded-full border border-[#5a688e] text-[#5a688e] cursor-pointer hover:bg-[#5a688e] hover:text-white active:scale-95 transition-colors duration-300 font-medium"
         >
           New Blog Post
         </Link>
@@ -167,7 +167,7 @@ function AdminBlogPageContent() {
         </div>
       )}
 
-      <div className="overflow-x-auto rounded-xl border border-[#1e2330] bg-[#13161e]">
+      <div className="w-full overflow-x-auto rounded-xl border border-[#1e2330] bg-[#13161e]">
         <table className="min-w-full">
           <thead className="bg-[#0d0f14]">
             <tr>
@@ -182,7 +182,7 @@ function AdminBlogPageContent() {
           <tbody>
             {isLoading
               ? Array.from({ length: 3 }).map((_, rowIndex) => (
-                  <tr key={rowIndex} className="border-t border-[#1e2330]">
+                  <tr key={rowIndex} className="border-t border-[#1e2330] hover:bg-[#1e2330]/40 transition-colors duration-150">
                     <td className="px-4 py-4">
                       <div className="h-4 w-40 animate-pulse rounded bg-[#1e2330]"></div>
                     </td>
@@ -206,7 +206,7 @@ function AdminBlogPageContent() {
               : null}
 
             {!isLoading && filteredBlogs.length === 0 ? (
-              <tr className="border-t border-[#1e2330]">
+              <tr className="border-t border-[#1e2330] hover:bg-[#1e2330]/40 transition-colors duration-150">
                 <td colSpan={6} className="px-4 py-12 text-center text-sm text-[#8892a4]">
                   No blog posts yet. Create your first post to get started.
                 </td>
@@ -215,7 +215,7 @@ function AdminBlogPageContent() {
 
             {!isLoading
               ? filteredBlogs.map((blog) => (
-                  <tr key={blog.id} className="border-t border-[#1e2330]">
+                  <tr key={blog.id} className="border-t border-[#1e2330] hover:bg-[#1e2330]/40 transition-colors duration-150">
                     <td className="px-4 py-4 text-sm text-white">{blog.title}</td>
                     <td className="px-4 py-4 text-sm text-[#8892a4]">{blog.country || '--'}</td>
                     <td className="px-4 py-4 text-sm text-[#8892a4]">{blog.category || '--'}</td>
@@ -229,7 +229,7 @@ function AdminBlogPageContent() {
                       <div className="flex items-center gap-2">
                         <Link
                           href={`/admin/blog/${blog.id}/edit`}
-                          className="px-3 py-1.5 rounded-md border border-[#5a688e] text-xs font-medium text-[#5a688e] hover:bg-[#5a688e] hover:text-white transition-colors duration-300"
+                          className="px-3 py-1.5 rounded-md border border-[#5a688e] text-xs font-medium text-[#5a688e] cursor-pointer hover:bg-[#5a688e] hover:text-white active:scale-95 transition-colors duration-300"
                         >
                           Edit
                         </Link>
@@ -238,7 +238,7 @@ function AdminBlogPageContent() {
                             type="button"
                             onClick={() => handlePublish(blog.id)}
                             disabled={publishingId === blog.id}
-                            className="px-3 py-1.5 rounded-md border border-[#6aa595] text-xs font-medium text-[#6aa595] hover:bg-[#6aa595] hover:text-white disabled:opacity-60 disabled:cursor-not-allowed transition-colors duration-300"
+                            className="px-3 py-1.5 rounded-md border border-[#6aa595] text-xs font-medium text-[#6aa595] cursor-pointer hover:bg-[#6aa595] hover:text-white disabled:opacity-60 disabled:cursor-not-allowed active:scale-95 transition-colors duration-300"
                           >
                             {publishingId === blog.id ? 'Publishing...' : 'Publish'}
                           </button>
@@ -247,7 +247,7 @@ function AdminBlogPageContent() {
                           type="button"
                           onClick={() => setDeleteTarget(blog)}
                           disabled={deletingId === blog.id}
-                          className="px-3 py-1.5 rounded-md border border-red-900/40 text-xs font-medium text-red-300 hover:bg-red-900/20 disabled:opacity-60 disabled:cursor-not-allowed transition-colors duration-300"
+                          className="px-3 py-1.5 rounded-md border border-red-900/40 text-xs font-medium text-red-300 cursor-pointer hover:bg-red-900/20 disabled:opacity-60 disabled:cursor-not-allowed active:scale-95 transition-colors duration-300"
                         >
                           {deletingId === blog.id ? 'Deleting...' : 'Delete'}
                         </button>
@@ -269,7 +269,7 @@ function AdminBlogPageContent() {
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="gap-2 sm:gap-2">
-            <button onClick={() => setDeleteTarget(null)} className="rounded-lg border border-[#1e2330] px-4 py-2 text-sm font-medium text-[#8892a4] hover:bg-[#1e2330] transition-colors">
+            <button onClick={() => setDeleteTarget(null)} className="rounded-lg border border-[#1e2330] px-4 py-2 text-sm font-medium text-[#8892a4] cursor-pointer hover:bg-[#1e2330] active:scale-95 transition-colors">
               Cancel
             </button>
             <button
@@ -278,7 +278,7 @@ function AdminBlogPageContent() {
                 handleDelete(deleteTarget.id)
                 setDeleteTarget(null)
               }}
-              className="rounded-lg bg-red-500 hover:bg-red-600 px-4 py-2 text-sm font-medium text-white transition-colors"
+              className="rounded-lg bg-red-500 hover:bg-red-600 px-4 py-2 text-sm font-medium text-white cursor-pointer active:scale-95 transition-colors"
             >
               Delete
             </button>
@@ -302,3 +302,5 @@ export default function AdminBlogPage() {
     </Suspense>
   )
 }
+
+

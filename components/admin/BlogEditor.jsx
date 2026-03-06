@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useMemo, useState } from 'react'
 import { toast } from 'sonner'
 
-const CATEGORY_OPTIONS = ['Bookkeeping', 'Tax & Compliance', 'Payroll', 'Advisory']
+const CATEGORY_OPTIONS = ['Bookkeeping', 'Tax & Compliance', 'Payroll', 'Advisory', 'Reconciliation', 'AP & AR', 'Data Security', 'General']
 const COUNTRY_OPTIONS = ['US', 'UK', 'AU', 'CA', 'All']
 
 function slugify(value) {
@@ -22,9 +22,9 @@ function ToolbarButton({ active, disabled, onClick, children }) {
       onClick={onClick}
       disabled={disabled}
       className={[
-        'p-2 rounded text-xs font-semibold transition-colors text-[#8892a4] hover:text-white hover:bg-[#1e2330]',
+        'p-2 rounded text-xs font-semibold text-[#8892a4] cursor-pointer transition-colors hover:text-white hover:bg-[#1e2330] active:scale-95',
         active ? 'bg-[#5a688e] text-white' : '',
-        disabled ? 'opacity-50 cursor-not-allowed' : '',
+        disabled ? 'opacity-60 cursor-not-allowed' : '',
       ].join(' ')}
     >
       {children}
@@ -417,7 +417,7 @@ export default function BlogEditor({ initialData, blogId, mode }) {
           <button
             type="submit"
             disabled={isSaving}
-            className="px-6 py-2.5 rounded-full border border-[#5a688e] text-[#5a688e] hover:bg-[#5a688e] hover:text-white disabled:opacity-60 disabled:cursor-not-allowed transition-colors duration-300 font-medium"
+            className="px-6 py-2.5 rounded-full border border-[#5a688e] text-[#5a688e] cursor-pointer font-medium transition-colors duration-300 hover:bg-[#5a688e] hover:text-white active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
           >
             {isSaving ? 'Saving...' : isEditMode ? 'Update Post' : 'Create Post'}
           </button>
@@ -426,3 +426,4 @@ export default function BlogEditor({ initialData, blogId, mode }) {
     </div>
   )
 }
+

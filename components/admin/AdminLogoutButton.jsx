@@ -26,7 +26,7 @@ export default function AdminLogoutButton() {
     <button
       onClick={handleLogout}
       disabled={isLoading}
-      className="text-[#8892a4] hover:text-red-400 transition text-sm text-left w-full disabled:opacity-50"
+      className="w-full cursor-pointer text-left text-sm text-[#8892a4] transition-colors hover:text-red-400 active:scale-95 disabled:cursor-not-allowed disabled:opacity-60"
     >
       {isLoading ? 'Logging out...' : 'Log out'}
     </button>

@@ -84,7 +84,7 @@ export default function Navbar() {
     if (code !== "general") {
       router.push(`/${code}`);
     } else {
-      /* General selected — navigate to / only from country homepages */
+      /* General selected - navigate to / only from country homepages */
       const isCountryHomepage = COUNTRY_ROUTES.some(
         (r) => pathname === `/${r}` || pathname === `/${r}/`
       );
@@ -99,6 +99,12 @@ export default function Navbar() {
     setDropdownOpen(false);
     setIsMobileOpen(false);
   }
+
+  const isActive = (href) => {
+    if (href === "/") return pathname === "/";
+    if (href.startsWith("/#")) return pathname === "/";
+    return pathname.startsWith(href);
+  };
 
   return (
     <>
@@ -116,15 +122,24 @@ export default function Navbar() {
           </Link>
 
           <nav className="hidden items-center justify-center gap-4 md:flex md:flex-1 lg:gap-7">
-            {navLinks.map((link) => (
-              <Link
-                key={link.label}
-                href={link.href}
-                className="relative text-sm text-[#5a6478] transition-colors duration-200 hover:text-[#1a1a2e] after:absolute after:-bottom-1 after:left-0 after:h-px after:w-0 after:bg-[#6aa595] after:transition-all after:duration-300 hover:after:w-full"
-              >
-                {link.label}
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const active = isActive(link.href);
+
+              return (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  aria-current={active ? "page" : undefined}
+                  className={`relative text-sm transition-colors duration-200 after:absolute after:-bottom-1 after:left-0 after:h-px after:bg-[#6aa595] after:transition-all after:duration-300 ${
+                    active
+                      ? "text-[#1a1a2e] after:w-full"
+                      : "text-[#5a6478] hover:text-[#1a1a2e] after:w-0 hover:after:w-full"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
           </nav>
 
           <div className="hidden items-center gap-3 md:flex">
@@ -132,7 +147,7 @@ export default function Navbar() {
             <div className="relative hidden lg:block" ref={dropdownRef}>
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
-                className="flex items-center gap-2 bg-[#f8f9fa] border border-[#e2e4e9] rounded-full px-4 py-2 text-xs text-[#5a6478] hover:border-[#5a688e]/50 hover:text-[#1a1a2e] transition-all duration-200"
+                className="flex items-center gap-2 bg-[#f8f9fa] border border-[#e2e4e9] rounded-full px-4 py-2 text-xs text-[#5a6478] cursor-pointer hover:border-[#5a688e]/50 hover:text-[#1a1a2e] active:scale-95 transition-all duration-200"
               >
                 <FlagImage src={selected.flagSrc} alt={selected.name} size={18} />
                 <span className="font-medium">
@@ -154,7 +169,7 @@ export default function Navbar() {
                       key={opt.code}
                       type="button"
                       onClick={() => handleSelectCountry(opt.code)}
-                      className={`flex w-full items-center gap-3 px-4 py-3 hover:bg-[#f8f9fa] transition-colors group ${
+                      className={`flex w-full items-center gap-3 px-4 py-3 cursor-pointer hover:bg-[#f8f9fa] transition-colors group ${
                         country === opt.code ? "bg-[#f8f9fa]" : ""
                       }`}
                     >
@@ -181,7 +196,7 @@ export default function Navbar() {
                     type="button"
                     onClick={handleDetectLocation}
                     disabled={detecting}
-                    className="flex w-full items-center gap-3 px-4 py-3 border-t border-[#e2e4e9] hover:bg-[#f8f9fa] transition-colors group"
+                    className="flex w-full items-center gap-3 px-4 py-3 border-t border-[#e2e4e9] cursor-pointer hover:bg-[#f8f9fa] transition-colors group disabled:opacity-60 disabled:cursor-not-allowed"
                   >
                     {detecting ? (
                       <Loader2 className="h-4 w-4 animate-spin text-[#6aa595]" />
@@ -189,7 +204,7 @@ export default function Navbar() {
                       <LocateFixed className="h-4 w-4 text-[#5a688e]" />
                     )}
                     <span className="text-sm text-[#5a6478] group-hover:text-[#1a1a2e] transition-colors">
-                      {detecting ? "Detecting…" : "Detect my location"}
+                      {detecting ? "Detecting..." : "Detect my location"}
                     </span>
                   </button>
 
@@ -204,7 +219,7 @@ export default function Navbar() {
 
             <Link
               href="/#contact"
-              className="rounded-full bg-[#5a688e] px-5 py-2.5 text-sm font-medium text-white transition-colors duration-300 hover:bg-[#6aa595] lg:px-6"
+              className="rounded-full bg-[#5a688e] px-5 py-2.5 text-sm font-medium text-white cursor-pointer transition-colors duration-300 hover:bg-[#6aa595] active:scale-95 lg:px-6"
             >
               Book a Call
             </Link>
@@ -213,7 +228,7 @@ export default function Navbar() {
           <button
             type="button"
             aria-label="Open navigation menu"
-            className="inline-flex items-center justify-center p-2 text-[#1a1a2e] md:hidden"
+            className="inline-flex items-center justify-center p-2 text-[#1a1a2e] cursor-pointer md:hidden"
             onClick={() => setIsMobileOpen(true)}
           >
             <Menu className="h-6 w-6" />
@@ -237,7 +252,7 @@ export default function Navbar() {
               <button
                 type="button"
                 aria-label="Close navigation menu"
-                className="inline-flex items-center justify-center p-2 text-[#1a1a2e]"
+                className="inline-flex items-center justify-center p-2 text-[#1a1a2e] cursor-pointer"
                 onClick={() => setIsMobileOpen(false)}
               >
                 <X className="h-6 w-6" />
@@ -245,16 +260,23 @@ export default function Navbar() {
             </div>
 
             <nav className="mt-4">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.label}
-                  href={link.href}
-                  className="block border-b border-[#e2e4e9]/60 py-4 text-base text-[#5a6478] transition-colors hover:text-[#1a1a2e]"
-                  onClick={() => setIsMobileOpen(false)}
-                >
-                  {link.label}
-                </Link>
-              ))}
+              {navLinks.map((link) => {
+                const active = isActive(link.href);
+
+                return (
+                  <Link
+                    key={link.label}
+                    href={link.href}
+                    aria-current={active ? "page" : undefined}
+                    className={`block border-b border-[#e2e4e9]/60 py-4 text-base transition-colors ${
+                      active ? "text-[#1a1a2e]" : "text-[#5a6478] hover:text-[#1a1a2e]"
+                    }`}
+                    onClick={() => setIsMobileOpen(false)}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
             </nav>
 
             <div className="pt-4 border-t border-[#e2e4e9] mt-2">
@@ -266,7 +288,7 @@ export default function Navbar() {
                   key={opt.code}
                   type="button"
                   onClick={() => handleSelectCountry(opt.code)}
-                  className={`flex w-full items-center gap-3 px-4 py-3 border-b border-[#e2e4e9]/50 transition-colors ${
+                  className={`flex w-full items-center gap-3 px-4 py-3 border-b border-[#e2e4e9]/50 cursor-pointer transition-colors ${
                     country === opt.code ? "text-[#6aa595]" : "text-[#5a6478]"
                   }`}
                 >
@@ -278,12 +300,12 @@ export default function Navbar() {
                 </button>
               ))}
 
-              {/* Detect My Location — mobile */}
+              {/* Detect My Location - mobile */}
               <button
                 type="button"
                 onClick={handleDetectLocation}
                 disabled={detecting}
-                className="flex w-full items-center gap-3 px-4 py-3 border-b border-[#e2e4e9]/50 transition-colors text-[#5a6478]"
+                className="flex w-full items-center gap-3 px-4 py-3 border-b border-[#e2e4e9]/50 cursor-pointer transition-colors text-[#5a6478] disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 {detecting ? (
                   <Loader2 className="h-5 w-5 animate-spin text-[#6aa595]" />
@@ -291,14 +313,14 @@ export default function Navbar() {
                   <LocateFixed className="h-5 w-5 text-[#5a688e]" />
                 )}
                 <span className="text-sm">
-                  {detecting ? "Detecting…" : "Detect my location"}
+                  {detecting ? "Detecting..." : "Detect my location"}
                 </span>
               </button>
             </div>
 
             <Link
               href="/#contact"
-              className="mb-8 mt-auto w-full rounded-full bg-[#5a688e] px-6 py-3 text-center text-sm font-medium text-white transition-colors duration-300 hover:bg-[#6aa595]"
+              className="mb-8 mt-auto w-full rounded-full bg-[#5a688e] px-6 py-3 text-center text-sm font-medium text-white cursor-pointer transition-colors duration-300 hover:bg-[#6aa595] active:scale-95"
               onClick={() => setIsMobileOpen(false)}
             >
               Book a Call
@@ -309,3 +331,6 @@ export default function Navbar() {
     </>
   );
 }
+
+
+

@@ -16,11 +16,12 @@ const inter = Inter({
 
 export const metadata = {
   title: {
-    template: "%s",
-    default: "ClariVex Solutions",
+    template: "%s | ClariVex Solutions",
+    default: "ClariVex Solutions - Outsourced Accounting for US, UK, AU & CA",
   },
   description:
     "Elite outsourced accounting and finance operations for US, UK, AU, and CA businesses.",
+  metadataBase: new URL("https://clarivex.net"),
 };
 
 export default function RootLayout({ children }) {

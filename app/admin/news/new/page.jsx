@@ -190,7 +190,7 @@ export default function NewNewsPage() {
             <button
               type="submit"
               disabled={loading}
-              className="bg-[#5a688e] hover:bg-[#4a5573] text-white px-6 py-2.5 rounded-lg transition disabled:opacity-50"
+              className="rounded-lg bg-[#5a688e] px-6 py-2.5 text-white cursor-pointer transition-colors hover:bg-[#4a5573] active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
             >
               {loading ? "Saving..." : "Save News"}
             </button>

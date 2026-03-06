@@ -24,7 +24,7 @@ const countryFilterOptions = [
 ];
 
 function filterPillClass(isActive) {
-  return `rounded-full border px-5 py-2 text-xs transition-colors ${
+  return `rounded-full border px-5 py-2 text-xs cursor-pointer transition-colors ${
     isActive
       ? "bg-[#5a688e] text-white border-[#5a688e]"
       : "bg-white border-[#e2e4e9] text-[#5a6478] hover:border-[#5a688e]/40 hover:text-[#1a1a2e]"
@@ -36,18 +36,13 @@ export default function BlogPageClient() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [blogPosts, setBlogPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [activeCountryFilter, setActiveCountryFilter] = useState("all");
+  const [visibleCount, setVisibleCount] = useState(6);
+  const [loadingMore, setLoadingMore] = useState(false);
 
-  // Default country filter: when a specific country is active, show that + General
-  // When general is active, show all
-  const defaultCountryFilter = country === "general" ? "all" : country;
-  const [activeCountryFilter, setActiveCountryFilter] = useState(defaultCountryFilter);
-
-  // Sync default on country change from context
-  const [prevCountry, setPrevCountry] = useState(country);
-  if (country !== prevCountry) {
-    setPrevCountry(country);
+  useEffect(() => {
     setActiveCountryFilter(country === "general" ? "all" : country);
-  }
+  }, [country]);
 
   useEffect(() => {
     let isMounted = true;
@@ -80,16 +75,14 @@ export default function BlogPageClient() {
 
   const filteredPosts = useMemo(() => {
     return blogPosts.filter((post) => {
-      const categoryMatch =
-        activeCategory === "All" || post.category === activeCategory;
+      const categoryMatch = activeCategory === "All" || post.category === activeCategory;
 
       let countryMatch = true;
       if (activeCountryFilter === "all") {
-        countryMatch = true; // show everything
+        countryMatch = true;
       } else if (activeCountryFilter === "general") {
         countryMatch = post.country === "All" || post.country === "General";
       } else {
-        // Show strict country match
         countryMatch = post.country === activeCountryFilter.toUpperCase();
       }
 
@@ -97,11 +90,28 @@ export default function BlogPageClient() {
     });
   }, [blogPosts, activeCategory, activeCountryFilter]);
 
-  const [visibleCount, setVisibleCount] = useState(6);
   const visiblePosts = filteredPosts.slice(0, visibleCount);
   const hasMore = visibleCount < filteredPosts.length;
 
-  useEffect(() => setVisibleCount(6), [activeCategory, activeCountryFilter]);
+  useEffect(() => {
+    setVisibleCount(6);
+    setLoadingMore(false);
+  }, [activeCategory, activeCountryFilter]);
+
+  function handleLoadMore() {
+    if (loadingMore) return;
+
+    setLoadingMore(true);
+    setTimeout(() => {
+      setVisibleCount((value) => value + 6);
+      setLoadingMore(false);
+    }, 180);
+  }
+
+  function clearFilters() {
+    setActiveCategory("All");
+    setActiveCountryFilter("all");
+  }
 
   return (
     <main className="bg-white text-[#1a1a2e]">
@@ -109,7 +119,7 @@ export default function BlogPageClient() {
         <div className="pointer-events-none absolute -right-20 -top-20 h-[420px] w-[420px] rounded-full bg-[#5a688e]/6 blur-[110px]" />
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.03)_1px,transparent_1px)] bg-[size:80px_80px]" />
 
-        <div className="relative z-10 mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-12">
+        <div className="relative z-10 mx-auto max-w-7xl px-4 text-center animate-in fade-in slide-in-from-bottom-4 duration-700 sm:px-6 lg:px-12">
           <div className="mx-auto h-px w-16 bg-[#c9a96e]" />
           <p className="mt-6 text-xs uppercase tracking-[0.2em] text-[#6aa595]">
             Insights Library
@@ -131,7 +141,7 @@ export default function BlogPageClient() {
 
           <div className="mt-6">
             <p className="mb-3 text-xs uppercase tracking-[0.16em] text-[#5a6478]">Category</p>
-            <div className="flex flex-wrap gap-2 overflow-x-auto pb-2">
+            <div className="flex gap-2 overflow-x-auto pb-2 snap-x scrollbar-none">
               {categoryOptions.map((category) => (
                 <button
                   key={category}
@@ -147,7 +157,7 @@ export default function BlogPageClient() {
 
           <div className="mt-6">
             <p className="mb-3 text-xs uppercase tracking-[0.16em] text-[#5a6478]">Country</p>
-            <div className="flex flex-wrap gap-2 overflow-x-auto pb-2">
+            <div className="flex gap-2 overflow-x-auto pb-2 snap-x scrollbar-none">
               {countryFilterOptions.map((opt) => (
                 <button
                   key={opt.key}
@@ -177,32 +187,41 @@ export default function BlogPageClient() {
           <p className="text-xs uppercase tracking-[0.2em] text-[#6aa595]">Latest Articles</p>
 
           {loading ? (
-            <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {[1,2,3,4,5,6].map((i) => (
-                <div key={i} className="rounded-xl border border-[#e2e4e9] bg-[#f8f9fa] p-6 animate-pulse">
-                  <div className="flex items-center justify-between gap-3 mb-4">
+            <div className="mt-8 grid gap-6 transition-all duration-300 md:grid-cols-2 lg:grid-cols-3">
+              {[1, 2, 3, 4, 5, 6].map((item) => (
+                <div key={item} className="rounded-xl border border-[#e2e4e9] bg-[#f8f9fa] p-6 animate-pulse">
+                  <div className="mb-4 flex items-center justify-between gap-3">
                     <div className="h-5 w-24 rounded-full bg-[#e2e4e9]" />
                     <div className="h-5 w-16 rounded-full bg-[#e2e4e9]" />
                   </div>
-                  <div className="h-6 w-full rounded bg-[#e2e4e9] mb-2" />
-                  <div className="h-4 w-4/5 rounded bg-[#e2e4e9] mb-3" />
-                  <div className="h-4 w-full rounded bg-[#e2e4e9] mb-1" />
-                  <div className="h-4 w-full rounded bg-[#e2e4e9] mb-1" />
-                  <div className="h-4 w-2/3 rounded bg-[#e2e4e9] mb-6" />
+                  <div className="mb-2 h-6 w-full rounded bg-[#e2e4e9]" />
+                  <div className="mb-3 h-4 w-4/5 rounded bg-[#e2e4e9]" />
+                  <div className="mb-1 h-4 w-full rounded bg-[#e2e4e9]" />
+                  <div className="mb-1 h-4 w-full rounded bg-[#e2e4e9]" />
+                  <div className="mb-6 h-4 w-2/3 rounded bg-[#e2e4e9]" />
                   <div className="h-4 w-20 rounded bg-[#e2e4e9]" />
                 </div>
               ))}
             </div>
           ) : filteredPosts.length === 0 ? (
-            <div className="mt-8 rounded-xl border border-[#e2e4e9] bg-[#f8f9fa] p-8 text-[#5a6478]">
-              No posts found for the selected filters.
+            <div className="mt-8 rounded-xl border border-[#e2e4e9] bg-[#f8f9fa] p-12 text-center">
+              <div className="mx-auto mb-4 h-px w-12 bg-[#c9a96e]" />
+              <p className="text-base font-medium text-[#1a1a2e]">No articles found</p>
+              <p className="mt-2 text-sm text-[#5a6478]">Try adjusting your filters or check back later.</p>
+              <button
+                type="button"
+                onClick={clearFilters}
+                className="mt-4 rounded-full border border-[#5a688e] px-6 py-2 text-sm text-[#5a688e] cursor-pointer hover:bg-[#5a688e] hover:text-white active:scale-95 transition-colors"
+              >
+                Clear all filters
+              </button>
             </div>
           ) : (
-            <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-8 grid gap-6 transition-all duration-300 md:grid-cols-2 lg:grid-cols-3">
               {visiblePosts.map((post) => (
                 <article
                   key={post.slug}
-                  className="rounded-xl border border-[#e2e4e9] bg-[#f8f9fa] p-6 transition-all hover:border-[#5a688e]/40 hover:shadow-xl"
+                  className="rounded-xl border border-[#e2e4e9] bg-[#f8f9fa] p-6 cursor-pointer transition-all duration-300 hover:border-[#5a688e]/40 hover:shadow-xl hover:-translate-y-1"
                 >
                   <div className="flex items-center justify-between gap-3">
                     <span className="rounded-full bg-[#5a688e]/10 px-3 py-1 text-xs text-[#6aa595]">
@@ -231,10 +250,12 @@ export default function BlogPageClient() {
           {hasMore && (
             <div className="mt-10 text-center">
               <button
-                onClick={() => setVisibleCount((v) => v + 6)}
-                className="rounded-full border border-[#5a688e] px-8 py-3 text-sm font-medium text-[#5a688e] transition-colors hover:bg-[#5a688e] hover:text-white"
+                type="button"
+                disabled={loadingMore}
+                onClick={handleLoadMore}
+                className="rounded-full border border-[#5a688e] px-8 py-3 text-sm font-medium text-[#5a688e] cursor-pointer transition-colors hover:bg-[#5a688e] hover:text-white active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
               >
-                Load More Articles
+                {loadingMore ? "Loading..." : "Load More Articles"}
               </button>
               <p className="mt-3 text-xs text-[#8892a4]">
                 Showing {Math.min(visibleCount, filteredPosts.length)} of {filteredPosts.length} articles
