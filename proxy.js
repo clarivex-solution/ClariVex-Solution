@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 
-export function middleware(request) {
+export function proxy(request) {
   const token = request.cookies.get('admin_token')?.value
   const isLoginPage = request.nextUrl.pathname === '/admin/login'
   if (isLoginPage) return NextResponse.next()
@@ -11,4 +11,3 @@ export function middleware(request) {
 export const config = {
   matcher: ['/admin/:path*'],
 }
-
