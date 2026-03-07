@@ -15,12 +15,15 @@ import {
 } from "@/lib/siteData";
 import {
   ArrowRight,
+  BarChart2,
+  Calculator,
   CheckCircle,
   ChevronRight,
   Clipboard,
   Mail,
   MapPin,
   Phone,
+  Users,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -183,30 +186,40 @@ export default function HomeContent() {
 
 
       {/* Software */}
-      <section className="bg-white py-16 sm:py-20 lg:py-32">
+      <section className="bg-[#f8f9fa] border-t border-[#e2e4e9] py-20 pb-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
-          <div className="mb-6 h-px w-16 bg-[#c9a96e]" />
-          <p className="text-xs uppercase tracking-[0.2em] text-[#6aa595]">TOOLS &amp; TECHNOLOGY</p>
-          <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-3xl font-bold text-[#1a1a2e] sm:text-4xl lg:text-5xl">
+          <p className="text-[#6aa595] text-xs font-semibold uppercase tracking-[0.2em]">TOOLS &amp; TECHNOLOGY</p>
+          <h2 className="mt-2 font-[family-name:var(--font-playfair)] font-black text-4xl text-[#1a1a2e]">
             Software We Work With
           </h2>
-          <p className="mt-4 max-w-2xl text-[#5a6478]">
+          <p className="mt-3 mb-14 max-w-xl text-[#5a6478]">
             Built on the tools modern finance teams rely on. We adapt to your systems &mdash; no forced migrations, no disruption.
           </p>
-          <div className="mt-12 grid gap-8 lg:mt-20 lg:grid-cols-3">
-            {content.softwareColumns.map((column) => (
-              <article key={column.title} className="rounded-xl border border-[#e2e4e9] bg-[#f8f9fa] p-8">
-                <h3 className="mb-6 border-b border-[#e2e4e9] pb-4 font-semibold text-[#1a1a2e]">{column.title}</h3>
-                <div className="mt-2">
-                  {column.tools.map((tool) => (
-                    <div key={tool} className="flex items-center gap-3 border-b border-[#e2e4e9]/50 py-3 text-sm text-[#5a6478] transition-colors hover:text-[#1a1a2e]">
-                      <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#6aa595]" />
-                      <span>{tool}</span>
+          <div className="grid gap-6 lg:grid-cols-3">
+            {content.softwareColumns.map((column) => {
+              let Icon = Calculator;
+              if (column.title === 'Payroll & Expense') Icon = Users;
+              if (column.title === 'Reporting & MIS') Icon = BarChart2;
+
+              return (
+                <div key={column.title} className="relative rounded-2xl bg-white border border-[#e2e4e9] p-10 hover:border-[#6aa595]/40 hover:shadow-xl transition-all duration-300 overflow-hidden group">
+                  <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-[#6aa595] to-[#5a688e] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+                  <div className="flex items-center gap-3 mb-8">
+                    <div className="w-11 h-11 rounded-lg bg-[#6aa595]/10 flex items-center justify-center">
+                      <Icon className="h-5 w-5 text-[#6aa595]" />
                     </div>
-                  ))}
+                    <h3 className="font-bold text-[#1a1a2e] text-base">{column.title}</h3>
+                  </div>
+                  <div className="flex flex-wrap gap-3">
+                    {column.tools.map((tool) => (
+                      <span key={tool} className="rounded-full bg-white border border-[#e2e4e9] shadow-sm px-4 py-2 text-sm text-[#5a6478] font-medium hover:bg-[#6aa595] hover:border-[#6aa595] hover:text-white hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-default">
+                        {tool}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              </article>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
