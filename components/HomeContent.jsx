@@ -14,6 +14,7 @@ import {
     whyChooseUsCards
 } from "@/lib/siteData";
 import {
+    ArrowRight,
     CheckCircle,
     ChevronRight,
     Clipboard,
@@ -143,28 +144,38 @@ export default function HomeContent() {
       </section>
 
       {/* Services */}
-      <section id="services" className="bg-[#f4f3ee] py-16 sm:py-20 lg:py-32">
+      <section id="services" className="bg-[#f4f3ee] py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
           <div className="mb-6 h-px w-16 bg-[#c9a96e]" />
-          <p className="text-xs uppercase tracking-[0.2em] text-[#5a688e]">OUR SERVICES</p>
-          <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-3xl font-bold text-[#1a1a2e] sm:text-4xl lg:text-5xl">
+          <p className="text-[#6aa595] tracking-[0.2em] text-xs font-semibold uppercase">OUR SERVICES</p>
+          <h2 className="mt-3 mb-4 font-[family-name:var(--font-playfair)] text-5xl font-black text-[#1a1a2e]">
             Comprehensive Financial Solutions
           </h2>
-          <div className="mt-12 grid gap-6 md:grid-cols-2 lg:mt-20 lg:grid-cols-3">
-            {serviceCards.map((service) => (
-              <Link key={service.title} href={service.href}>
-                <article className="group cursor-pointer rounded-xl border border-slate-200 bg-white p-8 transition-all duration-300 hover:-translate-y-1 hover:border-[#5a688e]/40 hover:shadow-xl">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#5a688e]/10 text-[#5a688e] transition-colors duration-300 group-hover:bg-[#5a688e] group-hover:text-white">
-                    <service.icon className="h-5 w-5" />
-                  </div>
-                  <h3 className="mt-6 text-lg font-semibold text-[#1a1a2e]">{service.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-slate-500">{service.description}</p>
-                  <span className="mt-6 inline-block text-sm font-medium text-[#5a688e] transition-colors group-hover:text-[#6aa595]">
-                    Learn More &rarr;
-                  </span>
-                </article>
-              </Link>
-            ))}
+          <p className="text-[#5a6478] text-lg mb-16 max-w-xl">
+            End-to-end accounting and finance support — built for growing businesses across US, UK, AU & CA.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {serviceCards.map((service) => {
+              return (
+                <Link key={service.title} href={service.href} className="flex h-full">
+                  <article className="bg-white rounded-2xl p-8 border border-[#e2e4e9] hover:border-[#6aa595]/50 hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 group flex flex-col w-full">
+                    <div className="w-12 h-12 rounded-xl bg-[#6aa595]/10 flex items-center justify-center mb-5 group-hover:bg-[#6aa595]/20 transition-colors duration-300">
+                      <service.icon className="h-5 w-5 text-[#6aa595]" />
+                    </div>
+                    <h3 className="font-bold text-lg mb-3 text-[#1a1a2e]">
+                      {service.title}
+                    </h3>
+                    <p className="text-sm leading-relaxed flex-1 mb-6 text-[#5a6478]">
+                      {service.description}
+                    </p>
+                    <span className="inline-flex items-center gap-1.5 text-sm font-semibold group-hover:gap-3 transition-all duration-300 mt-auto text-[#6aa595]">
+                      Learn More
+                      <ArrowRight className="h-4 w-4" />
+                    </span>
+                  </article>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>
