@@ -8,17 +8,18 @@ import { AccountingServiceSchema } from "@/components/JsonLd";
 import { getContent } from "@/lib/countryContent";
 import { countries } from "@/lib/countryData";
 import {
-  phoneContacts,
-  processSteps,
-  serviceCards,
-  whyChooseUsCards
+    phoneContacts,
+    processSteps,
+    serviceCards,
+    whyChooseUsCards
 } from "@/lib/siteData";
 import {
-  CheckCircle,
-  Clipboard,
-  Mail,
-  MapPin,
-  Phone,
+    CheckCircle,
+    ChevronRight,
+    Clipboard,
+    Mail,
+    MapPin,
+    Phone,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -109,21 +110,33 @@ export default function HomeContent() {
       )}
 
       {/* Process */}
-      <section id="process" className="bg-white py-16 sm:py-20 lg:py-32">
+      <section id="process" className="bg-[#f8f9fa] py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
           <div className="mb-6 h-px w-16 bg-[#c9a96e]" />
           <p className="text-xs uppercase tracking-[0.2em] text-[#6aa595]">HOW WE WORK</p>
-          <h2 className="mt-4 max-w-2xl font-[family-name:var(--font-playfair)] text-3xl font-bold text-[#1a1a2e] sm:text-4xl lg:text-5xl">
+          <h2 className="mt-3 mb-16 max-w-2xl font-[family-name:var(--font-playfair)] text-3xl font-bold text-[#1a1a2e] sm:text-4xl lg:text-5xl lg:font-black">
             A disciplined process for measurable financial control
           </h2>
-          <div className="mt-12 grid gap-6 md:grid-cols-2 lg:mt-20 lg:grid-cols-4">
-            {processSteps.map((step) => (
-              <article key={step.step} className="group rounded-xl border border-[#e2e4e9] bg-[#f8f9fa] p-8 transition-all duration-300 hover:border-[#5a688e]/50 hover:shadow-lg">
-                <p className="font-[family-name:var(--font-playfair)] text-5xl font-bold text-[#e2e4e9] transition-colors group-hover:text-[#5a688e]/20">{step.step}</p>
-                <step.icon className="mt-4 h-6 w-6 text-[#6aa595]" />
-                <h3 className="mt-3 text-lg font-semibold text-[#1a1a2e]">{step.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-[#5a6478]">{step.description}</p>
-              </article>
+          <div className="relative grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {processSteps.map((step, index) => (
+              <div key={step.step} className="relative">
+                <article className="relative h-full bg-white rounded-2xl p-8 border border-[#e2e4e9] hover:border-[#6aa595] hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group overflow-hidden">
+                  <div className="absolute top-0 left-0 right-0 h-[3px] bg-[#6aa595] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left rounded-t-2xl" />
+                  <p className="absolute top-4 right-6 font-[family-name:var(--font-playfair)] text-7xl font-black text-[#6aa595]/20">
+                    {step.step}
+                  </p>
+                  <step.icon className="mt-2 mb-4 h-8 w-8 text-[#6aa595]" />
+                  <h3 className="mb-3 text-lg font-bold text-[#1a1a2e]">{step.title}</h3>
+                  <p className="text-sm leading-relaxed text-[#5a6478]">{step.description}</p>
+                </article>
+                {index < processSteps.length - 1 && (
+                  <div className="hidden lg:flex items-center justify-center absolute -right-4 top-1/2 -translate-y-1/2 z-10">
+                    <div className="w-8 h-8 rounded-full bg-white border border-[#e2e4e9] flex items-center justify-center shadow-sm">
+                      <ChevronRight className="h-4 w-4 text-[#6aa595]" />
+                    </div>
+                  </div>
+                )}
+              </div>
             ))}
           </div>
         </div>
