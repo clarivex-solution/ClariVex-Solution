@@ -8,19 +8,19 @@ import { AccountingServiceSchema } from "@/components/JsonLd";
 import { getContent } from "@/lib/countryContent";
 import { countries } from "@/lib/countryData";
 import {
-    phoneContacts,
-    processSteps,
-    serviceCards,
-    whyChooseUsCards
+  phoneContacts,
+  processSteps,
+  serviceCards,
+  whyChooseUsCards
 } from "@/lib/siteData";
 import {
-    ArrowRight,
-    CheckCircle,
-    ChevronRight,
-    Clipboard,
-    Mail,
-    MapPin,
-    Phone,
+  ArrowRight,
+  CheckCircle,
+  ChevronRight,
+  Clipboard,
+  Mail,
+  MapPin,
+  Phone,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -180,18 +180,7 @@ export default function HomeContent() {
         </div>
       </section>
 
-      {/* Stats */}
-      <section className="border-y border-[#e2e4e9] bg-[#f8f9fa] py-16 sm:py-20 lg:py-32">
-        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-8 px-4 text-center sm:px-6 lg:grid-cols-4 lg:gap-12 lg:px-12">
-          {content.stats.map((stat) => (
-            <div key={stat.label}>
-              <p className="font-[family-name:var(--font-playfair)] text-4xl font-bold text-[#1a1a2e] lg:text-6xl">{stat.value}</p>
-              <div className="mx-auto mt-3 h-0.5 w-8 bg-[#6aa595]" />
-              <p className="mt-4 text-sm uppercase tracking-wider text-[#5a6478]">{stat.label}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+
 
       {/* Software */}
       <section className="bg-white py-16 sm:py-20 lg:py-32">
