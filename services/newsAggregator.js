@@ -19,60 +19,46 @@ const memoryLocks = new Set();
 
 const RSS_FEEDS = {
   US: [
-    { name: 'IRS Newsroom', url: 'https://www.irs.gov/newsroom/rss' },
-    { name: 'IRS Tax Tips', url: 'https://www.irs.gov/newsroom/tax-tips/rss' },
-    { name: 'AICPA Journal', url: 'https://www.journalofaccountancy.com/rss/all.html' },
-    { name: 'Accounting Today', url: 'https://www.accountingtoday.com/rss' },
     { name: 'CPA Journal', url: 'https://www.cpajournal.com/feed/' },
+    { name: 'Tax Foundation', url: 'https://taxfoundation.org/feed/' },
   ],
   UK: [
     { name: 'HMRC Updates', url: 'https://www.gov.uk/government/organisations/hm-revenue-customs.atom' },
-    { name: 'ICAEW', url: 'https://www.icaew.com/rss' },
-    { name: 'AccountingWEB UK', url: 'https://www.accountingweb.co.uk/rss.xml' },
-    { name: 'Taxation Magazine', url: 'https://www.taxation.co.uk/feed' },
+    { name: 'GOV.UK Tax', url: 'https://www.gov.uk/search/news-and-communications.atom?keywords=tax&organisations%5B%5D=hm-revenue-customs' },
   ],
   AU: [
-    { name: 'ATO Newsroom', url: 'https://www.ato.gov.au/media-centre/rss' },
-    { name: 'CPA Australia', url: 'https://www.cpaaustralia.com.au/news/rss' },
-    { name: 'CAANZ', url: 'https://www.charteredaccountantsanz.com/news-and-analysis/rss' },
-    { name: 'Australian Taxation Office', url: 'https://www.ato.gov.au/general/new-legislation/rss' },
+    { name: 'SmartCompany AU', url: 'https://www.smartcompany.com.au/feed/' },
   ],
-  CA: [
-    { name: 'CRA Newsroom', url: 'https://www.canada.ca/en/revenue-agency/news.rss' },
-    { name: 'CPA Canada', url: 'https://www.cpacanada.ca/rss' },
-    { name: 'Canadian Accountant', url: 'https://www.canadianaccountant.com/feed' },
-  ],
-  GENERAL: [
-    { name: 'IFAC', url: 'https://www.ifac.org/news-resources/rss' },
-    { name: 'IASB IFRS', url: 'https://www.ifrs.org/news-and-events/news/rss/' },
-    { name: 'Accounting Today', url: 'https://www.accountingtoday.com/rss' },
-    { name: 'AccountingWEB Global', url: 'https://www.accountingweb.co.uk/rss.xml' },
-    { name: 'OECD Tax', url: 'https://www.oecd.org/tax/rss' },
-  ],
+  CA: [],
+  GENERAL: [],
 };
 
 const GNEWS_QUERIES = {
   US: [
-    'IRS tax accounting small business',
-    'US payroll compliance',
-    'federal tax regulation finance',
+    'IRS tax filing compliance 2025',
+    'US payroll processing small business',
+    'bookkeeping accounting software small business',
   ],
   UK: [
-    'HMRC tax accounting business',
-    'UK payroll pension compliance',
-    'Companies House financial regulation',
+    'HMRC tax return self assessment',
+    'UK payroll PAYE national insurance',
+    'accounting regulation companies house',
   ],
   AU: [
-    'ATO tax accounting small business',
-    'superannuation payroll Australia',
-    'ASIC financial regulation',
+    'ATO tax return lodgement Australia',
+    'superannuation guarantee payroll Australia',
+    'accounting bookkeeping small business Australia',
   ],
   CA: [
-    'CRA tax accounting business',
-    'Canada payroll CPP compliance',
-    'Canadian financial regulation',
+    'CRA tax filing Canada small business',
+    'Canada payroll CPP EI compliance',
+    'bookkeeping accounting Canada',
   ],
-  GENERAL: ['international accounting standards IFRS', 'global tax compliance finance'],
+  GENERAL: [
+    'IFRS accounting standards update',
+    'global payroll compliance regulation',
+    'bookkeeping accounting technology',
+  ],
 };
 
 function normaliseCountry(country) {
@@ -355,7 +341,7 @@ export async function fetchAndSaveNews({ country, maxPerSource = 20, since } = {
     let allFetched = rssResult.articles;
 
     // Trigger GNews if RSS returned nothing OR very few articles (under 3)
-    if (allFetched.length < 3) {
+    if (allFetched.length < 5) {
       const gnewsResult = await fetchGnewsFallback(normalizedCountry, maxPerSource);
       mergeSourceCounts(sourceCounts, gnewsResult.sourceCounts);
       allFetched = [...allFetched, ...gnewsResult.articles];

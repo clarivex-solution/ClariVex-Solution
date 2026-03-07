@@ -113,6 +113,23 @@ export const WEAK_KEYWORDS = [
   'reporting',
 ];
 
+const TRUSTED_SOURCES = [
+  'irs newsroom',
+  'irs tax tips',
+  'hmrc',
+  'ato newsroom',
+  'cra newsroom',
+  'aicpa journal',
+  'accounting today',
+  'accountingweb',
+  'taxation magazine',
+  'icaew',
+  'journal of accountancy',
+  'cpa journal',
+  'ifac',
+  'iasb ifrs',
+];
+
 // Kept for compatibility with existing imports/tests.
 export const ALLOWED_KEYWORDS = [...new Set([...STRONG_KEYWORDS, ...WEAK_KEYWORDS])];
 
@@ -129,31 +146,55 @@ export function toSlug(title = '') {
 export function categoriseArticle(title = '') {
   const t = title.toLowerCase();
 
-  if (t.includes('payroll') || t.includes('wage') || t.includes('salary')) {
+  // Payroll first - most specific
+  if (
+    t.includes('payroll') || t.includes('wage') || t.includes('salary') ||
+    t.includes('paye') || t.includes('national insurance') ||
+    t.includes('superannuation') || t.includes('super guarantee') ||
+    t.includes('pension') || t.includes('auto-enrolment') ||
+    t.includes('w-2') || t.includes('w-4') || t.includes('p60') || t.includes('p11d')
+  ) {
     return 'Payroll';
   }
 
+  // Bookkeeping - specific accounting operations
   if (
-    t.includes('vat') ||
-    t.includes('gst') ||
-    t.includes('tax') ||
-    t.includes('irs') ||
-    t.includes('hmrc') ||
-    t.includes('ato') ||
-    t.includes('cra')
+    t.includes('bookkeeping') || t.includes('reconcili') ||
+    t.includes('accounts payable') || t.includes('accounts receivable') ||
+    t.includes('general ledger') || t.includes('chart of accounts') ||
+    t.includes('invoice') || t.includes('expense') ||
+    t.includes('xero') || t.includes('quickbooks') || t.includes('sage') ||
+    t.includes('myob')
+  ) {
+    return 'Bookkeeping';
+  }
+
+  // Regulation Update - standards and audit
+  if (
+    t.includes('audit') || t.includes('ifrs') || t.includes('gaap') ||
+    t.includes('accounting standard') || t.includes('financial reporting standard') ||
+    t.includes('regulation') || t.includes('compliance update') ||
+    t.includes('companies house') || t.includes('asic') ||
+    t.includes('legislation') || t.includes('new law') || t.includes('new rule') ||
+    t.includes('guidance') || t.includes('consultation')
+  ) {
+    return 'Regulation Update';
+  }
+
+  // Tax Compliance - broadest, catches everything else tax-related
+  if (
+    t.includes('tax') || t.includes('irs') || t.includes('hmrc') ||
+    t.includes('ato') || t.includes('cra') || t.includes('vat') ||
+    t.includes('gst') || t.includes('hst') || t.includes('bas') ||
+    t.includes('1099') || t.includes('mtd') || t.includes('making tax digital') ||
+    t.includes('self assessment') || t.includes('corporation') ||
+    t.includes('fiscal') || t.includes('deduction') || t.includes('withholding')
   ) {
     return 'Tax Compliance';
   }
 
-  if (t.includes('audit') || t.includes('ifrs') || t.includes('gaap')) {
-    return 'Regulation Update';
-  }
-
-  if (t.includes('bookkeeping') || t.includes('accounting') || t.includes('accountant')) {
-    return 'Bookkeeping';
-  }
-
-  return 'Finance';
+  // Default - Tax Compliance (most accounting news is tax-adjacent)
+  return 'Tax Compliance';
 }
 
 export function normaliseTitleKey(title = '') {
@@ -211,18 +252,22 @@ export function normaliseGNewsItem(item) {
   };
 }
 
-export function isFinanceRelevant({ title = '', summary = '', description = '' }) {
+export function isFinanceRelevant({ title = '', summary = '', description = '', source = '' }) {
   const titleText = String(title || '').toLowerCase();
   const descText = String(summary || description || '').toLowerCase();
   const text = `${titleText} ${descText}`;
+  const sourceLower = String(source || '').toLowerCase();
 
-  // Block specific irrelevant topics first.
+  // Always block irrelevant topics even from trusted sources
   if (BLOCKED_TOPICS.some((k) => text.includes(k))) return false;
 
-  // Tier 1: strong accounting/tax signal in either title or description.
+  // Trusted accounting/tax sources - accept without keyword check
+  if (TRUSTED_SOURCES.some((s) => sourceLower.includes(s))) return true;
+
+  // Tier 1: strong accounting/tax signal in title or description
   if (STRONG_KEYWORDS.some((k) => text.includes(k))) return true;
 
-  // Tier 2: weak terms must appear in both title and description.
+  // Tier 2: weak terms must appear in both title and description
   const titleHasWeak = WEAK_KEYWORDS.some((k) => titleText.includes(k));
   const descHasWeak = WEAK_KEYWORDS.some((k) => descText.includes(k));
 
