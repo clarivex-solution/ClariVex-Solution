@@ -22,10 +22,10 @@ export function HeroSkeleton() {
     <section className="relative flex h-screen flex-col overflow-hidden">
       {/* Ambient top-right glow */}
       <div
-        className="pointer-events-none absolute right-0 top-0 h-[80vw] w-[80vw] max-h-[800px] max-w-[800px]"
+        className="pointer-events-none absolute right-0 top-0 h-[90vw] w-[90vw] max-h-[1000px] max-w-[1000px]"
         style={{
           background:
-            "radial-gradient(circle at top right, rgba(106, 165, 149, 0.15) 0%, transparent 60%)",
+            "radial-gradient(circle at top right, rgba(106, 165, 149, 0.20) 0%, transparent 60%)",
         }}
       />
 
@@ -33,10 +33,10 @@ export function HeroSkeleton() {
       <div className="pointer-events-none absolute inset-0 flex justify-center overflow-hidden">
         <div className="relative w-full max-w-7xl">
           <div
-            className="absolute left-6 top-[55%] h-[500px] w-[500px] -translate-y-1/2 lg:left-12 lg:top-[60%]"
+            className="absolute -left-32 top-[60%] h-[600px] w-[600px] -translate-y-1/2 lg:-left-24 lg:top-[68%]"
             style={{
               background:
-                "radial-gradient(circle at center, rgba(106, 165, 149, 0.12) 0%, transparent 70%)",
+                "radial-gradient(circle at center, rgba(106, 165, 149, 0.16) 0%, transparent 70%)",
             }}
           />
         </div>
@@ -112,17 +112,17 @@ export default function Hero({
 
   return (
     <section
-      className="relative flex h-screen flex-col overflow-hidden"
+      className="relative flex min-h-screen flex-col overflow-hidden"
       style={{ animation: "heroFadeIn 350ms ease-out both" }}
     >
       <style>{`@keyframes heroFadeIn { from { opacity: 0 } to { opacity: 1 } }`}</style>
 
       {/* Ambient top-right glow */}
       <div
-        className="pointer-events-none absolute right-0 top-0 h-[80vw] w-[80vw] max-h-[800px] max-w-[800px]"
+        className="pointer-events-none absolute right-0 top-0 h-[90vw] w-[90vw] max-h-[1000px] max-w-[1000px]"
         style={{
           background:
-            "radial-gradient(circle at top right, rgba(106, 165, 149, 0.15) 0%, transparent 60%)",
+            "radial-gradient(circle at top right, rgba(106, 165, 149, 0.20) 0%, transparent 60%)",
         }}
       />
 
@@ -130,10 +130,10 @@ export default function Hero({
       <div className="pointer-events-none absolute inset-0 flex justify-center overflow-hidden">
         <div className="relative w-full max-w-7xl">
           <div
-            className="absolute left-6 top-[55%] h-[500px] w-[500px] -translate-y-1/2 lg:left-12 lg:top-[60%]"
+            className="absolute -left-32 top-[60%] h-[600px] w-[600px] -translate-y-1/2 lg:-left-24 lg:top-[68%]"
             style={{
               background:
-                "radial-gradient(circle at center, rgba(106, 165, 149, 0.12) 0%, transparent 70%)",
+                "radial-gradient(circle at center, rgba(106, 165, 149, 0.16) 0%, transparent 70%)",
             }}
           />
         </div>
@@ -143,13 +143,13 @@ export default function Hero({
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.03)_1px,transparent_1px)] bg-[size:80px_80px]" />
 
       {/* Main content area — grows to fill space above stats */}
-      <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-1 items-center px-6 pt-20 lg:px-12 lg:pt-24">
+      <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-1 items-center px-6 pt-28 lg:px-12 lg:pt-32">
         <div className="w-full items-center gap-16 lg:grid lg:grid-cols-2">
           {/* Left Column — Typography */}
           <div>
             {seoH1 ? (
               <>
-                <h1 className="font-[family-name:var(--font-playfair)] text-3xl font-extrabold leading-[1.08] text-[#1a1a2e] sm:text-4xl lg:text-5xl">
+                <h1 className="font-[family-name:var(--font-playfair)] text-3xl font-black leading-[1.08] text-[#1a1a2e] sm:text-4xl lg:text-5xl">
                   {hasCountryHeading ? (
                     <>
                       <span className="block">{h1Line1}</span>
@@ -170,12 +170,12 @@ export default function Hero({
                 <p className="sr-only">{seoH1}</p>
               </>
             ) : hasCountryHeading ? (
-              <h1 className="font-[family-name:var(--font-playfair)] text-3xl font-extrabold leading-[1.08] text-[#1a1a2e] sm:text-4xl lg:text-5xl">
+              <h1 className="font-[family-name:var(--font-playfair)] text-3xl font-black leading-[1.08] text-[#1a1a2e] sm:text-4xl lg:text-5xl">
                 <span className="block">{h1Line1}</span>
                 <span className="block text-[#6aa595]">{h1Line2}</span>
               </h1>
             ) : (
-              <h1 className="font-[family-name:var(--font-playfair)] text-3xl font-extrabold leading-[1.08] text-[#1a1a2e] sm:text-4xl lg:text-5xl">
+              <h1 className="font-[family-name:var(--font-playfair)] text-3xl font-black leading-[1.08] text-[#1a1a2e] sm:text-4xl lg:text-5xl">
                 <span className="block">Empowering</span>
                 <span className="block">Growth</span>
                 <span className="block">
@@ -187,21 +187,21 @@ export default function Hero({
             )}
 
             {/* Subtitle */}
-            <p className="mt-5 max-w-[480px] text-base leading-relaxed text-[#5a6478]">
+            <p className="mt-6 max-w-[480px] text-base leading-relaxed text-[#5a6478]">
               {subtitle}
             </p>
 
             {/* CTA Buttons */}
-            <div className="mt-8 flex flex-col gap-4 sm:flex-row">
+            <div className="mt-10 flex flex-col gap-5 sm:flex-row">
               <Link
                 href="#contact"
-                className="rounded-full bg-[#1a1a2e] px-7 py-3 text-center text-sm font-medium text-white transition-colors duration-200 hover:bg-[#2a2a40] sm:w-auto"
+                className="px-8 py-3.5 font-semibold rounded-full bg-[#1a1a2e] text-white hover:bg-[#2d3550] transition-all duration-300 text-center sm:w-auto"
               >
                 Talk to Experts
               </Link>
               <Link
                 href="#process"
-                className="rounded-full border border-[#1a1a2e] px-7 py-3 text-center text-sm font-medium text-[#1a1a2e] transition-colors duration-200 hover:bg-[#1a1a2e] hover:text-white sm:w-auto"
+                className="px-8 py-3.5 font-semibold rounded-full border-2 border-[#1a1a2e] text-[#1a1a2e] bg-transparent hover:bg-[#1a1a2e] hover:text-white transition-all duration-300 text-center sm:w-auto"
               >
                 See How It Works
               </Link>
@@ -209,12 +209,12 @@ export default function Hero({
           </div>
 
           {/* Right Column — Hero Image */}
-          <div className="hidden lg:flex lg:items-center lg:justify-center">
+          <div className="hidden lg:flex items-center justify-center h-full">
             <Image
               src="/hero.svg"
               alt="Financial growth illustration"
-              width={580}
-              height={480}
+              width={620}
+              height={520}
               className="object-contain"
               priority
             />
@@ -223,7 +223,7 @@ export default function Hero({
       </div>
 
       {/* Stats bar — floating above bottom of viewport, inside hero */}
-      <div className="relative z-10 w-full bg-transparent pb-10 lg:pb-16">
+      <div className="border-t border-b border-[#e2e4e9] bg-white mb-16">
         <div className="mx-auto max-w-7xl px-6 lg:px-12">
           <div className="grid grid-cols-2 lg:grid-cols-4 border-y border-[#d1d5db]">
             {heroStats.map((stat, index) => (
@@ -241,14 +241,17 @@ export default function Hero({
                 }`}
               >
                 <div className="min-w-0">
-                  <p className="font-[family-name:var(--font-playfair)] text-3xl font-bold text-[#1a1a2e] lg:text-4xl">
-                    {stat.value}
+                  <p className="font-[family-name:var(--font-playfair)] text-4xl font-bold text-[#1a1a2e]">
+                    {stat.value.replace(/[^0-9]/g, "")}
+                    {stat.value.match(/[^0-9]/g) && (
+                      <span className="text-2xl font-bold">{stat.value.match(/[^0-9]/g).join("")}</span>
+                    )}
                   </p>
                   <p className="mt-1 text-xs uppercase tracking-widest text-[#8892a4]">
                     {stat.label}
                   </p>
                 </div>
-                <stat.Icon className="h-8 w-8 shrink-0 text-[#6aa595]/40" strokeWidth={1.5} />
+                <stat.Icon className="h-8 w-8 shrink-0 text-[#6aa595]/60" strokeWidth={1.5} />
               </div>
             ))}
           </div>

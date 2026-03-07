@@ -9,14 +9,14 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 const navLinks = [
-  { href: "/", label: "Home" },
-  { href: "/#services", label: "Services" },
-  { href: "/#process", label: "Process" },
-  { href: "/blog", label: "Blog" },
-  { href: "/news", label: "News" },
-  { href: "/#about", label: "About" },
-  { href: "/#contact", label: "Contact" },
-];
+  { label: 'Home', href: '/' },
+  { label: 'Process', href: '/#process' },
+  { label: 'Services', href: '/#services' },
+  { label: 'Blog', href: '/blog' },
+  { label: 'News', href: '/news' },
+  { label: 'About', href: '/#about' },
+  { label: 'Contact', href: '/#contact' },
+]
 
 const allOptions = [...countries, generalCountry];
 
@@ -43,11 +43,11 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
   const dropdownRef = useRef(null);
 
   const selected = getCountryByCode(country);
   const isDarkPage = pathname.includes('/blog/') || pathname.includes('/news/');
-  const logoSrc = isDarkPage && !isScrolled ? '/logo-white.png' : '/logo-dark.png';
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 60);
@@ -55,6 +55,44 @@ export default function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    // Only run scroll spy on homepage
+    if (pathname !== '/') {
+      setActiveSection('')
+      return
+    }
+
+    const sectionIds = ['services', 'process', 'about', 'contact']
+
+    const observers = sectionIds.map((id) => {
+      const el = document.getElementById(id)
+      if (!el) return null
+
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) setActiveSection(id)
+        },
+        { rootMargin: '-40% 0px -55% 0px', threshold: 0 }
+      )
+      observer.observe(el)
+      return observer
+    })
+
+    // Reset to home when at top
+    const handleScroll = () => {
+      if (window.scrollY < 100) setActiveSection('')
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
+
+    return () => {
+      observers.forEach((obs, i) => {
+        const el = document.getElementById(sectionIds[i])
+        if (obs && el) obs.unobserve(el)
+      })
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [pathname])
 
   useEffect(() => {
     if (!isMobileOpen) return undefined;
@@ -101,10 +139,13 @@ export default function Navbar() {
   }
 
   const isActive = (href) => {
-    if (href === "/") return pathname === "/";
-    if (href.startsWith("/#")) return pathname === "/";
-    return pathname.startsWith(href);
-  };
+    if (href === '/') return pathname === '/' && activeSection === ''
+    if (href.startsWith('/#')) {
+      const id = href.replace('/#', '')
+      return activeSection === id
+    }
+    return pathname === href
+  }
 
   return (
     <>
@@ -116,10 +157,9 @@ export default function Navbar() {
         }`}
       >
         <div className="mx-auto flex h-full w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-12">
-          <Link href="/" className="flex items-center">
-            <span className="mr-3 inline-block h-8 w-0.5 bg-[#c9a96e]" />
-            <Image src={logoSrc} alt="ClariVex Solutions" width={220} height={64} className="h-12 w-auto object-contain" priority />
-          </Link>
+          <Link href="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+  <Image src="/logo-dark.png" alt="ClariVex" width={140} height={40} />
+</Link>
 
           <nav className="hidden items-center justify-center gap-4 md:flex md:flex-1 lg:gap-7">
             {navLinks.map((link) => {
@@ -130,13 +170,17 @@ export default function Navbar() {
                   key={link.label}
                   href={link.href}
                   aria-current={active ? "page" : undefined}
-                  className={`relative text-sm transition-colors duration-200 after:absolute after:-bottom-1 after:left-0 after:h-px after:bg-[#6aa595] after:transition-all after:duration-300 ${
-                    active
-                      ? "text-[#1a1a2e] after:w-full"
-                      : "text-[#5a6478] hover:text-[#1a1a2e] after:w-0 hover:after:w-full"
-                  }`}
+                  className={`
+                    relative text-sm transition-all duration-200 px-1 py-0.5
+                    ${active
+                      ? 'text-[#1a1a2e] font-bold'
+                      : 'text-[#5a6478] font-medium hover:text-[#1a1a2e]'
+                    }
+                  `}
                 >
-                  {link.label}
+                  <span className="inline-block transition-transform duration-200 hover:-translate-y-px">
+                    {link.label}
+                  </span>
                 </Link>
               );
             })}
@@ -147,7 +191,7 @@ export default function Navbar() {
             <div className="relative hidden lg:block" ref={dropdownRef}>
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
-                className="flex items-center gap-2 bg-[#f8f9fa] border border-[#e2e4e9] rounded-full px-4 py-2 text-xs text-[#5a6478] cursor-pointer hover:border-[#5a688e]/50 hover:text-[#1a1a2e] active:scale-95 transition-all duration-200"
+                className="flex items-center gap-2 bg-[#f8f9fa] border border-[#e2e4e9] rounded-full px-4 py-2 text-xs text-[#5a6478] cursor-pointer hover:border-[#1a1a2e]/40 hover:text-[#1a1a2e] active:scale-95 transition-all duration-200"
               >
                 <FlagImage src={selected.flagSrc} alt={selected.name} size={18} />
                 <span className="font-medium">
@@ -219,7 +263,7 @@ export default function Navbar() {
 
             <Link
               href="/#contact"
-              className="rounded-full bg-[#1a1a2e] px-5 py-2.5 text-sm font-medium text-white cursor-pointer transition-colors duration-300 hover:bg-[#2a2a40] active:scale-95 lg:px-6"
+              className="rounded-full bg-[#1a1a2e] px-5 py-2.5 text-sm font-medium text-white cursor-pointer transition-colors duration-300 hover:bg-[#2d3550] active:scale-95 lg:px-6"
             >
               Book a Call
             </Link>
@@ -242,11 +286,10 @@ export default function Navbar() {
             <div className="flex h-20 items-center justify-between border-b border-[#e2e4e9]">
               <Link
                 href="/"
-                className="flex items-center"
+                className="flex items-center gap-2"
                 onClick={() => setIsMobileOpen(false)}
               >
-                <span className="mr-3 inline-block h-8 w-0.5 bg-[#c9a96e]" />
-                <Image src="/logo-dark.png" alt="ClariVex Solutions" width={220} height={64} className="h-12 w-auto object-contain" priority />
+                <Image src="/logo.png" alt="ClariVex" width={140} height={40} />
               </Link>
 
               <button
@@ -320,7 +363,7 @@ export default function Navbar() {
 
             <Link
               href="/#contact"
-              className="mb-8 mt-auto w-full rounded-full bg-[#1a1a2e] px-6 py-3 text-center text-sm font-medium text-white cursor-pointer transition-colors duration-300 hover:bg-[#2a2a40] active:scale-95"
+              className="mb-8 mt-auto w-full rounded-full bg-[#1a1a2e] px-6 py-3 text-center text-sm font-medium text-white cursor-pointer transition-colors duration-300 hover:bg-[#2d3550] active:scale-95"
               onClick={() => setIsMobileOpen(false)}
             >
               Book a Call
