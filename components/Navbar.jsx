@@ -219,7 +219,7 @@ export default function Navbar() {
 
             <Link
               href="/#contact"
-              className="rounded-full bg-[#5a688e] px-5 py-2.5 text-sm font-medium text-white cursor-pointer transition-colors duration-300 hover:bg-[#6aa595] active:scale-95 lg:px-6"
+              className="rounded-full bg-[#1a1a2e] px-5 py-2.5 text-sm font-medium text-white cursor-pointer transition-colors duration-300 hover:bg-[#2a2a40] active:scale-95 lg:px-6"
             >
               Book a Call
             </Link>
@@ -320,7 +320,7 @@ export default function Navbar() {
 
             <Link
               href="/#contact"
-              className="mb-8 mt-auto w-full rounded-full bg-[#5a688e] px-6 py-3 text-center text-sm font-medium text-white cursor-pointer transition-colors duration-300 hover:bg-[#6aa595] active:scale-95"
+              className="mb-8 mt-auto w-full rounded-full bg-[#1a1a2e] px-6 py-3 text-center text-sm font-medium text-white cursor-pointer transition-colors duration-300 hover:bg-[#2a2a40] active:scale-95"
               onClick={() => setIsMobileOpen(false)}
             >
               Book a Call
@@ -331,6 +331,3 @@ export default function Navbar() {
     </>
   );
 }
-
-
-

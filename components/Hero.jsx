@@ -1,10 +1,12 @@
+import { Building2, CheckCircle, Clock, Handshake } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 const heroStats = [
-  { value: "15+", label: "Years" },
-  { value: "280+", label: "Clients" },
-  { value: "22", label: "Industries" },
-  { value: "100%", label: "On-Time" },
+  { value: "15+", label: "YEARS", Icon: Clock },
+  { value: "280+", label: "CLIENTS", Icon: Handshake },
+  { value: "22", label: "INDUSTRIES", Icon: Building2 },
+  { value: "100%", label: "ON-TIME", Icon: CheckCircle },
 ];
 
 const defaultLabel = "OUTSOURCED ACCOUNTING & FINANCE";
@@ -17,64 +19,63 @@ const defaultSubtitle =
 
 export function HeroSkeleton() {
   return (
-    <section className="relative flex h-screen items-center overflow-hidden bg-white pt-20 lg:pt-24">
-      <div className="pointer-events-none absolute -right-32 -top-32 h-[600px] w-[600px] rounded-full bg-[#5a688e]/6 blur-[120px]" />
-      <div className="pointer-events-none absolute bottom-0 left-0 h-[400px] w-[400px] rounded-full bg-[#6aa595]/6 blur-[100px]" />
+    <section className="relative flex h-screen flex-col overflow-hidden">
+      {/* Subtle bg gradient */}
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse 80% 60% at 70% 40%, rgba(200,210,230,0.35) 0%, transparent 70%), radial-gradient(ellipse 60% 50% at 20% 80%, rgba(200,220,230,0.2) 0%, transparent 60%), linear-gradient(180deg, #f7f8fb 0%, #eef1f6 100%)",
+        }}
+      />
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.03)_1px,transparent_1px)] bg-[size:80px_80px]" />
 
-      <div className="relative z-10 mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-12">
-        <div className="items-center gap-20 lg:grid lg:grid-cols-2">
+      {/* Main content area */}
+      <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-1 items-center px-6 pt-20 lg:px-12 lg:pt-24">
+        <div className="w-full items-center gap-16 lg:grid lg:grid-cols-2">
           <div>
-            {/* Label skeleton */}
-            <div className="flex items-center">
-              <span className="mr-3 inline-block h-px w-8 bg-[#e2e4e9]" />
-              <div className="h-3 w-56 animate-pulse rounded bg-[#e2e4e9]" />
-            </div>
-
-            {/* Heading skeleton */}
-            <div className="mt-8 space-y-3">
+            <div className="space-y-3">
               <div className="h-10 w-80 animate-pulse rounded-lg bg-[#e2e4e9] sm:h-12 lg:h-14" />
+              <div className="h-10 w-72 animate-pulse rounded-lg bg-[#e2e4e9] sm:h-12 lg:h-14" />
               <div className="h-10 w-64 animate-pulse rounded-lg bg-[#e2e4e9] sm:h-12 lg:h-14" />
+              <div className="h-10 w-40 animate-pulse rounded-lg bg-[#e2e4e9] sm:h-12 lg:h-14" />
             </div>
-
-            {/* Subtitle skeleton */}
-            <div className="mt-4 space-y-2">
-              <div className="h-4 w-full max-w-lg animate-pulse rounded bg-[#e2e4e9]" />
-              <div className="h-4 w-4/5 max-w-lg animate-pulse rounded bg-[#e2e4e9]" />
+            <div className="mt-5 space-y-2">
+              <div className="h-4 w-full max-w-[480px] animate-pulse rounded bg-[#e2e4e9]" />
+              <div className="h-4 w-4/5 max-w-[480px] animate-pulse rounded bg-[#e2e4e9]" />
+              <div className="h-4 w-3/5 max-w-[480px] animate-pulse rounded bg-[#e2e4e9]" />
             </div>
-
-            {/* CTA skeleton */}
-            <div className="mt-6 flex gap-3">
+            <div className="mt-8 flex gap-4">
               <div className="h-12 w-36 animate-pulse rounded-full bg-[#e2e4e9]" />
               <div className="h-12 w-40 animate-pulse rounded-full bg-[#e2e4e9]" />
             </div>
+          </div>
+          <div className="hidden lg:block">
+            <div className="h-[420px] w-full animate-pulse rounded-xl bg-[#e2e4e9]" />
+          </div>
+        </div>
+      </div>
 
-            {/* Stats skeleton */}
-            <div className="mt-8 grid grid-cols-2 gap-4 border-t border-[#e2e4e9] pt-6 lg:grid-cols-4 lg:gap-6">
-              {[1, 2, 3, 4].map((i) => (
-                <div key={i}>
+      {/* Stats bar — bottom of viewport */}
+      <div className="relative z-10 border-t border-[#e2e4e9] bg-white/80 backdrop-blur-sm">
+        <div className="mx-auto max-w-7xl">
+          <div className="grid grid-cols-2 lg:grid-cols-4">
+            {[1, 2, 3, 4].map((i) => (
+              <div
+                key={i}
+                className={`flex items-center justify-center gap-3 px-6 py-6 ${
+                  i > 1 ? "lg:border-l lg:border-[#e2e4e9]" : ""
+                } ${i <= 2 ? "border-b border-[#e2e4e9] lg:border-b-0" : ""} ${
+                  i % 2 === 1 ? "border-r border-[#e2e4e9] lg:border-r-0" : ""
+                }`}
+              >
+                <div>
                   <div className="h-8 w-16 animate-pulse rounded bg-[#e2e4e9]" />
                   <div className="mt-2 h-3 w-14 animate-pulse rounded bg-[#e2e4e9]" />
                 </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Dashboard skeleton */}
-          <div className="hidden lg:block">
-            <div className="rounded-2xl border border-[#e2e4e9] bg-[#f8f9fa] p-8">
-              <div className="h-10 w-full animate-pulse rounded-xl bg-[#e2e4e9]" />
-              <div className="mt-6 grid grid-cols-3 gap-3">
-                {[1, 2, 3].map((i) => (
-                  <div key={i} className="h-20 animate-pulse rounded-xl bg-[#e2e4e9]" />
-                ))}
+                <div className="h-8 w-8 animate-pulse rounded-full bg-[#e2e4e9]" />
               </div>
-              <div className="mt-5 h-32 animate-pulse rounded-xl bg-[#e2e4e9]" />
-              <div className="mt-5 grid grid-cols-2 gap-3">
-                <div className="h-20 animate-pulse rounded-xl bg-[#e2e4e9]" />
-                <div className="h-20 animate-pulse rounded-xl bg-[#e2e4e9]" />
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>
@@ -98,30 +99,31 @@ export default function Hero({
 
   return (
     <section
-      className="relative flex h-screen items-center overflow-hidden bg-white pt-20 lg:pt-24"
+      className="relative flex h-screen flex-col overflow-hidden"
       style={{ animation: "heroFadeIn 350ms ease-out both" }}
     >
       <style>{`@keyframes heroFadeIn { from { opacity: 0 } to { opacity: 1 } }`}</style>
 
-      <div className="pointer-events-none absolute -right-32 -top-32 h-[600px] w-[600px] rounded-full bg-[#5a688e]/6 blur-[120px]" />
-      <div className="pointer-events-none absolute bottom-0 left-0 h-[400px] w-[400px] rounded-full bg-[#6aa595]/6 blur-[100px]" />
+      {/* Subtle radial background gradient — matches inspiration */}
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse 80% 60% at 70% 40%, rgba(200,210,230,0.35) 0%, transparent 70%), radial-gradient(ellipse 60% 50% at 20% 80%, rgba(200,220,230,0.2) 0%, transparent 60%), linear-gradient(180deg, #f7f8fb 0%, #eef1f6 100%)",
+        }}
+      />
+
+      {/* Grid overlay */}
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.03)_1px,transparent_1px)] bg-[size:80px_80px]" />
 
-      <div className="relative z-10 mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-12">
-        <div className="items-center gap-20 lg:grid lg:grid-cols-2">
+      {/* Main content area — grows to fill space above stats */}
+      <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-1 items-center px-6 pt-20 lg:px-12 lg:pt-24">
+        <div className="w-full items-center gap-16 lg:grid lg:grid-cols-2">
+          {/* Left Column — Typography */}
           <div>
-            <div className="flex items-center">
-              <span className="mr-3 inline-block h-px w-8 align-middle bg-[#c9a96e]" />
-              <span className="text-xs uppercase tracking-[0.2em] text-[#6aa595]">
-                {flagSrc && <img src={flagSrc} alt="" className="mr-2 inline-block rounded-sm align-middle" style={{ width: 20, height: 14 }} />}
-                {countryLabel}
-              </span>
-            </div>
-
-            {/* SEO h1: visible and keyword-rich */}
             {seoH1 ? (
               <>
-                <h1 className="mt-8 font-[family-name:var(--font-playfair)] text-3xl font-bold leading-[1.05] text-[#1a1a2e] sm:text-4xl lg:text-5xl xl:text-6xl">
+                <h1 className="font-[family-name:var(--font-playfair)] text-3xl font-extrabold leading-[1.08] text-[#1a1a2e] sm:text-4xl lg:text-5xl">
                   {hasCountryHeading ? (
                     <>
                       <span className="block">{h1Line1}</span>
@@ -129,188 +131,100 @@ export default function Hero({
                     </>
                   ) : (
                     <>
-                      <span className="block">Empowering Growth</span>
+                      <span className="block">Empowering</span>
+                      <span className="block">Growth</span>
                       <span className="block">
-                        Through <span className="text-[#6aa595]">Financial</span>
+                        Through{" "}
+                        <span className="text-[#6aa595]">Financial</span>
                       </span>
-                      <span className="block text-[#5a688e]">Clarity.</span>
+                      <span className="block text-[#6aa595]">Clarity.</span>
                     </>
                   )}
                 </h1>
                 <p className="sr-only">{seoH1}</p>
               </>
             ) : hasCountryHeading ? (
-              <h1 className="mt-8 font-[family-name:var(--font-playfair)] text-3xl font-bold leading-[1.05] text-[#1a1a2e] sm:text-4xl lg:text-5xl xl:text-6xl">
+              <h1 className="font-[family-name:var(--font-playfair)] text-3xl font-extrabold leading-[1.08] text-[#1a1a2e] sm:text-4xl lg:text-5xl">
                 <span className="block">{h1Line1}</span>
                 <span className="block text-[#6aa595]">{h1Line2}</span>
               </h1>
             ) : (
-              <h1 className="mt-8 font-[family-name:var(--font-playfair)] text-3xl font-bold leading-[1.05] text-[#1a1a2e] sm:text-4xl lg:text-5xl xl:text-6xl">
-                <span className="block">Empowering Growth</span>
+              <h1 className="font-[family-name:var(--font-playfair)] text-3xl font-extrabold leading-[1.08] text-[#1a1a2e] sm:text-4xl lg:text-5xl">
+                <span className="block">Empowering</span>
+                <span className="block">Growth</span>
                 <span className="block">
-                  Through <span className="text-[#6aa595]">Financial</span>
+                  Through{" "}
+                  <span className="text-[#6aa595]">Financial</span>
                 </span>
-                <span className="block text-[#5a688e]">Clarity.</span>
+                <span className="block text-[#6aa595]">Clarity.</span>
               </h1>
             )}
 
-            <p className="mt-4 max-w-lg text-base leading-relaxed text-[#5a6478] sm:text-lg">
+            {/* Subtitle */}
+            <p className="mt-5 max-w-[480px] text-base leading-relaxed text-[#5a6478]">
               {subtitle}
             </p>
 
-            <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:gap-4">
+            {/* CTA Buttons */}
+            <div className="mt-8 flex flex-col gap-4 sm:flex-row">
               <Link
                 href="#contact"
-                className="w-full rounded-full bg-[#5a688e] px-8 py-4 text-center text-sm font-semibold text-white transition-all duration-300 hover:bg-[#6aa595] hover:shadow-lg hover:shadow-[#6aa595]/25 sm:w-auto"
+                className="rounded-full bg-[#1a1a2e] px-7 py-3 text-center text-sm font-medium text-white transition-colors duration-200 hover:bg-[#2a2a40] sm:w-auto"
               >
                 Talk to Experts
               </Link>
               <Link
                 href="#process"
-                className="w-full rounded-full border border-[#e2e4e9] px-8 py-4 text-center text-sm text-[#5a6478] transition-all duration-300 hover:border-[#5a688e] hover:text-[#1a1a2e] sm:w-auto"
+                className="rounded-full border border-[#1a1a2e] px-7 py-3 text-center text-sm font-medium text-[#1a1a2e] transition-colors duration-200 hover:bg-[#1a1a2e] hover:text-white sm:w-auto"
               >
                 See How It Works
               </Link>
             </div>
+          </div>
 
-            <div className="mt-8 grid grid-cols-2 gap-4 border-t border-[#e2e4e9] pt-6 lg:grid-cols-4 lg:gap-6">
-              {heroStats.map((stat) => (
-                <div key={stat.label}>
-                  <p className="font-[family-name:var(--font-playfair)] text-3xl font-bold text-[#1a1a2e]">
+          {/* Right Column — Hero Image */}
+          <div className="hidden lg:flex lg:items-center lg:justify-center">
+            <Image
+              src="/hero.svg"
+              alt="Financial growth illustration"
+              width={580}
+              height={480}
+              className="object-contain"
+              priority
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Stats bar — floating above bottom of viewport, inside hero */}
+      <div className="relative z-10 w-full bg-transparent pb-10 lg:pb-16">
+        <div className="mx-auto max-w-7xl px-6 lg:px-12">
+          <div className="grid grid-cols-2 lg:grid-cols-4 border-y border-[#d1d5db]">
+            {heroStats.map((stat, index) => (
+              <div
+                key={stat.label}
+                className={`flex items-center justify-between gap-4 px-6 lg:px-8 py-5 ${
+                  /* vertical dividers between cells on desktop */
+                  index > 0 ? "lg:border-l lg:border-[#d1d5db]" : ""
+                } ${
+                  /* bottom border on top row on mobile */
+                  index < 2 ? "border-b border-[#d1d5db] lg:border-b-0" : ""
+                } ${
+                  /* right divider on left col on mobile */
+                  index % 2 === 0 ? "border-r border-[#d1d5db] lg:border-r-0" : ""
+                }`}
+              >
+                <div className="min-w-0">
+                  <p className="font-[family-name:var(--font-playfair)] text-3xl font-bold text-[#1a1a2e] lg:text-4xl">
                     {stat.value}
                   </p>
-                  <p className="mt-1 text-xs uppercase tracking-wider text-[#5a6478]">
+                  <p className="mt-1 text-xs uppercase tracking-widest text-[#8892a4]">
                     {stat.label}
                   </p>
                 </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Premium dashboard visual */}
-          <div className="hidden lg:block">
-            <div className="relative">
-              {/* Corner accent */}
-              <div className="absolute -right-3 -top-3 h-20 w-20 rounded-tr-3xl border-r-2 border-t-2 border-[#c9a96e]/30" />
-              <div className="absolute -bottom-3 -left-3 h-20 w-20 rounded-bl-3xl border-b-2 border-l-2 border-[#c9a96e]/30" />
-
-              {/* Main card */}
-              <div className="rounded-2xl border border-[#e2e4e9] bg-gradient-to-br from-[#f8f9fa] to-white p-8 shadow-xl">
-                {/* Header row */}
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#5a688e] text-sm font-bold text-white">
-                      CV
-                    </div>
-                    <div>
-                      <p className="text-sm font-semibold text-[#1a1a2e]">ClariVex Dashboard</p>
-                      <p className="text-[10px] uppercase tracking-wider text-[#5a6478]">Finance Operations</p>
-                    </div>
-                  </div>
-                  <div className="flex gap-1.5">
-                    <span className="h-2.5 w-2.5 rounded-full bg-[#6aa595]" />
-                    <span className="h-2.5 w-2.5 rounded-full bg-[#c9a96e]" />
-                    <span className="h-2.5 w-2.5 rounded-full bg-[#5a688e]" />
-                  </div>
-                </div>
-
-                {/* KPI Row */}
-                <div className="mt-6 grid grid-cols-3 gap-3">
-                  <div className="rounded-xl bg-white border border-[#e2e4e9] p-4">
-                    <p className="text-[10px] uppercase tracking-wider text-[#5a6478]">Revenue</p>
-                    <p className="mt-1 font-[family-name:var(--font-playfair)] text-xl font-bold text-[#1a1a2e]">$2.4M</p>
-                    <p className="mt-1 text-[10px] font-medium text-[#6aa595]">{"\u2191"} 18.2%</p>
-                  </div>
-                  <div className="rounded-xl bg-white border border-[#e2e4e9] p-4">
-                    <p className="text-[10px] uppercase tracking-wider text-[#5a6478]">Savings</p>
-                    <p className="mt-1 font-[family-name:var(--font-playfair)] text-xl font-bold text-[#1a1a2e]">$340K</p>
-                    <p className="mt-1 text-[10px] font-medium text-[#6aa595]">{"\u2191"} 24.5%</p>
-                  </div>
-                  <div className="rounded-xl bg-white border border-[#e2e4e9] p-4">
-                    <p className="text-[10px] uppercase tracking-wider text-[#5a6478]">Accuracy</p>
-                    <p className="mt-1 font-[family-name:var(--font-playfair)] text-xl font-bold text-[#1a1a2e]">99.8%</p>
-                    <p className="mt-1 text-[10px] font-medium text-[#6aa595]">{"\u2191"} 0.3%</p>
-                  </div>
-                </div>
-
-                {/* Chart area */}
-                <div className="mt-5 rounded-xl bg-white border border-[#e2e4e9] p-5">
-                  <div className="flex items-center justify-between">
-                    <p className="text-xs font-semibold text-[#1a1a2e]">Monthly Close Performance</p>
-                    <div className="flex items-center gap-4">
-                      <span className="flex items-center gap-1.5 text-[10px] text-[#5a6478]">
-                        <span className="h-2 w-2 rounded-full bg-[#5a688e]" /> Target
-                      </span>
-                      <span className="flex items-center gap-1.5 text-[10px] text-[#5a6478]">
-                        <span className="h-2 w-2 rounded-full bg-[#6aa595]" /> Actual
-                      </span>
-                    </div>
-                  </div>
-                  <div className="mt-4 flex h-20 items-end gap-1.5">
-                    {[
-                      { target: "45%", actual: "52%" },
-                      { target: "50%", actual: "58%" },
-                      { target: "48%", actual: "55%" },
-                      { target: "55%", actual: "65%" },
-                      { target: "60%", actual: "72%" },
-                      { target: "58%", actual: "78%" },
-                      { target: "65%", actual: "82%" },
-                      { target: "70%", actual: "88%" },
-                      { target: "72%", actual: "90%" },
-                      { target: "75%", actual: "95%" },
-                    ].map((bar, i) => (
-                      <div key={i} className="flex flex-1 items-end gap-0.5">
-                        <div
-                          className="flex-1 rounded-t bg-[#5a688e]/25"
-                          style={{ height: bar.target }}
-                        />
-                        <div
-                          className="flex-1 rounded-t bg-[#6aa595]"
-                          style={{ height: bar.actual }}
-                        />
-                      </div>
-                    ))}
-                  </div>
-                  <div className="mt-2 flex justify-between text-[9px] text-[#5a6478]">
-                    <span>Jan</span>
-                    <span>Mar</span>
-                    <span>Jun</span>
-                    <span>Sep</span>
-                    <span>Dec</span>
-                  </div>
-                </div>
-
-                {/* Bottom row */}
-                <div className="mt-5 grid grid-cols-2 gap-3">
-                  <div className="rounded-xl bg-[#5a688e] p-4">
-                    <p className="text-[10px] uppercase tracking-wider text-white/60">Compliance Score</p>
-                    <div className="mt-2 flex items-end gap-2">
-                      <p className="font-[family-name:var(--font-playfair)] text-2xl font-bold text-white">100%</p>
-                      <p className="mb-1 text-[10px] text-white/70">All filings current</p>
-                    </div>
-                  </div>
-                  <div className="rounded-xl bg-white border border-[#e2e4e9] p-4">
-                    <p className="text-[10px] uppercase tracking-wider text-[#5a6478]">Active Clients</p>
-                    <div className="mt-2 flex items-end gap-2">
-                      <p className="font-[family-name:var(--font-playfair)] text-2xl font-bold text-[#1a1a2e]">280+</p>
-                      <div className="mb-1 flex -space-x-1.5">
-                        {["US", "UK", "AU", "CA"].map((c) => (
-                          <span key={c} className="flex h-5 w-5 items-center justify-center rounded-full bg-[#f4f3ee] text-[7px] font-bold text-[#5a688e] ring-1 ring-white">
-                            {c}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <stat.Icon className="h-8 w-8 shrink-0 text-[#6aa595]/40" strokeWidth={1.5} />
               </div>
-
-              {/* Floating badge */}
-              <div className="absolute -right-4 top-1/2 -translate-y-1/2 rounded-xl border border-[#e2e4e9] bg-white px-4 py-3 shadow-lg">
-                <p className="text-[10px] uppercase tracking-wider text-[#5a6478]">NDA</p>
-                <p className="text-xs font-bold text-[#6aa595]">Protected</p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>
