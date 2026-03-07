@@ -20,14 +20,27 @@ const defaultSubtitle =
 export function HeroSkeleton() {
   return (
     <section className="relative flex h-screen flex-col overflow-hidden">
-      {/* Subtle bg gradient */}
+      {/* Ambient top-right glow */}
       <div
-        className="pointer-events-none absolute inset-0"
+        className="pointer-events-none absolute right-0 top-0 h-[80vw] w-[80vw] max-h-[800px] max-w-[800px]"
         style={{
           background:
-            "radial-gradient(ellipse 80% 60% at 70% 40%, rgba(200,210,230,0.35) 0%, transparent 70%), radial-gradient(ellipse 60% 50% at 20% 80%, rgba(200,220,230,0.2) 0%, transparent 60%), linear-gradient(180deg, #f7f8fb 0%, #eef1f6 100%)",
+            "radial-gradient(circle at top right, rgba(106, 165, 149, 0.15) 0%, transparent 60%)",
         }}
       />
+
+      {/* CTA highlight glow */}
+      <div className="pointer-events-none absolute inset-0 flex justify-center overflow-hidden">
+        <div className="relative w-full max-w-7xl">
+          <div
+            className="absolute left-6 top-[55%] h-[500px] w-[500px] -translate-y-1/2 lg:left-12 lg:top-[60%]"
+            style={{
+              background:
+                "radial-gradient(circle at center, rgba(106, 165, 149, 0.12) 0%, transparent 70%)",
+            }}
+          />
+        </div>
+      </div>
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.03)_1px,transparent_1px)] bg-[size:80px_80px]" />
 
       {/* Main content area */}
@@ -104,14 +117,27 @@ export default function Hero({
     >
       <style>{`@keyframes heroFadeIn { from { opacity: 0 } to { opacity: 1 } }`}</style>
 
-      {/* Subtle radial background gradient — matches inspiration */}
+      {/* Ambient top-right glow */}
       <div
-        className="pointer-events-none absolute inset-0"
+        className="pointer-events-none absolute right-0 top-0 h-[80vw] w-[80vw] max-h-[800px] max-w-[800px]"
         style={{
           background:
-            "radial-gradient(ellipse 80% 60% at 70% 40%, rgba(200,210,230,0.35) 0%, transparent 70%), radial-gradient(ellipse 60% 50% at 20% 80%, rgba(200,220,230,0.2) 0%, transparent 60%), linear-gradient(180deg, #f7f8fb 0%, #eef1f6 100%)",
+            "radial-gradient(circle at top right, rgba(106, 165, 149, 0.15) 0%, transparent 60%)",
         }}
       />
+
+      {/* CTA highlight glow */}
+      <div className="pointer-events-none absolute inset-0 flex justify-center overflow-hidden">
+        <div className="relative w-full max-w-7xl">
+          <div
+            className="absolute left-6 top-[55%] h-[500px] w-[500px] -translate-y-1/2 lg:left-12 lg:top-[60%]"
+            style={{
+              background:
+                "radial-gradient(circle at center, rgba(106, 165, 149, 0.12) 0%, transparent 70%)",
+            }}
+          />
+        </div>
+      </div>
 
       {/* Grid overlay */}
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.03)_1px,transparent_1px)] bg-[size:80px_80px]" />
