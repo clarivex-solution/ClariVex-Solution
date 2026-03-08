@@ -235,69 +235,66 @@ export default function HomeContent() {
 
       {/* About */}
       <section id="about" className="bg-[#f4f3ee] py-24">
-        <div className="mx-auto grid max-w-7xl items-center gap-20 px-4 sm:px-6 lg:grid-cols-[45%_55%] lg:px-12">
-          {/* Card left */}
-          <div className="relative rounded-2xl bg-white border border-[#e2e4e9] p-10 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
+          <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-[45%_1fr] lg:gap-20">
+            {/* Card left */}
+            <div className="relative rounded-2xl bg-white border border-[#e2e4e9] p-10 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
 
-            {/* Subtle teal glow top-right */}
-            <div className="absolute top-0 right-0 w-32 h-32 rounded-full bg-[#6aa595]/8 blur-3xl pointer-events-none" />
+              {/* Subtle teal glow top-right */}
+              <div className="absolute top-0 right-0 w-32 h-32 rounded-full bg-[#6aa595]/8 blur-3xl pointer-events-none" />
 
-            {/* Profile */}
-            <div className="flex items-center gap-5 mb-8">
-              <div className="relative">
-                <img
-                  src="/dhimant-khatri.png"
-                  alt="Dhimant Khatri"
-                  className="w-20 h-20 rounded-full object-cover ring-2 ring-[#6aa595]/40 shadow-lg"
-                />
-                <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-[#6aa595] flex items-center justify-center">
-                  <CheckCircle2 className="h-3 w-3 text-white" />
+              {/* Profile */}
+              <div className="flex items-center gap-5 mb-8">
+                <div className="relative">
+                  <div className="w-24 h-24 rounded-full border-2 border-[#6aa595]/40 p-1 flex items-center justify-center bg-white shadow-sm overflow-hidden">
+                    <img
+                      src="/dhimant-khatri.png"
+                      alt="Dhimant Khatri"
+                      className="w-full h-full rounded-full object-cover object-top scale-110 translate-y-2"
+                    />
+                  </div>
+                  <div className="absolute bottom-0 right-0 w-7 h-7 bg-white rounded-full flex items-center justify-center p-[2px] shadow-sm">
+                    <div className="w-full h-full rounded-full bg-[#6aa595] flex items-center justify-center">
+                      <CheckCircle2 className="h-3.5 w-3.5 text-white" />
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <h3 className="font-bold text-xl text-[#1a1a2e]">Dhimant Khatri</h3>
+                  <p className="text-[#5a6478] text-sm mt-1">Chartered Accountant · ICAI Member</p>
+                  <div className="w-12 h-1 bg-gradient-to-r from-[#c9a96e] to-[#e8d5a5] mt-3 rounded-full shadow-sm" />
                 </div>
               </div>
-              <div>
-                <h3 className="font-bold text-lg text-[#1a1a2e]">Dhimant Khatri</h3>
-                <p className="text-[#8892a4] text-sm mt-0.5">Chartered Accountant · ICAI Member</p>
-                <div className="w-10 h-[3px] bg-[#c9a96e] mt-2 rounded-full" />
+
+              {/* Credentials */}
+              <div className="space-y-4">
+                {[
+                  "15+ Years Professional Experience",
+                  "Member, Institute of Chartered Accountants of India",
+                  "Audit, Taxation & Compliance Specialist",
+                ].map((item) => (
+                  <div key={item} className="flex items-center gap-3 p-4 rounded-xl bg-[#f8f9fa] border border-[#e2e4e9]">
+                    <CheckCircle2 className="h-5 w-5 text-[#6aa595] shrink-0" />
+                    <span className="text-sm text-[#5a6478]">{item}</span>
+                  </div>
+                ))}
               </div>
             </div>
 
-            {/* Credentials */}
-            <div className="space-y-4">
-              {[
-                "15+ Years Professional Experience",
-                "Member, Institute of Chartered Accountants of India",
-                "Audit, Taxation & Compliance Specialist",
-              ].map((item) => (
-                <div key={item} className="flex items-center gap-3 p-4 rounded-xl bg-[#f8f9fa] border border-[#e2e4e9]">
-                  <CheckCircle2 className="h-5 w-5 text-[#6aa595] shrink-0" />
-                  <span className="text-sm text-[#5a6478]">{item}</span>
-                </div>
-              ))}
-            </div>
-
-            {/* Bottom badge */}
-            <div className="mt-8 pt-6 border-t border-[#e2e4e9] flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-[#6aa595]/10 flex items-center justify-center">
-                <Shield className="h-4 w-4 text-[#6aa595]" />
-              </div>
-              <p className="text-xs text-[#8892a4] leading-snug">
-                Verified professional credentials.<br />
-                Serving clients across US, UK, AU & CA.
+            {/* Content right */}
+            <div className="max-w-[520px]">
+              <div className="mb-6 h-px w-16 bg-[#c9a96e]" />
+              <p className="text-xs uppercase tracking-[0.2em] text-[#6aa595] font-semibold">About Us</p>
+              <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-4xl font-black text-[#1a1a2e] leading-tight">
+                Professional Expertise<br />You Can Trust
+              </h2>
+              <p className="mt-6 text-[#5a6478] leading-relaxed text-lg max-w-[440px]">
+                ClariVex Solutions combines deep accounting discipline with modern process control to help leadership teams make faster and safer financial decisions.
+              </p>
+              <p className="mt-4 text-[#5a6478] leading-relaxed max-w-[440px]">
+                From monthly close readiness to growth-stage advisory, our objective is to reduce friction in finance operations while improving transparency for founders, management, and stakeholders.
               </p>
             </div>
-          </div>
-          <div className="max-w-[520px]">
-            <div className="mb-6 h-px w-16 bg-[#c9a96e]" />
-            <p className="text-xs uppercase tracking-[0.2em] text-[#6aa595] font-semibold">About Us</p>
-            <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-4xl font-black text-[#1a1a2e] leading-tight">
-              Professional Expertise<br />You Can Trust
-            </h2>
-            <p className="mt-6 text-[#5a6478] leading-relaxed text-lg max-w-[440px]">
-              ClariVex Solutions combines deep accounting discipline with modern process control to help leadership teams make faster and safer financial decisions.
-            </p>
-            <p className="mt-4 text-[#5a6478] leading-relaxed max-w-[440px]">
-              From monthly close readiness to growth-stage advisory, our objective is to reduce friction in finance operations while improving transparency for founders, management, and stakeholders.
-            </p>
           </div>
         </div>
       </section>
