@@ -33,7 +33,7 @@ function CustomSelect({ value, onChange, options, header, footer, defaultIcon })
         }`}
       >
         <span className="flex items-center gap-2.5">
-          {selectedOption.triggerIcon || selectedOption.icon || defaultIcon}
+          {selectedOption.icon || defaultIcon}
           <span>{selectedOption.label}</span>
         </span>
         <ChevronDown className={`h-4 w-4 text-[#8892a4] transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`} />
@@ -234,13 +234,13 @@ export default function BlogPageClient() {
                 footer="Content adapts to your selected region"
                 defaultIcon={<Globe className="w-[18px] h-[18px] text-[#8892a4]" />}
                 options={[
-                  { value: "all", label: "All Countries", icon: <Globe className="w-[18px] h-[18px] text-[#8892a4]" />, triggerIcon: <Globe className="w-[18px] h-[18px] text-[#8892a4]" /> },
-                  { value: "US", label: "United States", icon: <img src="/flags/us.svg" alt="US" className="w-[18px] h-[12px] rounded-[1px] object-cover" />, triggerIcon: <span className="font-bold text-[10px] tracking-wider text-[#1a1a2e] mt-[1px]">US</span> },
-                  { value: "UK", label: "United Kingdom", icon: <img src="/flags/uk.svg" alt="UK" className="w-[18px] h-[12px] rounded-[1px] object-cover" />, triggerIcon: <span className="font-bold text-[10px] tracking-wider text-[#1a1a2e] mt-[1px]">GB</span> },
-                  { value: "AU", label: "Australia", icon: <img src="/flags/au.svg" alt="AU" className="w-[18px] h-[12px] rounded-[1px] object-cover" />, triggerIcon: <span className="font-bold text-[10px] tracking-wider text-[#1a1a2e] mt-[1px]">AU</span> },
-                  { value: "CA", label: "Canada", icon: <img src="/flags/ca.svg" alt="CA" className="w-[18px] h-[12px] rounded-[1px] object-cover" />, triggerIcon: <span className="font-bold text-[10px] tracking-wider text-[#1a1a2e] mt-[1px]">CA</span> },
-                  { value: "general", label: "Global", icon: <Globe className="w-[18px] h-[18px] text-[#6aa595]" />, triggerIcon: <Globe className="w-[18px] h-[18px] text-[#5a688e]" /> },
-                  { value: "detect", label: "Detect my location", icon: <Locate className="w-[18px] h-[18px] text-[#5a688e]" />, triggerIcon: <Locate className="w-[18px] h-[18px] text-[#5a688e]" /> },
+                  { value: "all", label: "All Countries", icon: <Globe className="w-[18px] h-[18px] text-[#8892a4]" /> },
+                  { value: "US", label: "United States", icon: <img src="/flags/us.svg" alt="US" className="w-[18px] h-[12px] rounded-[1px] object-cover" /> },
+                  { value: "UK", label: "United Kingdom", icon: <img src="/flags/uk.svg" alt="UK" className="w-[18px] h-[12px] rounded-[1px] object-cover" /> },
+                  { value: "AU", label: "Australia", icon: <img src="/flags/au.svg" alt="AU" className="w-[18px] h-[12px] rounded-[1px] object-cover" /> },
+                  { value: "CA", label: "Canada", icon: <img src="/flags/ca.svg" alt="CA" className="w-[18px] h-[12px] rounded-[1px] object-cover" /> },
+                  { value: "general", label: "Global", icon: <Globe className="w-[18px] h-[18px] text-[#6aa595]" /> },
+                  { value: "detect", label: "Detect my location", icon: <Locate className="w-[18px] h-[18px] text-[#5a688e]" /> },
                 ]}
               />
             </div>
