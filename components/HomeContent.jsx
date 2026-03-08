@@ -300,24 +300,25 @@ export default function HomeContent() {
       </section>
 
       {/* Why Choose Us */}
-      <section className="bg-white py-16 sm:py-20 lg:py-32">
+      <section className="bg-white py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
           <div className="mb-6 h-px w-16 bg-[#c9a96e]" />
           <p className="text-xs uppercase tracking-[0.2em] text-[#6aa595]">WHY CLARIVEX</p>
-          <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-3xl font-bold text-[#1a1a2e] sm:text-4xl lg:text-5xl">
+          <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-4xl font-black text-[#1a1a2e] sm:text-5xl mb-16">
             Why Choose ClariVex Solution
           </h2>
-          <div className="mt-12 grid gap-6 lg:mt-20 lg:grid-cols-2">
+          <div className="mt-12 grid gap-6 lg:grid-cols-2">
             {whyChooseUsCards.map((item) => (
-              <article key={item.title} className="group rounded-xl border border-[#e2e4e9] bg-[#f8f9fa] p-8 transition-all hover:border-[#5a688e]/40 hover:shadow-lg border-l-4 border-l-[#5a688e]">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#5a688e]/10 text-[#6aa595] transition-colors group-hover:bg-[#5a688e]/20">
-                  <item.icon className="h-5 w-5" />
+              <article key={item.title} className="group rounded-2xl border border-[#e2e4e9] bg-[#f8f9fa] p-8 hover:border-[#6aa595]/50 hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 overflow-hidden relative">
+                <div className="absolute top-0 left-0 right-0 h-[3px] bg-[#6aa595] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left rounded-t-2xl" />
+                <div className="w-12 h-12 rounded-xl bg-[#f0f2f5] flex items-center justify-center mb-5">
+                  <item.icon className="h-6 w-6 text-[#5a688e]" />
                 </div>
-                <h3 className="mt-6 text-lg font-semibold text-[#1a1a2e]">{item.title}</h3>
-                <div className="mt-4 space-y-2">
+                <h3 className="text-lg font-bold text-[#1a1a2e] mb-4">{item.title}</h3>
+                <div className="space-y-3">
                   {item.points.map((point) => (
-                    <p key={point} className="flex items-start gap-2 text-sm leading-relaxed text-[#5a6478]">
-                      <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-[#6aa595]" />
+                    <p key={point} className="flex items-start gap-3 text-sm leading-relaxed text-[#5a6478]">
+                      <CheckCircle2 className="h-4 w-4 text-[#6aa595] shrink-0 mt-0.5" />
                       <span>{point}</span>
                     </p>
                   ))}
