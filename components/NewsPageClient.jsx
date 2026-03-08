@@ -244,10 +244,12 @@ export default function NewsPageClient() {
               />
             </div>
 
-            {/* Results count — pushed to right */}
-            <span className="ml-auto text-xs text-[#8892a4]">
-              Showing {Math.min(visibleCount, filteredNews.length)} of {filteredNews.length} articles
-            </span>
+            {/* Results count — pushed to right or full width on mobile */}
+            <div className="mt-2 w-full text-left sm:mt-0 sm:w-auto sm:ml-auto">
+              <span className="text-xs text-[#8892a4]">
+                Showing {Math.min(visibleCount, filteredNews.length)} of {filteredNews.length} articles
+              </span>
+            </div>
 
           </div>
         </div>

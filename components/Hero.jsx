@@ -241,10 +241,10 @@ export default function Hero({
                 }`}
               >
                 <div className="min-w-0">
-                  <p className="font-[family-name:var(--font-playfair)] text-4xl font-bold text-[#1a1a2e]">
+                  <p className="font-[family-name:var(--font-playfair)] text-3xl md:text-4xl font-bold text-[#1a1a2e]">
                     {stat.value.replace(/[^0-9]/g, "")}
                     {stat.value.match(/[^0-9]/g) && (
-                      <span className="text-2xl font-bold">{stat.value.match(/[^0-9]/g).join("")}</span>
+                      <span className="text-xl md:text-2xl font-bold">{stat.value.match(/[^0-9]/g).join("")}</span>
                     )}
                   </p>
                   <p className="mt-1 text-xs uppercase tracking-widest text-[#8892a4]">
