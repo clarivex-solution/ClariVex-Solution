@@ -83,7 +83,7 @@ export default async function BlogArticlePage({ params }) {
   }
 
   return (
-    <main className="bg-[#0d0f14] py-16 sm:py-20 lg:py-32 text-white">
+    <main className="bg-[#f8f9fa] py-16 sm:py-20 lg:py-32 text-[#1a1a2e]">
       <BlogPostingSchema post={post} />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
         <Breadcrumbs
@@ -101,7 +101,7 @@ export default async function BlogArticlePage({ params }) {
               <span className="rounded-full bg-[#5a688e]/10 px-3 py-1 text-xs text-[#6aa595]">
                 {post.category}
               </span>
-              <h1 className="mt-5 font-[family-name:var(--font-playfair)] text-4xl text-white md:text-5xl">
+              <h1 className="mt-5 font-[family-name:var(--font-playfair)] text-4xl text-[#1a1a2e] md:text-5xl">
                 {post.title}
               </h1>
               <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-[#8892a4]">
@@ -118,15 +118,15 @@ export default async function BlogArticlePage({ params }) {
 
             <div
               dangerouslySetInnerHTML={{ __html: post.content }}
-              className="mx-auto mt-8 max-w-3xl prose prose-invert prose-headings:font-[family-name:var(--font-playfair)] prose-headings:text-white prose-p:text-[#8892a4] prose-p:leading-relaxed max-w-none"
+              className="mx-auto mt-8 max-w-3xl prose prose-lg max-w-none prose-headings:font-[family-name:var(--font-playfair)] prose-headings:text-[#1a1a2e] prose-headings:font-bold prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4 prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3 prose-p:text-[#5a6478] prose-p:leading-relaxed prose-p:mb-5 prose-strong:text-[#1a1a2e] prose-a:text-[#6aa595] prose-a:no-underline hover:prose-a:underline prose-li:text-[#5a6478]"
             />
           </article>
 
           <aside className="hidden lg:block">
             <div className="sticky top-28 space-y-6">
-              <div className="rounded-xl border border-[#1e2330] bg-[#13161e] p-6">
+              <div className="bg-white rounded-2xl border border-[#e2e4e9] p-6 shadow-sm">
                 <div className="mb-4 h-px w-12 bg-[#c9a96e]" />
-                <h2 className="font-[family-name:var(--font-playfair)] text-2xl text-white">
+                <h2 className="text-[#1a1a2e] font-bold text-lg mb-4 font-[family-name:var(--font-playfair)]">
                   Related Posts
                 </h2>
                 <div className="mt-4 space-y-3">
@@ -134,7 +134,7 @@ export default async function BlogArticlePage({ params }) {
                     <Link
                       key={item.slug}
                       href={`/blog/${item.slug}`}
-                      className="block text-sm text-[#8892a4] transition-colors hover:text-white"
+                      className="block text-[#5a6478] hover:text-[#6aa595] text-sm leading-snug py-2 border-b border-[#e2e4e9] last:border-0"
                     >
                       {item.title}
                     </Link>
@@ -142,7 +142,7 @@ export default async function BlogArticlePage({ params }) {
                 </div>
               </div>
 
-              <div className="rounded-xl border border-[#1e2330] bg-[#13161e] p-6">
+              <div className="bg-[#1a1a2e] rounded-2xl p-6 mt-4">
                 <div className="mb-4 h-px w-12 bg-[#c9a96e]" />
                 <h2 className="font-[family-name:var(--font-playfair)] text-2xl text-white">
                   Book a Consultation
@@ -153,7 +153,7 @@ export default async function BlogArticlePage({ params }) {
                 </p>
                 <Link
                   href="/#contact"
-                  className="mt-5 inline-flex rounded-full bg-[#5a688e] px-5 py-2 text-sm text-white transition-colors hover:bg-[#6aa595]"
+                  className="mt-5 inline-flex bg-[#6aa595] text-white rounded-full px-5 py-2.5 text-sm font-semibold transition-colors hover:bg-[#5a688e]"
                 >
                   Talk to an Expert
                 </Link>
@@ -165,4 +165,3 @@ export default async function BlogArticlePage({ params }) {
     </main>
   );
 }
-

@@ -78,7 +78,7 @@ export default async function NewsArticlePage({ params }) {
   }
 
   return (
-    <main className="bg-[#0d0f14] py-16 sm:py-20 lg:py-32 text-white">
+    <main className="bg-[#f8f9fa] py-16 sm:py-20 lg:py-32 text-[#1a1a2e]">
       <NewsArticleSchema post={post} />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
         <Breadcrumbs
@@ -103,29 +103,29 @@ export default async function NewsArticlePage({ params }) {
                   </span>
                 )}
               </div>
-              <h1 className="mt-5 font-[family-name:var(--font-playfair)] text-4xl text-white md:text-5xl">
+              <h1 className="mt-5 font-[family-name:var(--font-playfair)] text-4xl text-[#1a1a2e] md:text-5xl">
                 {post.title}
               </h1>
 
-              <div className="mt-6 flex flex-wrap items-center gap-6 border-b border-[#1e2330] pb-6">
+              <div className="mt-6 flex flex-wrap items-center gap-6 border-b border-[#e2e4e9] pb-6">
                 <div>
-                  <p className="text-xs text-[#5a688e] uppercase tracking-wider mb-1">Source</p>
-                  <p className="text-base font-medium text-white flex items-center gap-2">
+                  <p className="text-xs uppercase tracking-widest text-[#8892a4] mb-1">Source</p>
+                  <p className="text-[#1a1a2e] font-semibold text-sm flex items-center gap-2">
                     {post.source}
                   </p>
                 </div>
-                <div className="w-px h-8 bg-[#1e2330]" />
+                <div className="w-px h-8 bg-[#e2e4e9]" />
                 <div>
-                  <p className="text-xs text-[#5a688e] uppercase tracking-wider mb-1">Published</p>
-                  <time dateTime={post.isoDate} className="text-base text-white flex items-center gap-2">
+                  <p className="text-xs uppercase tracking-widest text-[#8892a4] mb-1">Published</p>
+                  <time dateTime={post.isoDate} className="text-[#1a1a2e] font-semibold text-sm flex items-center gap-2">
                     {post.date}
                   </time>
                 </div>
               </div>
             </header>
 
-            <div className="mx-auto mt-8 max-w-3xl space-y-5 leading-relaxed text-[#8892a4]">
-              <p className="text-lg text-white/90 leading-relaxed font-medium">{post.summary}</p>
+            <div className="mx-auto mt-8 max-w-3xl space-y-5 leading-relaxed text-[#5a6478]">
+              <p className="text-lg text-[#1a1a2e] leading-relaxed font-medium">{post.summary}</p>
 
               <p className="mt-4 text-xs text-[#8892a4] italic">
                 This article is sourced from {post.source}. Click below to read the complete article on their official website.
@@ -136,7 +136,7 @@ export default async function NewsArticlePage({ params }) {
                   href={post.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#5a688e] px-6 py-2.5 text-sm text-white hover:bg-[#6aa595] transition-colors"
+                  className="mt-6 inline-flex items-center gap-2 bg-[#1a1a2e] text-white rounded-full px-6 py-3 hover:bg-[#6aa595] transition-colors font-semibold"
                 >
                   {"Read Full Article \u2192"}
                 </a>
@@ -146,9 +146,9 @@ export default async function NewsArticlePage({ params }) {
 
           <aside className="hidden lg:block">
             <div className="sticky top-28 space-y-6">
-              <div className="rounded-xl border border-[#1e2330] bg-[#13161e] p-6">
+              <div className="bg-white border border-[#e2e4e9] rounded-2xl p-6">
                 <div className="mb-4 h-px w-12 bg-[#c9a96e]" />
-                <h2 className="font-[family-name:var(--font-playfair)] text-2xl text-white">
+                <h2 className="text-[#1a1a2e] font-bold text-lg mb-4 font-[family-name:var(--font-playfair)]">
                   More News
                 </h2>
                 <div className="mt-4 space-y-3">
@@ -156,7 +156,7 @@ export default async function NewsArticlePage({ params }) {
                     <Link
                       key={item.slug}
                       href={`/news/${item.slug}`}
-                      className="block text-sm text-[#8892a4] transition-colors hover:text-white"
+                      className="block text-[#5a6478] hover:text-[#6aa595] text-sm leading-snug py-2 border-b border-[#e2e4e9] last:border-0"
                     >
                       {item.title}
                     </Link>
@@ -164,7 +164,7 @@ export default async function NewsArticlePage({ params }) {
                 </div>
               </div>
 
-              <div className="rounded-xl border border-[#1e2330] bg-[#13161e] p-6">
+              <div className="bg-[#1a1a2e] rounded-2xl p-6 mt-4">
                 <div className="mb-4 h-px w-12 bg-[#c9a96e]" />
                 <h2 className="font-[family-name:var(--font-playfair)] text-2xl text-white">
                   Get Expert Support
@@ -174,7 +174,7 @@ export default async function NewsArticlePage({ params }) {
                 </p>
                 <Link
                   href="/#contact"
-                  className="mt-5 inline-flex rounded-full bg-[#5a688e] px-5 py-2 text-sm text-white transition-colors hover:bg-[#6aa595]"
+                  className="mt-5 inline-flex bg-[#6aa595] text-white rounded-full px-5 py-2.5 text-sm font-semibold transition-colors hover:bg-[#5a688e]"
                 >
                   Talk to an Expert
                 </Link>
@@ -186,4 +186,3 @@ export default async function NewsArticlePage({ params }) {
     </main>
   );
 }
-

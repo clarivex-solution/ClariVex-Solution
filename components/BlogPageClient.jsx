@@ -24,10 +24,10 @@ const countryFilterOptions = [
 ];
 
 function filterPillClass(isActive) {
-  return `rounded-full border px-5 py-2 text-xs cursor-pointer transition-colors ${
+  return `rounded-full px-4 py-2 text-sm font-medium transition-colors ${
     isActive
-      ? "bg-[#5a688e] text-white border-[#5a688e]"
-      : "bg-white border-[#e2e4e9] text-[#5a6478] hover:border-[#5a688e]/40 hover:text-[#1a1a2e]"
+      ? "bg-[#6aa595] text-white border border-[#6aa595]"
+      : "bg-white border border-[#e2e4e9] text-[#5a6478] hover:border-[#6aa595]/40"
   }`;
 }
 
@@ -115,7 +115,7 @@ export default function BlogPageClient() {
 
   return (
     <main className="bg-white text-[#1a1a2e]">
-      <section className="relative overflow-hidden bg-white py-16 sm:py-20 lg:py-32">
+      <section className="relative overflow-hidden bg-[#f4f3ee] py-24 text-center">
         <div className="pointer-events-none absolute -right-20 -top-20 h-[420px] w-[420px] rounded-full bg-[#5a688e]/6 blur-[110px]" />
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.03)_1px,transparent_1px)] bg-[size:80px_80px]" />
 
@@ -134,7 +134,7 @@ export default function BlogPageClient() {
         </div>
       </section>
 
-      <section className="border-y border-[#e2e4e9] bg-[#f8f9fa] py-16 sm:py-20 lg:py-32">
+      <section className="border-y border-[#e2e4e9] bg-[#f8f9fa] py-10">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
           <div className="mb-6 h-px w-16 bg-[#c9a96e]" />
           <p className="text-xs uppercase tracking-[0.2em] text-[#6aa595]">Filter Posts</p>
@@ -181,7 +181,7 @@ export default function BlogPageClient() {
         </div>
       </section>
 
-      <section className="bg-white py-16 sm:py-20 lg:py-32">
+      <section className="bg-white py-10 lg:py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
           <div className="mb-6 h-px w-16 bg-[#c9a96e]" />
           <p className="text-xs uppercase tracking-[0.2em] text-[#6aa595]">Latest Articles</p>
@@ -221,24 +221,24 @@ export default function BlogPageClient() {
               {visiblePosts.map((post) => (
                 <article
                   key={post.slug}
-                  className="rounded-xl border border-[#e2e4e9] bg-[#f8f9fa] p-6 cursor-pointer transition-all duration-300 hover:border-[#5a688e]/40 hover:shadow-xl hover:-translate-y-1"
+                  className="bg-white rounded-2xl border border-[#e2e4e9] p-8 hover:shadow-xl hover:-translate-y-1.5 hover:border-[#6aa595]/30 transition-all duration-300 flex flex-col h-full"
                 >
                   <div className="flex items-center justify-between gap-3">
-                    <span className="rounded-full bg-[#5a688e]/10 px-3 py-1 text-xs text-[#6aa595]">
+                    <span className="bg-[#6aa595]/10 text-[#6aa595] text-xs rounded-full px-3 py-1">
                       {post.category}
                     </span>
                     <CountryBadge country={post.country} />
                   </div>
 
-                  <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-xl font-semibold text-[#1a1a2e]">
+                  <h2 className="font-[family-name:var(--font-playfair)] font-bold text-lg text-[#1a1a2e] mt-3 mb-2">
                     {post.title}
                   </h2>
-                  <p className="mt-3 text-sm leading-relaxed text-[#5a6478]">
+                  <p className="text-sm text-[#5a6478] leading-relaxed flex-1">
                     {post.excerpt}
                   </p>
                   <Link
                     href={`/blog/${post.slug}`}
-                    className="mt-6 inline-flex text-sm text-[#6aa595] transition-colors hover:text-[#1a1a2e]"
+                    className="text-[#6aa595] font-semibold text-sm inline-flex items-center gap-1.5 mt-4 hover:gap-3 transition-all"
                   >
                     Read More &rarr;
                   </Link>
@@ -271,7 +271,7 @@ export default function BlogPageClient() {
 function CountryBadge({ country }) {
   if (!country || country === "All" || country === "General") {
     return (
-      <span className="rounded-full bg-[#6aa595]/10 px-2.5 py-1 text-[10px] font-medium uppercase tracking-wider text-[#6aa595]">
+      <span className="bg-[#f8f9fa] border border-[#e2e4e9] text-xs rounded-full px-2 py-0.5 text-[#1a1a2e]">
         General
       </span>
     );
@@ -282,7 +282,7 @@ function CountryBadge({ country }) {
   const flagSrc = match?.flagSrc;
 
   return (
-    <span className="flex items-center gap-1 rounded-full bg-[#5a688e]/10 px-2.5 py-1 text-[10px] font-medium uppercase tracking-wider text-[#5a688e]">
+    <span className="flex items-center gap-1 bg-[#f8f9fa] border border-[#e2e4e9] text-xs rounded-full px-2 py-0.5 text-[#1a1a2e]">
       {flagSrc && (
         <img src={flagSrc} alt="" className="rounded-sm" style={{ width: 14, height: 10 }} />
       )}

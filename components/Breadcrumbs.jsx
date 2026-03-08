@@ -9,7 +9,7 @@ export default function Breadcrumbs({ items }) {
   return (
     <>
       <BreadcrumbSchema items={items} />
-      <nav aria-label="Breadcrumb" className="min-w-0 text-sm text-[#5a6478]">
+      <nav aria-label="Breadcrumb" className="min-w-0 text-sm text-[#8892a4]">
         <ol className="flex items-center gap-1 min-w-0">
           {items.map((item, index) => {
             const isLast = index === items.length - 1;

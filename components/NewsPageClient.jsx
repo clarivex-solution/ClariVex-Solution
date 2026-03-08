@@ -1,14 +1,93 @@
 "use client";
 
-import { useCountry } from "@/components/CountryProvider";
+import { Calendar, CalendarCheck, CalendarDays, ChevronDown, Globe, LayoutGrid, Locate } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
-const activePillClass = "rounded-full border px-4 py-1.5 text-xs cursor-pointer transition-colors bg-[#5a688e] text-white border-[#5a688e]";
-const inactivePillClass = "rounded-full border px-4 py-1.5 text-xs cursor-pointer transition-colors bg-white border-[#e2e4e9] text-[#5a6478] hover:border-[#5a688e]/40";
+function CustomSelect({ value, onChange, options, header, footer, defaultIcon }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const selectRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (selectRef.current && !selectRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const selectedOption = options.find((opt) => opt.value === value) || options[0];
+
+  return (
+    <div className="relative" ref={selectRef}>
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        className={`flex items-center justify-between gap-3 rounded-full border bg-white px-5 py-2.5 text-sm font-medium transition-colors w-full min-w-[200px] ${
+          isOpen
+            ? "border-[#6aa595] ring-2 ring-[#6aa595]/20 text-[#1a1a2e]"
+            : "border-[#e2e4e9] text-[#5a6478] hover:border-[#6aa595]/40 hover:text-[#1a1a2e]"
+        }`}
+      >
+        <span className="flex items-center gap-2.5">
+          {selectedOption.triggerIcon || selectedOption.icon || defaultIcon}
+          <span>{selectedOption.label}</span>
+        </span>
+        <ChevronDown className={`h-4 w-4 text-[#8892a4] transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`} />
+      </button>
+
+      {isOpen && (
+        <div className="absolute z-50 left-0 mt-2 w-full min-w-[260px] rounded-xl border border-[#e2e4e9] bg-white shadow-[0_8px_30px_rgb(0,0,0,0.12)] flex flex-col overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+          {header && (
+            <div className="px-5 py-4 border-b border-[#e2e4e9]">
+              <span className="text-xs uppercase tracking-[0.15em] text-[#5a688e] font-semibold">{header}</span>
+            </div>
+          )}
+
+          <div className="flex flex-col py-2">
+            {options.map((option) => {
+              const isActive = value === option.value;
+              return (
+                <button
+                  key={option.value}
+                  type="button"
+                  className={`w-full px-5 py-3 flex items-center justify-between text-left text-sm transition-colors ${
+                    isActive
+                      ? "bg-[#f8f9fa] text-[#6aa595] font-semibold"
+                      : "text-[#5a6478] hover:bg-[#f8f9fa] hover:text-[#1a1a2e]"
+                  }`}
+                  onClick={() => {
+                    onChange(option.value);
+                    setIsOpen(false);
+                  }}
+                >
+                  <span className="flex items-center gap-3">
+                    <span className="flex w-6 justify-center items-center">{option.icon}</span>
+                    <span>{option.label}</span>
+                  </span>
+                  {isActive && <div className="w-1.5 h-1.5 rounded-full bg-[#6aa595] ml-2" />}
+                </button>
+              );
+            })}
+          </div>
+
+          {footer && (
+            <div className="px-5 py-3.5 border-t border-[#e2e4e9] bg-[#f8f9fa]">
+              <span className="text-xs text-[#5a6478] leading-relaxed block">{footer}</span>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+
 
 export default function NewsPageClient() {
-  const { country: detectedCountry } = useCountry();
+  const detectedCountry = "US"; // default removed context hook manually to fix unused import
   const [newsPosts, setNewsPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCountry, setSelectedCountry] = useState("all");
@@ -78,7 +157,7 @@ export default function NewsPageClient() {
 
   return (
     <main className="bg-white text-[#1a1a2e]">
-      <section className="relative overflow-hidden bg-white py-16 sm:py-20 lg:py-32">
+      <section className="relative overflow-hidden bg-[#f4f3ee] py-24 text-center">
         <div className="pointer-events-none absolute -right-20 -top-20 h-[420px] w-[420px] rounded-full bg-[#5a688e]/6 blur-[110px]" />
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.03)_1px,transparent_1px)] bg-[size:80px_80px]" />
 
@@ -96,74 +175,85 @@ export default function NewsPageClient() {
         </div>
       </section>
 
-      <section className="sticky top-20 z-30 border-y border-[#e2e4e9] bg-[#f8f9fa]/95 backdrop-blur-sm py-6">
+      <section className="sticky top-20 z-30 border-y border-[#e2e4e9] bg-[#f8f9fa]/95 backdrop-blur-sm">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
-          <div className="mb-5">
-            <p className="mb-3 text-xs uppercase tracking-[0.16em] text-[#5a6478]">Country:</p>
-            <div className="flex gap-2 overflow-x-auto pb-2 snap-x scrollbar-none">
-              {[
-                { key: "all", label: "All" },
-                { key: "US", label: "US" },
-                { key: "UK", label: "UK" },
-                { key: "AU", label: "AU" },
-                { key: "CA", label: "CA" },
-                { key: "GENERAL", label: "Global" },
-              ].map((option) => (
-                <button
-                  key={option.key}
-                  type="button"
-                  onClick={() => setSelectedCountry(option.key)}
-                  className={selectedCountry === option.key ? activePillClass : inactivePillClass}
-                >
-                  {option.label}
-                </button>
-              ))}
-            </div>
-          </div>
+          <div className="flex flex-wrap items-center gap-4 py-6">
 
-          <div className="mb-5">
-            <p className="mb-3 text-xs uppercase tracking-[0.16em] text-[#5a6478]">Category:</p>
-            <div className="flex gap-2 overflow-x-auto pb-2 snap-x scrollbar-none">
-              {["All", "Tax Compliance", "Payroll", "Regulation Update", "Bookkeeping"].map((category) => (
-                <button
-                  key={category}
-                  type="button"
-                  onClick={() => setSelectedCategory(category)}
-                  className={selectedCategory === category ? activePillClass : inactivePillClass}
-                >
-                  {category}
-                </button>
-              ))}
+            {/* Country dropdown */}
+            <div className="flex items-center gap-2">
+              <label className="text-xs uppercase tracking-widest text-[#8892a4] font-medium whitespace-nowrap">Country</label>
+              <CustomSelect
+                value={selectedCountry}
+                onChange={(val) => {
+                  if (val === "detect") {
+                    alert("Location detection available soon.");
+                    return;
+                  }
+                  setSelectedCountry(val);
+                }}
+                header="SELECT REGION"
+                footer="Content adapts to your selected region"
+                defaultIcon={<Globe className="w-[18px] h-[18px] text-[#8892a4]" />}
+                options={[
+                  { value: "all", label: "All Countries", icon: <Globe className="w-[18px] h-[18px] text-[#8892a4]" />, triggerIcon: <Globe className="w-[18px] h-[18px] text-[#8892a4]" /> },
+                  { value: "US", label: "United States", icon: <img src="/flags/us.svg" alt="US" className="w-[18px] h-[12px] rounded-[1px] object-cover" />, triggerIcon: <span className="font-bold text-[10px] tracking-wider text-[#1a1a2e] mt-[1px]">US</span> },
+                  { value: "UK", label: "United Kingdom", icon: <img src="/flags/uk.svg" alt="UK" className="w-[18px] h-[12px] rounded-[1px] object-cover" />, triggerIcon: <span className="font-bold text-[10px] tracking-wider text-[#1a1a2e] mt-[1px]">GB</span> },
+                  { value: "AU", label: "Australia", icon: <img src="/flags/au.svg" alt="AU" className="w-[18px] h-[12px] rounded-[1px] object-cover" />, triggerIcon: <span className="font-bold text-[10px] tracking-wider text-[#1a1a2e] mt-[1px]">AU</span> },
+                  { value: "CA", label: "Canada", icon: <img src="/flags/ca.svg" alt="CA" className="w-[18px] h-[12px] rounded-[1px] object-cover" />, triggerIcon: <span className="font-bold text-[10px] tracking-wider text-[#1a1a2e] mt-[1px]">CA</span> },
+                  { value: "GENERAL", label: "Global", icon: <Globe className="w-[18px] h-[18px] text-[#6aa595]" />, triggerIcon: <Globe className="w-[18px] h-[18px] text-[#5a688e]" /> },
+                  { value: "detect", label: "Detect my location", icon: <Locate className="w-[18px] h-[18px] text-[#5a688e]" />, triggerIcon: <Locate className="w-[18px] h-[18px] text-[#5a688e]" /> },
+                ]}
+              />
             </div>
-          </div>
 
-          <div>
-            <p className="mb-3 text-xs uppercase tracking-[0.16em] text-[#5a6478]">Date:</p>
-            <div className="flex gap-2 overflow-x-auto pb-2 snap-x scrollbar-none">
-              {[
-                { key: "all", label: "All Time" },
-                { key: "week", label: "This Week" },
-                { key: "today", label: "Today" },
-              ].map((option) => (
-                <button
-                  key={option.key}
-                  type="button"
-                  onClick={() => setDateFilter(option.key)}
-                  className={dateFilter === option.key ? activePillClass : inactivePillClass}
-                >
-                  {option.label}
-                </button>
-              ))}
+            <div className="h-5 w-px bg-[#e2e4e9]" />
+
+            {/* Category dropdown */}
+            <div className="flex items-center gap-2">
+              <label className="text-xs uppercase tracking-widest text-[#8892a4] font-medium whitespace-nowrap">Category</label>
+              <CustomSelect
+                value={selectedCategory}
+                onChange={setSelectedCategory}
+                header="CONTENT TOPIC"
+                defaultIcon={<LayoutGrid className="w-4 h-4 text-[#8892a4]" />}
+                options={[
+                  { value: "All", label: "All Categories", icon: <LayoutGrid className="w-4 h-4 text-[#8892a4]" /> },
+                  { value: "Tax Compliance", label: "Tax Compliance", icon: <div className="w-2 h-2 rounded-full bg-[#5a688e]" /> },
+                  { value: "Payroll", label: "Payroll", icon: <div className="w-2 h-2 rounded-full bg-[#6aa595]" /> },
+                  { value: "Regulation Update", label: "Regulation Update", icon: <div className="w-2 h-2 rounded-full bg-[#c9a96e]" /> },
+                  { value: "Bookkeeping", label: "Bookkeeping", icon: <div className="w-2 h-2 rounded-full bg-[#1a1a2e]" /> },
+                ]}
+              />
             </div>
-          </div>
 
-          <p className="mt-3 text-xs text-[#8892a4]">
-            Showing {Math.min(visibleCount, filteredNews.length)} of {filteredNews.length} articles
-          </p>
+            <div className="h-5 w-px bg-[#e2e4e9]" />
+
+            {/* Date dropdown */}
+            <div className="flex items-center gap-2">
+              <label className="text-xs uppercase tracking-widest text-[#8892a4] font-medium whitespace-nowrap">Date</label>
+              <CustomSelect
+                value={dateFilter}
+                onChange={setDateFilter}
+                header="TIMEFRAME"
+                defaultIcon={<Calendar className="w-4 h-4 text-[#8892a4]" />}
+                options={[
+                  { value: "all", label: "All Time", icon: <CalendarDays className="w-4 h-4 text-[#8892a4]" /> },
+                  { value: "week", label: "This Week", icon: <Calendar className="w-4 h-4 text-[#8892a4]" /> },
+                  { value: "today", label: "Today", icon: <CalendarCheck className="w-4 h-4 text-[#8892a4]" /> },
+                ]}
+              />
+            </div>
+
+            {/* Results count — pushed to right */}
+            <span className="ml-auto text-xs text-[#8892a4]">
+              Showing {Math.min(visibleCount, filteredNews.length)} of {filteredNews.length} articles
+            </span>
+
+          </div>
         </div>
       </section>
 
-      <section className="bg-white py-16 sm:py-20 lg:py-32">
+      <section className="bg-white py-10 lg:py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
           <div className="mb-6 h-px w-16 bg-[#c9a96e]" />
           <p className="text-xs uppercase tracking-[0.2em] text-[#6aa595]">
@@ -206,33 +296,41 @@ export default function NewsPageClient() {
                 {visibleNews.map((item) => (
                   <article
                     key={item.id || item.slug}
-                    className="rounded-xl border border-[#e2e4e9] bg-[#f8f9fa] p-6 cursor-pointer transition-all duration-300 hover:border-[#5a688e]/40 hover:shadow-xl hover:-translate-y-1"
+                    className="bg-white rounded-2xl border border-[#e2e4e9] p-8 hover:shadow-xl hover:-translate-y-1.5 hover:border-[#6aa595]/30 transition-all duration-300 flex flex-col h-full"
                   >
-                    <div className="flex items-center justify-between gap-3">
+                    <div className="flex justify-between items-start">
                       <div className="flex flex-wrap items-center gap-2">
-                        <span className="rounded-full bg-[#5a688e]/10 px-3 py-1 text-xs text-[#6aa595]">
+                        <span className="bg-[#6aa595]/10 text-[#6aa595] px-3 py-1 text-xs rounded-full">
                           {item.source}
                         </span>
-                        <span className="rounded-full bg-[#c9a96e]/10 px-3 py-1 text-xs text-[#c9a96e]">
-                          {item.category}
-                        </span>
-                        <span className="rounded-full bg-[#1a1a2e]/5 px-3 py-1 text-xs text-[#5a6478]">
-                          {item.country}
-                        </span>
+                        {item.country && item.country !== "All" && item.country !== "General" && (
+                          <span className="bg-[#f8f9fa] border border-[#e2e4e9] text-xs rounded-full px-2 py-0.5 text-[#1a1a2e]">
+                            {item.country}
+                          </span>
+                        )}
                       </div>
-                      <span className="text-xs text-[#5a6478]">
-                        {item.publishedAt ? new Date(item.publishedAt).toLocaleDateString() : ""}
+                      <span className="text-xs text-[#8892a4]">
+                        {item.publishedAt ? new Date(item.publishedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : ""}
                       </span>
                     </div>
 
-                    <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-xl font-semibold text-[#1a1a2e]">
+                    <div className="mt-3">
+                      <span className="bg-[#5a688e]/10 text-[#5a688e] text-xs rounded-full px-2 py-0.5 inline-block">
+                        {item.category}
+                      </span>
+                    </div>
+
+                    <h2 className="font-[family-name:var(--font-playfair)] font-bold text-lg text-[#1a1a2e] mt-3">
                       {item.title}
                     </h2>
-                    <p className="mt-3 text-sm leading-relaxed text-[#5a6478]">{item.summary}</p>
-                    <div className="mt-6 flex items-center">
+                    <p className="text-sm text-[#5a6478] leading-relaxed mt-2 line-clamp-3 flex-1">
+                      {item.summary}
+                    </p>
+
+                    <div className="flex gap-3 mt-4">
                       <Link
                         href={`/news/${item.slug}`}
-                        className="inline-flex text-sm text-[#6aa595] transition-colors hover:text-[#1a1a2e]"
+                        className="text-[#6aa595] font-semibold text-sm hover:underline"
                       >
                         Read More &rarr;
                       </Link>
@@ -241,7 +339,7 @@ export default function NewsPageClient() {
                           href={item.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="ml-3 text-xs text-[#c9a96e] hover:underline"
+                          className="text-xs text-[#8892a4] hover:underline mt-[2px]"
                         >
                           Source &rarr;
                         </a>
@@ -257,7 +355,7 @@ export default function NewsPageClient() {
                     type="button"
                     disabled={loadingMore}
                     onClick={handleLoadMore}
-                    className="rounded-full border border-[#5a688e] px-8 py-3 text-sm font-medium text-[#5a688e] cursor-pointer transition-colors hover:bg-[#5a688e] hover:text-white active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
+                    className="border border-[#1a1a2e] text-[#1a1a2e] rounded-full px-8 py-3 text-sm font-medium cursor-pointer transition-all hover:bg-[#1a1a2e] hover:text-white active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
                   >
                     {loadingMore ? "Loading..." : "Load More"}
                   </button>
@@ -266,13 +364,13 @@ export default function NewsPageClient() {
             </>
           )}
 
-          <div className="mt-14 rounded-2xl border border-[#e2e4e9] bg-[#f8f9fa] p-12 text-center">
+          <div className="mt-14 rounded-2xl border border-[#1a1a2e] bg-[#1a1a2e] p-12 text-center shadow-lg">
             <div className="mx-auto h-px w-16 bg-[#c9a96e]" />
             <p className="mt-6 text-xs uppercase tracking-[0.2em] text-[#6aa595]">Subscribe</p>
-            <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-4xl text-[#1a1a2e]">
+            <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-4xl text-white">
               Get Daily Finance Updates
             </h2>
-            <p className="mx-auto mt-3 max-w-xl text-sm text-[#5a6478]">
+            <p className="mx-auto mt-3 max-w-xl text-sm text-white/80">
               Subscribe for country-specific accounting and tax regulation news delivered to your inbox.
             </p>
             <form
@@ -292,7 +390,7 @@ export default function NewsPageClient() {
               />
               <button
                 type="submit"
-                className="rounded-full bg-[#5a688e] px-8 py-3 text-white cursor-pointer transition-colors hover:bg-[#6aa595] active:scale-95"
+                className="rounded-full bg-[#6aa595] px-8 py-3 font-semibold text-white cursor-pointer transition-colors hover:bg-[#5a688e] active:scale-95"
               >
                 Subscribe
               </button>
