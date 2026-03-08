@@ -17,15 +17,15 @@ import {
   ArrowRight,
   BarChart2,
   Calculator,
-  CheckCircle,
+  CheckCircle2,
   ChevronRight,
   Clipboard,
   Mail,
   MapPin,
   Phone,
-  Users,
+  Shield,
+  Users
 } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 
 export default function HomeContent() {
@@ -188,7 +188,8 @@ export default function HomeContent() {
       {/* Software */}
       <section className="bg-[#f8f9fa] border-t border-[#e2e4e9] py-20 pb-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
-          <p className="text-[#6aa595] text-xs font-semibold uppercase tracking-[0.2em]">TOOLS &amp; TECHNOLOGY</p>
+          <div className="mb-6 h-px w-16 bg-[#c9a96e]" />
+          <p className="text-xs uppercase tracking-[0.2em] text-[#6aa595] font-semibold">Tools & Technology</p>
           <h2 className="mt-2 font-[family-name:var(--font-playfair)] font-black text-4xl text-[#1a1a2e]">
             Software We Work With
           </h2>
@@ -221,39 +222,80 @@ export default function HomeContent() {
               );
             })}
           </div>
+          <div className="mt-10 flex justify-center">
+            <div className="inline-flex items-center gap-3 bg-gradient-to-r from-[#f0f2f5] to-transparent rounded-l-2xl pl-2 pr-12 py-2">
+              <div className="w-8 h-8 bg-[#e2e4e9]/80 rounded-[8px] flex items-center justify-center shrink-0">
+                <Shield className="h-4 w-4 text-[#5a688e]" />
+              </div>
+              <span className="text-sm text-[#5a6478]">We adapt to your systems—no forced migrations, no disruption.</span>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* About */}
-      <section id="about" className="bg-[#f4f3ee] py-16 sm:py-20 lg:py-32">
-        <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:gap-20 lg:px-12">
-          <div className="relative rounded-2xl border border-[#e2e4e9] bg-white p-10 shadow-lg">
-            <div className="absolute left-0 top-0 h-20 w-20 rounded-tl-2xl border-l-2 border-t-2 border-[#c9a96e]/40" />
-            <div className="relative w-24 h-24 rounded-full overflow-hidden ring-2 ring-[#c9a96e]/40 shrink-0">
-              <Image src="/dhimant-khatri.png" alt="CA Dhimant Khatri" fill sizes="96px" className="w-full h-full object-cover object-top" />
+      <section id="about" className="bg-[#f4f3ee] py-24">
+        <div className="mx-auto grid max-w-7xl items-center gap-20 px-4 sm:px-6 lg:grid-cols-[45%_55%] lg:px-12">
+          {/* Card left */}
+          <div className="relative rounded-2xl bg-white border border-[#e2e4e9] p-10 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+
+            {/* Subtle teal glow top-right */}
+            <div className="absolute top-0 right-0 w-32 h-32 rounded-full bg-[#6aa595]/8 blur-3xl pointer-events-none" />
+
+            {/* Profile */}
+            <div className="flex items-center gap-5 mb-8">
+              <div className="relative">
+                <img
+                  src="/dhimant-khatri.png"
+                  alt="Dhimant Khatri"
+                  className="w-20 h-20 rounded-full object-cover ring-2 ring-[#6aa595]/40 shadow-lg"
+                />
+                <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-[#6aa595] flex items-center justify-center">
+                  <CheckCircle2 className="h-3 w-3 text-white" />
+                </div>
+              </div>
+              <div>
+                <h3 className="font-bold text-lg text-[#1a1a2e]">Dhimant Khatri</h3>
+                <p className="text-[#8892a4] text-sm mt-0.5">Chartered Accountant · ICAI Member</p>
+                <div className="w-10 h-[3px] bg-[#c9a96e] mt-2 rounded-full" />
+              </div>
             </div>
-            <p className="mt-6 font-[family-name:var(--font-playfair)] text-2xl font-bold text-[#1a1a2e]">Dhimant Khatri</p>
-            <p className="mt-1 text-sm text-[#6aa595]">Chartered Accountant &middot; ICAI Member</p>
-            <div className="mt-6 h-px w-12 bg-[#c9a96e]" />
-            <div className="mt-6 space-y-4">
-              {["15+ Years Professional Experience", "Member, Institute of Chartered Accountants of India", "Audit, Taxation & Compliance Specialist"].map((point) => (
-                <p key={point} className="flex items-center gap-3 text-sm text-[#5a6478]">
-                  <CheckCircle className="h-4 w-4 text-[#6aa595]" />
-                  {point}
-                </p>
+
+            {/* Credentials */}
+            <div className="space-y-4">
+              {[
+                "15+ Years Professional Experience",
+                "Member, Institute of Chartered Accountants of India",
+                "Audit, Taxation & Compliance Specialist",
+              ].map((item) => (
+                <div key={item} className="flex items-center gap-3 p-4 rounded-xl bg-[#f8f9fa] border border-[#e2e4e9]">
+                  <CheckCircle2 className="h-5 w-5 text-[#6aa595] shrink-0" />
+                  <span className="text-sm text-[#5a6478]">{item}</span>
+                </div>
               ))}
             </div>
+
+            {/* Bottom badge */}
+            <div className="mt-8 pt-6 border-t border-[#e2e4e9] flex items-center gap-3">
+              <div className="w-8 h-8 rounded-lg bg-[#6aa595]/10 flex items-center justify-center">
+                <Shield className="h-4 w-4 text-[#6aa595]" />
+              </div>
+              <p className="text-xs text-[#8892a4] leading-snug">
+                Verified professional credentials.<br />
+                Serving clients across US, UK, AU & CA.
+              </p>
+            </div>
           </div>
-          <div>
+          <div className="max-w-[520px]">
             <div className="mb-6 h-px w-16 bg-[#c9a96e]" />
-            <p className="text-xs uppercase tracking-[0.2em] text-[#5a688e]">ABOUT US</p>
-            <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-3xl font-bold text-[#1a1a2e] sm:text-4xl lg:text-5xl">
-              Professional Expertise You Can Trust
+            <p className="text-xs uppercase tracking-[0.2em] text-[#6aa595] font-semibold">About Us</p>
+            <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-4xl font-black text-[#1a1a2e] leading-tight">
+              Professional Expertise<br />You Can Trust
             </h2>
-            <p className="mt-6 leading-relaxed text-slate-600">
+            <p className="mt-6 text-[#5a6478] leading-relaxed text-lg max-w-[440px]">
               ClariVex Solutions combines deep accounting discipline with modern process control to help leadership teams make faster and safer financial decisions.
             </p>
-            <p className="mt-4 leading-relaxed text-slate-600">
+            <p className="mt-4 text-[#5a6478] leading-relaxed max-w-[440px]">
               From monthly close readiness to growth-stage advisory, our objective is to reduce friction in finance operations while improving transparency for founders, management, and stakeholders.
             </p>
           </div>
