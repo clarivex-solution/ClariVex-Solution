@@ -1,5 +1,6 @@
 "use client"
 
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
@@ -38,12 +39,12 @@ export default function AdminLogin() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0d0f14] flex items-center justify-center p-4">
-      <div className="bg-[#13161e] border border-[#1e2330] rounded-2xl p-8 w-full max-w-sm">
+    <div className="min-h-screen bg-[#f8f9fa] flex items-center justify-center p-4">
+      <div className="bg-white border border-[#e2e4e9] shadow-sm rounded-2xl p-8 w-full max-w-sm">
         <div className="mb-8">
-          <div className="h-px w-12 bg-[#c9a96e] mb-4"></div>
-          <h1 className="text-3xl font-playfair text-[#c9a96e] mb-2">ClariVex</h1>
-          <p className="text-[#6aa595] text-xs font-semibold tracking-wider uppercase">Admin Panel</p>
+          <div className="h-px w-12 bg-[#c9a96e] mb-6"></div>
+          <Image src="/logo-dark.png" alt="ClariVex" width={180} height={52} className="w-auto h-9 mb-3 object-contain" />
+          <p className="text-[#6aa595] text-[10px] font-bold tracking-widest uppercase">Admin Panel</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -53,17 +54,17 @@ export default function AdminLogin() {
               placeholder="Admin Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-[#0d0f14] border border-[#1e2330] text-white rounded-lg px-4 py-3 placeholder-[#8892a4] focus:outline-none focus:border-[#5a688e] transition-colors"
+              className="w-full bg-white border border-[#e2e4e9] text-[#1a1a2e] rounded-lg px-4 py-3 placeholder-[#8892a4] focus:outline-none focus:ring-2 focus:ring-[#6aa595]/30 focus:border-[#6aa595] transition-colors"
               required
             />
           </div>
 
-          {error && <p className="text-red-400 text-sm">{error}</p>}
+          {error && <p className="text-red-500 text-sm">{error}</p>}
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-full bg-[#5a688e] py-3 font-medium text-white cursor-pointer transition-colors hover:bg-[#4a567a] active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
+            className="w-full rounded-full bg-[#1a1a2e] py-3 font-medium text-white cursor-pointer transition-colors hover:bg-[#6aa595] active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
           >
             {loading ? "Signing in..." : "Sign In"}
           </button>
@@ -72,4 +73,3 @@ export default function AdminLogin() {
     </div>
   )
 }
-

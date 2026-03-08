@@ -26,7 +26,7 @@ export default function AdminLogoutButton() {
     <button
       onClick={handleLogout}
       disabled={isLoading}
-      className="w-full cursor-pointer text-left text-sm text-[#8892a4] transition-colors hover:text-red-400 active:scale-95 disabled:cursor-not-allowed disabled:opacity-60"
+      className="w-full cursor-pointer text-left text-sm font-medium text-[#5a6478] px-4 py-2.5 rounded-lg transition-colors hover:text-red-600 hover:bg-red-50 active:scale-95 disabled:cursor-not-allowed disabled:opacity-60"
     >
       {isLoading ? 'Logging out...' : 'Log out'}
     </button>

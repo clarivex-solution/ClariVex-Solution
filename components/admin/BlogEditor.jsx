@@ -22,8 +22,8 @@ function ToolbarButton({ active, disabled, onClick, children }) {
       onClick={onClick}
       disabled={disabled}
       className={[
-        'p-2 rounded text-xs font-semibold text-[#8892a4] cursor-pointer transition-colors hover:text-white hover:bg-[#1e2330] active:scale-95',
-        active ? 'bg-[#5a688e] text-white' : '',
+        'p-2 rounded text-xs font-medium text-[#5a6478] cursor-pointer transition-colors hover:text-[#1a1a2e] hover:bg-[#e2e4e9] active:scale-95',
+        active ? 'bg-[#e2e4e9] text-[#1a1a2e]' : '',
         disabled ? 'opacity-60 cursor-not-allowed' : '',
       ].join(' ')}
     >
@@ -33,7 +33,7 @@ function ToolbarButton({ active, disabled, onClick, children }) {
 }
 
 function ToolbarDivider() {
-  return <div className="w-px h-5 bg-[#1e2330] mx-1 self-center" />
+  return <div className="w-px h-5 bg-[#e2e4e9] mx-1 self-center" />
 }
 
 export default function BlogEditor({ initialData, blogId, mode }) {
@@ -90,7 +90,7 @@ export default function BlogEditor({ initialData, blogId, mode }) {
         return html
       },
       attributes: {
-        class: 'prose-editor min-h-[320px] focus:outline-none p-4 text-[#8892a4] bg-[#0d0f14]',
+        class: 'prose-editor min-h-[320px] focus:outline-none p-4 text-[#1a1a2e] bg-white',
       },
     },
     onUpdate: ({ editor }) => {
@@ -202,13 +202,13 @@ export default function BlogEditor({ initialData, blogId, mode }) {
     <div className="max-w-5xl mx-auto space-y-6 animate-in fade-in duration-500">
       <div>
         <div className="h-px w-12 bg-[#c9a96e] mb-4"></div>
-        <h1 className="text-3xl font-playfair text-white">
+        <h1 className="text-3xl font-playfair font-semibold text-[#1a1a2e]">
           {isEditMode ? 'Edit Blog Post' : 'New Blog Post'}
         </h1>
       </div>
 
       {error ? (
-        <div className="rounded-lg border border-red-900/30 bg-red-900/10 px-4 py-3 text-sm text-red-300">
+        <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
           {error}
         </div>
       ) : null}
@@ -216,7 +216,7 @@ export default function BlogEditor({ initialData, blogId, mode }) {
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid gap-6 md:grid-cols-2">
           <div className="space-y-2 md:col-span-2">
-            <label htmlFor="title" className="text-sm font-medium text-[#cdd3df]">
+            <label htmlFor="title" className="text-sm font-medium text-[#1a1a2e]">
               Title
             </label>
             <input
@@ -224,14 +224,14 @@ export default function BlogEditor({ initialData, blogId, mode }) {
               type="text"
               value={title}
               onChange={handleTitleChange}
-              className="w-full rounded-xl border border-[#1e2330] bg-[#13161e] px-4 py-2.5 text-sm text-white placeholder:text-[#5a688e] focus:outline-none focus:ring-2 focus:ring-[#5a688e]/60"
+              className="w-full rounded-xl border border-[#e2e4e9] bg-white px-4 py-2.5 text-sm text-[#1a1a2e] shadow-sm placeholder:text-[#8892a4] focus:outline-none focus:ring-2 focus:ring-[#6aa595]/30 focus:border-[#6aa595] transition-colors"
               placeholder="Enter blog title"
               required
             />
           </div>
 
           <div className="space-y-2 md:col-span-2">
-            <label htmlFor="slug" className="text-sm font-medium text-[#cdd3df]">
+            <label htmlFor="slug" className="text-sm font-medium text-[#1a1a2e]">
               Slug
             </label>
             <input
@@ -239,19 +239,19 @@ export default function BlogEditor({ initialData, blogId, mode }) {
               type="text"
               value={slug}
               onChange={handleSlugChange}
-              className="w-full rounded-xl border border-[#1e2330] bg-[#13161e] px-4 py-2.5 text-sm text-white placeholder:text-[#5a688e] focus:outline-none focus:ring-2 focus:ring-[#5a688e]/60"
+              className="w-full rounded-xl border border-[#e2e4e9] bg-white px-4 py-2.5 text-sm text-[#1a1a2e] shadow-sm placeholder:text-[#8892a4] focus:outline-none focus:ring-2 focus:ring-[#6aa595]/30 focus:border-[#6aa595] transition-colors"
               placeholder="blog-post-slug"
               required
             />
-            <p className="text-xs text-[#5a688e]">{urlHelper}</p>
+            <p className="text-xs text-[#5a6478]">{urlHelper}</p>
           </div>
 
           <div className="space-y-2 md:col-span-2">
             <div className="flex items-center justify-between gap-3">
-              <label htmlFor="excerpt" className="text-sm font-medium text-[#cdd3df]">
+              <label htmlFor="excerpt" className="text-sm font-medium text-[#1a1a2e]">
                 Excerpt
               </label>
-              <span className={excerpt.length > 200 ? 'text-xs text-[#c9a96e]' : 'text-xs text-[#5a688e]'}>
+              <span className={excerpt.length > 200 ? 'text-xs text-[#c9a96e]' : 'text-xs text-[#5a6478]'}>
                 {excerpt.length}/200
               </span>
             </div>
@@ -260,21 +260,21 @@ export default function BlogEditor({ initialData, blogId, mode }) {
               rows={4}
               value={excerpt}
               onChange={(event) => setExcerpt(event.target.value)}
-              className="w-full rounded-xl border border-[#1e2330] bg-[#13161e] px-4 py-2.5 text-sm text-white placeholder:text-[#5a688e] focus:outline-none focus:ring-2 focus:ring-[#5a688e]/60 resize-y"
+              className="w-full rounded-xl border border-[#e2e4e9] bg-white px-4 py-2.5 text-sm text-[#1a1a2e] shadow-sm placeholder:text-[#8892a4] focus:outline-none focus:ring-2 focus:ring-[#6aa595]/30 focus:border-[#6aa595] transition-colors resize-y"
               placeholder="Short summary of the post"
               required
             />
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="category" className="text-sm font-medium text-[#cdd3df]">
+            <label htmlFor="category" className="text-sm font-medium text-[#1a1a2e]">
               Category
             </label>
             <select
               id="category"
               value={category}
               onChange={(event) => setCategory(event.target.value)}
-              className="w-full rounded-xl border border-[#1e2330] bg-[#13161e] px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#5a688e]/60"
+              className="w-full rounded-xl border border-[#e2e4e9] bg-white px-4 py-2.5 text-sm text-[#1a1a2e] shadow-sm focus:outline-none focus:ring-2 focus:ring-[#6aa595]/30 focus:border-[#6aa595] transition-colors"
             >
               {CATEGORY_OPTIONS.map((option) => (
                 <option key={option} value={option}>
@@ -285,14 +285,14 @@ export default function BlogEditor({ initialData, blogId, mode }) {
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="country" className="text-sm font-medium text-[#cdd3df]">
+            <label htmlFor="country" className="text-sm font-medium text-[#1a1a2e]">
               Country
             </label>
             <select
               id="country"
               value={country}
               onChange={(event) => setCountry(event.target.value)}
-              className="w-full rounded-xl border border-[#1e2330] bg-[#13161e] px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#5a688e]/60"
+              className="w-full rounded-xl border border-[#e2e4e9] bg-white px-4 py-2.5 text-sm text-[#1a1a2e] shadow-sm focus:outline-none focus:ring-2 focus:ring-[#6aa595]/30 focus:border-[#6aa595] transition-colors"
             >
               {COUNTRY_OPTIONS.map((option) => (
                 <option key={option} value={option}>
@@ -303,14 +303,14 @@ export default function BlogEditor({ initialData, blogId, mode }) {
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="status" className="text-sm font-medium text-[#cdd3df]">
+            <label htmlFor="status" className="text-sm font-medium text-[#1a1a2e]">
               Status
             </label>
             <select
               id="status"
               value={status}
               onChange={(event) => setStatus(event.target.value)}
-              className="w-full rounded-xl border border-[#1e2330] bg-[#13161e] px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#5a688e]/60"
+              className="w-full rounded-xl border border-[#e2e4e9] bg-white px-4 py-2.5 text-sm text-[#1a1a2e] shadow-sm focus:outline-none focus:ring-2 focus:ring-[#6aa595]/30 focus:border-[#6aa595] transition-colors"
             >
               <option value="draft">Draft</option>
               <option value="published">Published</option>
@@ -320,9 +320,9 @@ export default function BlogEditor({ initialData, blogId, mode }) {
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-medium text-[#cdd3df]">Content</label>
-          <div className="border border-[#1e2330] rounded-xl overflow-hidden bg-[#0d0f14]">
-            <div className="flex flex-wrap items-center gap-1 border-b border-[#1e2330] bg-[#13161e] p-2">
+          <label className="text-sm font-medium text-[#1a1a2e]">Content</label>
+          <div className="border border-[#e2e4e9] rounded-xl overflow-hidden bg-white shadow-sm">
+            <div className="flex flex-wrap items-center gap-1 border-b border-[#e2e4e9] bg-[#f8f9fa] p-2">
               <ToolbarButton
                 active={editor?.isActive('heading', { level: 1 }) === true}
                 disabled={!editorReady}
@@ -417,7 +417,7 @@ export default function BlogEditor({ initialData, blogId, mode }) {
           <button
             type="submit"
             disabled={isSaving}
-            className="px-6 py-2.5 rounded-full border border-[#5a688e] text-[#5a688e] cursor-pointer font-medium transition-colors duration-300 hover:bg-[#5a688e] hover:text-white active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
+            className="px-6 py-2.5 rounded-full border border-[#1a1a2e] bg-transparent text-[#1a1a2e] cursor-pointer font-medium transition-colors duration-300 hover:bg-[#1a1a2e] hover:text-white active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
           >
             {isSaving ? 'Saving...' : isEditMode ? 'Update Post' : 'Create Post'}
           </button>
@@ -426,4 +426,3 @@ export default function BlogEditor({ initialData, blogId, mode }) {
     </div>
   )
 }
-

@@ -1,6 +1,6 @@
 "use client"
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { Suspense, useCallback, useEffect, useState } from 'react'
@@ -140,74 +140,74 @@ function AdminBlogPageContent() {
       <div className="flex items-start justify-between gap-4">
         <div>
           <div className="h-px w-12 bg-[#c9a96e] mb-4"></div>
-          <h1 className="text-3xl font-playfair text-white">Blog</h1>
+          <h1 className="text-3xl font-playfair text-[#1a1a2e] font-semibold">Blog</h1>
         </div>
 
         <Link
           href="/admin/blog/new"
-          className="px-5 py-2.5 rounded-full border border-[#5a688e] text-[#5a688e] cursor-pointer hover:bg-[#5a688e] hover:text-white active:scale-95 transition-colors duration-300 font-medium"
+          className="px-5 py-2.5 rounded-full border border-[#1a1a2e] text-[#1a1a2e] bg-transparent cursor-pointer hover:bg-[#1a1a2e] hover:text-white active:scale-95 transition-colors duration-300 font-medium"
         >
           New Blog Post
         </Link>
       </div>
 
       {error ? (
-        <div className="rounded-lg border border-red-900/30 bg-red-900/10 px-4 py-3 text-sm text-red-300">
+        <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
           {error}
         </div>
       ) : null}
 
       {filter && (
         <div className="mb-4 flex items-center gap-2">
-          <span className="text-sm text-[#8892a4]">Filter:</span>
-          <span className="rounded-full bg-[#5a688e]/20 px-3 py-1 text-xs capitalize text-[#5a688e]">{filter}</span>
-          <Link href="/admin/blog" title="Show all posts" className="text-xs text-[#8892a4] hover:text-white transition-colors">
+          <span className="text-sm text-[#5a6478]">Filter:</span>
+          <span className="rounded-full bg-[#1a1a2e]/10 px-3 py-1 text-xs capitalize text-[#1a1a2e] font-medium">{filter}</span>
+          <Link href="/admin/blog" title="Show all posts" className="text-xs text-[#5a6478] hover:text-[#1a1a2e] transition-colors underline decoration-[#5a6478]/30 underline-offset-4">
             Clear filter &times;
           </Link>
         </div>
       )}
 
-      <div className="w-full overflow-x-auto rounded-xl border border-[#1e2330] bg-[#13161e]">
+      <div className="w-full overflow-x-auto rounded-xl border border-[#e2e4e9] bg-white shadow-sm">
         <table className="min-w-full">
-          <thead className="bg-[#0d0f14]">
+          <thead className="bg-[#f8f9fa] border-b border-[#e2e4e9]">
             <tr>
-              <th className="px-4 py-3 text-left text-xs font-semibold tracking-wide uppercase text-[#8892a4]">Title</th>
-              <th className="px-4 py-3 text-left text-xs font-semibold tracking-wide uppercase text-[#8892a4]">Country</th>
-              <th className="px-4 py-3 text-left text-xs font-semibold tracking-wide uppercase text-[#8892a4]">Category</th>
-              <th className="px-4 py-3 text-left text-xs font-semibold tracking-wide uppercase text-[#8892a4]">Status</th>
-              <th className="px-4 py-3 text-left text-xs font-semibold tracking-wide uppercase text-[#8892a4]">Date</th>
-              <th className="px-4 py-3 text-left text-xs font-semibold tracking-wide uppercase text-[#8892a4]">Actions</th>
+              <th className="px-4 py-3 text-left text-xs font-semibold tracking-wide uppercase text-[#5a6478]">Title</th>
+              <th className="px-4 py-3 text-left text-xs font-semibold tracking-wide uppercase text-[#5a6478]">Country</th>
+              <th className="px-4 py-3 text-left text-xs font-semibold tracking-wide uppercase text-[#5a6478]">Category</th>
+              <th className="px-4 py-3 text-left text-xs font-semibold tracking-wide uppercase text-[#5a6478]">Status</th>
+              <th className="px-4 py-3 text-left text-xs font-semibold tracking-wide uppercase text-[#5a6478]">Date</th>
+              <th className="px-4 py-3 text-left text-xs font-semibold tracking-wide uppercase text-[#5a6478]">Actions</th>
             </tr>
           </thead>
           <tbody>
             {isLoading
               ? Array.from({ length: 3 }).map((_, rowIndex) => (
-                  <tr key={rowIndex} className="border-t border-[#1e2330] hover:bg-[#1e2330]/40 transition-colors duration-150">
+                  <tr key={rowIndex} className="border-t border-[#e2e4e9] hover:bg-[#f8f9fa] transition-colors duration-150">
                     <td className="px-4 py-4">
-                      <div className="h-4 w-40 animate-pulse rounded bg-[#1e2330]"></div>
+                      <div className="h-4 w-40 animate-pulse rounded bg-gray-200"></div>
                     </td>
                     <td className="px-4 py-4">
-                      <div className="h-4 w-16 animate-pulse rounded bg-[#1e2330]"></div>
+                      <div className="h-4 w-16 animate-pulse rounded bg-gray-200"></div>
                     </td>
                     <td className="px-4 py-4">
-                      <div className="h-4 w-24 animate-pulse rounded bg-[#1e2330]"></div>
+                      <div className="h-4 w-24 animate-pulse rounded bg-gray-200"></div>
                     </td>
                     <td className="px-4 py-4">
-                      <div className="h-6 w-20 animate-pulse rounded-full bg-[#1e2330]"></div>
+                      <div className="h-6 w-20 animate-pulse rounded-full bg-gray-200"></div>
                     </td>
                     <td className="px-4 py-4">
-                      <div className="h-4 w-24 animate-pulse rounded bg-[#1e2330]"></div>
+                      <div className="h-4 w-24 animate-pulse rounded bg-gray-200"></div>
                     </td>
                     <td className="px-4 py-4">
-                      <div className="h-8 w-36 animate-pulse rounded bg-[#1e2330]"></div>
+                      <div className="h-8 w-36 animate-pulse rounded bg-gray-200"></div>
                     </td>
                   </tr>
                 ))
               : null}
 
             {!isLoading && filteredBlogs.length === 0 ? (
-              <tr className="border-t border-[#1e2330] hover:bg-[#1e2330]/40 transition-colors duration-150">
-                <td colSpan={6} className="px-4 py-12 text-center text-sm text-[#8892a4]">
+              <tr className="border-t border-[#e2e4e9]">
+                <td colSpan={6} className="px-4 py-12 text-center text-sm text-[#5a6478]">
                   No blog posts yet. Create your first post to get started.
                 </td>
               </tr>
@@ -215,21 +215,21 @@ function AdminBlogPageContent() {
 
             {!isLoading
               ? filteredBlogs.map((blog) => (
-                  <tr key={blog.id} className="border-t border-[#1e2330] hover:bg-[#1e2330]/40 transition-colors duration-150">
-                    <td className="px-4 py-4 text-sm text-white">{blog.title}</td>
-                    <td className="px-4 py-4 text-sm text-[#8892a4]">{blog.country || '--'}</td>
-                    <td className="px-4 py-4 text-sm text-[#8892a4]">{blog.category || '--'}</td>
+                  <tr key={blog.id} className="border-b border-[#e2e4e9] last:border-0 hover:bg-[#f8f9fa] transition-colors duration-150 group">
+                    <td className="px-4 py-4 text-sm font-medium text-[#1a1a2e] group-hover:text-[#6aa595] transition-colors">{blog.title}</td>
+                    <td className="px-4 py-4 text-sm text-[#5a6478]">{blog.country || '--'}</td>
+                    <td className="px-4 py-4 text-sm text-[#5a6478]">{blog.category || '--'}</td>
                     <td className="px-4 py-4">
                       <StatusBadge status={blog.status} />
                     </td>
-                    <td className="px-4 py-4 text-sm text-[#8892a4]">
+                    <td className="px-4 py-4 text-sm text-[#5a6478]">
                       {formatDate(blog.publishedAt || blog.createdAt)}
                     </td>
                     <td className="px-4 py-4">
                       <div className="flex items-center gap-2">
                         <Link
                           href={`/admin/blog/${blog.id}/edit`}
-                          className="px-3 py-1.5 rounded-md border border-[#5a688e] text-xs font-medium text-[#5a688e] cursor-pointer hover:bg-[#5a688e] hover:text-white active:scale-95 transition-colors duration-300"
+                          className="px-3 py-1.5 rounded-md border border-[#e2e4e9] bg-white text-xs font-medium text-[#1a1a2e] cursor-pointer hover:border-[#1a1a2e] hover:bg-[#f8f9fa] active:scale-95 transition-colors duration-300 shadow-sm"
                         >
                           Edit
                         </Link>
@@ -238,7 +238,7 @@ function AdminBlogPageContent() {
                             type="button"
                             onClick={() => handlePublish(blog.id)}
                             disabled={publishingId === blog.id}
-                            className="px-3 py-1.5 rounded-md border border-[#6aa595] text-xs font-medium text-[#6aa595] cursor-pointer hover:bg-[#6aa595] hover:text-white disabled:opacity-60 disabled:cursor-not-allowed active:scale-95 transition-colors duration-300"
+                            className="px-3 py-1.5 rounded-md border border-[#6aa595] bg-[#6aa595] text-white text-xs font-medium cursor-pointer hover:bg-[#5b8e80] disabled:opacity-60 disabled:cursor-not-allowed active:scale-95 transition-colors duration-300 shadow-sm"
                           >
                             {publishingId === blog.id ? 'Publishing...' : 'Publish'}
                           </button>
@@ -247,7 +247,7 @@ function AdminBlogPageContent() {
                           type="button"
                           onClick={() => setDeleteTarget(blog)}
                           disabled={deletingId === blog.id}
-                          className="px-3 py-1.5 rounded-md border border-red-900/40 text-xs font-medium text-red-300 cursor-pointer hover:bg-red-900/20 disabled:opacity-60 disabled:cursor-not-allowed active:scale-95 transition-colors duration-300"
+                          className="px-3 py-1.5 rounded-md border border-red-200 bg-red-50 text-xs font-medium text-red-600 cursor-pointer hover:bg-red-100 hover:border-red-300 disabled:opacity-60 disabled:cursor-not-allowed active:scale-95 transition-colors duration-300"
                         >
                           {deletingId === blog.id ? 'Deleting...' : 'Delete'}
                         </button>
@@ -261,15 +261,15 @@ function AdminBlogPageContent() {
       </div>
 
       <Dialog open={deleteTarget !== null} onOpenChange={(open) => { if (!open) setDeleteTarget(null) }}>
-        <DialogContent className="bg-[#13161e] border border-[#1e2330] text-white max-w-md">
+        <DialogContent className="bg-white border border-[#e2e4e9] text-[#1a1a2e] max-w-md shadow-lg">
           <DialogHeader>
-            <DialogTitle className="text-white">Confirm Delete</DialogTitle>
-            <DialogDescription className="text-[#8892a4]">
+            <DialogTitle className="text-[#1a1a2e] font-semibold">Confirm Delete</DialogTitle>
+            <DialogDescription className="text-[#5a6478]">
               Are you sure you want to delete &quot;{deleteTarget?.title}&quot;? This cannot be undone.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="gap-2 sm:gap-2">
-            <button onClick={() => setDeleteTarget(null)} className="rounded-lg border border-[#1e2330] px-4 py-2 text-sm font-medium text-[#8892a4] cursor-pointer hover:bg-[#1e2330] active:scale-95 transition-colors">
+            <button onClick={() => setDeleteTarget(null)} className="rounded-lg border border-[#e2e4e9] bg-white px-4 py-2 text-sm font-medium text-[#5a6478] cursor-pointer hover:bg-[#f8f9fa] active:scale-95 transition-colors">
               Cancel
             </button>
             <button
@@ -278,7 +278,7 @@ function AdminBlogPageContent() {
                 handleDelete(deleteTarget.id)
                 setDeleteTarget(null)
               }}
-              className="rounded-lg bg-red-500 hover:bg-red-600 px-4 py-2 text-sm font-medium text-white cursor-pointer active:scale-95 transition-colors"
+              className="rounded-lg bg-red-600 hover:bg-red-700 px-4 py-2 text-sm font-medium text-white cursor-pointer active:scale-95 transition-colors"
             >
               Delete
             </button>
@@ -302,5 +302,3 @@ export default function AdminBlogPage() {
     </Suspense>
   )
 }
-
-

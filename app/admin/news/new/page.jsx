@@ -77,111 +77,111 @@ export default function NewNewsPage() {
   };
 
   return (
-    <div className="p-6 bg-[#0d0f14] min-h-screen text-white">
+    <div className="p-6 bg-[#f8f9fa] min-h-screen text-[#1a1a2e]">
       <div className="max-w-3xl mx-auto">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold">Add Manual News</h1>
-          <Link href="/admin/news" className="text-[#8892a4] hover:text-white transition">
+          <h1 className="text-2xl font-bold font-playfair">Add Manual News</h1>
+          <Link href="/admin/news" className="text-[#5a6478] hover:text-[#1a1a2e] font-medium transition-colors">
             Cancel
           </Link>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
-            <label className="block text-[#8892a4] text-sm">Title</label>
+            <label className="block text-[#1a1a2e] font-medium text-sm">Title</label>
             <input
               type="text"
               name="title"
               value={formData.title}
               onChange={handleChange}
               required
-              className="w-full bg-[#0d0f14] border border-[#1e2330] text-white rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#5a688e]"
+              className="w-full bg-white border border-[#e2e4e9] text-[#1a1a2e] rounded-lg px-4 py-2.5 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#6aa595]/30 focus:border-[#6aa595] transition-colors"
             />
           </div>
 
           <div className="space-y-2">
-            <label className="block text-[#8892a4] text-sm">Slug (auto-generated)</label>
+            <label className="block text-[#1a1a2e] font-medium text-sm">Slug (auto-generated)</label>
             <input
               type="text"
               name="slug"
               value={formData.slug}
               onChange={handleChange}
               required
-              className="w-full bg-[#0d0f14] border border-[#1e2330] text-white rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#5a688e]"
+              className="w-full bg-white border border-[#e2e4e9] text-[#1a1a2e] rounded-lg px-4 py-2.5 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#6aa595]/30 focus:border-[#6aa595] transition-colors"
             />
           </div>
 
           <div className="space-y-2">
-            <label className="block text-[#8892a4] text-sm">Summary</label>
+            <label className="block text-[#1a1a2e] font-medium text-sm">Summary</label>
             <textarea
               name="summary"
               value={formData.summary}
               onChange={handleChange}
               required
               rows={4}
-              className="w-full bg-[#0d0f14] border border-[#1e2330] text-white rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#5a688e]"
+              className="w-full bg-white border border-[#e2e4e9] text-[#1a1a2e] rounded-lg px-4 py-2.5 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#6aa595]/30 focus:border-[#6aa595] transition-colors resize-y"
             />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <label className="block text-[#8892a4] text-sm">Source Name</label>
+              <label className="block text-[#1a1a2e] font-medium text-sm">Source Name</label>
               <input
                 type="text"
                 name="source"
                 value={formData.source}
                 onChange={handleChange}
                 required
-                className="w-full bg-[#0d0f14] border border-[#1e2330] text-white rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#5a688e]"
+                className="w-full bg-white border border-[#e2e4e9] text-[#1a1a2e] rounded-lg px-4 py-2.5 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#6aa595]/30 focus:border-[#6aa595] transition-colors"
               />
             </div>
 
             <div className="space-y-2">
-              <label className="block text-[#8892a4] text-sm">Source URL (Optional)</label>
+              <label className="block text-[#1a1a2e] font-medium text-sm">Source URL (Optional)</label>
               <input
                 type="url"
                 name="url"
                 value={formData.url}
                 onChange={handleChange}
-                className="w-full bg-[#0d0f14] border border-[#1e2330] text-white rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#5a688e]"
+                className="w-full bg-white border border-[#e2e4e9] text-[#1a1a2e] rounded-lg px-4 py-2.5 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#6aa595]/30 focus:border-[#6aa595] transition-colors"
               />
             </div>
 
             <div className="space-y-2">
-              <label className="block text-[#8892a4] text-sm">Category</label>
+              <label className="block text-[#1a1a2e] font-medium text-sm">Category</label>
               <select
                 name="category"
                 value={formData.category}
                 onChange={handleChange}
                 required
-                className="w-full bg-[#0d0f14] border border-[#1e2330] text-white rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#5a688e] appearance-none"
+                className="w-full bg-white border border-[#e2e4e9] text-[#1a1a2e] rounded-lg px-4 py-2.5 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#6aa595]/30 focus:border-[#6aa595] transition-colors"
               >
                 {categories.map(c => <option key={c} value={c}>{c}</option>)}
               </select>
             </div>
 
             <div className="space-y-2">
-              <label className="block text-[#8892a4] text-sm">Country</label>
+              <label className="block text-[#1a1a2e] font-medium text-sm">Country</label>
               <select
                 name="country"
                 value={formData.country}
                 onChange={handleChange}
                 required
-                className="w-full bg-[#0d0f14] border border-[#1e2330] text-white rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#5a688e] appearance-none"
+                className="w-full bg-white border border-[#e2e4e9] text-[#1a1a2e] rounded-lg px-4 py-2.5 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#6aa595]/30 focus:border-[#6aa595] transition-colors"
               >
                 {countries.map(c => <option key={c} value={c}>{c}</option>)}
               </select>
             </div>
 
             <div className="space-y-2">
-              <label className="block text-[#8892a4] text-sm">Published Date</label>
+              <label className="block text-[#1a1a2e] font-medium text-sm">Published Date</label>
               <input
                 type="date"
                 name="publishedAt"
                 value={formData.publishedAt}
                 onChange={handleChange}
                 required
-                className="w-full bg-[#0d0f14] border border-[#1e2330] text-white rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#5a688e]"
+                className="w-full bg-white border border-[#e2e4e9] text-[#1a1a2e] rounded-lg px-4 py-2.5 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#6aa595]/30 focus:border-[#6aa595] transition-colors"
               />
             </div>
           </div>
@@ -190,7 +190,7 @@ export default function NewNewsPage() {
             <button
               type="submit"
               disabled={loading}
-              className="rounded-lg bg-[#5a688e] px-6 py-2.5 text-white cursor-pointer transition-colors hover:bg-[#4a5573] active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
+              className="rounded-lg bg-[#1a1a2e] px-6 py-2.5 font-medium text-white cursor-pointer transition-colors hover:bg-[#6aa595] active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
             >
               {loading ? "Saving..." : "Save News"}
             </button>

@@ -30,10 +30,10 @@ export default function AdminLayout({ children }) {
   }
 
   return (
-    <div className="flex min-h-screen bg-[#0d0f14]">
+    <div className="flex min-h-screen bg-[#f8f9fa] text-[#1a1a2e]">
       <aside
         className={`
-          fixed inset-y-0 left-0 z-50 w-64 bg-[#13161e] border-r border-[#1e2330] flex flex-col p-6
+          fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-[#e2e4e9] flex flex-col p-6
           transform transition-transform duration-300
           ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
           lg:translate-x-0
@@ -41,17 +41,19 @@ export default function AdminLayout({ children }) {
       >
         <button
           type="button"
-          className="lg:hidden absolute top-4 right-4 text-[#8892a4] cursor-pointer transition-colors hover:text-white active:scale-95"
+          className="lg:hidden absolute top-4 right-4 text-[#5a6478] cursor-pointer transition-colors hover:text-[#1a1a2e] active:scale-95"
           onClick={() => setSidebarOpen(false)}
         >
-          X
+          ✕
         </button>
 
         <div className="mb-10">
-          <div className="mb-1">
-            <Image src="/logo-white.png" alt="ClariVex Solutions" width={200} height={58} className="h-11 w-auto object-contain" />
+          <div className="mb-2">
+            <Link href="/" onClick={() => setSidebarOpen(false)}>
+              <Image src="/logo-dark.png" alt="ClariVex Solutions" width={140} height={40} className="w-auto h-8 object-contain" />
+            </Link>
           </div>
-          <p className="text-[#6aa595] text-xs font-semibold tracking-wider uppercase">Admin Panel</p>
+          <p className="text-[#6aa595] text-[10px] font-bold tracking-widest uppercase mt-4">Admin Panel</p>
         </div>
 
         <nav className="flex-1 space-y-2">
@@ -68,8 +70,8 @@ export default function AdminLayout({ children }) {
                 onClick={() => setSidebarOpen(false)}
                 className={`block px-4 py-2.5 rounded-lg cursor-pointer transition-all ${
                   isActive
-                    ? 'bg-[#5a688e]/20 text-[#6aa595] font-medium border-l-2 border-[#6aa595]'
-                    : 'text-[#8892a4] hover:text-white hover:bg-[#1e2330]'
+                    ? 'bg-[#eef5f3] text-[#6aa595] font-medium border-l-4 border-[#6aa595]'
+                    : 'text-[#5a6478] hover:text-[#1a1a2e] hover:bg-[#f8f9fa]'
                 }`}
               >
                 {item.label}
@@ -78,7 +80,7 @@ export default function AdminLayout({ children }) {
           })}
         </nav>
 
-        <div className="mt-auto pt-6 border-t border-[#1e2330]">
+        <div className="mt-auto pt-6 border-t border-[#e2e4e9]">
           <AdminLogoutButton />
         </div>
       </aside>
@@ -94,7 +96,7 @@ export default function AdminLayout({ children }) {
         <meta name="robots" content="noindex, nofollow" />
         <button
           type="button"
-          className="lg:hidden mb-4 p-2 text-[#8892a4] cursor-pointer transition-colors hover:text-white active:scale-95"
+          className="lg:hidden mb-4 p-2 text-[#5a6478] cursor-pointer transition-colors hover:text-[#1a1a2e] active:scale-95"
           onClick={() => setSidebarOpen(true)}
         >
           Menu
@@ -106,4 +108,3 @@ export default function AdminLayout({ children }) {
     </div>
   );
 }
-

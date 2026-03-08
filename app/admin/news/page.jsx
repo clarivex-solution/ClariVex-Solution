@@ -1,12 +1,12 @@
 "use client";
 
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
 } from "@/components/ui/dialog";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -103,20 +103,20 @@ export default function AdminNewsPage() {
   });
 
   return (
-    <div className="min-h-screen bg-[#0d0f14] p-6 text-white">
+    <div className="min-h-screen bg-[#f8f9fa] p-6 text-[#1a1a2e]">
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-bold">News Management</h1>
+        <h1 className="text-2xl font-bold font-playfair">News Management</h1>
         <Link
           href="/admin/news/new"
-          className="rounded-lg bg-[#5a688e] px-4 py-2.5 text-white cursor-pointer transition hover:bg-[#4a5573] active:scale-95"
+          className="rounded-lg border border-[#1a1a2e] bg-transparent px-4 py-2.5 font-medium text-[#1a1a2e] cursor-pointer transition-colors hover:bg-[#1a1a2e] hover:text-white active:scale-95"
         >
           Add Manual News
         </Link>
       </div>
 
-      <div className="mb-6 rounded-xl border border-[#1e2330] bg-[#13161e] p-5">
-        <h2 className="mb-3 text-sm font-semibold text-white">Manual News Fetch</h2>
-        <p className="mb-4 text-xs text-[#8892a4]">
+      <div className="mb-6 rounded-xl border border-[#e2e4e9] bg-white p-5 shadow-sm">
+        <h2 className="mb-3 text-sm font-semibold text-[#1a1a2e]">Manual News Fetch</h2>
+        <p className="mb-4 text-xs text-[#5a6478]">
           Manually fetch latest finance news for a specific country
         </p>
         <div className="flex flex-wrap gap-2">
@@ -129,7 +129,7 @@ export default function AdminNewsPage() {
                 type="button"
                 onClick={() => handleManualFetch(country.label, country.value)}
                 disabled={fetchingCountry !== null}
-                className={`rounded-lg border border-[#1e2330] px-4 py-2 text-xs font-medium text-[#8892a4] cursor-pointer transition-colors hover:border-[#5a688e]/50 hover:text-white active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed ${
+                className={`rounded-lg border border-[#e2e4e9] px-4 py-2 text-xs font-medium bg-[#f8f9fa] text-[#5a6478] cursor-pointer transition-colors hover:border-[#1a1a2e] hover:text-[#1a1a2e] active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed ${
                   isLoading ? "opacity-50" : ""
                 }`}
               >
@@ -142,16 +142,16 @@ export default function AdminNewsPage() {
 
       <div className="mb-6 flex flex-col gap-4 md:flex-row">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-sm text-[#8892a4]">Country:</span>
+          <span className="text-sm text-[#5a6478]">Country:</span>
           {["All", "US", "UK", "AU", "CA"].map((country) => (
             <button
               key={country}
               type="button"
               onClick={() => setCountryFilter(country)}
-              className={`rounded-full border px-3 py-1 text-sm cursor-pointer transition-colors active:scale-95 ${
+              className={`rounded-full border px-3 py-1 text-sm cursor-pointer transition-colors active:scale-95 font-medium ${
                 countryFilter === country
-                  ? "border-[#5a688e] bg-[#5a688e] text-white"
-                  : "border-[#1e2330] bg-transparent text-[#8892a4] hover:border-[#5a688e]"
+                  ? "border-[#1a1a2e] bg-[#1a1a2e] text-white"
+                  : "border-[#e2e4e9] bg-white text-[#5a6478] hover:border-[#1a1a2e]"
               }`}
             >
               {country}
@@ -160,16 +160,16 @@ export default function AdminNewsPage() {
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-sm text-[#8892a4]">Type:</span>
+          <span className="text-sm text-[#5a6478]">Type:</span>
           {["All", "Automated", "Manual"].map((type) => (
             <button
               key={type}
               type="button"
               onClick={() => setTypeFilter(type)}
-              className={`rounded-full border px-3 py-1 text-sm cursor-pointer transition-colors active:scale-95 ${
+              className={`rounded-full border px-3 py-1 text-sm cursor-pointer transition-colors active:scale-95 font-medium ${
                 typeFilter === type
-                  ? "border-[#5a688e] bg-[#5a688e] text-white"
-                  : "border-[#1e2330] bg-transparent text-[#8892a4] hover:border-[#5a688e]"
+                  ? "border-[#1a1a2e] bg-[#1a1a2e] text-white"
+                  : "border-[#e2e4e9] bg-white text-[#5a6478] hover:border-[#1a1a2e]"
               }`}
             >
               {type}
@@ -178,26 +178,26 @@ export default function AdminNewsPage() {
         </div>
       </div>
 
-      <div className="mb-4 text-sm text-[#8892a4]">Total count: {filteredNews.length}</div>
+      <div className="mb-4 text-sm font-medium text-[#5a6478]">Total count: {filteredNews.length}</div>
 
       {loading ? (
-        <div className="flex items-center justify-center py-20 text-[#8892a4]">Loading news...</div>
+        <div className="flex items-center justify-center py-20 text-[#5a6478]">Loading news...</div>
       ) : filteredNews.length === 0 ? (
-        <div className="rounded-lg border border-[#1e2330] py-20 text-center text-[#8892a4]">
+        <div className="rounded-lg border border-[#e2e4e9] bg-white py-20 text-center text-[#5a6478]">
           No news articles found.
         </div>
       ) : (
-        <div className="w-full overflow-x-auto rounded-lg border border-[#1e2330]">
+        <div className="w-full overflow-x-auto rounded-xl border border-[#e2e4e9] bg-white shadow-sm">
           <table className="min-w-full border-collapse text-left">
-            <thead>
-              <tr className="border-b border-[#1e2330] bg-[#1e2330]/50">
-                <th className="px-4 py-3 text-sm font-medium text-[#8892a4]">Title</th>
-                <th className="px-4 py-3 text-sm font-medium text-[#8892a4]">Source</th>
-                <th className="px-4 py-3 text-sm font-medium text-[#8892a4]">Country</th>
-                <th className="px-4 py-3 text-sm font-medium text-[#8892a4]">Category</th>
-                <th className="px-4 py-3 text-sm font-medium text-[#8892a4]">Type</th>
-                <th className="px-4 py-3 text-sm font-medium text-[#8892a4]">Date</th>
-                <th className="px-4 py-3 text-sm font-medium text-[#8892a4]">Actions</th>
+            <thead className="bg-[#f8f9fa] border-b border-[#e2e4e9]">
+              <tr>
+                <th className="px-4 py-3 text-xs font-semibold tracking-wide uppercase text-[#5a6478]">Title</th>
+                <th className="px-4 py-3 text-xs font-semibold tracking-wide uppercase text-[#5a6478]">Source</th>
+                <th className="px-4 py-3 text-xs font-semibold tracking-wide uppercase text-[#5a6478]">Country</th>
+                <th className="px-4 py-3 text-xs font-semibold tracking-wide uppercase text-[#5a6478]">Category</th>
+                <th className="px-4 py-3 text-xs font-semibold tracking-wide uppercase text-[#5a6478]">Type</th>
+                <th className="px-4 py-3 text-xs font-semibold tracking-wide uppercase text-[#5a6478]">Date</th>
+                <th className="px-4 py-3 text-xs font-semibold tracking-wide uppercase text-[#5a6478]">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -207,32 +207,32 @@ export default function AdminNewsPage() {
                 return (
                   <tr
                     key={item._id || item.id}
-                    className="group border-b border-[#1e2330] transition-colors duration-150 last:border-0 hover:bg-[#5a688e]/5"
+                    className="group border-b border-[#e2e4e9] transition-colors duration-150 last:border-0 hover:bg-[#f8f9fa]"
                   >
-                    <td className="max-w-xs truncate px-4 py-3" title={item.title}>{item.title}</td>
-                    <td className="px-4 py-3">{item.sourceName || item.source}</td>
-                    <td className="px-4 py-3">{item.country}</td>
-                    <td className="px-4 py-3">{item.category}</td>
+                    <td className="max-w-xs truncate px-4 py-3 text-sm font-medium text-[#1a1a2e] group-hover:text-[#6aa595] transition-colors" title={item.title}>{item.title}</td>
+                    <td className="px-4 py-3 text-sm text-[#5a6478]">{item.sourceName || item.source}</td>
+                    <td className="px-4 py-3 text-sm text-[#5a6478]">{item.country}</td>
+                    <td className="px-4 py-3 text-sm text-[#5a6478]">{item.category}</td>
                     <td className="px-4 py-3">
                       <span
-                        className={`whitespace-nowrap rounded px-2 py-1 text-xs ${
+                        className={`whitespace-nowrap font-medium rounded-full px-2.5 py-1 text-xs ${
                           isAutomated
-                            ? "border border-blue-500/30 bg-blue-500/20 text-blue-400"
-                            : "border border-purple-500/30 bg-purple-500/20 text-purple-400"
+                            ? "bg-[#6aa595]/10 text-[#6aa595]"
+                            : "bg-purple-100 text-purple-700"
                         }`}
                       >
                         {item.sourceType || "manual"}
                       </span>
                     </td>
-                    <td className="whitespace-nowrap px-4 py-3 text-sm text-[#8892a4]">
-                      {new Date(item.publishedAt || item.createdAt || new Date()).toLocaleDateString()}
+                    <td className="whitespace-nowrap px-4 py-3 text-sm text-[#5a6478]">
+                      {new Date(item.publishedAt || item.createdAt || new Date()).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric'})}
                     </td>
                     <td className="px-4 py-3">
-                      <div className="flex gap-3">
+                      <div className="flex items-center gap-2">
                         {!isAutomated && (
                           <Link
                             href={`/admin/news/${item._id || item.id}/edit`}
-                            className="text-blue-400 transition hover:text-blue-300"
+                            className="px-3 py-1.5 rounded-md border border-[#e2e4e9] bg-white text-xs font-medium text-[#1a1a2e] cursor-pointer hover:border-[#1a1a2e] hover:bg-[#f8f9fa] active:scale-95 transition-colors duration-300 shadow-sm"
                           >
                             Edit
                           </Link>
@@ -240,7 +240,7 @@ export default function AdminNewsPage() {
                         <button
                           type="button"
                           onClick={() => setDeleteTarget(item)}
-                          className="cursor-pointer text-red-400 transition hover:text-red-300"
+                          className="px-3 py-1.5 rounded-md border border-red-200 bg-red-50 text-xs font-medium text-red-600 cursor-pointer hover:bg-red-100 hover:border-red-300 active:scale-95 transition-colors duration-300"
                         >
                           Delete
                         </button>
@@ -255,10 +255,10 @@ export default function AdminNewsPage() {
       )}
 
       <Dialog open={deleteTarget !== null} onOpenChange={(open) => { if (!open) setDeleteTarget(null); }}>
-        <DialogContent className="max-w-md border border-[#1e2330] bg-[#13161e] text-white">
+        <DialogContent className="max-w-md border border-[#e2e4e9] bg-white text-[#1a1a2e] shadow-lg">
           <DialogHeader>
-            <DialogTitle className="text-white">Confirm Delete</DialogTitle>
-            <DialogDescription className="text-[#8892a4]">
+            <DialogTitle className="text-[#1a1a2e] font-semibold">Confirm Delete</DialogTitle>
+            <DialogDescription className="text-[#5a6478]">
               Are you sure you want to delete "{deleteTarget?.title}"? This cannot be undone.
             </DialogDescription>
           </DialogHeader>
@@ -266,7 +266,7 @@ export default function AdminNewsPage() {
             <button
               type="button"
               onClick={() => setDeleteTarget(null)}
-              className="rounded-lg border border-[#1e2330] px-4 py-2 text-sm font-medium text-[#8892a4] cursor-pointer transition-colors hover:bg-[#1e2330] active:scale-95"
+              className="rounded-lg border border-[#e2e4e9] bg-white px-4 py-2 text-sm font-medium text-[#5a6478] cursor-pointer transition-colors hover:bg-[#f8f9fa] active:scale-95"
             >
               Cancel
             </button>
@@ -278,7 +278,7 @@ export default function AdminNewsPage() {
                 handleDelete(targetId);
                 setDeleteTarget(null);
               }}
-              className="rounded-lg bg-red-500 px-4 py-2 text-sm font-medium text-white cursor-pointer transition-colors hover:bg-red-600 active:scale-95"
+              className="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white cursor-pointer transition-colors hover:bg-red-700 active:scale-95"
             >
               Delete
             </button>
