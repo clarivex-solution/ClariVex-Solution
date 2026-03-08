@@ -213,7 +213,7 @@ export default function HomeContent() {
                   </div>
                   <div className="flex flex-wrap gap-3">
                     {column.tools.map((tool) => (
-                      <span key={tool} className="rounded-full bg-white border border-[#e2e4e9] shadow-sm px-4 py-2 text-sm text-[#5a6478] font-medium hover:bg-[#6aa595] hover:border-[#6aa595] hover:text-white hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-default">
+                      <span key={tool} className="rounded-full bg-white border border-[#e2e4e9] shadow-sm px-4 py-2 text-sm text-[#5a6478] font-medium hover:bg-gradient-to-r hover:from-[#6aa595]/10 hover:to-[#5a688e]/10 hover:border-[#6aa595]/40 hover:text-[#1a1a2e] hover:shadow-sm hover:-translate-y-0.5 transition-all duration-200 cursor-default">
                         {tool}
                       </span>
                     ))}
@@ -379,7 +379,7 @@ export default function HomeContent() {
               <p className="mb-4 text-sm font-medium text-[#1a1a2e]">Our Team</p>
               <div className="space-y-4">
                 {phoneContacts.map((contact) => (
-                  <div key={contact.phoneRaw} className="flex items-start justify-between gap-3">
+                  <div key={contact.phoneRaw} className="flex items-start justify-between gap-3 p-2 rounded-xl hover:bg-[#f8f9fa] transition-colors duration-200">
                     <div className="flex items-start gap-2">
                       <Phone className="mt-0.5 h-4 w-4 shrink-0 text-[#6aa595]" />
                       <div>
@@ -395,7 +395,7 @@ export default function HomeContent() {
               <p className="mb-4 text-sm font-medium text-[#1a1a2e]">Global Coverage</p>
               <div className="flex flex-wrap gap-2">
                 {countries.map((c) => (
-                  <span key={c.code} className="flex items-center gap-1.5 rounded-full border border-[#e2e4e9] bg-[#f8f9fa] px-3 py-1.5 text-xs text-[#5a6478]">
+                  <span key={c.code} className="flex items-center gap-1.5 rounded-full border border-[#e2e4e9] bg-white px-3 py-1.5 text-xs text-[#5a6478] hover:border-[#6aa595]/40 hover:text-[#1a1a2e] transition-colors duration-200">
                     <img src={c.flagSrc} alt={c.name} className="rounded-sm" style={{ width: 16, height: 11 }} />
                     {c.name}
                   </span>
