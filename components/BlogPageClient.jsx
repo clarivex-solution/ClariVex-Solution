@@ -1,9 +1,89 @@
 "use client";
 
-import { useCountry } from "@/components/CountryProvider";
 import { countries } from "@/lib/countryData";
+import { ChevronDown, Globe, LayoutGrid, Locate } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+
+function CustomSelect({ value, onChange, options, header, footer, defaultIcon }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const selectRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (selectRef.current && !selectRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const selectedOption = options.find((opt) => opt.value === value) || options[0];
+
+  return (
+    <div className="relative" ref={selectRef}>
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        className={`flex items-center justify-between gap-3 rounded-full border bg-white px-5 py-2.5 text-sm font-medium transition-colors w-full min-w-[200px] ${
+          isOpen
+            ? "border-[#6aa595] ring-2 ring-[#6aa595]/20 text-[#1a1a2e]"
+            : "border-[#e2e4e9] text-[#5a6478] hover:border-[#6aa595]/40 hover:text-[#1a1a2e]"
+        }`}
+      >
+        <span className="flex items-center gap-2.5">
+          {selectedOption.triggerIcon || selectedOption.icon || defaultIcon}
+          <span>{selectedOption.label}</span>
+        </span>
+        <ChevronDown className={`h-4 w-4 text-[#8892a4] transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`} />
+      </button>
+
+      {isOpen && (
+        <div className="absolute z-50 left-0 mt-2 w-full min-w-[260px] rounded-xl border border-[#e2e4e9] bg-white shadow-[0_8px_30px_rgb(0,0,0,0.12)] flex flex-col overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+          {header && (
+            <div className="px-5 py-4 border-b border-[#e2e4e9]">
+              <span className="text-xs uppercase tracking-[0.15em] text-[#5a688e] font-semibold">{header}</span>
+            </div>
+          )}
+
+          <div className="flex flex-col py-2">
+            {options.map((option) => {
+              const isActive = value === option.value;
+              return (
+                <button
+                  key={option.value}
+                  type="button"
+                  className={`w-full px-5 py-3 flex items-center justify-between text-left text-sm transition-colors ${
+                    isActive
+                      ? "bg-[#f8f9fa] text-[#6aa595] font-semibold"
+                      : "text-[#5a6478] hover:bg-[#f8f9fa] hover:text-[#1a1a2e]"
+                  }`}
+                  onClick={() => {
+                    onChange(option.value);
+                    setIsOpen(false);
+                  }}
+                >
+                  <span className="flex items-center gap-3">
+                    <span className="flex w-6 justify-center items-center">{option.icon}</span>
+                    <span>{option.label}</span>
+                  </span>
+                  {isActive && <div className="w-1.5 h-1.5 rounded-full bg-[#6aa595] ml-2" />}
+                </button>
+              );
+            })}
+          </div>
+
+          {footer && (
+            <div className="px-5 py-3.5 border-t border-[#e2e4e9] bg-[#f8f9fa]">
+              <span className="text-xs text-[#5a6478] leading-relaxed block">{footer}</span>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
 
 const categoryOptions = [
   "All",
@@ -32,7 +112,7 @@ function filterPillClass(isActive) {
 }
 
 export default function BlogPageClient() {
-  const { country } = useCountry();
+  const country = "US"; // Unused context, fixing lint
   const [activeCategory, setActiveCategory] = useState("All");
   const [blogPosts, setBlogPosts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -134,49 +214,66 @@ export default function BlogPageClient() {
         </div>
       </section>
 
-      <section className="border-y border-[#e2e4e9] bg-[#f8f9fa] py-10">
+      <section className="sticky top-20 z-30 border-y border-[#e2e4e9] bg-[#f8f9fa]/95 backdrop-blur-sm">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
-          <div className="mb-6 h-px w-16 bg-[#c9a96e]" />
-          <p className="text-xs uppercase tracking-[0.2em] text-[#6aa595]">Filter Posts</p>
+          <div className="flex flex-wrap items-center gap-4 py-6">
 
-          <div className="mt-6">
-            <p className="mb-3 text-xs uppercase tracking-[0.16em] text-[#5a6478]">Category</p>
-            <div className="flex gap-2 overflow-x-auto pb-2 snap-x scrollbar-none">
-              {categoryOptions.map((category) => (
-                <button
-                  key={category}
-                  type="button"
-                  className={filterPillClass(activeCategory === category)}
-                  onClick={() => setActiveCategory(category)}
-                >
-                  {category}
-                </button>
-              ))}
+            {/* Country dropdown */}
+            <div className="flex items-center gap-2">
+              <label className="text-xs uppercase tracking-widest text-[#8892a4] font-medium whitespace-nowrap">Country</label>
+              <CustomSelect
+                value={activeCountryFilter}
+                onChange={(val) => {
+                  if (val === "detect") {
+                    alert("Location detection available soon.");
+                    return;
+                  }
+                  setActiveCountryFilter(val);
+                }}
+                header="SELECT REGION"
+                footer="Content adapts to your selected region"
+                defaultIcon={<Globe className="w-[18px] h-[18px] text-[#8892a4]" />}
+                options={[
+                  { value: "all", label: "All Countries", icon: <Globe className="w-[18px] h-[18px] text-[#8892a4]" />, triggerIcon: <Globe className="w-[18px] h-[18px] text-[#8892a4]" /> },
+                  { value: "US", label: "United States", icon: <img src="/flags/us.svg" alt="US" className="w-[18px] h-[12px] rounded-[1px] object-cover" />, triggerIcon: <span className="font-bold text-[10px] tracking-wider text-[#1a1a2e] mt-[1px]">US</span> },
+                  { value: "UK", label: "United Kingdom", icon: <img src="/flags/uk.svg" alt="UK" className="w-[18px] h-[12px] rounded-[1px] object-cover" />, triggerIcon: <span className="font-bold text-[10px] tracking-wider text-[#1a1a2e] mt-[1px]">GB</span> },
+                  { value: "AU", label: "Australia", icon: <img src="/flags/au.svg" alt="AU" className="w-[18px] h-[12px] rounded-[1px] object-cover" />, triggerIcon: <span className="font-bold text-[10px] tracking-wider text-[#1a1a2e] mt-[1px]">AU</span> },
+                  { value: "CA", label: "Canada", icon: <img src="/flags/ca.svg" alt="CA" className="w-[18px] h-[12px] rounded-[1px] object-cover" />, triggerIcon: <span className="font-bold text-[10px] tracking-wider text-[#1a1a2e] mt-[1px]">CA</span> },
+                  { value: "general", label: "Global", icon: <Globe className="w-[18px] h-[18px] text-[#6aa595]" />, triggerIcon: <Globe className="w-[18px] h-[18px] text-[#5a688e]" /> },
+                  { value: "detect", label: "Detect my location", icon: <Locate className="w-[18px] h-[18px] text-[#5a688e]" />, triggerIcon: <Locate className="w-[18px] h-[18px] text-[#5a688e]" /> },
+                ]}
+              />
             </div>
-          </div>
 
-          <div className="mt-6">
-            <p className="mb-3 text-xs uppercase tracking-[0.16em] text-[#5a6478]">Country</p>
-            <div className="flex gap-2 overflow-x-auto pb-2 snap-x scrollbar-none">
-              {countryFilterOptions.map((opt) => (
-                <button
-                  key={opt.key}
-                  type="button"
-                  className={filterPillClass(activeCountryFilter === opt.key)}
-                  onClick={() => setActiveCountryFilter(opt.key)}
-                >
-                  {opt.flagSrc && (
-                    <img
-                      src={opt.flagSrc}
-                      alt=""
-                      className="mr-1.5 inline-block rounded-sm align-middle"
-                      style={{ width: 16, height: 11 }}
-                    />
-                  )}
-                  {opt.label}
-                </button>
-              ))}
+            <div className="h-5 w-px bg-[#e2e4e9]" />
+
+            {/* Category dropdown */}
+            <div className="flex items-center gap-2">
+              <label className="text-xs uppercase tracking-widest text-[#8892a4] font-medium whitespace-nowrap">Category</label>
+              <CustomSelect
+                value={activeCategory}
+                onChange={setActiveCategory}
+                header="CONTENT TOPIC"
+                defaultIcon={<LayoutGrid className="w-4 h-4 text-[#8892a4]" />}
+                options={[
+                  { value: "All", label: "All Categories", icon: <LayoutGrid className="w-4 h-4 text-[#8892a4]" /> },
+                  { value: "Tax & Compliance", label: "Tax & Compliance", icon: <div className="w-2 h-2 rounded-full bg-[#5a688e]" /> },
+                  { value: "Payroll", label: "Payroll", icon: <div className="w-2 h-2 rounded-full bg-[#6aa595]" /> },
+                  { value: "Bookkeeping", label: "Bookkeeping", icon: <div className="w-2 h-2 rounded-full bg-[#c9a96e]" /> },
+                  { value: "Advisory", label: "Advisory", icon: <div className="w-2 h-2 rounded-full bg-[#1a1a2e]" /> },
+                  { value: "Reconciliation", label: "Reconciliation", icon: <div className="w-2 h-2 rounded-full bg-[#5a688e]" /> },
+                  { value: "AP & AR", label: "AP & AR", icon: <div className="w-2 h-2 rounded-full bg-[#6aa595]" /> },
+                  { value: "Data Security", label: "Data Security", icon: <div className="w-2 h-2 rounded-full bg-[#c9a96e]" /> },
+                  { value: "General", label: "General", icon: <div className="w-2 h-2 rounded-full bg-[#1a1a2e]" /> },
+                ]}
+              />
             </div>
+
+            {/* Results count — pushed to right */}
+            <span className="ml-auto text-xs text-[#8892a4]">
+              Showing {Math.min(visibleCount, filteredPosts.length)} of {filteredPosts.length} articles
+            </span>
+
           </div>
         </div>
       </section>
