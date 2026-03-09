@@ -132,7 +132,7 @@ export default function BlogPageClient() {
       </section>
 
       {/* Filter bar — responsive */}
-      <section className="sticky top-16 z-30 border-y border-[#e2e4e9] bg-[#f8f9fa]/95 backdrop-blur-sm sm:top-20">
+      <section className="sticky top-16 z-30 border-y border-[#e2e4e9] bg-[#f8f9fa]/95 backdrop-blur-sm">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
           <div className="flex flex-col gap-3 py-4 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4 sm:py-6">
             {/* Country */}

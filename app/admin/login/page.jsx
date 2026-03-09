@@ -12,8 +12,8 @@ export default function AdminLogin() {
   const router = useRouter()
 
   const handleSubmit = async (e) => {
+    e.preventDefault()  // ← MUST be first — prevents native form submit + page reload
     setLoading(true)
-    e.preventDefault()
     setError('')
 
     try {
@@ -25,15 +25,15 @@ export default function AdminLogin() {
 
       if (res.ok) {
         toast.success("Welcome back!")
-        router.push('/admin')
+        window.location.href = '/admin' // Hard redirect — ensures fresh cookie is read correctly
       } else {
         toast.error("Invalid password. Please try again.")
         setError('Incorrect password')
+        setLoading(false)
       }
     } catch (err) {
       toast.error("Login failed. Check your connection.")
       setError('An error occurred. Please try again.')
-    } finally {
       setLoading(false)
     }
   }
@@ -42,8 +42,14 @@ export default function AdminLogin() {
     <div className="min-h-screen bg-[#f8f9fa] flex items-center justify-center p-4">
       <div className="bg-white border border-[#e2e4e9] shadow-sm rounded-2xl p-8 w-full max-w-sm">
         <div className="mb-8">
-          <div className="h-px w-12 bg-[#c9a96e] mb-6"></div>
-          <Image src="/logo-dark.png" alt="ClariVex" width={180} height={52} className="w-auto h-9 mb-3 object-contain" />
+          <div className="h-px w-12 bg-[#c9a96e] mb-6" />
+          <Image
+            src="/logo-dark.png"
+            alt="ClariVex"
+            width={180}
+            height={52}
+            className="w-auto h-9 mb-3 object-contain"
+          />
           <p className="text-[#6aa595] text-[10px] font-bold tracking-widest uppercase">Admin Panel</p>
         </div>
 
@@ -54,19 +60,22 @@ export default function AdminLogin() {
               placeholder="Admin Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
               className="w-full bg-white border border-[#e2e4e9] text-[#1a1a2e] rounded-lg px-4 py-3 placeholder-[#8892a4] focus:outline-none focus:ring-2 focus:ring-[#6aa595]/30 focus:border-[#6aa595] transition-colors"
               required
             />
           </div>
 
-          {error && <p className="text-red-500 text-sm">{error}</p>}
+          {error && (
+            <p className="text-red-500 text-sm">{error}</p>
+          )}
 
           <button
             type="submit"
             disabled={loading}
             className="w-full rounded-full bg-[#1a1a2e] py-3 font-medium text-white cursor-pointer transition-colors hover:bg-[#6aa595] active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
           >
-            {loading ? "Signing in..." : "Sign In"}
+            {loading ? "Signing in…" : "Sign In"}
           </button>
         </form>
       </div>
