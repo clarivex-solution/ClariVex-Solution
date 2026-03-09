@@ -28,10 +28,14 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
+const SERVICES_INITIAL_MOBILE = 4;
+const SERVICES_INITIAL_TABLET = 6;
+
 export default function HomeContent() {
   const { country, ready } = useCountry();
   const content = getContent(country);
   const [emailCopied, setEmailCopied] = useState(false);
+  const [showAllServices, setShowAllServices] = useState(false);
 
   function handleCopyEmail() {
     navigator.clipboard.writeText(content.contactEmail);
@@ -149,21 +153,48 @@ export default function HomeContent() {
             End-to-end accounting and finance support — built for growing businesses across US, UK, AU &amp; CA.
           </p>
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
-            {serviceCards.map((service) => (
-              <Link key={service.title} href={service.href} className="flex h-full">
-                <article className="bg-white rounded-2xl p-6 border border-[#e2e4e9] hover:border-[#6aa595]/50 hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 group flex flex-col w-full sm:p-8">
-                  <div className="w-11 h-11 rounded-xl bg-[#6aa595]/10 flex items-center justify-center mb-4 group-hover:bg-[#6aa595]/20 transition-colors duration-300 sm:w-12 sm:h-12 sm:mb-5">
-                    <service.icon className="h-5 w-5 text-[#6aa595]" />
-                  </div>
-                  <h3 className="font-bold text-base mb-2 text-[#1a1a2e] sm:text-lg sm:mb-3">{service.title}</h3>
-                  <p className="text-sm leading-relaxed flex-1 mb-5 text-[#5a6478] sm:mb-6">{service.description}</p>
-                  <span className="inline-flex items-center gap-1.5 text-sm font-semibold group-hover:gap-3 transition-all duration-300 mt-auto text-[#6aa595]">
-                    Learn More <ArrowRight className="h-4 w-4" />
-                  </span>
-                </article>
-              </Link>
-            ))}
+            {serviceCards.map((service, index) => {
+              const hiddenOnMobile = !showAllServices && index >= SERVICES_INITIAL_MOBILE;
+              const hiddenOnTablet = !showAllServices && index >= SERVICES_INITIAL_TABLET;
+              // hidden on mobile (<sm) if beyond 4, hidden on tablet (sm–lg) if beyond 6, always visible on lg+
+              const visibilityClass = hiddenOnMobile
+                ? hiddenOnTablet
+                  ? "hidden lg:flex"   // hidden on both mobile & tablet → show only on lg+
+                  : "hidden sm:flex lg:flex"   // hidden on mobile only → show on sm+
+                : "";
+              return (
+                <Link key={service.title} href={service.href} className={`h-full ${visibilityClass || "flex"}`}>
+                  <article className="bg-white rounded-2xl p-6 border border-[#e2e4e9] hover:border-[#6aa595]/50 hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 group flex flex-col w-full sm:p-8">
+                    <div className="w-11 h-11 rounded-xl bg-[#6aa595]/10 flex items-center justify-center mb-4 group-hover:bg-[#6aa595]/20 transition-colors duration-300 sm:w-12 sm:h-12 sm:mb-5">
+                      <service.icon className="h-5 w-5 text-[#6aa595]" />
+                    </div>
+                    <h3 className="font-bold text-base mb-2 text-[#1a1a2e] sm:text-lg sm:mb-3">{service.title}</h3>
+                    <p className="text-sm leading-relaxed flex-1 mb-5 text-[#5a6478] sm:mb-6">{service.description}</p>
+                    <span className="inline-flex items-center gap-1.5 text-sm font-semibold group-hover:gap-3 transition-all duration-300 mt-auto text-[#6aa595]">
+                      Learn More <ArrowRight className="h-4 w-4" />
+                    </span>
+                  </article>
+                </Link>
+              );
+            })}
           </div>
+
+          {/* Load More — only on mobile & tablet, hidden on lg+ */}
+          {!showAllServices && (
+            <div className="mt-8 flex flex-col items-center gap-2 lg:hidden">
+              <button
+                type="button"
+                onClick={() => setShowAllServices(true)}
+                className="inline-flex items-center gap-2 rounded-full border-2 border-[#1a1a2e] px-7 py-3 text-sm font-semibold text-[#1a1a2e] transition-all duration-300 hover:bg-[#1a1a2e] hover:text-white active:scale-95"
+              >
+                Load More Services
+                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#6aa595]/15 text-[11px] font-bold text-[#6aa595]">
+                  +{serviceCards.length - SERVICES_INITIAL_TABLET}
+                </span>
+              </button>
+
+            </div>
+          )}
         </div>
       </section>
 
