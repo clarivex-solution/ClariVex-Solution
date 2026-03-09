@@ -46,9 +46,9 @@ export default function AdminLogin() {
           <Image
             src="/logo-dark.png"
             alt="ClariVex"
-            width={180}
-            height={52}
-            className="w-auto h-9 mb-3 object-contain"
+            width={200}
+            height={58}
+            className="w-auto h-12 mb-3 object-contain"
           />
           <p className="text-[#6aa595] text-[10px] font-bold tracking-widest uppercase">Admin Panel</p>
         </div>

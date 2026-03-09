@@ -58,7 +58,7 @@ export default function AdminLayout({ children }) {
                 alt="ClariVex Solutions"
                 width={140}
                 height={40}
-                className="w-auto h-7 object-contain"
+                className="w-auto h-9 object-contain"
               />
             </Link>
             <p className="text-[#6aa595] text-[9px] font-bold tracking-widest uppercase mt-1.5">
@@ -123,11 +123,11 @@ export default function AdminLayout({ children }) {
           <Image
             src="/logo-dark.png"
             alt="ClariVex"
-            width={100}
-            height={28}
-            className="h-7 w-auto object-contain"
+            width={120}
+            height={34}
+            className="h-8 w-auto object-contain"
           />
-          <div className="w-9" /> {/* spacer for centering */}
+          <div className="w-9" />
         </header>
 
         <main className="flex-1 p-4 sm:p-6 lg:p-8">

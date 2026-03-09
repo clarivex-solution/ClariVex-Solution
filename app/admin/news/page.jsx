@@ -1,9 +1,25 @@
 "use client";
 
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { countries } from '@/lib/countryData';
+import { CalendarDays, FolderOpen } from 'lucide-react';
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+
+function CountryFlag({ code }) {
+  if (!code) return <span className="text-[#5a6478]">—</span>
+  const match = countries.find((c) => c.code === code.toLowerCase())
+  return (
+    <span className="inline-flex items-center gap-1.5">
+      {match?.flagSrc
+        ? <img src={match.flagSrc} alt={code} className="rounded-sm shrink-0" style={{ width: 16, height: 11 }} />
+        : null
+      }
+      <span className="text-xs font-medium text-[#5a6478]">{code}</span>
+    </span>
+  )
+}
 
 const manualFetchCountries = [
   { label: "US", value: "US" },
@@ -16,10 +32,10 @@ const manualFetchCountries = [
 function TypeBadge({ sourceType }) {
   const isAuto = sourceType === "automated";
   return (
-    <span className={`whitespace-nowrap font-medium rounded-full px-2.5 py-1 text-xs ${
+    <span className={`whitespace-nowrap font-medium rounded-full px-2.5 py-1 text-xs capitalize ${
       isAuto ? "bg-[#6aa595]/10 text-[#6aa595]" : "bg-purple-100 text-purple-700"
     }`}>
-      {sourceType || "manual"}
+      {sourceType || "Manual"}
     </span>
   );
 }
@@ -31,15 +47,12 @@ function NewsCard({ item, onDelete }) {
       <p className="font-medium text-[#1a1a2e] text-sm leading-snug line-clamp-2">{item.title}</p>
       <div className="flex flex-wrap gap-2">
         <TypeBadge sourceType={item.sourceType} />
-        {item.country && (
-          <span className="rounded-full border border-[#e2e4e9] px-2.5 py-1 text-xs text-[#5a6478]">{item.country}</span>
-        )}
-        {item.category && (
-          <span className="rounded-full border border-[#e2e4e9] px-2.5 py-1 text-xs text-[#5a6478]">{item.category}</span>
-        )}
+        {item.country && <CountryFlag code={item.country} />}
+        {item.category && <span className="inline-flex items-center gap-1 text-xs text-[#5a6478]"><FolderOpen className="h-3.5 w-3.5 text-[#c9a96e]" />{item.category}</span>}
       </div>
       <div className="flex items-center justify-between">
-        <span className="text-xs text-[#8892a4]">
+        <span className="inline-flex items-center gap-1 text-xs text-[#8892a4]">
+          <CalendarDays className="h-3.5 w-3.5 shrink-0" />
           {new Date(item.publishedAt || item.createdAt || Date.now()).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
         </span>
         <div className="flex items-center gap-2">
@@ -230,11 +243,13 @@ export default function AdminNewsPage() {
                   <tr key={item._id || item.id} className="group border-b border-[#e2e4e9] last:border-0 hover:bg-[#f8f9fa] transition-colors">
                     <td className="max-w-[220px] truncate px-4 py-3 text-sm font-medium text-[#1a1a2e] group-hover:text-[#6aa595] transition-colors" title={item.title}>{item.title}</td>
                     <td className="px-4 py-3 text-sm text-[#5a6478]">{item.sourceName || item.source}</td>
-                    <td className="px-4 py-3 text-sm text-[#5a6478]">{item.country}</td>
-                    <td className="px-4 py-3 text-sm text-[#5a6478]">{item.category}</td>
+                    <td className="px-4 py-3 text-sm text-[#5a6478]"><CountryFlag code={item.country} /></td>
+                    <td className="px-4 py-3 text-sm text-[#5a6478]">
+                      <span className="inline-flex items-center gap-1.5"><FolderOpen className="h-3.5 w-3.5 text-[#c9a96e] shrink-0" />{item.category}</span>
+                    </td>
                     <td className="px-4 py-3"><TypeBadge sourceType={item.sourceType} /></td>
                     <td className="whitespace-nowrap px-4 py-3 text-sm text-[#5a6478]">
-                      {new Date(item.publishedAt || item.createdAt || Date.now()).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+                      <span className="inline-flex items-center gap-1.5"><CalendarDays className="h-3.5 w-3.5 text-[#8892a4] shrink-0" />{new Date(item.publishedAt || item.createdAt || Date.now()).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2">

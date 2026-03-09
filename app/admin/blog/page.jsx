@@ -1,10 +1,27 @@
 "use client"
 
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { countries } from '@/lib/countryData'
+import { CalendarDays, FolderOpen } from 'lucide-react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { Suspense, useCallback, useEffect, useState } from 'react'
 import { toast } from 'sonner'
+
+// Maps country code → flag img, falls back to text
+function CountryFlag({ code }) {
+  if (!code) return <span className="text-[#5a6478]">—</span>
+  const match = countries.find((c) => c.code === code.toLowerCase())
+  return (
+    <span className="inline-flex items-center gap-1.5">
+      {match?.flagSrc
+        ? <img src={match.flagSrc} alt={code} className="rounded-sm shrink-0" style={{ width: 16, height: 11 }} />
+        : null
+      }
+      <span>{code}</span>
+    </span>
+  )
+}
 
 function formatDate(dateValue) {
   if (!dateValue) return '--'
@@ -45,9 +62,9 @@ function BlogCard({ blog, onEdit, onPublish, onDelete, publishingId, deletingId 
         <StatusBadge status={blog.status} />
       </div>
       <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-[#5a6478]">
-        {blog.country && <span>🌍 {blog.country}</span>}
-        {blog.category && <span>📂 {blog.category}</span>}
-        <span>🗓 {formatDate(blog.publishedAt || blog.createdAt)}</span>
+        {blog.country && <CountryFlag code={blog.country} />}
+        {blog.category && <span className="inline-flex items-center gap-1"><FolderOpen className="h-3.5 w-3.5 text-[#c9a96e]" />{blog.category}</span>}
+        <span className="inline-flex items-center gap-1"><CalendarDays className="h-3.5 w-3.5 text-[#8892a4]" />{formatDate(blog.publishedAt || blog.createdAt)}</span>
       </div>
       <div className="flex items-center gap-2 pt-1">
         <Link
@@ -228,10 +245,14 @@ function AdminBlogPageContent() {
             {!isLoading && filteredBlogs.map((blog) => (
               <tr key={blog.id} className="border-b border-[#e2e4e9] last:border-0 hover:bg-[#f8f9fa] transition-colors group">
                 <td className="px-4 py-4 text-sm font-medium text-[#1a1a2e] group-hover:text-[#6aa595] transition-colors max-w-[220px] truncate">{blog.title}</td>
-                <td className="px-4 py-4 text-sm text-[#5a6478]">{blog.country || '--'}</td>
-                <td className="px-4 py-4 text-sm text-[#5a6478]">{blog.category || '--'}</td>
+                <td className="px-4 py-4 text-sm text-[#5a6478]"><CountryFlag code={blog.country} /></td>
+                <td className="px-4 py-4 text-sm text-[#5a6478]">
+                  <span className="inline-flex items-center gap-1.5"><FolderOpen className="h-3.5 w-3.5 text-[#c9a96e] shrink-0" />{blog.category || '--'}</span>
+                </td>
                 <td className="px-4 py-4"><StatusBadge status={blog.status} /></td>
-                <td className="px-4 py-4 text-sm text-[#5a6478] whitespace-nowrap">{formatDate(blog.publishedAt || blog.createdAt)}</td>
+                <td className="px-4 py-4 text-sm text-[#5a6478] whitespace-nowrap">
+                  <span className="inline-flex items-center gap-1.5"><CalendarDays className="h-3.5 w-3.5 text-[#8892a4] shrink-0" />{formatDate(blog.publishedAt || blog.createdAt)}</span>
+                </td>
                 <td className="px-4 py-4">
                   <div className="flex items-center gap-2">
                     <Link
