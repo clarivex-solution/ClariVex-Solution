@@ -208,7 +208,16 @@ export default function AdminNewsPage() {
           ? Array.from({ length: 3 }).map((_, i) => (
               <div key={i} className="bg-white border border-[#e2e4e9] rounded-xl p-4 space-y-3">
                 <div className="h-4 w-4/5 animate-pulse rounded bg-[#e2e4e9]" />
-                <div className="h-3 w-1/2 animate-pulse rounded bg-[#e2e4e9]" />
+                <div className="h-3 w-2/3 animate-pulse rounded bg-[#e2e4e9]" />
+                <div className="flex gap-2">
+                  <div className="h-5 w-20 animate-pulse rounded-full bg-[#e2e4e9]" />
+                  <div className="h-5 w-10 animate-pulse rounded-full bg-[#e2e4e9]" />
+                  <div className="h-5 w-24 animate-pulse rounded-full bg-[#e2e4e9]" />
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="h-3 w-24 animate-pulse rounded bg-[#e2e4e9]" />
+                  <div className="h-8 w-16 animate-pulse rounded-md bg-[#e2e4e9]" />
+                </div>
               </div>
             ))
           : filteredNews.length === 0
@@ -223,7 +232,30 @@ export default function AdminNewsPage() {
 
       {/* Desktop: table */}
       {loading ? (
-        <div className="hidden sm:flex items-center justify-center py-20 text-sm text-[#5a6478]">Loading news…</div>
+        <div className="hidden sm:block w-full overflow-x-auto rounded-xl border border-[#e2e4e9] bg-white shadow-sm">
+          <table className="min-w-full">
+            <thead className="bg-[#f8f9fa] border-b border-[#e2e4e9]">
+              <tr>
+                {["Title", "Source", "Country", "Category", "Type", "Date", "Actions"].map((h) => (
+                  <th key={h} className="px-4 py-3 text-left text-xs font-semibold tracking-wide uppercase text-[#5a6478]">{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {Array.from({ length: 5 }).map((_, i) => (
+                <tr key={i} className="border-b border-[#e2e4e9] last:border-0">
+                  <td className="px-4 py-4"><div className="h-4 w-48 animate-pulse rounded bg-[#e2e4e9]" /></td>
+                  <td className="px-4 py-4"><div className="h-4 w-20 animate-pulse rounded bg-[#e2e4e9]" /></td>
+                  <td className="px-4 py-4"><div className="h-4 w-12 animate-pulse rounded bg-[#e2e4e9]" /></td>
+                  <td className="px-4 py-4"><div className="h-4 w-28 animate-pulse rounded bg-[#e2e4e9]" /></td>
+                  <td className="px-4 py-4"><div className="h-5 w-20 animate-pulse rounded-full bg-[#e2e4e9]" /></td>
+                  <td className="px-4 py-4"><div className="h-4 w-24 animate-pulse rounded bg-[#e2e4e9]" /></td>
+                  <td className="px-4 py-4"><div className="h-8 w-16 animate-pulse rounded-md bg-[#e2e4e9]" /></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       ) : filteredNews.length === 0 ? (
         <div className="hidden sm:block rounded-xl border border-[#e2e4e9] bg-white py-16 text-center text-sm text-[#5a6478]">No articles found.</div>
       ) : (
