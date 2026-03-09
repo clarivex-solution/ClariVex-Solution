@@ -1,10 +1,19 @@
 export const dynamic = 'force-dynamic';
 
+import { verifyAdminSession } from '@/lib/adminAuth';
 import { prisma } from '@/lib/prisma';
 import { BookOpen, FileText, Globe, PenSquare } from 'lucide-react';
+import { headers } from 'next/headers';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 
 export default async function AdminDashboard() {
+  // Prevent browser from caching this page so back button forces a re-check
+  const headersList = await headers();
+  void headersList; // accessed to opt into dynamic rendering
+
+  const { authenticated } = await verifyAdminSession();
+  if (!authenticated) redirect('/admin/login');
   const [totalBlogs, publishedBlogs, draftBlogs, totalNews] = await Promise.all([
     prisma.blog.count(),
     prisma.blog.count({ where: { status: 'published' } }),

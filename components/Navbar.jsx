@@ -74,8 +74,16 @@ export default function Navbar() {
   useEffect(() => {
     if (!isMobileOpen) return undefined;
     const prev = document.body.style.overflow;
+    // Measure scrollbar width before hiding it to prevent layout shift on fixed elements
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
     document.body.style.overflow = "hidden";
-    return () => { document.body.style.overflow = prev; };
+    if (scrollbarWidth > 0) {
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
+    }
+    return () => {
+      document.body.style.overflow = prev;
+      document.body.style.paddingRight = "";
+    };
   }, [isMobileOpen]);
 
   useEffect(() => {

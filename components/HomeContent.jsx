@@ -188,7 +188,11 @@ export default function HomeContent() {
                 className="inline-flex items-center gap-2 rounded-full border-2 border-[#1a1a2e] px-7 py-3 text-sm font-semibold text-[#1a1a2e] transition-all duration-300 hover:bg-[#1a1a2e] hover:text-white active:scale-95"
               >
                 Load More Services
-                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#6aa595]/15 text-[11px] font-bold text-[#6aa595]">
+                {/* Mobile (<sm): 4 cards shown, tablet (sm+): 6 cards shown */}
+                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#6aa595]/15 text-[11px] font-bold text-[#6aa595] sm:hidden">
+                  +{serviceCards.length - SERVICES_INITIAL_MOBILE}
+                </span>
+                <span className="hidden sm:flex h-5 w-5 items-center justify-center rounded-full bg-[#6aa595]/15 text-[11px] font-bold text-[#6aa595]">
                   +{serviceCards.length - SERVICES_INITIAL_TABLET}
                 </span>
               </button>

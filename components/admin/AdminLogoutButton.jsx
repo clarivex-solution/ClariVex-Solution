@@ -1,24 +1,21 @@
 "use client"
 
-import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
 export default function AdminLogoutButton() {
-  const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
 
   const handleLogout = async () => {
     setIsLoading(true)
     try {
-      const response = await fetch('/api/admin/logout', { method: 'POST' })
-      if (response.ok) {
-        toast.success("Logged out successfully.")
-      }
-      router.push('/admin/login')
+      await fetch('/api/admin/logout', { method: 'POST' })
+      toast.success("Logged out successfully.")
     } catch (error) {
       console.error('Logout failed:', error)
-      setIsLoading(false)
+    } finally {
+      // Hard redirect — forces full page reload, kills bfcache for admin pages
+      window.location.href = '/admin/login'
     }
   }
 
