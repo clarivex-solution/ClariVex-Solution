@@ -10,7 +10,7 @@ export default function AdminLogin() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
-  const handleSubmit = async (e) => {
+  async function handleSubmit(e) {
     e.preventDefault()
     setLoading(true)
     setError('')
@@ -25,14 +25,21 @@ export default function AdminLogin() {
       if (res.ok) {
         toast.success('Welcome back!')
         window.location.href = '/admin'
-      } else {
+        return
+      }
+
+      if (res.status === 401) {
         toast.error('Invalid password. Please try again.')
         setError('Incorrect password')
-        setLoading(false)
+        return
       }
-    } catch (err) {
+
+      toast.error('Login service error. Please try again.')
+      setError('Login failed due to server configuration. Please try again.')
+    } catch {
       toast.error('Login failed. Check your connection.')
       setError('An error occurred. Please try again.')
+    } finally {
       setLoading(false)
     }
   }
@@ -85,4 +92,3 @@ export default function AdminLogin() {
     </div>
   )
 }
-

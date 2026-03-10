@@ -13,6 +13,12 @@ const navItems = [
   { href: '/admin/news', label: 'News',      icon: Newspaper,       exact: false },
 ];
 
+const publicAdminPages = new Set([
+  '/admin/login',
+  '/admin/forgot-password',
+  '/admin/reset-password',
+]);
+
 export default function AdminShell({ authenticated, children }) {
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -33,10 +39,10 @@ export default function AdminShell({ authenticated, children }) {
     return () => window.removeEventListener('pageshow', handlePageShow);
   }, [pathname, router]);
 
-  const isLoginPage = pathname === '/admin/login';
+  const isPublicAdminPage = publicAdminPages.has(pathname);
 
-  // Login page — no chrome, just render children
-  if (isLoginPage) {
+  // Public auth pages — no admin chrome, just render children.
+  if (isPublicAdminPage) {
     return (
       <>
         <meta name="robots" content="noindex, nofollow" />

@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 export default function AdminForgotPasswordPage() {
   const [email, setEmail] = useState('')
@@ -19,13 +20,15 @@ export default function AdminForgotPasswordPage() {
       await fetch('/api/admin/forgot-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email: email.trim().toLowerCase() }),
       })
 
       // Always show success message regardless of response (security)
       setSent(true)
+      toast.success('If this address matches our records, a reset link has been sent.')
     } catch {
       setError('We could not process your request right now. Please try again.')
+      toast.error('Request failed. Please try again.')
     } finally {
       setLoading(false)
     }
