@@ -9,36 +9,49 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 export async function generateMetadata({ params }) {
-  const { slug } = await params;
-  const post = await prisma.blog.findFirst({
-    where: { slug, status: "published" },
-  });
+  const { slug } = await params
+  const post = await prisma.blog.findFirst({ where: { slug, status: 'published' } })
 
-  if (!post) {
-    return { title: "Post Not Found" };
-  }
+  if (!post) return { title: 'Post Not Found' }
+
+  const ogImage = post.coverImage
+    ? [{ url: post.coverImage, width: 1200, height: 630, alt: post.title }]
+    : [{ url: `${siteUrl}/og-image.png`, width: 1200, height: 630, alt: post.title }]
 
   return {
-    title: post.title,
+    title: `${post.title} | ClariVex Blog`,
     description: post.excerpt,
+    keywords: [post.category, post.country ? `${post.country} accounting` : 'accounting', 'finance', 'bookkeeping', 'ClariVex'].join(', '),
+    authors: [{ name: 'ClariVex Solutions', url: siteUrl }],
     alternates: {
-      canonical: `${siteUrl}/blog/${post.slug}`,
+      canonical: `${siteUrl}/blog/${slug}`,
     },
     openGraph: {
       title: post.title,
       description: post.excerpt,
-      url: `${siteUrl}/blog/${post.slug}`,
-      type: "article",
+      url: `${siteUrl}/blog/${slug}`,
+      type: 'article',
       publishedTime: post.publishedAt?.toISOString(),
-      siteName: "ClariVex Solutions",
-      images: [{ url: `${siteUrl}/og-image.png`, width: 1200, height: 630 }],
+      modifiedTime: post.updatedAt?.toISOString(),
+      authors: [`${siteUrl}`],
+      section: post.category,
+      tags: [post.category, 'accounting', 'finance'],
+      siteName: 'ClariVex Solutions',
+      images: ogImage,
     },
     twitter: {
-      card: "summary_large_image",
+      card: 'summary_large_image',
       title: post.title,
       description: post.excerpt,
+      images: [ogImage[0].url],
     },
-  };
+    robots: {
+      index: true,
+      follow: true,
+      'max-snippet': -1,
+      'max-image-preview': 'large',
+    },
+  }
 }
 
 export default async function BlogArticlePage({ params }) {

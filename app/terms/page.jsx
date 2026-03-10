@@ -6,7 +6,8 @@ export function generateMetadata() {
     title: 'Terms & Conditions | ClariVex Solutions',
     description: 'Terms and conditions governing ClariVex Solutions outsourced accounting and finance services for US, UK, AU, and CA clients.',
     alternates: { canonical: 'https://clarivex.net/terms' },
-  };
+    robots: { index: true, follow: true },
+  }
 }
 
 const breadcrumbItems = [

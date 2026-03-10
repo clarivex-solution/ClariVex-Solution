@@ -90,9 +90,23 @@ export async function generateMetadata({ params }) {
   return {
     title: `${service.name} Services | ClariVex`,
     description: service.description,
-    alternates: { canonical: `${siteUrl}/services/${slug}` },
-    openGraph: { title: `${service.name} Services | ClariVex Solutions`, description: service.description, url: `${siteUrl}/services/${slug}`, type: "website", siteName: "ClariVex Solutions", images: [{ url: `${siteUrl}/og-image.png`, width: 1200, height: 630 }] },
-    twitter: { card: "summary_large_image", title: `${service.name} Services | ClariVex Solutions`, description: service.description },
+    alternates: {
+      canonical: `${siteUrl}/services/${slug}`,
+    },
+    openGraph: {
+      title: `${service.name} Services | ClariVex Solutions`,
+      description: service.description,
+      url: `${siteUrl}/services/${slug}`,
+      type: "website",
+      siteName: "ClariVex Solutions",
+      images: [{ url: `${siteUrl}/og-image.png`, width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${service.name} Services | ClariVex Solutions`,
+      description: service.description,
+    },
+    robots: { index: true, follow: true },
   };
 }
 

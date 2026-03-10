@@ -16,12 +16,21 @@ const inter = Inter({
 
 export const metadata = {
   title: {
-    template: "%s | ClariVex Solutions",
-    default: "ClariVex Solutions - Outsourced Accounting for US, UK, AU & CA",
+    template: '%s | ClariVex Solutions',
+    default: 'ClariVex Solutions - Outsourced Accounting for US, UK, AU & CA',
   },
-  description:
-    "Elite outsourced accounting and finance operations for US, UK, AU, and CA businesses.",
-  metadataBase: new URL("https://clarivex.net"),
+  description: 'Elite outsourced accounting and finance operations for US, UK, AU, and CA businesses.',
+  metadataBase: new URL('https://clarivex.net'),
+  alternates: {
+    canonical: 'https://clarivex.net',
+    languages: {
+      'en-US': 'https://clarivex.net/us',
+      'en-GB': 'https://clarivex.net/uk',
+      'en-AU': 'https://clarivex.net/au',
+      'en-CA': 'https://clarivex.net/ca',
+      'x-default': 'https://clarivex.net',
+    },
+  },
 };
 
 export default function RootLayout({ children }) {

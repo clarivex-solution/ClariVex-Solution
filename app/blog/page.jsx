@@ -1,25 +1,59 @@
-﻿import BlogPageClient from "@/components/BlogPageClient";
-import { siteUrl } from "@/lib/constants";
+import BlogPageClient from '@/components/BlogPageClient'
+import { siteUrl } from '@/lib/constants'
+import { prisma } from '@/lib/prisma'
 
 export function generateMetadata() {
   return {
-    title: "Accounting & Finance Blog | ClariVex",
-    description:
-      "Expert insights on bookkeeping, payroll, tax compliance, and finance operations for US, UK, AU, and CA businesses.",
+    title: 'Accounting & Finance Blog | ClariVex Solutions',
+    description: 'Expert insights on bookkeeping, tax compliance, payroll, and financial management for US, UK, AU, and CA businesses.',
+    keywords: 'accounting blog, bookkeeping tips, tax compliance, payroll guide, financial advice, HMRC, IRS, ATO, CRA, outsourced accounting',
     alternates: {
       canonical: `${siteUrl}/blog`,
     },
     openGraph: {
-      title: "Accounting & Finance Blog | ClariVex Solutions",
-      description: "Expert insights on bookkeeping, payroll, tax compliance, and finance operations.",
+      title: 'Accounting & Finance Blog | ClariVex Solutions',
+      description: 'Expert accounting and finance insights for US, UK, AU & CA businesses.',
       url: `${siteUrl}/blog`,
-      type: "website",
-      siteName: "ClariVex Solutions",
+      type: 'website',
+      siteName: 'ClariVex Solutions',
       images: [{ url: `${siteUrl}/og-image.png`, width: 1200, height: 630 }],
     },
-  };
+    twitter: {
+      card: 'summary_large_image',
+      title: 'Accounting & Finance Blog | ClariVex Solutions',
+      description: 'Expert accounting insights for US, UK, AU & CA businesses.',
+      images: [`${siteUrl}/og-image.png`],
+    },
+    robots: { index: true, follow: true },
+  }
 }
 
-export default function BlogPage() {
-  return <BlogPageClient />;
+export default async function BlogPage() {
+  const recentBlogs = await prisma.blog.findMany({
+    where: { status: 'published' },
+    orderBy: { publishedAt: 'desc' },
+    take: 10,
+    select: { slug: true, title: true },
+  })
+
+  const itemListSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Blog',
+    name: 'ClariVex Accounting & Finance Blog',
+    url: `${siteUrl}/blog`,
+    publisher: { '@type': 'Organization', name: 'ClariVex Solutions', url: siteUrl },
+    blogPost: recentBlogs.map((b, i) => ({
+      '@type': 'BlogPosting',
+      position: i + 1,
+      headline: b.title,
+      url: `${siteUrl}/blog/${b.slug}`,
+    })),
+  }
+
+  return (
+    <>
+      <script type='application/ld+json' dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
+      <BlogPageClient />
+    </>
+  )
 }

@@ -4,9 +4,10 @@ import PrintPageButton from '@/components/PrintPageButton';
 export function generateMetadata() {
   return {
     title: 'Privacy Policy | ClariVex Solutions',
-    description: 'Privacy policy for ClariVex Solutions — how we collect, use, and protect personal data for US, UK, AU, and CA clients.',
+    description: 'Privacy policy for ClariVex Solutions - how we collect, use, and protect personal data for US, UK, AU, and CA clients.',
     alternates: { canonical: 'https://clarivex.net/privacy' },
-  };
+    robots: { index: true, follow: true },
+  }
 }
 
 const breadcrumbItems = [

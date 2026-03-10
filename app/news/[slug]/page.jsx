@@ -8,34 +8,49 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 export async function generateMetadata({ params }) {
-  const { slug } = await params;
-  const post = await prisma.newsArticle.findUnique({ where: { slug } });
+  const { slug } = await params
+  const post = await prisma.newsArticle.findUnique({ where: { slug } })
 
-  if (!post) {
-    return { title: "News Not Found" };
-  }
+  if (!post) return { title: 'News Not Found' }
+
+  const title = `${post.title} | ClariVex Financial News`
+  const description = post.summary
+  const isoDate = post.publishedAt?.toISOString()
 
   return {
-    title: post.title,
-    description: post.summary,
+    title,
+    description,
+    keywords: [post.category, `${post.country} finance news`, 'financial news', post.source, 'accounting'].join(', '),
+    authors: [{ name: 'ClariVex Solutions', url: siteUrl }],
     alternates: {
-      canonical: `${siteUrl}/news/${post.slug}`,
+      canonical: `${siteUrl}/news/${slug}`,
     },
     openGraph: {
       title: post.title,
-      description: post.summary,
-      url: `${siteUrl}/news/${post.slug}`,
-      type: "article",
-      publishedTime: post.publishedAt?.toISOString(),
-      siteName: "ClariVex Solutions",
-      images: [{ url: `${siteUrl}/og-image.png`, width: 1200, height: 630 }],
+      description,
+      url: `${siteUrl}/news/${slug}`,
+      type: 'article',
+      publishedTime: isoDate,
+      modifiedTime: isoDate,
+      section: post.category,
+      tags: [post.category, post.country, 'finance', 'accounting', 'news'],
+      siteName: 'ClariVex Solutions',
+      images: [{ url: `${siteUrl}/og-image.png`, width: 1200, height: 630, alt: post.title }],
     },
     twitter: {
-      card: "summary_large_image",
+      card: 'summary_large_image',
       title: post.title,
-      description: post.summary,
+      description,
+      images: [`${siteUrl}/og-image.png`],
     },
-  };
+    robots: {
+      index: true,
+      follow: true,
+      'max-snippet': -1,
+      'max-image-preview': 'large',
+      'max-video-preview': -1,
+    },
+  }
 }
 
 export default async function NewsArticlePage({ params }) {
