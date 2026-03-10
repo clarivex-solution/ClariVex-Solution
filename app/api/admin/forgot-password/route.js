@@ -6,6 +6,12 @@ import { Resend } from 'resend'
 const resend = new Resend(process.env.RESEND_API_KEY)
 const isDev = process.env.NODE_ENV !== 'production'
 
+function buildResetUrl(token) {
+  const rawBaseUrl = String(process.env.NEXT_PUBLIC_SITE_URL || siteUrl || '').trim()
+  const normalizedBaseUrl = rawBaseUrl.replace(/\/+$/, '')
+  return `${normalizedBaseUrl}/admin/reset-password-link?token=${encodeURIComponent(token)}`
+}
+
 export async function POST(request) {
   try {
     const { email } = await request.json()
@@ -31,8 +37,7 @@ export async function POST(request) {
       data: { token, email: submittedEmail, expiresAt },
     })
 
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || siteUrl
-    const resetUrl = `${baseUrl}/admin/reset-password?token=${token}`
+    const resetUrl = buildResetUrl(token)
 
     try {
       const sendResult = await resend.emails.send({
@@ -45,13 +50,15 @@ export async function POST(request) {
             <h2 style="color:#1a1a2e;font-size:22px;margin-bottom:8px">Reset your admin password</h2>
             <p style="color:#5a6478;margin-bottom:24px">Click the button below to set a new password. This link expires in 1 hour.</p>
             <a href="${resetUrl}" style="display:inline-block;background:#1a1a2e;color:white;padding:12px 28px;border-radius:999px;text-decoration:none;font-weight:600">Reset Password</a>
-            <p style="color:#8892a4;font-size:12px;margin-top:24px">If you didn't request this, ignore this email.</p>
+            <p style="color:#8892a4;font-size:12px;margin-top:24px">If the button does not open, copy this URL into your browser:</p>
+            <p style="word-break:break-all;color:#5a6478;font-size:12px;margin-top:8px">${resetUrl}</p>
           </div>
         `,
       })
 
       if (isDev) {
         console.log('[forgot-password] Reset email accepted by provider', sendResult?.data?.id || null)
+        console.log('[forgot-password] Reset URL used:', resetUrl)
       }
     } catch (emailError) {
       console.error('Forgot password email send failed:', emailError)
@@ -63,3 +70,4 @@ export async function POST(request) {
     return NextResponse.json({ success: true })
   }
 }
+

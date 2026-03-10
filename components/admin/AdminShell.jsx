@@ -17,6 +17,7 @@ const publicAdminPages = new Set([
   '/admin/login',
   '/admin/forgot-password',
   '/admin/reset-password',
+  '/admin/reset-password-link',
 ]);
 
 export default function AdminShell({ authenticated, children }) {
@@ -158,3 +159,4 @@ export default function AdminShell({ authenticated, children }) {
     </div>
   );
 }
+

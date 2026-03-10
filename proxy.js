@@ -4,6 +4,7 @@ const PUBLIC_ADMIN_PATHS = new Set([
   '/admin/login',
   '/admin/forgot-password',
   '/admin/reset-password',
+  '/admin/reset-password-link',
 ])
 
 export function proxy(request) {
@@ -31,3 +32,4 @@ export function proxy(request) {
 export const config = {
   matcher: ['/admin/:path*'],
 }
+
