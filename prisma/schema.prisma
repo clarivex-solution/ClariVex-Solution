@@ -56,3 +56,20 @@ model AdminSession {
 
   @@index([expiresAt])
 }
+
+model AdminPasswordReset {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  email     String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([expiresAt])
+}
+
+model AdminCredential {
+  id           String   @id @default(cuid())
+  passwordHash String
+  updatedAt    DateTime @updatedAt
+}
+

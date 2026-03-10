@@ -5,14 +5,14 @@ import { NextResponse } from 'next/server'
 export async function POST(request) {
   const { password } = await request.json()
 
-  // Compare against bcrypt hash stored in env
-  // To generate a hash: node -e "require('bcryptjs').hash('yourpassword',12).then(console.log)"
-  const passwordHash = process.env.ADMIN_PASSWORD_HASH
+  // Check for a stored bcrypt hash in DB (set after first password reset)
+  const credential = await prisma.adminCredential.findFirst()
 
-  // Fallback: plain text comparison if hash not configured yet
-  const isValid = passwordHash
-    ? await bcrypt.compare(password, passwordHash)
-    : password === process.env.ADMIN_PASSWORD
+  const isValid = credential
+    ? await bcrypt.compare(password, credential.passwordHash)
+    : process.env.ADMIN_PASSWORD_HASH
+      ? await bcrypt.compare(password, process.env.ADMIN_PASSWORD_HASH)
+      : password === process.env.ADMIN_PASSWORD
 
   if (!isValid) {
     return NextResponse.json({ error: 'Invalid password' }, { status: 401 })

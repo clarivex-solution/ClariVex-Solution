@@ -1,7 +1,7 @@
 "use client"
 
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
@@ -9,10 +9,9 @@ export default function AdminLogin() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const router = useRouter()
 
   const handleSubmit = async (e) => {
-    e.preventDefault()  // ← MUST be first — prevents native form submit + page reload
+    e.preventDefault()
     setLoading(true)
     setError('')
 
@@ -24,15 +23,15 @@ export default function AdminLogin() {
       })
 
       if (res.ok) {
-        toast.success("Welcome back!")
-        window.location.href = '/admin' // Hard redirect — ensures fresh cookie is read correctly
+        toast.success('Welcome back!')
+        window.location.href = '/admin'
       } else {
-        toast.error("Invalid password. Please try again.")
+        toast.error('Invalid password. Please try again.')
         setError('Incorrect password')
         setLoading(false)
       }
     } catch (err) {
-      toast.error("Login failed. Check your connection.")
+      toast.error('Login failed. Check your connection.')
       setError('An error occurred. Please try again.')
       setLoading(false)
     }
@@ -66,19 +65,24 @@ export default function AdminLogin() {
             />
           </div>
 
-          {error && (
-            <p className="text-red-500 text-sm">{error}</p>
-          )}
+          {error && <p className="text-red-500 text-sm">{error}</p>}
 
           <button
             type="submit"
             disabled={loading}
             className="w-full rounded-full bg-[#1a1a2e] py-3 font-medium text-white cursor-pointer transition-colors hover:bg-[#6aa595] active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
           >
-            {loading ? "Signing in…" : "Sign In"}
+            {loading ? 'Signing in...' : 'Sign In'}
           </button>
+
+          <div className="text-center mt-4">
+            <Link href="/admin/forgot-password" className="text-xs text-[#8892a4] hover:text-[#6aa595] transition-colors">
+              Forgot password?
+            </Link>
+          </div>
         </form>
       </div>
     </div>
   )
 }
+

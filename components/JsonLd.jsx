@@ -132,39 +132,25 @@ export function BreadcrumbSchema({ items }) {
  * AggregateRating + Review schema for testimonials section.
  * Add to homepage and country pages.
  */
-export function TestimonialsSchema({ testimonials }) {
+export function TestimonialsSchema({ testimonials, serviceUrl }) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "AccountingService",
-    name: "ClariVex Solutions",
-    url: siteUrl,
-    aggregateRating: {
+    "name": "ClariVex Solutions",
+    "url": serviceUrl || siteUrl,
+    "aggregateRating": {
       "@type": "AggregateRating",
-      ratingValue: "5",
-      reviewCount: String(testimonials.length),
-      bestRating: "5",
-      worstRating: "1",
+      "ratingValue": "5",
+      "reviewCount": String(testimonials.length),
+      "bestRating": "5",
+      "worstRating": "1"
     },
-    review: testimonials.map((t) => ({
+    "review": testimonials.map(t => ({
       "@type": "Review",
-      author: {
-        "@type": "Person",
-        name: t.name,
-      },
-      reviewRating: {
-        "@type": "Rating",
-        ratingValue: String(t.rating),
-        bestRating: "5",
-      },
-      reviewBody: t.text,
-      name: `${t.company} Review`,
-    })),
-  };
-
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-    />
-  );
+      "author": { "@type": "Person", "name": t.name },
+      "reviewRating": { "@type": "Rating", "ratingValue": String(t.rating), "bestRating": "5" },
+      "reviewBody": t.text,
+    }))
+  }
+  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 }

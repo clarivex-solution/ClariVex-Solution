@@ -11,6 +11,7 @@ import {
   phoneContacts,
   processSteps,
   serviceCards,
+  testimonials,
   whyChooseUsCards
 } from "@/lib/siteData";
 import {
@@ -250,6 +251,75 @@ export default function HomeContent() {
         </div>
       </section>
 
+      {/* Why Choose Us */}
+      <section id="why-choose-us" className="bg-white py-16 sm:py-20 lg:py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
+          <div className="mb-4 h-px w-12 bg-[#c9a96e] sm:mb-6 sm:w-16" />
+          <p className="text-xs uppercase tracking-[0.2em] text-[#6aa595]">WHY CLARIVEX</p>
+          <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-3xl font-black text-[#1a1a2e] sm:text-4xl lg:text-5xl mb-10 sm:mb-12 lg:mb-16">
+            Why Choose ClariVex Solution
+          </h2>
+          <div className="grid gap-5 sm:grid-cols-2 sm:gap-6">
+            {whyChooseUsCards.map((item) => (
+              <article key={item.title} className="group rounded-2xl border border-[#e2e4e9] bg-[#f8f9fa] p-6 hover:border-[#6aa595]/50 hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 overflow-hidden relative sm:p-8">
+                <div className="absolute top-0 left-0 right-0 h-[3px] bg-[#6aa595] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left rounded-t-2xl" />
+                <div className="w-11 h-11 rounded-xl bg-[#f0f2f5] flex items-center justify-center mb-4 sm:w-12 sm:h-12 sm:mb-5">
+                  <item.icon className="h-5 w-5 text-[#5a688e] sm:h-6 sm:w-6" />
+                </div>
+                <h3 className="text-base font-bold text-[#1a1a2e] mb-3 sm:text-lg sm:mb-4">{item.title}</h3>
+                <div className="space-y-2 sm:space-y-3">
+                  {item.points.map((point) => (
+                    <p key={point} className="flex items-start gap-3 text-sm leading-relaxed text-[#5a6478]">
+                      <CheckCircle2 className="h-4 w-4 text-[#6aa595] shrink-0 mt-0.5" />
+                      <span>{point}</span>
+                    </p>
+                  ))}
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="testimonials" className="bg-[#f4f3ee] py-16 sm:py-20 lg:py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
+          <div className="mb-4 h-px w-12 bg-[#c9a96e] sm:mb-6 sm:w-16" />
+          <h2 className="font-[family-name:var(--font-playfair)] text-3xl font-bold text-[#1a1a2e] sm:text-4xl">
+            What Our Clients Say
+          </h2>
+          <p className="mt-3 text-[#5a6478] max-w-xl">
+            Trusted by businesses across the US, UK, Australia &amp; Canada
+          </p>
+
+          <div className="mt-10 grid gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
+            {testimonials.map((t) => (
+              <div key={t.name} className="relative rounded-2xl border border-[#e2e4e9] bg-white p-6 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden">
+                <span className="absolute top-4 right-5 text-6xl font-bold text-[#6aa595]/10 leading-none select-none">"</span>
+
+                <div className="flex gap-0.5 mb-4">
+                  {Array.from({ length: t.rating }).map((_, i) => (
+                    <span key={i} className="text-[#c9a96e] text-lg">★</span>
+                  ))}
+                </div>
+
+                <p className="text-[#5a6478] text-sm leading-relaxed italic mb-6">"{t.text}"</p>
+
+                <div className="flex items-center gap-3 mt-auto pt-4 border-t border-[#e2e4e9]">
+                  <div className="w-10 h-10 rounded-full bg-[#1a1a2e] flex items-center justify-center shrink-0">
+                    <span className="text-[#6aa595] font-bold text-sm">{t.name[0]}</span>
+                  </div>
+                  <div className="min-w-0">
+                    <p className="font-semibold text-[#1a1a2e] text-sm truncate">{t.name}</p>
+                    <p className="text-[#8892a4] text-xs truncate">{t.role}, {t.company}</p>
+                  </div>
+                  <img src={t.flag} alt={t.country} className="w-5 h-auto ml-auto shrink-0 rounded-sm" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* About */}
       <section id="about" className="bg-[#f4f3ee] py-16 sm:py-20 lg:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
@@ -270,7 +340,7 @@ export default function HomeContent() {
                 </div>
                 <div>
                   <h3 className="font-bold text-lg text-[#1a1a2e] sm:text-xl">Dhimant Khatri</h3>
-                  <p className="text-[#5a6478] text-sm mt-1">Chartered Accountant · ICAI Member</p>
+                  <p className="text-[#5a6478] text-sm mt-1">Chartered Accountant &middot; ICAI Member</p>
                   <div className="w-10 h-1 bg-gradient-to-r from-[#c9a96e] to-[#e8d5a5] mt-3 rounded-full shadow-sm sm:w-12" />
                 </div>
               </div>
@@ -298,36 +368,6 @@ export default function HomeContent() {
                 From monthly close readiness to growth-stage advisory, our objective is to reduce friction in finance operations while improving transparency for founders, management, and stakeholders.
               </p>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Why Choose Us */}
-      <section className="bg-white py-16 sm:py-20 lg:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
-          <div className="mb-4 h-px w-12 bg-[#c9a96e] sm:mb-6 sm:w-16" />
-          <p className="text-xs uppercase tracking-[0.2em] text-[#6aa595]">WHY CLARIVEX</p>
-          <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-3xl font-black text-[#1a1a2e] sm:text-4xl lg:text-5xl mb-10 sm:mb-12 lg:mb-16">
-            Why Choose ClariVex Solution
-          </h2>
-          <div className="grid gap-5 sm:grid-cols-2 sm:gap-6">
-            {whyChooseUsCards.map((item) => (
-              <article key={item.title} className="group rounded-2xl border border-[#e2e4e9] bg-[#f8f9fa] p-6 hover:border-[#6aa595]/50 hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 overflow-hidden relative sm:p-8">
-                <div className="absolute top-0 left-0 right-0 h-[3px] bg-[#6aa595] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left rounded-t-2xl" />
-                <div className="w-11 h-11 rounded-xl bg-[#f0f2f5] flex items-center justify-center mb-4 sm:w-12 sm:h-12 sm:mb-5">
-                  <item.icon className="h-5 w-5 text-[#5a688e] sm:h-6 sm:w-6" />
-                </div>
-                <h3 className="text-base font-bold text-[#1a1a2e] mb-3 sm:text-lg sm:mb-4">{item.title}</h3>
-                <div className="space-y-2 sm:space-y-3">
-                  {item.points.map((point) => (
-                    <p key={point} className="flex items-start gap-3 text-sm leading-relaxed text-[#5a6478]">
-                      <CheckCircle2 className="h-4 w-4 text-[#6aa595] shrink-0 mt-0.5" />
-                      <span>{point}</span>
-                    </p>
-                  ))}
-                </div>
-              </article>
-            ))}
           </div>
         </div>
       </section>
