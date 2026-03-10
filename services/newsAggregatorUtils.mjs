@@ -9,37 +9,34 @@ export const BLOCKED_TOPICS = [
   'war in',
   'conflict in',
   'geopolit',
-  // Markets/stocks (specific enough to not block legitimate finance news)
-  'stock market crash',
-  'dow jones',
-  'nasdaq composite',
-  's&p 500',
-  'wall street',
-  'share price target',
-  'stock price target',
-  'bitcoin',
-  'ethereum',
-  'cryptocurrency',
-  'crypto market',
-  'nft',
-  'oil price',
-  'crude oil',
-  'gas price',
-  'commodity price',
-  // Entertainment / unrelated
+  // Entertainment / celebrity
   'celebrity',
-  'arrested for',
   'hollywood',
   'box office',
+  'music awards',
+  'movie premiere',
+  'reality show',
+  // Sports
   'match result',
   'football score',
   'cricket score',
   'sports result',
-  // Pure politics
+  'tournament final',
+  // Food / lifestyle / beauty / gossip
+  'recipe',
+  'restaurant review',
+  'diet trend',
+  'lifestyle tips',
+  'fashion week',
+  'beauty routine',
+  'makeup trends',
+  'gossip',
+  // Politics unrelated to finance
   'election result',
   'polling data',
   'presidential race',
   'campaign trail',
+  'party manifesto',
 ];
 
 export const STRONG_KEYWORDS = [
@@ -100,6 +97,42 @@ export const STRONG_KEYWORDS = [
   '1099',
   'p60',
   'p11d',
+  // Markets and money topics
+  'stock market',
+  's&p 500',
+  'ftse',
+  'asx',
+  'tsx',
+  'nasdaq',
+  'dow jones',
+  'wall street',
+  'equities',
+  'investor',
+  'interest rate',
+  'federal reserve',
+  'bank of england',
+  'bank of canada',
+  'reserve bank of australia',
+  'central bank',
+  'monetary policy',
+  'banking sector',
+  'bitcoin',
+  'ethereum',
+  'crypto',
+  'cryptocurrency',
+  'blockchain',
+  'gold',
+  'silver',
+  'crude oil',
+  'natural gas',
+  'commodity',
+  'opec',
+  'exchange rate',
+  'forex',
+  'currency',
+  'inflation',
+  'cpi',
+  'gdp',
 ];
 
 export const WEAK_KEYWORDS = [
@@ -133,6 +166,105 @@ const TRUSTED_SOURCES = [
 // Kept for compatibility with existing imports/tests.
 export const ALLOWED_KEYWORDS = [...new Set([...STRONG_KEYWORDS, ...WEAK_KEYWORDS])];
 
+export const CATEGORY_KEYWORDS = {
+  Payroll: [
+    'payroll',
+    'wage',
+    'salary',
+    'paye',
+    'national insurance',
+    'superannuation',
+    'super guarantee',
+    'pension',
+    'auto-enrolment',
+    'w-2',
+    'w-4',
+    'p60',
+    'p11d',
+  ],
+  Bookkeeping: [
+    'bookkeeping',
+    'reconcili',
+    'accounts payable',
+    'accounts receivable',
+    'general ledger',
+    'chart of accounts',
+    'invoice',
+    'expense',
+    'xero',
+    'quickbooks',
+    'sage',
+    'myob',
+  ],
+  'Markets & Investing': [
+    'stock market', 's&p 500', 'ftse', 'asx', 'tsx', 'nasdaq', 'shares',
+    'equities', 'portfolio', 'investor', 'dow jones', 'wall street', 'index',
+  ],
+  'Banking & Finance': [
+    'bank', 'banking', 'interest rate', 'federal reserve', 'bank of england',
+    'rba', 'boc', 'central bank', 'monetary policy', 'fed', 'lending',
+  ],
+  Cryptocurrency: [
+    'bitcoin', 'ethereum', 'crypto', 'blockchain', 'digital asset',
+    'defi', 'stablecoin', 'altcoin', 'web3', 'nft',
+  ],
+  Commodities: [
+    'gold', 'silver', 'crude oil', 'commodity', 'opec', 'energy',
+    'mining', 'natural gas', 'brent', 'wti',
+  ],
+  'Currency & Forex': [
+    'exchange rate', 'forex', 'currency', 'dollar', 'pound sterling',
+    'euro', 'yen', 'aud', 'cad', 'gbp',
+  ],
+  'Regulation Update': [
+    'audit',
+    'ifrs',
+    'gaap',
+    'accounting standard',
+    'financial reporting standard',
+    'regulation',
+    'compliance update',
+    'companies house',
+    'asic',
+    'legislation',
+    'new law',
+    'new rule',
+    'guidance',
+    'consultation',
+  ],
+  'Tax Compliance': [
+    'tax',
+    'irs',
+    'hmrc',
+    'ato',
+    'cra',
+    'vat',
+    'gst',
+    'hst',
+    'bas',
+    '1099',
+    'mtd',
+    'making tax digital',
+    'self assessment',
+    'corporation',
+    'fiscal',
+    'deduction',
+    'withholding',
+  ],
+};
+
+const CATEGORY_PRIORITY = [
+  'Payroll',
+  'Bookkeeping',
+  'Markets & Investing',
+  'Banking & Finance',
+  'Cryptocurrency',
+  'Commodities',
+  'Currency & Forex',
+  'Regulation Update',
+  'Tax Compliance',
+];
+
 export function toSlug(title = '') {
   return title
     .toLowerCase()
@@ -146,51 +278,11 @@ export function toSlug(title = '') {
 export function categoriseArticle(title = '') {
   const t = title.toLowerCase();
 
-  // Payroll first - most specific
-  if (
-    t.includes('payroll') || t.includes('wage') || t.includes('salary') ||
-    t.includes('paye') || t.includes('national insurance') ||
-    t.includes('superannuation') || t.includes('super guarantee') ||
-    t.includes('pension') || t.includes('auto-enrolment') ||
-    t.includes('w-2') || t.includes('w-4') || t.includes('p60') || t.includes('p11d')
-  ) {
-    return 'Payroll';
-  }
-
-  // Bookkeeping - specific accounting operations
-  if (
-    t.includes('bookkeeping') || t.includes('reconcili') ||
-    t.includes('accounts payable') || t.includes('accounts receivable') ||
-    t.includes('general ledger') || t.includes('chart of accounts') ||
-    t.includes('invoice') || t.includes('expense') ||
-    t.includes('xero') || t.includes('quickbooks') || t.includes('sage') ||
-    t.includes('myob')
-  ) {
-    return 'Bookkeeping';
-  }
-
-  // Regulation Update - standards and audit
-  if (
-    t.includes('audit') || t.includes('ifrs') || t.includes('gaap') ||
-    t.includes('accounting standard') || t.includes('financial reporting standard') ||
-    t.includes('regulation') || t.includes('compliance update') ||
-    t.includes('companies house') || t.includes('asic') ||
-    t.includes('legislation') || t.includes('new law') || t.includes('new rule') ||
-    t.includes('guidance') || t.includes('consultation')
-  ) {
-    return 'Regulation Update';
-  }
-
-  // Tax Compliance - broadest, catches everything else tax-related
-  if (
-    t.includes('tax') || t.includes('irs') || t.includes('hmrc') ||
-    t.includes('ato') || t.includes('cra') || t.includes('vat') ||
-    t.includes('gst') || t.includes('hst') || t.includes('bas') ||
-    t.includes('1099') || t.includes('mtd') || t.includes('making tax digital') ||
-    t.includes('self assessment') || t.includes('corporation') ||
-    t.includes('fiscal') || t.includes('deduction') || t.includes('withholding')
-  ) {
-    return 'Tax Compliance';
+  for (const category of CATEGORY_PRIORITY) {
+    const keywords = CATEGORY_KEYWORDS[category] || [];
+    if (keywords.some((keyword) => t.includes(keyword))) {
+      return category;
+    }
   }
 
   // Default - Tax Compliance (most accounting news is tax-adjacent)

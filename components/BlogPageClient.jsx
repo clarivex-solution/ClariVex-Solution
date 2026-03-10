@@ -131,7 +131,7 @@ export default function BlogPageClient() {
         </div>
       </section>
 
-      {/* Filter bar — responsive */}
+      {/* Filter bar - responsive */}
       <section className="sticky top-16 z-30 border-y border-[#e2e4e9] bg-[#f8f9fa]/95 backdrop-blur-sm">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
           <div className="flex flex-col gap-3 py-4 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4 sm:py-6">
@@ -223,19 +223,50 @@ export default function BlogPageClient() {
           ) : (
             <div className="mt-8 grid gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
               {visiblePosts.map((post) => (
-                <article key={post.slug}
-                  className="bg-white rounded-2xl border border-[#e2e4e9] p-6 hover:shadow-xl hover:-translate-y-1.5 hover:border-[#6aa595]/30 transition-all duration-300 flex flex-col h-full sm:p-8">
-                  <div className="flex items-center justify-between gap-3 flex-wrap">
-                    <span className="bg-[#6aa595]/10 text-[#6aa595] text-xs rounded-full px-3 py-1">{post.category}</span>
-                    <CountryBadge country={post.country} />
+                <Link
+                  key={post.slug}
+                  href={`/blog/${post.slug}`}
+                  className="group block rounded-2xl border border-[#e2e4e9] bg-white hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden cursor-pointer"
+                >
+                  {post.coverImage ? (
+                    <div className="aspect-[16/9] w-full overflow-hidden bg-[#f8f9fa]">
+                      <img
+                        src={post.coverImage}
+                        alt={post.title}
+                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+                      />
+                    </div>
+                  ) : null}
+
+                  <div className="p-5 sm:p-6">
+                    <div className="flex items-center justify-between gap-3 flex-wrap">
+                      <span className="bg-[#6aa595]/10 text-[#6aa595] text-xs rounded-full px-3 py-1">{post.category}</span>
+                      <CountryBadge country={post.country} />
+                    </div>
+
+                    <h2 className="font-[family-name:var(--font-playfair)] font-bold text-base text-[#1a1a2e] mt-3 mb-2 sm:text-lg transition-colors group-hover:text-[#6aa595]">
+                      {post.title}
+                    </h2>
+
+                    <p className="text-sm text-[#5a6478] leading-relaxed line-clamp-3">{post.excerpt}</p>
+
+                    <div className="mt-4 flex items-center justify-between gap-2 text-xs text-[#8892a4]">
+                      <span>
+                        {post.publishedAt
+                          ? new Date(post.publishedAt).toLocaleDateString('en-US', {
+                              month: 'short',
+                              day: 'numeric',
+                              year: 'numeric',
+                            })
+                          : ''}
+                      </span>
+                    </div>
+
+                    <span className="text-xs font-semibold text-[#6aa595] mt-3 inline-block">
+                      Read More &rarr;
+                    </span>
                   </div>
-                  <h2 className="font-[family-name:var(--font-playfair)] font-bold text-base text-[#1a1a2e] mt-3 mb-2 sm:text-lg">{post.title}</h2>
-                  <p className="text-sm text-[#5a6478] leading-relaxed flex-1">{post.excerpt}</p>
-                  <Link href={`/blog/${post.slug}`}
-                    className="text-[#6aa595] font-semibold text-sm inline-flex items-center gap-1.5 mt-4 hover:gap-3 transition-all">
-                    Read More &rarr;
-                  </Link>
-                </article>
+                </Link>
               ))}
             </div>
           )}

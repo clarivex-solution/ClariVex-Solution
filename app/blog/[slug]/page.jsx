@@ -118,7 +118,27 @@ export default async function BlogArticlePage({ params }) {
 
             <div
               dangerouslySetInnerHTML={{ __html: post.content }}
-              className="mx-auto mt-8 max-w-3xl prose prose-lg max-w-none prose-headings:font-[family-name:var(--font-playfair)] prose-headings:text-[#1a1a2e] prose-headings:font-bold prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4 prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3 prose-p:text-[#5a6478] prose-p:leading-relaxed prose-p:mb-5 prose-strong:text-[#1a1a2e] prose-a:text-[#6aa595] prose-a:no-underline hover:prose-a:underline prose-li:text-[#5a6478]"
+              className={`
+                mx-auto mt-8 max-w-3xl
+                [&_h1]:font-[family-name:var(--font-playfair)] [&_h1]:text-3xl [&_h1]:font-bold [&_h1]:text-[#1a1a2e] [&_h1]:mt-10 [&_h1]:mb-4 [&_h1]:leading-tight
+                [&_h2]:font-[family-name:var(--font-playfair)] [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:text-[#1a1a2e] [&_h2]:mt-10 [&_h2]:mb-4
+                [&_h3]:font-[family-name:var(--font-playfair)] [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:text-[#1a1a2e] [&_h3]:mt-8 [&_h3]:mb-3
+                [&_h4]:text-base [&_h4]:font-semibold [&_h4]:text-[#1a1a2e] [&_h4]:mt-6 [&_h4]:mb-2
+                [&_p]:text-[#5a6478] [&_p]:leading-relaxed [&_p]:mb-5 [&_p]:text-base
+                [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:mb-5
+                [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:mb-5
+                [&_li]:text-[#5a6478] [&_li]:mb-2 [&_li]:leading-relaxed
+                [&_li>p]:mb-0
+                [&_blockquote]:border-l-4 [&_blockquote]:border-[#6aa595] [&_blockquote]:pl-5 [&_blockquote]:italic [&_blockquote]:text-[#5a6478] [&_blockquote]:my-6 [&_blockquote]:bg-[#f8f9fa] [&_blockquote]:py-3 [&_blockquote]:rounded-r-lg
+                [&_strong]:font-semibold [&_strong]:text-[#1a1a2e]
+                [&_em]:italic [&_em]:text-[#5a6478]
+                [&_u]:underline [&_u]:underline-offset-2
+                [&_a]:text-[#6aa595] [&_a]:underline [&_a]:underline-offset-2 [&_a:hover]:text-[#1a1a2e]
+                [&_hr]:border-[#e2e4e9] [&_hr]:my-8
+                [&_img]:rounded-xl [&_img]:max-w-full [&_img]:my-6
+                [&_pre]:bg-[#1a1a2e] [&_pre]:text-white [&_pre]:rounded-xl [&_pre]:p-5 [&_pre]:overflow-x-auto [&_pre]:text-sm [&_pre]:my-6
+                [&_code]:bg-[#f8f9fa] [&_code]:text-[#1a1a2e] [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded [&_code]:text-sm [&_code]:font-mono
+              `}
             />
           </article>
 

@@ -1,5 +1,6 @@
 "use client";
 
+import { countries } from "@/lib/countryData";
 import { Calendar, CalendarCheck, CalendarDays, ChevronDown, Globe, LayoutGrid, Locate } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -87,7 +88,7 @@ export default function NewsPageClient() {
   const filteredNews = useMemo(() => {
     const now = Date.now();
     return newsPosts.filter((item) => {
-      const countryOk = selectedCountry === "all" || item.country === selectedCountry || item.country === "General";
+      const countryOk = selectedCountry === "all" || item.country === selectedCountry || item.country === "General" || item.country === "GENERAL";
       const categoryOk = selectedCategory === "All" || item.category === selectedCategory;
       const ageMs = now - new Date(item.publishedAt).getTime();
       const dateOk = dateFilter === "today" ? ageMs < 86400000 : dateFilter === "week" ? ageMs < 604800000 : true;
@@ -126,7 +127,7 @@ export default function NewsPageClient() {
         </div>
       </section>
 
-      {/* Filter bar */}
+      {/* Filter bar - responsive */}
       <section className="sticky top-16 z-30 border-y border-[#e2e4e9] bg-[#f8f9fa]/95 backdrop-blur-sm">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
           <div className="flex flex-col gap-3 py-4 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4 sm:py-6">
@@ -163,10 +164,15 @@ export default function NewsPageClient() {
                 defaultIcon={<LayoutGrid className="w-4 h-4 text-[#8892a4]" />}
                 options={[
                   { value: "All", label: "All Categories", icon: <LayoutGrid className="w-4 h-4 text-[#8892a4]" /> },
-                  { value: "Tax Compliance", label: "Tax Compliance", icon: <div className="w-2 h-2 rounded-full bg-[#5a688e]" /> },
-                  { value: "Payroll", label: "Payroll", icon: <div className="w-2 h-2 rounded-full bg-[#6aa595]" /> },
-                  { value: "Regulation Update", label: "Regulation Update", icon: <div className="w-2 h-2 rounded-full bg-[#c9a96e]" /> },
-                  { value: "Bookkeeping", label: "Bookkeeping", icon: <div className="w-2 h-2 rounded-full bg-[#1a1a2e]" /> },
+                  { value: "Markets & Investing", label: "Markets & Investing", icon: <div className="w-2 h-2 rounded-full bg-[#5a688e]" /> },
+                  { value: "Banking & Finance", label: "Banking & Finance", icon: <div className="w-2 h-2 rounded-full bg-[#6aa595]" /> },
+                  { value: "Cryptocurrency", label: "Cryptocurrency", icon: <div className="w-2 h-2 rounded-full bg-[#c9a96e]" /> },
+                  { value: "Commodities", label: "Commodities", icon: <div className="w-2 h-2 rounded-full bg-[#1a1a2e]" /> },
+                  { value: "Currency & Forex", label: "Currency & Forex", icon: <div className="w-2 h-2 rounded-full bg-[#5a688e]" /> },
+                  { value: "Tax Compliance", label: "Tax Compliance", icon: <div className="w-2 h-2 rounded-full bg-[#6aa595]" /> },
+                  { value: "Payroll", label: "Payroll", icon: <div className="w-2 h-2 rounded-full bg-[#c9a96e]" /> },
+                  { value: "Regulation Update", label: "Regulation Update", icon: <div className="w-2 h-2 rounded-full bg-[#1a1a2e]" /> },
+                  { value: "Bookkeeping", label: "Bookkeeping", icon: <div className="w-2 h-2 rounded-full bg-[#5a688e]" /> },
                 ]}
               />
             </div>
@@ -232,33 +238,64 @@ export default function NewsPageClient() {
           ) : (
             <>
               <div className="mt-8 grid gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
-                {visibleNews.map((item) => (
-                  <article key={item.id || item.slug}
-                    className="bg-white rounded-2xl border border-[#e2e4e9] p-6 hover:shadow-xl hover:-translate-y-1.5 hover:border-[#6aa595]/30 transition-all duration-300 flex flex-col h-full sm:p-8">
-                    <div className="flex justify-between items-start gap-2 flex-wrap">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <span className="bg-[#6aa595]/10 text-[#6aa595] px-3 py-1 text-xs rounded-full">{item.source}</span>
-                        {item.country && item.country !== "All" && item.country !== "General" && (
-                          <span className="bg-[#f8f9fa] border border-[#e2e4e9] text-xs rounded-full px-2 py-0.5 text-[#1a1a2e]">{item.country}</span>
-                        )}
+                {visibleNews.map((item) => {
+                  const countryCode = String(item.country || '').toLowerCase();
+                  const countryMeta = countries.find((country) => country.code === countryCode);
+                  const showCountry = item.country && item.country !== 'All' && item.country !== 'General' && item.country !== 'GENERAL';
+
+                  return (
+                    <Link
+                      key={item.id || item.slug}
+                      href={`/news/${item.slug}`}
+                      className="group block rounded-2xl border border-[#e2e4e9] bg-white hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden cursor-pointer"
+                    >
+                      <div className="p-5 sm:p-6">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="bg-[#6aa595]/10 text-[#6aa595] px-3 py-1 text-xs rounded-full">
+                            {item.sourceType || item.source}
+                          </span>
+                          <span className="bg-[#5a688e]/10 text-[#5a688e] text-xs rounded-full px-2 py-0.5">
+                            {item.category}
+                          </span>
+                        </div>
+
+                        <h2 className="font-[family-name:var(--font-playfair)] font-bold text-base text-[#1a1a2e] mt-3 sm:text-lg transition-colors group-hover:text-[#6aa595]">
+                          {item.title}
+                        </h2>
+
+                        <p className="text-sm text-[#5a6478] leading-relaxed mt-2 line-clamp-2">{item.summary}</p>
+
+                        <div className="mt-4 flex items-center justify-between gap-2 text-xs text-[#8892a4]">
+                          <span>
+                            {item.publishedAt
+                              ? new Date(item.publishedAt).toLocaleDateString('en-US', {
+                                  month: 'short',
+                                  day: 'numeric',
+                                  year: 'numeric',
+                                })
+                              : ''}
+                          </span>
+
+                          <span className="inline-flex items-center gap-1.5 min-w-0">
+                            {showCountry && countryMeta?.flagSrc ? (
+                              <img
+                                src={countryMeta.flagSrc}
+                                alt={item.country}
+                                className="w-4 h-[11px] rounded-[1px] object-cover shrink-0"
+                              />
+                            ) : null}
+                            {showCountry ? <span className="text-[#5a6478]">{item.country}</span> : null}
+                            <span className="truncate">{item.source}</span>
+                          </span>
+                        </div>
+
+                        <span className="text-xs font-semibold text-[#6aa595] mt-3 inline-block">
+                          Read Article &rarr;
+                        </span>
                       </div>
-                      <span className="text-xs text-[#8892a4] whitespace-nowrap">
-                        {item.publishedAt ? new Date(item.publishedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : ""}
-                      </span>
-                    </div>
-                    <div className="mt-3">
-                      <span className="bg-[#5a688e]/10 text-[#5a688e] text-xs rounded-full px-2 py-0.5 inline-block">{item.category}</span>
-                    </div>
-                    <h2 className="font-[family-name:var(--font-playfair)] font-bold text-base text-[#1a1a2e] mt-3 sm:text-lg">{item.title}</h2>
-                    <p className="text-sm text-[#5a6478] leading-relaxed mt-2 line-clamp-3 flex-1">{item.summary}</p>
-                    <div className="flex gap-3 mt-4">
-                      <Link href={`/news/${item.slug}`} className="text-[#6aa595] font-semibold text-sm hover:underline">Read More &rarr;</Link>
-                      {item.url && (
-                        <a href={item.url} target="_blank" rel="noopener noreferrer" className="text-xs text-[#8892a4] hover:underline mt-[2px]">Source &rarr;</a>
-                      )}
-                    </div>
-                  </article>
-                ))}
+                    </Link>
+                  );
+                })}
               </div>
 
               {hasMore && (
