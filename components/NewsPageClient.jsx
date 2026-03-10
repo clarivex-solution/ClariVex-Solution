@@ -309,27 +309,7 @@ export default function NewsPageClient() {
             </>
           )}
 
-          {/* Subscribe banner */}
-          <div className="mt-12 rounded-2xl border border-[#1a1a2e] bg-[#1a1a2e] p-8 text-center shadow-lg sm:mt-14 sm:p-12">
-            <div className="mx-auto h-px w-12 bg-[#c9a96e] sm:w-16" />
-            <p className="mt-5 text-xs uppercase tracking-[0.2em] text-[#6aa595] sm:mt-6">Subscribe</p>
-            <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-2xl text-white sm:text-3xl lg:text-4xl">
-              Get Daily Finance Updates
-            </h2>
-            <p className="mx-auto mt-3 max-w-xl text-sm text-white/80">
-              Subscribe for country-specific accounting and tax regulation news delivered to your inbox.
-            </p>
-            <form className="mx-auto mt-6 flex w-full max-w-xl flex-col gap-3 sm:flex-row"
-              onSubmit={(e) => { e.preventDefault(); alert("Thank you for subscribing!"); }}>
-              <label htmlFor="news-email" className="sr-only">Email</label>
-              <input id="news-email" type="email" required placeholder="Enter your email"
-                className="w-full rounded-full border border-[#e2e4e9] bg-white px-5 py-3 text-[#1a1a2e] outline-none transition-colors focus:border-[#5a688e] sm:px-6" />
-              <button type="submit"
-                className="w-full rounded-full bg-[#6aa595] px-7 py-3 font-semibold text-white cursor-pointer transition-colors hover:bg-[#5a688e] active:scale-95 sm:w-auto sm:px-8 shrink-0">
-                Subscribe
-              </button>
-            </form>
-          </div>
+          
         </div>
       </section>
     </main>
