@@ -1,0 +1,58 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Blog {
+  id          String    @id @default(cuid())
+  title       String
+  slug        String    @unique
+  excerpt     String
+  content     String
+  coverImage  String?
+  category    String
+  country     String
+  status      String    @default("draft")
+  publishedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([status, publishedAt])
+  @@index([country, status])
+}
+
+model NewsArticle {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  summary     String
+  url         String?
+  source      String
+  category    String
+  country     String
+  sourceType  String
+  publishedAt DateTime
+  createdAt   DateTime @default(now())
+
+  @@index([country, publishedAt])
+  @@index([publishedAt])
+  @@index([country, category])
+}
+
+model BlockedUrl {
+  id        String   @id @default(cuid())
+  url       String   @unique
+  createdAt DateTime @default(now())
+}
+
+model AdminSession {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([expiresAt])
+}
