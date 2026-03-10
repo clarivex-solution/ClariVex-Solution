@@ -8,15 +8,12 @@ import { createContext, useCallback, useContext, useEffect, useLayoutEffect, use
 
 const VALID = ["us", "uk", "au", "ca", "general"];
 
-const GEO_MAP = { US: "us", GB: "uk", CA: "ca", AU: "au" };
-
 const LS_COUNTRY = "preferred-country";
 const LS_TIMESTAMP = "preferred-country-timestamp";
 const SS_DETECTED = "detected-country";
 const SS_SESSION = "session-country";
 
 const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
-const IP_TIMEOUT_MS = 2000;
 
 /* ------------------------------------------------------------------ */
 /*  Helpers                                                           */
@@ -40,7 +37,7 @@ function isDirectNavigation() {
   }
 }
 
-/** Fetch IP-based country with a strict timeout. Silently returns "general" on any failure. */
+/** Fetch country via internal geo API. Silently returns "general" on any failure. */
 async function fetchIPCountry() {
   try {
     const res = await fetch('/api/geo', { cache: 'no-store' })

@@ -1,57 +1,12 @@
 "use client"
 
+import { CountryFlag, formatDate, StatusBadge, SkeletonRow, DateCell } from '@/components/admin/shared'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import { countries } from '@/lib/countryData'
-import { CalendarDays, FolderOpen } from 'lucide-react'
+import { FolderOpen } from 'lucide-react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { Suspense, useCallback, useEffect, useState } from 'react'
 import { toast } from 'sonner'
-
-// Maps country code → flag img, falls back to text
-function CountryFlag({ code }) {
-  if (!code) return <span className="text-[#5a6478]">—</span>
-  const match = countries.find((c) => c.code === code.toLowerCase())
-  return (
-    <span className="inline-flex items-center gap-1.5">
-      {match?.flagSrc
-        ? <img src={match.flagSrc} alt={code} className="rounded-sm shrink-0" style={{ width: 16, height: 11 }} />
-        : null
-      }
-      <span>{code}</span>
-    </span>
-  )
-}
-
-function formatDate(dateValue) {
-  if (!dateValue) return '--'
-  const date = new Date(dateValue)
-  if (Number.isNaN(date.getTime())) return '--'
-  return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
-}
-
-function StatusBadge({ status }) {
-  const isPublished = status === 'published'
-  return (
-    <span className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium capitalize ${
-      isPublished ? 'bg-[#6aa595]/15 text-[#6aa595]' : 'bg-amber-100 text-amber-700'
-    }`}>
-      {isPublished ? 'Published' : 'Draft'}
-    </span>
-  )
-}
-
-function SkeletonRow() {
-  return (
-    <tr className="border-b border-[#e2e4e9]">
-      {[160, 64, 96, 80, 96, 144].map((w, i) => (
-        <td key={i} className="px-4 py-4">
-          <div className={`h-4 w-${w === 160 ? '40' : w === 64 ? '16' : w === 96 ? '24' : w === 80 ? '20' : w === 144 ? '36' : '24'} animate-pulse rounded bg-[#e2e4e9]`} />
-        </td>
-      ))}
-    </tr>
-  )
-}
 
 // Mobile card view for each blog
 function BlogCard({ blog, onEdit, onPublish, onDelete, publishingId, deletingId }) {
@@ -64,7 +19,7 @@ function BlogCard({ blog, onEdit, onPublish, onDelete, publishingId, deletingId 
       <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-[#5a6478]">
         {blog.country && <CountryFlag code={blog.country} />}
         {blog.category && <span className="inline-flex items-center gap-1"><FolderOpen className="h-3.5 w-3.5 text-[#c9a96e]" />{blog.category}</span>}
-        <span className="inline-flex items-center gap-1"><CalendarDays className="h-3.5 w-3.5 text-[#8892a4]" />{formatDate(blog.publishedAt || blog.createdAt)}</span>
+        <DateCell value={blog.publishedAt || blog.createdAt} />
       </div>
       <div className="flex items-center gap-2 pt-1">
         <Link
@@ -250,8 +205,8 @@ function AdminBlogPageContent() {
                   <span className="inline-flex items-center gap-1.5"><FolderOpen className="h-3.5 w-3.5 text-[#c9a96e] shrink-0" />{blog.category || '--'}</span>
                 </td>
                 <td className="px-4 py-4"><StatusBadge status={blog.status} /></td>
-                <td className="px-4 py-4 text-sm text-[#5a6478] whitespace-nowrap">
-                  <span className="inline-flex items-center gap-1.5"><CalendarDays className="h-3.5 w-3.5 text-[#8892a4] shrink-0" />{formatDate(blog.publishedAt || blog.createdAt)}</span>
+                <td className="px-4 py-4 text-sm text-[#5a6478] whitespace-nowrap" title={formatDate(blog.publishedAt || blog.createdAt)}>
+                  <DateCell value={blog.publishedAt || blog.createdAt} />
                 </td>
                 <td className="px-4 py-4">
                   <div className="flex items-center gap-2">

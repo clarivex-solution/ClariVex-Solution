@@ -1,25 +1,11 @@
 "use client";
 
+import { CountryFlag, formatDate, TypeBadge } from '@/components/admin/shared';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { countries } from '@/lib/countryData';
 import { CalendarDays, FolderOpen } from 'lucide-react';
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-
-function CountryFlag({ code }) {
-  if (!code) return <span className="text-[#5a6478]">—</span>
-  const match = countries.find((c) => c.code === code.toLowerCase())
-  return (
-    <span className="inline-flex items-center gap-1.5">
-      {match?.flagSrc
-        ? <img src={match.flagSrc} alt={code} className="rounded-sm shrink-0" style={{ width: 16, height: 11 }} />
-        : null
-      }
-      <span className="text-xs font-medium text-[#5a6478]">{code}</span>
-    </span>
-  )
-}
 
 const manualFetchCountries = [
   { label: "US", value: "US" },
@@ -28,17 +14,6 @@ const manualFetchCountries = [
   { label: "CA", value: "CA" },
   { label: "General", value: "GENERAL" },
 ];
-
-function TypeBadge({ sourceType }) {
-  const isAuto = sourceType === "automated";
-  return (
-    <span className={`whitespace-nowrap font-medium rounded-full px-2.5 py-1 text-xs capitalize ${
-      isAuto ? "bg-[#6aa595]/10 text-[#6aa595]" : "bg-purple-100 text-purple-700"
-    }`}>
-      {sourceType || "Manual"}
-    </span>
-  );
-}
 
 function NewsCard({ item, onDelete }) {
   const isAutomated = item.sourceType === "automated";
@@ -53,7 +28,7 @@ function NewsCard({ item, onDelete }) {
       <div className="flex items-center justify-between">
         <span className="inline-flex items-center gap-1 text-xs text-[#8892a4]">
           <CalendarDays className="h-3.5 w-3.5 shrink-0" />
-          {new Date(item.publishedAt || item.createdAt || Date.now()).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+          {formatDate(item.publishedAt || item.createdAt || Date.now())}
         </span>
         <div className="flex items-center gap-2">
           {!isAutomated && (
@@ -281,7 +256,7 @@ export default function AdminNewsPage() {
                     </td>
                     <td className="px-4 py-3"><TypeBadge sourceType={item.sourceType} /></td>
                     <td className="whitespace-nowrap px-4 py-3 text-sm text-[#5a6478]">
-                      <span className="inline-flex items-center gap-1.5"><CalendarDays className="h-3.5 w-3.5 text-[#8892a4] shrink-0" />{new Date(item.publishedAt || item.createdAt || Date.now()).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
+                      <span className="inline-flex items-center gap-1.5"><CalendarDays className="h-3.5 w-3.5 text-[#8892a4] shrink-0" />{formatDate(item.publishedAt || item.createdAt || Date.now())}</span>
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2">
