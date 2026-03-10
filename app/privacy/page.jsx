@@ -1,165 +1,153 @@
-import Breadcrumbs from "@/components/Breadcrumbs";
+import Breadcrumbs from '@/components/Breadcrumbs';
+import PrintPageButton from '@/components/PrintPageButton';
 
 export function generateMetadata() {
   return {
-    title: "Privacy Policy | ClariVex Solutions",
-    description:
-      "Privacy policy explaining how ClariVex Solutions collects, uses, and protects data.",
+    title: 'Privacy Policy | ClariVex Solutions',
+    description: 'Privacy policy for ClariVex Solutions — how we collect, use, and protect personal data for US, UK, AU, and CA clients.',
+    alternates: { canonical: 'https://clarivex.net/privacy' },
   };
 }
 
 const breadcrumbItems = [
-  { name: "Home", href: "/" },
-  { name: "Privacy Policy" },
+  { name: 'Home', href: '/' },
+  { name: 'Privacy Policy' },
+];
+
+const sections = [
+  {
+    id: 'section-1',
+    number: '01',
+    title: 'Introduction',
+    body: 'ClariVex Solutions is an outsourced accounting and finance firm delivering services to clients in the United States, United Kingdom, Australia, and Canada. This Privacy Policy explains how we collect, use, share, and protect personal data. We are committed to handling all information responsibly and in compliance with applicable privacy laws.',
+  },
+  {
+    id: 'section-2',
+    number: '02',
+    title: 'Data We Collect',
+    body: 'We collect contact enquiry data (name, email, phone, company, service interest, and message). Session cookies are used for admin authentication only. IP addresses are used transiently for rate limiting and are not stored permanently. We use no tracking cookies, no advertising pixels, and no third-party behavioural analytics.',
+  },
+  {
+    id: 'section-3',
+    number: '03',
+    title: 'How We Use Data',
+    body: 'We use data to respond to service enquiries, to deliver contracted accounting and finance services, to send compliance updates where explicit consent is provided, and to fulfil legal and regulatory obligations.',
+  },
+  {
+    id: 'section-4',
+    number: '04',
+    title: 'Legal Basis',
+    body: 'For UK and EU data subjects: Article 6(1)(b) contractual necessity for service delivery; Article 6(1)(c) legal obligation for regulatory compliance; Article 6(1)(a) consent for marketing. For AU clients: Privacy Act 1988. For CA clients: PIPEDA. For US clients: applicable state laws including CCPA — we do not sell personal data.',
+  },
+  {
+    id: 'section-5',
+    number: '05',
+    title: 'Data Retention',
+    body: 'Enquiry data is retained for 2 years. Client financial records are retained for 7 years to satisfy HMRC, ATO, CRA, and IRS statutory requirements. Admin session data is deleted immediately on logout. No third-party analytics data is retained as we do not use such services.',
+  },
+  {
+    id: 'section-6',
+    number: '06',
+    title: 'Security',
+    body: 'We apply TLS 1.2+ encryption in transit and encryption at rest via Neon PostgreSQL. All staff and contractors are bound by NDAs. Admin access uses bcrypt password hashing. Quarterly access reviews and annual security assessments are conducted.',
+  },
+  {
+    id: 'section-7',
+    number: '07',
+    title: 'Data Processors',
+    body: 'We share data only with the following processors under data processing agreements: Resend (email delivery — EU-US Standard Contractual Clauses in place); Cloudinary (image hosting — SOC 2 Type II); Neon (database hosting — GDPR compliant, EU data residency available); Vercel (hosting — SOC 2 Type II, DPA available). We do not use advertising networks or data brokers.',
+  },
+  {
+    id: 'section-8',
+    number: '08',
+    title: 'International Transfers',
+    body: 'Data may be processed in the EU and the United States. All international transfers are protected by Standard Contractual Clauses or equivalent adequacy mechanisms as required by applicable law.',
+  },
+  {
+    id: 'section-9',
+    number: '09',
+    title: 'Your Rights',
+    body: 'UK/EU data subjects have rights to access, rectification, erasure, restriction, portability, and objection, and may lodge a complaint with the ICO at ico.org.uk. AU clients have access and correction rights under the Privacy Act 1988, with complaints to the OAIC. CA clients have rights to access, correction, and withdrawal of consent under PIPEDA. California residents have rights under CCPA to know, delete, and opt out of sale — we do not sell data.',
+  },
+  {
+    id: 'section-10',
+    number: '10',
+    title: 'Cookies',
+    body: 'We use session cookies only for admin authentication (httpOnly, sameSite=strict). No tracking cookies are used. No cookie consent banner is required as no user tracking occurs. You may disable cookies in your browser without affecting public-facing site functionality.',
+  },
+  {
+    id: 'section-11',
+    number: '11',
+    title: "Children's Privacy",
+    body: 'Our services are designed exclusively for businesses and adults. We do not knowingly collect personal information from individuals under 18 years of age.',
+  },
+  {
+    id: 'section-12',
+    number: '12',
+    title: 'Policy Updates',
+    body: 'We may update this Privacy Policy periodically. Material changes will be communicated by email at least 30 days in advance. Continued use of our services after the notice period constitutes acceptance. The current version is always available at clarivex.net/privacy. Current version: March 1, 2026.',
+  },
+  {
+    id: 'section-13',
+    number: '13',
+    title: 'Contact',
+    body: 'Email: privacy@clarivex.net. Address: ClariVex Solutions, 421 Shivalik Shilp, Iscon Cross Road, S.G. Highway, Ahmedabad 380058, India. For UK data subjects, ICO registration is in progress.',
+  },
 ];
 
 export default function PrivacyPage() {
   return (
-    <main className="min-h-screen bg-[#f8f9fa] text-[#1a1a2e]">
-      <div className="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
-        <div className="mb-8 [&_a]:text-[#5a6478] [&_a:hover]:text-[#1a1a2e] [&_nav]:text-[#5a6478] [&_span]:text-[#1a1a2e] transition-colors">
-          <Breadcrumbs items={breadcrumbItems} />
+    <main className="min-h-screen bg-[#f8f9fa] text-[#1a1a2e] font-[family-name:var(--font-inter)]">
+      <section className="bg-[#1a1a2e] py-12 sm:py-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex items-start justify-between gap-4">
+            <div className="min-w-0 flex-1">
+              <div className="mb-6 [&_nav]:text-[#8892a4] [&_a]:text-[#8892a4] [&_a:hover]:text-white [&_span]:text-white">
+                <Breadcrumbs items={breadcrumbItems} />
+              </div>
+              <div className="h-px w-16 bg-[#c9a96e]" />
+              <h1 className="mt-6 font-[family-name:var(--font-playfair)] text-4xl sm:text-5xl text-white font-bold">Privacy Policy</h1>
+              <p className="mt-4 text-xs tracking-widest uppercase text-[#6aa595]">Last Updated: March 1, 2026</p>
+            </div>
+            <PrintPageButton className="shrink-0" />
+          </div>
         </div>
+      </section>
 
-        <div className="mb-6 h-px w-16 bg-[#c9a96e]" />
+      <section>
+        <div className="mx-auto flex max-w-7xl gap-10 px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+          <aside className="hidden lg:block lg:w-64 shrink-0">
+            <div className="sticky top-24 rounded-xl border border-[#e2e4e9] bg-white p-5">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#6aa595]">Contents</p>
+              <ul className="mt-4 space-y-3">
+                {sections.map((section) => (
+                  <li key={section.id}>
+                    <a
+                      href={`#${section.id}`}
+                      className="text-sm text-[#5a6478] hover:text-[#6aa595] transition-colors"
+                    >
+                      {section.number}. {section.title}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </aside>
 
-        <article className="prose prose-lg max-w-none prose-headings:font-[family-name:var(--font-playfair)] prose-headings:text-[#1a1a2e] prose-p:text-[#5a6478] prose-p:leading-relaxed prose-a:text-[#6aa595] prose-a:no-underline hover:prose-a:underline">
-          <h1 className="text-4xl sm:text-5xl font-bold text-[#1a1a2e] mb-4">Privacy Policy</h1>
-          <p className="text-sm font-medium tracking-wider uppercase text-[#8892a4] mb-12">Last Updated: March 1, 2026</p>
-
-          <section className="mb-10">
-            <h2 className="text-2xl font-semibold mt-10 mb-4">1. Introduction</h2>
-            <p>
-              ClariVex Solutions is an outsourced accounting firm serving businesses
-              in the US, UK, AU, and CA markets. This Privacy Policy explains the
-              scope of how we collect, use, and protect personal and business
-              information. We are committed to handling data responsibly and with
-              strong privacy protections.
-            </p>
-          </section>
-
-          <section className="mb-10">
-            <h2 className="text-2xl font-semibold mt-10 mb-4">2. Data We Collect</h2>
-            <p>
-              We collect contact form data (name, email, phone, company, and
-              message), client financial data provided for service delivery, and
-              website usage data through privacy-respecting analytics. We use session
-              cookies for admin access only. IP addresses may be used for rate
-              limiting only and are not stored permanently.
-            </p>
-          </section>
-
-          <section className="mb-10">
-            <h2 className="text-2xl font-semibold mt-10 mb-4">3. How We Use Data</h2>
-            <p>
-              We use data to deliver accounting services, respond to enquiries, send
-              finance and tax updates where explicit consent is provided, improve our
-              services, and meet legal and regulatory obligations.
-            </p>
-          </section>
-
-          <section className="mb-10">
-            <h2 className="text-2xl font-semibold mt-10 mb-4">4. Legal Basis (UK/EU GDPR)</h2>
-            <p>
-              For UK and EU data subjects, our legal bases include Article 6(1)(b)
-              contractual necessity for service delivery, Article 6(1)(c) legal
-              obligation for regulatory compliance, and Article 6(1)(a) consent for
-              marketing communications.
-            </p>
-          </section>
-
-          <section className="mb-10">
-            <h2 className="text-2xl font-semibold mt-10 mb-4">5. Data Retention</h2>
-            <p>
-              Enquiry data is retained for 2 years. Client financial records are
-              retained for 7 years to satisfy HMRC, ATO, CRA, and IRS requirements.
-              Analytics data is retained for 13 months. Admin session data is deleted
-              immediately on logout.
-            </p>
-          </section>
-
-          <section className="mb-10">
-            <h2 className="text-2xl font-semibold mt-10 mb-4">6. Security</h2>
-            <p>
-              We apply TLS encryption in transit, encryption at rest, and
-              multi-factor authentication on all internal systems. All staff and
-              contractors operate under NDAs. Access reviews are conducted quarterly,
-              and security assessments are performed annually.
-            </p>
-          </section>
-
-          <section className="mb-10">
-            <h2 className="text-2xl font-semibold mt-10 mb-4">7. Data Sharing</h2>
-            <p>
-              We do not sell or rent personal data. Limited sharing occurs only with
-              processors under data processing agreements, including Resend (email
-              delivery, EU-US transfer covered by SCCs), Cloudinary (image hosting,
-              SOC 2 compliant), and Neon (database hosting, GDPR compliant). We do
-              not use advertising networks or data brokers.
-            </p>
-          </section>
-
-          <section className="mb-10">
-            <h2 className="text-2xl font-semibold mt-10 mb-4">8. International Transfers</h2>
-            <p>
-              Data may be processed in the EU and the US. International transfers are
-              protected by Standard Contractual Clauses or equivalent adequacy
-              mechanisms where required.
-            </p>
-          </section>
-
-          <section className="mb-10">
-            <h2 className="text-2xl font-semibold mt-10 mb-4">9. Your Rights</h2>
-            <p>
-              UK/EU data subjects have rights to access, rectification, erasure,
-              restriction, portability, objection, and to lodge a complaint with the
-              ICO. AU data subjects have access and correction rights under the
-              Privacy Act 1988. CA data subjects have rights to access, correction,
-              and withdrawal of consent under PIPEDA. California residents have
-              rights to know, delete, and opt-out of sale under CCPA; we do not sell
-              data.
-            </p>
-          </section>
-
-          <section className="mb-10">
-            <h2 className="text-2xl font-semibold mt-10 mb-4">10. Cookies</h2>
-            <p>
-              We use session cookies only for admin authentication. We do not use
-              tracking cookies or advertising pixels. Analytics are configured to
-              respect privacy. You may disable cookies in your browser settings
-              without affecting public-facing site functionality.
-            </p>
-          </section>
-
-          <section className="mb-10">
-            <h2 className="text-2xl font-semibold mt-10 mb-4">11. Children's Privacy</h2>
-            <p>
-              Our services are designed exclusively for businesses and adults. We do
-              not knowingly collect personal information from individuals under 18
-              years of age.
-            </p>
-          </section>
-
-          <section className="mb-10">
-            <h2 className="text-2xl font-semibold mt-10 mb-4">12. Policy Updates</h2>
-            <p>
-              We may update this Privacy Policy periodically. Material changes will be
-              notified by email at least 30 days in advance. Continued use of our
-              services after the notice period constitutes acceptance. The latest
-              version is always available at <a href="/privacy">clarivex.net/privacy</a>.
-            </p>
-          </section>
-
-          <section className="mb-10">
-            <h2 className="text-2xl font-semibold mt-10 mb-4">13. Contact and Data Controller</h2>
-            <p>
-              Contact us at <a href="mailto:privacy@clarivex.net">privacy@clarivex.net</a>. Data Controller: ClariVex
-              Solutions, 421 Shivalik Shilp, Iscon Cross Road, SG Highway, Ahmedabad
-              380058. For UK data subjects, we are registered with the ICO.
-            </p>
-          </section>
-        </article>
-      </div>
+          <article className="flex-1 min-w-0 rounded-2xl border border-[#e2e4e9] bg-white p-6 sm:p-8 lg:p-10">
+            {sections.map((section, index) => (
+              <section key={section.id} id={section.id} className="scroll-mt-24">
+                <div className="mb-4 flex items-center gap-4">
+                  <span className="w-8 shrink-0 text-xs font-bold tracking-widest text-[#6aa595]">{section.number}</span>
+                  <h2 className="font-[family-name:var(--font-playfair)] text-xl font-bold text-[#1a1a2e]">{section.title}</h2>
+                </div>
+                <p className="text-base leading-relaxed text-[#5a6478]">{section.body}</p>
+                {index < sections.length - 1 ? <hr className="my-8 border-[#e2e4e9]" /> : null}
+              </section>
+            ))}
+          </article>
+        </div>
+      </section>
     </main>
   );
 }
