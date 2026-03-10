@@ -22,7 +22,9 @@ export const metadata = {
   },
   description:
     "ClariVex Solutions provides elite outsourced accounting, bookkeeping, tax planning and payroll services for businesses across the US, UK, Australia and Canada.",
- metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://clarivex-website.vercel.app'),
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL || "https://clarivex.net",
+  ),
 
   alternates: {
     canonical: "https://clarivex.net",
