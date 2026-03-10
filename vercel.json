@@ -1,12 +1,9 @@
 {
   "crons": [
-    {
-      "path": "/api/cron/fetch-news-uk",
-      "schedule": "0 8 * * *"
-    },
-    {
-      "path": "/api/cron/fetch-news-us",
-      "schedule": "0 13 * * *"
-    }
+    { "path": "/api/cron/fetch-news?country=US",      "schedule": "0 13 * * *" },
+    { "path": "/api/cron/fetch-news?country=UK",      "schedule": "0 8 * * *"  },
+    { "path": "/api/cron/fetch-news?country=CA",      "schedule": "0 14 * * *" },
+    { "path": "/api/cron/fetch-news?country=AU",      "schedule": "0 22 * * *" },
+    { "path": "/api/cron/fetch-news?country=GENERAL", "schedule": "0 6 * * *"  }
   ]
 }

@@ -42,29 +42,13 @@ function isDirectNavigation() {
 
 /** Fetch IP-based country with a strict timeout. Silently returns "general" on any failure. */
 async function fetchIPCountry() {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), IP_TIMEOUT_MS);
-
   try {
-    const res = await fetch("https://ipapi.co/json/", { signal: controller.signal });
-
-    /* HTTP 429 — rate-limited */
-    if (res.status === 429) return "general";
-
-    /* Any other non-OK response */
-    if (!res.ok) return "general";
-
-    const data = await res.json();
-
-    /* Malformed / unexpected payload */
-    if (!data || typeof data.country_code !== "string") return "general";
-
-    return GEO_MAP[data.country_code] || "general";
-  } catch (err) {
-    /* Silently fail — do not console.error, fall through to default country */
-    return "general";
-  } finally {
-    clearTimeout(timer);
+    const res = await fetch('/api/geo', { cache: 'no-store' })
+    if (!res.ok) return 'general'
+    const { country } = await res.json()
+    return country || 'general'
+  } catch {
+    return 'general'
   }
 }
 

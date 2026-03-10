@@ -77,7 +77,7 @@ export default function NewsPageClient() {
       try {
         const response = await fetch("/api/news");
         const data = await response.json();
-        setNewsPosts(Array.isArray(data) ? data : []);
+        setNewsPosts(Array.isArray(data.articles) ? data.articles : [])
       } catch { setNewsPosts([]); }
       finally { setLoading(false); }
     };

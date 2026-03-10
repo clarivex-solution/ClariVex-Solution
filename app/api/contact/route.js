@@ -4,54 +4,85 @@ import { Resend } from "resend";
 const resend = new Resend(process.env.RESEND_API_KEY);
 const rateLimitMap = new Map();
 
+// Escape HTML to prevent XSS injection into the email body
+function escapeHtml(str) {
+  if (!str) return "";
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 export async function POST(request) {
-  const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
+  // Rate limiting — max 3 submissions per IP per hour
+  const ip =
+    request.headers.get("x-forwarded-for") ||
+    request.headers.get("x-real-ip") ||
+    "unknown";
   const now = Date.now();
   let timestamps = rateLimitMap.get(ip) || [];
-  timestamps = timestamps.filter(t => now - t < 60 * 60 * 1000);
+  timestamps = timestamps.filter((t) => now - t < 60 * 60 * 1000);
 
   if (timestamps.length >= 3) {
-    return NextResponse.json({ success: false, error: "Too many requests. Please try again later." }, { status: 429 });
+    return NextResponse.json(
+      { success: false, error: "Too many requests. Please try again later." },
+      { status: 429 }
+    );
   }
 
   timestamps.push(now);
   rateLimitMap.set(ip, timestamps);
 
   try {
-    const { name, email, phone, service, message, website } = await request.json();
+    const { name, email, phone, service, message, website } =
+      await request.json();
 
+    // Honeypot — bots fill the hidden "website" field, humans don't
     if (website) {
       return NextResponse.json({ success: true }, { status: 200 });
     }
 
+    // Sanitize all user inputs before inserting into HTML
+    const safeName    = escapeHtml(name);
+    const safeEmail   = escapeHtml(email);
+    const safePhone   = escapeHtml(phone);
+    const safeService = escapeHtml(service);
+    const safeMessage = escapeHtml(message);
+
     await resend.emails.send({
-      from: "Clarivex Solution <onboarding@resend.dev>",
+      from: process.env.FROM_EMAIL || "ClariVex Solutions <onboarding@resend.dev>",
       to: process.env.CONTACT_EMAIL,
-      replyTo: email,
-      subject: service ? `New Enquiry from ${name} — ${service}` : `New Enquiry from ${name}`,
+      replyTo: safeEmail,
+      subject: safeService
+        ? `New Enquiry from ${safeName} — ${safeService}`
+        : `New Enquiry from ${safeName}`,
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #1a1a2e; border-bottom: 2px solid #6aa595; padding-bottom: 10px;">New Contact Form Enquiry</h2>
+          <h2 style="color: #1a1a2e; border-bottom: 2px solid #6aa595; padding-bottom: 10px;">
+            New Contact Form Enquiry
+          </h2>
           <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
             <tr>
               <td style="padding: 12px 8px; border-bottom: 1px solid #e2e4e9; width: 30%; color: #5a6478;"><strong>Name:</strong></td>
-              <td style="padding: 12px 8px; border-bottom: 1px solid #e2e4e9; color: #1a1a2e;">${name}</td>
+              <td style="padding: 12px 8px; border-bottom: 1px solid #e2e4e9; color: #1a1a2e;">${safeName}</td>
             </tr>
             <tr>
               <td style="padding: 12px 8px; border-bottom: 1px solid #e2e4e9; color: #5a6478;"><strong>Email:</strong></td>
-              <td style="padding: 12px 8px; border-bottom: 1px solid #e2e4e9; color: #1a1a2e;">${email}</td>
+              <td style="padding: 12px 8px; border-bottom: 1px solid #e2e4e9; color: #1a1a2e;">${safeEmail}</td>
             </tr>
             <tr>
               <td style="padding: 12px 8px; border-bottom: 1px solid #e2e4e9; color: #5a6478;"><strong>Phone:</strong></td>
-              <td style="padding: 12px 8px; border-bottom: 1px solid #e2e4e9; color: #1a1a2e;">${phone || "Not provided"}</td>
+              <td style="padding: 12px 8px; border-bottom: 1px solid #e2e4e9; color: #1a1a2e;">${safePhone || "Not provided"}</td>
             </tr>
             <tr>
               <td style="padding: 12px 8px; border-bottom: 1px solid #e2e4e9; color: #5a6478;"><strong>Service:</strong></td>
-              <td style="padding: 12px 8px; border-bottom: 1px solid #e2e4e9; color: #1a1a2e;">${service || "Not specified"}</td>
+              <td style="padding: 12px 8px; border-bottom: 1px solid #e2e4e9; color: #1a1a2e;">${safeService || "Not specified"}</td>
             </tr>
             <tr>
               <td style="padding: 12px 8px; border-bottom: 1px solid #e2e4e9; color: #5a6478; vertical-align: top;"><strong>Message:</strong></td>
-              <td style="padding: 12px 8px; border-bottom: 1px solid #e2e4e9; color: #1a1a2e; white-space: pre-wrap;">${message}</td>
+              <td style="padding: 12px 8px; border-bottom: 1px solid #e2e4e9; color: #1a1a2e; white-space: pre-wrap;">${safeMessage}</td>
             </tr>
           </table>
         </div>
@@ -61,7 +92,7 @@ export async function POST(request) {
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (error) {
     return NextResponse.json(
-      { success: false, error: error.message },
+      { success: false, error: "Failed to send message. Please try again." },
       { status: 500 }
     );
   }

@@ -3,8 +3,12 @@ export const dynamic = 'force-dynamic';
 import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 
-export async function GET() {
+export async function GET(request) {
   try {
+    const { searchParams } = new URL(request.url);
+    const limit = Math.min(parseInt(searchParams.get('limit') || '200'), 500);
+    const cursor = searchParams.get('cursor') || undefined;
+
     const newsArticles = await prisma.newsArticle.findMany({
       select: {
         id: true,
@@ -20,12 +24,16 @@ export async function GET() {
         createdAt: true,
       },
       orderBy: { publishedAt: 'desc' },
+      take: limit,
+      ...(cursor ? { skip: 1, cursor: { id: cursor } } : {}),
     });
 
-    return NextResponse.json(newsArticles);
+    const nextCursor =
+      newsArticles.length === limit ? newsArticles[newsArticles.length - 1].id : null;
+
+    return NextResponse.json({ articles: newsArticles, nextCursor });
   } catch (error) {
     console.error('Error fetching news articles:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
-

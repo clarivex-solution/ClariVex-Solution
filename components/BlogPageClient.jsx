@@ -78,7 +78,7 @@ export default function BlogPageClient() {
       try {
         const response = await fetch("/api/blog");
         const data = await response.json();
-        if (isMounted) setBlogPosts(Array.isArray(data) ? data : []);
+        if (isMounted) setBlogPosts(Array.isArray(data.blogs) ? data.blogs : [])
       } catch {
         if (isMounted) setBlogPosts([]);
       } finally {

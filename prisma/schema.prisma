@@ -19,6 +19,9 @@ model Blog {
   publishedAt DateTime?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+
+  @@index([status, publishedAt])
+  @@index([country, status])
 }
 
 model NewsArticle {
@@ -33,6 +36,10 @@ model NewsArticle {
   sourceType  String
   publishedAt DateTime
   createdAt   DateTime @default(now())
+
+  @@index([country, publishedAt])
+  @@index([publishedAt])
+  @@index([country, category])
 }
 
 model BlockedUrl {
@@ -46,4 +53,6 @@ model AdminSession {
   token     String   @unique
   expiresAt DateTime
   createdAt DateTime @default(now())
+
+  @@index([expiresAt])
 }

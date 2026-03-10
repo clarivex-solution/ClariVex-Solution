@@ -1,7 +1,18 @@
 import { siteUrl } from "@/lib/constants";
 
+// Shared org object — reused across all schemas to avoid duplication
+const CLARIVEX_ORG = {
+  "@type": "Organization",
+  name: "ClariVex Solutions",
+  url: siteUrl,
+  logo: {
+    "@type": "ImageObject",
+    url: `${siteUrl}/logo.png`,
+  },
+};
+
 /**
- * AccountingService JSON-LD schema for homepage and country pages.
+ * AccountingService JSON-LD for homepage and country pages.
  */
 export function AccountingServiceSchema({ countryCode, content }) {
   const path = countryCode === "general" ? "" : `/${countryCode}`;
@@ -24,7 +35,7 @@ export function AccountingServiceSchema({ countryCode, content }) {
       addressCountry: "IN",
     },
     areaServed: Array.isArray(schema.areaServed)
-      ? schema.areaServed.map((c) => ({ "@type": "Country", "name": c }))
+      ? schema.areaServed.map((c) => ({ "@type": "Country", name: c }))
       : { "@type": "Country", name: schema.areaServed || "US" },
     priceRange: "$$",
     image: `${siteUrl}/og-image.png`,
@@ -40,7 +51,7 @@ export function AccountingServiceSchema({ countryCode, content }) {
 }
 
 /**
- * BlogPosting JSON-LD schema for individual blog posts.
+ * BlogPosting JSON-LD for individual blog posts.
  */
 export function BlogPostingSchema({ post }) {
   const jsonLd = {
@@ -50,25 +61,13 @@ export function BlogPostingSchema({ post }) {
     description: post.excerpt,
     datePublished: post.isoDate || "2026-03-01",
     dateModified: post.isoDate || "2026-03-01",
-    author: {
-      "@type": "Organization",
-      name: "ClariVex Solutions",
-      url: siteUrl,
-    },
-    publisher: {
-      "@type": "Organization",
-      name: "ClariVex Solutions",
-      url: siteUrl,
-      logo: {
-        "@type": "ImageObject",
-        url: `${siteUrl}/logo.png`,
-      },
-    },
+    author: CLARIVEX_ORG,
+    publisher: CLARIVEX_ORG,
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": `${siteUrl}/blog/${post.slug}`,
     },
-    image: `${siteUrl}/og-image.png`,
+    image: post.coverImage || `${siteUrl}/og-image.png`,
   };
 
   return (
@@ -80,7 +79,7 @@ export function BlogPostingSchema({ post }) {
 }
 
 /**
- * NewsArticle JSON-LD schema for individual news posts.
+ * NewsArticle JSON-LD for individual news posts.
  */
 export function NewsArticleSchema({ post }) {
   const jsonLd = {
@@ -90,16 +89,8 @@ export function NewsArticleSchema({ post }) {
     description: post.summary,
     datePublished: post.isoDate || "2026-03-01",
     dateModified: post.isoDate || "2026-03-01",
-    author: {
-      "@type": "Organization",
-      name: "ClariVex Solutions",
-      url: siteUrl,
-    },
-    publisher: {
-      "@type": "Organization",
-      name: "ClariVex Solutions",
-      url: siteUrl,
-    },
+    author: CLARIVEX_ORG,
+    publisher: CLARIVEX_ORG,
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": `${siteUrl}/news/${post.slug}`,
@@ -115,8 +106,7 @@ export function NewsArticleSchema({ post }) {
 }
 
 /**
- * BreadcrumbList JSON-LD schema.
- * @param {Array} items - [{name, href}] breadcrumb trail
+ * BreadcrumbList JSON-LD.
  */
 export function BreadcrumbSchema({ items }) {
   const jsonLd = {
@@ -139,20 +129,35 @@ export function BreadcrumbSchema({ items }) {
 }
 
 /**
- * FAQPage JSON-LD schema.
- * @param {Array} faqs - [{question, answer}]
+ * AggregateRating + Review schema for testimonials section.
+ * Add to homepage and country pages.
  */
-export function FAQSchema({ faqs }) {
+export function TestimonialsSchema({ testimonials }) {
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: faqs.map((faq) => ({
-      "@type": "Question",
-      name: faq.question,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: faq.answer,
+    "@type": "AccountingService",
+    name: "ClariVex Solutions",
+    url: siteUrl,
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: "5",
+      reviewCount: String(testimonials.length),
+      bestRating: "5",
+      worstRating: "1",
+    },
+    review: testimonials.map((t) => ({
+      "@type": "Review",
+      author: {
+        "@type": "Person",
+        name: t.name,
       },
+      reviewRating: {
+        "@type": "Rating",
+        ratingValue: String(t.rating),
+        bestRating: "5",
+      },
+      reviewBody: t.text,
+      name: `${t.company} Review`,
     })),
   };
 
