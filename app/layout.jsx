@@ -17,24 +17,33 @@ const inter = Inter({
 export const metadata = {
   title: {
     template: "%s | ClariVex Solutions",
-    default:
-      "ClariVex Solutions — Elite Outsourced Accounting for US, UK, AU & CA", // was 42 chars, now 60
+    default: "ClariVex Solutions — Elite Outsourced Accounting for US, UK, AU & CA",
   },
   description:
     "ClariVex Solutions provides elite outsourced accounting, bookkeeping, tax planning and payroll services for businesses across the US, UK, Australia and Canada.",
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "https://clarivex.net",
+    process.env.NEXT_PUBLIC_SITE_URL || "https://clarivex-website.vercel.app"
   ),
-
   alternates: {
-    canonical: "https://clarivex.net",
+    canonical: process.env.NEXT_PUBLIC_SITE_URL || "https://clarivex-website.vercel.app",
     languages: {
-      "en-US": "https://clarivex.net/us",
-      "en-GB": "https://clarivex.net/uk",
-      "en-AU": "https://clarivex.net/au",
-      "en-CA": "https://clarivex.net/ca",
-      "x-default": "https://clarivex.net",
+      "en-US": `${process.env.NEXT_PUBLIC_SITE_URL || "https://clarivex-website.vercel.app"}/us`,
+      "en-GB": `${process.env.NEXT_PUBLIC_SITE_URL || "https://clarivex-website.vercel.app"}/uk`,
+      "en-AU": `${process.env.NEXT_PUBLIC_SITE_URL || "https://clarivex-website.vercel.app"}/au`,
+      "en-CA": `${process.env.NEXT_PUBLIC_SITE_URL || "https://clarivex-website.vercel.app"}/ca`,
+      "x-default": process.env.NEXT_PUBLIC_SITE_URL || "https://clarivex-website.vercel.app",
     },
+  },
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+    shortcut: "/favicon.ico",
   },
 };
 
