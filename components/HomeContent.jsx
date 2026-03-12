@@ -151,17 +151,17 @@ export default function HomeContent() {
             Comprehensive Financial Solutions
           </h2>
           <p className="text-[#5a6478] text-base mb-10 max-w-xl sm:text-lg sm:mb-14 lg:mb-16">
-            End-to-end accounting and finance support — built for growing businesses across US, UK, AU &amp; CA.
+            End-to-end accounting and finance support - built for growing businesses across US, UK, AU &amp; CA.
           </p>
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
             {serviceCards.map((service, index) => {
               const hiddenOnMobile = !showAllServices && index >= SERVICES_INITIAL_MOBILE;
               const hiddenOnTablet = !showAllServices && index >= SERVICES_INITIAL_TABLET;
-              // hidden on mobile (<sm) if beyond 4, hidden on tablet (sm–lg) if beyond 6, always visible on lg+
+              // hidden on mobile (<sm) if beyond 4, hidden on tablet (sm-lg) if beyond 6, always visible on lg+
               const visibilityClass = hiddenOnMobile
                 ? hiddenOnTablet
-                  ? "hidden lg:flex"   // hidden on both mobile & tablet → show only on lg+
-                  : "hidden sm:flex lg:flex"   // hidden on mobile only → show on sm+
+                  ? "hidden lg:flex"   // hidden on both mobile & tablet -> show only on lg+
+                  : "hidden sm:flex lg:flex"   // hidden on mobile only -> show on sm+
                 : "";
               return (
                 <Link key={service.title} href={service.href} className={`h-full ${visibilityClass || "flex"}`}>
@@ -180,7 +180,7 @@ export default function HomeContent() {
             })}
           </div>
 
-          {/* Load More — only on mobile & tablet, hidden on lg+ */}
+          {/* Load More - only on mobile & tablet, hidden on lg+ */}
           {!showAllServices && (
             <div className="mt-8 flex flex-col items-center gap-2 lg:hidden">
               <button
@@ -212,7 +212,7 @@ export default function HomeContent() {
             Software We Work With
           </h2>
           <p className="mt-3 mb-10 max-w-xl text-[#5a6478] sm:mb-14">
-            Built on the tools modern finance teams rely on. We adapt to your systems — no forced migrations, no disruption.
+            Built on the tools modern finance teams rely on. We adapt to your systems - no forced migrations, no disruption.
           </p>
           <div className="grid gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
             {content.softwareColumns.map((column) => {
@@ -245,7 +245,7 @@ export default function HomeContent() {
               <div className="w-8 h-8 bg-[#e2e4e9]/80 rounded-[8px] flex items-center justify-center shrink-0">
                 <Shield className="h-4 w-4 text-[#5a688e]" />
               </div>
-              <span className="text-sm text-[#5a6478]">We adapt to your systems — no forced migrations, no disruption.</span>
+              <span className="text-sm text-[#5a6478]">We adapt to your systems - no forced migrations, no disruption.</span>
             </div>
           </div>
         </div>
@@ -298,7 +298,7 @@ export default function HomeContent() {
 
                 <div className="flex gap-0.5 mb-4">
                   {Array.from({ length: t.rating }).map((_, i) => (
-                    <span key={i} className="text-[#c9a96e] text-lg">★</span>
+                    <span key={i} className="text-[#c9a96e] text-lg">&#9733;</span>
                   ))}
                 </div>
 
@@ -312,7 +312,19 @@ export default function HomeContent() {
                     <p className="font-semibold text-[#1a1a2e] text-sm truncate">{t.name}</p>
                     <p className="text-[#8892a4] text-xs truncate">{t.role}, {t.company}</p>
                   </div>
-                  <img src={t.flag} alt={t.country} className="w-5 h-auto ml-auto shrink-0 rounded-sm" />
+                  {t.logo && (
+                    <div
+                      className={`ml-auto rounded-md px-2 py-1 flex items-center justify-center w-24 h-9 shrink-0 ${
+                        t.company === "Travel Clues" ? "bg-[#1a1a2e]" : "bg-gray-100"
+                      }`}
+                    >
+                      <img
+                        src={t.logo}
+                        alt={t.company}
+                        className={`${t.logoSize === "large" ? "max-h-8" : "max-h-6"} max-w-full w-auto object-contain`}
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
@@ -391,7 +403,7 @@ export default function HomeContent() {
                   <Link href="https://maps.google.com/?q=421+Shivalik+Shilp+Iscon+Cross+Road+SG+Highway+Ahmedabad+380058"
                     target="_blank" rel="noopener noreferrer"
                     className="text-sm leading-relaxed text-[#5a6478] transition-colors hover:text-[#6aa595] hover:underline">
-                    421, Shivalik Shilp, Iscon Cross Road,<br />S.G. Highway, Ahmedabad – 380058
+                    421, Shivalik Shilp, Iscon Cross Road,<br />S.G. Highway, Ahmedabad - 380058
                   </Link>
                 </div>
                 <div className="flex items-start gap-3">
@@ -441,3 +453,5 @@ export default function HomeContent() {
     </main>
   );
 }
+
+
