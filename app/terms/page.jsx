@@ -1,5 +1,4 @@
 import Breadcrumbs from '@/components/Breadcrumbs';
-import PrintPageButton from '@/components/PrintPageButton';
 
 export function generateMetadata() {
   return {
@@ -99,18 +98,17 @@ const sections = [
 export default function TermsPage() {
   return (
     <main className="min-h-screen bg-[#f8f9fa] text-[#1a1a2e] font-[family-name:var(--font-inter)]">
-      <section className="bg-[#1a1a2e] py-12 sm:py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex items-start justify-between gap-4">
-            <div className="min-w-0 flex-1">
-              <div className="mb-6 [&_nav]:text-[#8892a4] [&_a]:text-[#8892a4] [&_a:hover]:text-white [&_span]:text-white">
-                <Breadcrumbs items={breadcrumbItems} />
-              </div>
-              <div className="h-px w-16 bg-[#c9a96e]" />
-              <h1 className="mt-6 font-[family-name:var(--font-playfair)] text-4xl sm:text-5xl text-white font-bold">Terms &amp; Conditions</h1>
-              <p className="mt-4 text-xs tracking-widest uppercase text-[#6aa595]">Last Updated: March 1, 2026</p>
+      <section className="relative overflow-hidden bg-[#f4f3ee] py-12 sm:py-16">
+        <div className="pointer-events-none absolute -right-20 -top-20 h-[300px] w-[300px] rounded-full bg-[#5a688e]/6 blur-[110px] sm:h-[420px] sm:w-[420px]" />
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.03)_1px,transparent_1px)] bg-[size:60px_60px] sm:bg-[size:80px_80px]" />
+        <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="min-w-0 flex-1">
+            <div className="mb-6 [&_nav]:text-[#5a6478] [&_a]:text-[#5a6478] [&_a:hover]:text-[#1a1a2e] [&_span]:text-[#1a1a2e]">
+              <Breadcrumbs items={breadcrumbItems} />
             </div>
-            <PrintPageButton className="shrink-0" />
+            <div className="h-px w-16 bg-[#c9a96e]" />
+            <h1 className="mt-6 font-[family-name:var(--font-playfair)] text-4xl sm:text-5xl text-[#1a1a2e] font-bold">Terms &amp; Conditions</h1>
+            <p className="mt-4 text-xs tracking-widest uppercase text-[#6aa595]">Last Updated: March 1, 2026</p>
           </div>
         </div>
       </section>

@@ -1,5 +1,4 @@
 import Breadcrumbs from '@/components/Breadcrumbs';
-import PrintPageButton from '@/components/PrintPageButton';
 
 export function generateMetadata() {
   return {
@@ -38,7 +37,7 @@ const sections = [
     id: 'section-4',
     number: '04',
     title: 'Legal Basis',
-    body: 'For UK and EU data subjects: Article 6(1)(b) contractual necessity for service delivery; Article 6(1)(c) legal obligation for regulatory compliance; Article 6(1)(a) consent for marketing. For AU clients: Privacy Act 1988. For CA clients: PIPEDA. For US clients: applicable state laws including CCPA — we do not sell personal data.',
+    body: 'For UK and EU data subjects: Article 6(1)(b) contractual necessity for service delivery; Article 6(1)(c) legal obligation for regulatory compliance; Article 6(1)(a) consent for marketing. For AU clients: Privacy Act 1988. For CA clients: PIPEDA. For US clients: applicable state laws including CCPA â€” we do not sell personal data.',
   },
   {
     id: 'section-5',
@@ -56,7 +55,7 @@ const sections = [
     id: 'section-7',
     number: '07',
     title: 'Data Processors',
-    body: 'We share data only with the following processors under data processing agreements: Resend (email delivery — EU-US Standard Contractual Clauses in place); Cloudinary (image hosting — SOC 2 Type II); Neon (database hosting — GDPR compliant, EU data residency available); Vercel (hosting — SOC 2 Type II, DPA available). We do not use advertising networks or data brokers.',
+    body: 'We share data only with the following processors under data processing agreements: Resend (email delivery â€” EU-US Standard Contractual Clauses in place); Cloudinary (image hosting â€” SOC 2 Type II); Neon (database hosting â€” GDPR compliant, EU data residency available); Vercel (hosting â€” SOC 2 Type II, DPA available). We do not use advertising networks or data brokers.',
   },
   {
     id: 'section-8',
@@ -68,7 +67,7 @@ const sections = [
     id: 'section-9',
     number: '09',
     title: 'Your Rights',
-    body: 'UK/EU data subjects have rights to access, rectification, erasure, restriction, portability, and objection, and may lodge a complaint with the ICO at ico.org.uk. AU clients have access and correction rights under the Privacy Act 1988, with complaints to the OAIC. CA clients have rights to access, correction, and withdrawal of consent under PIPEDA. California residents have rights under CCPA to know, delete, and opt out of sale — we do not sell data.',
+    body: 'UK/EU data subjects have rights to access, rectification, erasure, restriction, portability, and objection, and may lodge a complaint with the ICO at ico.org.uk. AU clients have access and correction rights under the Privacy Act 1988, with complaints to the OAIC. CA clients have rights to access, correction, and withdrawal of consent under PIPEDA. California residents have rights under CCPA to know, delete, and opt out of sale â€” we do not sell data.',
   },
   {
     id: 'section-10',
@@ -99,18 +98,17 @@ const sections = [
 export default function PrivacyPage() {
   return (
     <main className="min-h-screen bg-[#f8f9fa] text-[#1a1a2e] font-[family-name:var(--font-inter)]">
-      <section className="bg-[#1a1a2e] py-12 sm:py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex items-start justify-between gap-4">
-            <div className="min-w-0 flex-1">
-              <div className="mb-6 [&_nav]:text-[#8892a4] [&_a]:text-[#8892a4] [&_a:hover]:text-white [&_span]:text-white">
-                <Breadcrumbs items={breadcrumbItems} />
-              </div>
-              <div className="h-px w-16 bg-[#c9a96e]" />
-              <h1 className="mt-6 font-[family-name:var(--font-playfair)] text-4xl sm:text-5xl text-white font-bold">Privacy Policy</h1>
-              <p className="mt-4 text-xs tracking-widest uppercase text-[#6aa595]">Last Updated: March 1, 2026</p>
+      <section className="relative overflow-hidden bg-[#f4f3ee] py-12 sm:py-16">
+        <div className="pointer-events-none absolute -right-20 -top-20 h-[300px] w-[300px] rounded-full bg-[#5a688e]/6 blur-[110px] sm:h-[420px] sm:w-[420px]" />
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.03)_1px,transparent_1px)] bg-[size:60px_60px] sm:bg-[size:80px_80px]" />
+        <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="min-w-0 flex-1">
+            <div className="mb-6 [&_nav]:text-[#5a6478] [&_a]:text-[#5a6478] [&_a:hover]:text-[#1a1a2e] [&_span]:text-[#1a1a2e]">
+              <Breadcrumbs items={breadcrumbItems} />
             </div>
-            <PrintPageButton className="shrink-0" />
+            <div className="h-px w-16 bg-[#c9a96e]" />
+            <h1 className="mt-6 font-[family-name:var(--font-playfair)] text-4xl sm:text-5xl text-[#1a1a2e] font-bold">Privacy Policy</h1>
+            <p className="mt-4 text-xs tracking-widest uppercase text-[#6aa595]">Last Updated: March 1, 2026</p>
           </div>
         </div>
       </section>

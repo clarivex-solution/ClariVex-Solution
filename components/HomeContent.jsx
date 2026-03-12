@@ -281,14 +281,14 @@ export default function HomeContent() {
         </div>
       </section>
 
-      <section id="testimonials" className="bg-[#f4f3ee] py-16 sm:py-20 lg:py-24">
+      <section id="testimonials" className="bg-white py-16 sm:py-20 lg:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
           <div className="mb-4 h-px w-12 bg-[#c9a96e] sm:mb-6 sm:w-16" />
           <h2 className="font-[family-name:var(--font-playfair)] text-3xl font-bold text-[#1a1a2e] sm:text-4xl">
             What Our Clients Say
           </h2>
           <p className="mt-3 text-[#5a6478] max-w-xl">
-            Trusted by businesses across the US, UK, Australia &amp; Canada
+            Trusted by businesses and entrepreneurs across India and beyond.
           </p>
 
           <div className="mt-10 grid gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
@@ -333,7 +333,7 @@ export default function HomeContent() {
       </section>
 
       {/* About */}
-      <section id="about" className="bg-[#f4f3ee] py-16 sm:py-20 lg:py-24">
+      <section id="about" className="bg-[#f8f9fa] py-16 sm:py-20 lg:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
           <div className="grid grid-cols-1 items-center gap-10 sm:gap-12 lg:grid-cols-[45%_1fr] lg:gap-20">
             {/* Card left */}
@@ -385,7 +385,7 @@ export default function HomeContent() {
       </section>
 
       {/* Contact */}
-      <section id="contact" className="bg-[#f4f3ee] py-14 sm:py-20 lg:py-32">
+      <section id="contact" className="bg-white py-14 sm:py-20 lg:py-32">
         <div className="w-full">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
             <div className="mx-auto mb-4 h-px w-12 bg-[#c9a96e] sm:mb-6 sm:w-16" />

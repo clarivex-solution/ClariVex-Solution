@@ -10,12 +10,12 @@ import { useEffect, useRef, useState } from "react";
 
 const navLinks = [
   { label: 'Home', href: '/' },
-  { label: 'Process', href: '/#process' },
-  { label: 'Services', href: '/#services' },
+  { label: 'Process', href: '/', sectionId: 'process' },
+  { label: 'Services', href: '/', sectionId: 'services' },
   { label: 'Blog', href: '/blog' },
   { label: 'News', href: '/news' },
-  { label: 'About', href: '/#about' },
-  { label: 'Contact', href: '/#contact' },
+  { label: 'About', href: '/', sectionId: 'about' },
+  { label: 'Contact', href: '/', sectionId: 'contact' },
 ];
 
 const allOptions = [...countries, generalCountry];
@@ -49,26 +49,24 @@ export default function Navbar() {
 
   useEffect(() => {
     if (pathname !== '/') { setActiveSection(''); return; }
-    const sectionIds = ['services', 'process', 'about', 'contact'];
-    const observers = sectionIds.map((id) => {
-      const el = document.getElementById(id);
-      if (!el) return null;
-      const observer = new IntersectionObserver(
-        ([entry]) => { if (entry.isIntersecting) setActiveSection(id); },
-        { rootMargin: '-40% 0px -55% 0px', threshold: 0 }
-      );
-      observer.observe(el);
-      return observer;
-    });
-    const handleScroll = () => { if (window.scrollY < 100) setActiveSection(''); };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => {
-      observers.forEach((obs, i) => {
-        const el = document.getElementById(sectionIds[i]);
-        if (obs && el) obs.unobserve(el);
-      });
-      window.removeEventListener('scroll', handleScroll);
-    };
+    const sectionIds = ['contact', 'about', 'testimonials', 'services', 'process'];
+    function onScroll() {
+      if (window.scrollY < 80) { setActiveSection(''); return; }
+      const scrollMid = window.scrollY + window.innerHeight / 2;
+      for (const id of sectionIds) {
+        const el = document.getElementById(id);
+        if (!el) continue;
+        const { offsetTop, offsetHeight } = el;
+        if (scrollMid >= offsetTop && scrollMid < offsetTop + offsetHeight) {
+          setActiveSection(id);
+          return;
+        }
+      }
+      setActiveSection('');
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener('scroll', onScroll);
   }, [pathname]);
 
   useEffect(() => {
@@ -112,10 +110,46 @@ export default function Navbar() {
     setIsMobileOpen(false);
   }
 
-  const isActive = (href) => {
-    if (href === '/') return pathname === '/' && activeSection === '';
-    if (href.startsWith('/#')) return activeSection === href.replace('/#', '');
-    return pathname === href;
+  function handleHomeNavigation(event, closeMobile = false) {
+    if (pathname === "/") {
+      event.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      setActiveSection('');
+    }
+    if (closeMobile) setIsMobileOpen(false);
+  }
+
+  function scrollToSection(sectionId) {
+    document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
+  }
+
+  function handleSectionNavigation(event, sectionId, closeMobile = false) {
+    event.preventDefault();
+    if (pathname === "/") {
+      scrollToSection(sectionId);
+    } else {
+      window.sessionStorage.setItem("pendingSection", sectionId);
+      router.push("/");
+    }
+    if (closeMobile) setIsMobileOpen(false);
+  }
+
+  useEffect(() => {
+    if (pathname !== "/") return;
+    const pendingSection = window.sessionStorage.getItem("pendingSection");
+    if (!pendingSection) return;
+    window.sessionStorage.removeItem("pendingSection");
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        scrollToSection(pendingSection);
+      });
+    });
+  }, [pathname]);
+
+  const isActive = (link) => {
+    if (link.sectionId) return pathname === "/" && activeSection === link.sectionId;
+    if (link.href === '/') return pathname === '/' && activeSection === '';
+    return pathname === link.href;
   };
 
   return (
@@ -129,10 +163,23 @@ export default function Navbar() {
           {/* Desktop nav */}
           <nav className="hidden items-center justify-center gap-1 md:flex md:flex-1 lg:gap-2">
             {navLinks.map((link) => {
-              const active = isActive(link.href);
+              const active = isActive(link);
+              const className = `relative whitespace-nowrap px-2 py-1 text-[13px] transition-all duration-200 ${active ? 'text-[#1a1a2e] font-semibold' : 'text-[#5a6478] font-medium hover:text-[#1a1a2e]'}`;
+              if (link.sectionId) {
+                return (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    aria-current={active ? "page" : undefined}
+                    onClick={(e) => handleSectionNavigation(e, link.sectionId)}
+                    className={className}
+                  >
+                    <span className="inline-block transition-transform duration-200 hover:-translate-y-px">{link.label}</span>
+                  </a>
+                );
+              }
               return (
-                <Link key={link.label} href={link.href} aria-current={active ? "page" : undefined}
-                  className={`relative whitespace-nowrap px-2 py-1 text-[13px] transition-all duration-200 ${active ? 'text-[#1a1a2e] font-semibold' : 'text-[#5a6478] font-medium hover:text-[#1a1a2e]'}`}>
+                <Link key={link.label} href={link.href} aria-current={active ? "page" : undefined} className={className} onClick={(e) => link.href === "/" ? handleHomeNavigation(e) : undefined}>
                   <span className="inline-block transition-transform duration-200 hover:-translate-y-px">{link.label}</span>
                 </Link>
               );
@@ -167,7 +214,7 @@ export default function Navbar() {
                   <button type="button" onClick={handleDetectLocation} disabled={detecting}
                     className="flex w-full items-center gap-3 px-4 py-3 border-t border-[#e2e4e9] cursor-pointer hover:bg-[#f8f9fa] transition-colors group disabled:opacity-60 disabled:cursor-not-allowed">
                     {detecting ? <Loader2 className="h-4 w-4 animate-spin text-[#6aa595]" /> : <LocateFixed className="h-4 w-4 text-[#5a688e]" />}
-                    <span className="text-sm text-[#5a6478] group-hover:text-[#1a1a2e] transition-colors">{detecting ? "Detecting..." : "Detect my location"}</span>
+                    {detecting ? "Detecting..." : "Detect my location"}
                   </button>
                   <div className="px-4 py-3 border-t border-[#e2e4e9]">
                     <p className="text-[#5a6478] text-[10px] leading-relaxed">Content adapts to your selected region</p>
@@ -221,18 +268,32 @@ export default function Navbar() {
             {/* Nav links */}
             <nav className="mt-2">
               {navLinks.map((link) => {
-                const active = isActive(link.href);
+                const active = isActive(link);
+                const className = `flex items-center border-b border-[#f0f0f0] py-4 text-[15px] transition-colors ${
+                  active
+                    ? "font-semibold text-[#1a1a2e]"
+                    : "font-normal text-[#5a6478] hover:text-[#1a1a2e]"
+                }`;
+                if (link.sectionId) {
+                  return (
+                    <a
+                      key={link.label}
+                      href={link.href}
+                      aria-current={active ? "page" : undefined}
+                      className={className}
+                      onClick={(e) => handleSectionNavigation(e, link.sectionId, true)}
+                    >
+                      {link.label}
+                    </a>
+                  );
+                }
                 return (
                   <Link
                     key={link.label}
                     href={link.href}
                     aria-current={active ? "page" : undefined}
-                    className={`flex items-center border-b border-[#f0f0f0] py-4 text-[15px] transition-colors ${
-                      active
-                        ? "font-semibold text-[#1a1a2e]"
-                        : "font-normal text-[#5a6478] hover:text-[#1a1a2e]"
-                    }`}
-                    onClick={() => setIsMobileOpen(false)}
+                    className={className}
+                    onClick={(e) => link.href === "/" ? handleHomeNavigation(e, true) : setIsMobileOpen(false)}
                   >
                     {link.label}
                   </Link>
@@ -277,7 +338,7 @@ export default function Navbar() {
                     : <LocateFixed className="h-4 w-4 text-[#5a688e]" />
                   }
                   <span className="text-sm font-medium">
-                    {detecting ? "Detecting…" : "Detect my location"}
+                    {detecting ? "Detecting..." : "Detect my location"}
                   </span>
                 </button>
               </div>
