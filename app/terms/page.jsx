@@ -2,8 +2,8 @@ import Breadcrumbs from '@/components/Breadcrumbs';
 
 export function generateMetadata() {
   return {
-    title: 'Terms & Conditions | ClariVex Solutions',
-    description: 'Terms and conditions governing ClariVex Solutions outsourced accounting and finance services for US, UK, AU, and CA clients.',
+    title: 'Terms & Conditions | ClariVex Solution',
+    description: 'Terms and conditions governing ClariVex Solution outsourced accounting and finance services for US, UK, AU, and CA clients.',
     alternates: { canonical: 'https://clarivex.net/terms' },
     robots: { index: true, follow: true },
   }
@@ -19,13 +19,13 @@ const sections = [
     id: 'section-1',
     number: '01',
     title: 'Acceptance of Terms',
-    body: 'By engaging ClariVex Solutions for outsourced accounting and finance services, you acknowledge that you have read, understood, and agree to be bound by these Terms and Conditions. These terms apply to clients in the United States, United Kingdom, Australia, and Canada.',
+    body: 'By engaging ClariVex Solution for outsourced accounting and finance services, you acknowledge that you have read, understood, and agree to be bound by these Terms and Conditions. These terms apply to clients in the United States, United Kingdom, Australia, and Canada.',
   },
   {
     id: 'section-2',
     number: '02',
     title: 'Services Provided',
-    body: 'ClariVex Solutions provides outsourced bookkeeping, bank reconciliation, accounts payable and receivable management, payroll processing, tax planning support, audit preparation, financial advisory, and data security consulting. All services are delivered remotely unless otherwise agreed in writing.',
+    body: 'ClariVex Solution provides outsourced bookkeeping, bank reconciliation, accounts payable and receivable management, payroll processing, tax planning support, audit preparation, financial advisory, and data security consulting. All services are delivered remotely unless otherwise agreed in writing.',
   },
   {
     id: 'section-3',
@@ -43,7 +43,7 @@ const sections = [
     id: 'section-5',
     number: '05',
     title: 'Intellectual Property',
-    body: 'All methodologies, templates, processes, and workflows used by ClariVex Solutions are proprietary to ClariVex Solutions. Client financial data remains the property of the client at all times.',
+    body: 'All methodologies, templates, processes, and workflows used by ClariVex Solution are proprietary to ClariVex Solution. Client financial data remains the property of the client at all times.',
   },
   {
     id: 'section-6',
@@ -55,13 +55,13 @@ const sections = [
     id: 'section-7',
     number: '07',
     title: 'Limitation of Liability',
-    body: 'ClariVex Solutions is not liable for business decisions made using our reports or advice, for losses caused by third-party software errors, or for losses arising from inaccurate or incomplete information provided by the client. Total aggregate liability in any 12-month period is limited to fees paid by the client in the preceding 3 months.',
+    body: 'ClariVex Solution is not liable for business decisions made using our reports or advice, for losses caused by third-party software errors, or for losses arising from inaccurate or incomplete information provided by the client. Total aggregate liability in any 12-month period is limited to fees paid by the client in the preceding 3 months.',
   },
   {
     id: 'section-8',
     number: '08',
     title: 'Indemnification',
-    body: 'The client agrees to indemnify and hold ClariVex Solutions harmless against third-party claims, liabilities, damages, and costs arising from inaccurate, incomplete, or fraudulent information provided by the client.',
+    body: 'The client agrees to indemnify and hold ClariVex Solution harmless against third-party claims, liabilities, damages, and costs arising from inaccurate, incomplete, or fraudulent information provided by the client.',
   },
   {
     id: 'section-9',
@@ -85,7 +85,7 @@ const sections = [
     id: 'section-12',
     number: '12',
     title: 'Amendments',
-    body: 'ClariVex Solutions may update these Terms from time to time. At least 30 days email notice will be provided for material changes. Continued use of services after the notice period constitutes acceptance.',
+    body: 'ClariVex Solution may update these Terms from time to time. At least 30 days email notice will be provided for material changes. Continued use of services after the notice period constitutes acceptance.',
   },
   {
     id: 'section-13',

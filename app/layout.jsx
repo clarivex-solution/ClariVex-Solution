@@ -16,22 +16,42 @@ const inter = Inter({
 
 export const metadata = {
   title: {
-    template: "%s | ClariVex Solutions",
-    default: "ClariVex Solutions — Elite Outsourced Accounting for US, UK, AU & CA",
+    template: "%s | ClariVex Solution",
+    default:
+      "ClariVex Solution | Elite Outsourced Accounting for US, UK, AU & CA",
   },
   description:
-    "ClariVex Solutions provides elite outsourced accounting, bookkeeping, tax planning and payroll services for businesses across the US, UK, Australia and Canada.",
+    "ClariVex Solution provides elite outsourced accounting, bookkeeping, tax planning and payroll services for businesses across the US, UK, Australia and Canada.",
+
+  keywords: [
+    "outsourced accounting",
+    "bookkeeping services",
+    "tax planning",
+    "payroll services",
+    "accounting outsourcing",
+    "accounting services USA UK AU CA",
+    "ClariVex Solution",
+  ],
+
+  robots: {
+    index: true,
+    follow: true,
+  },
+
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "https://clarivex-website.vercel.app"
+    process.env.NEXT_PUBLIC_SITE_URL || "https://clarivex-website.vercel.app",
   ),
   alternates: {
-    canonical: process.env.NEXT_PUBLIC_SITE_URL || "https://clarivex-website.vercel.app",
+    canonical:
+      process.env.NEXT_PUBLIC_SITE_URL || "https://clarivex-website.vercel.app",
     languages: {
       "en-US": `${process.env.NEXT_PUBLIC_SITE_URL || "https://clarivex-website.vercel.app"}/us`,
       "en-GB": `${process.env.NEXT_PUBLIC_SITE_URL || "https://clarivex-website.vercel.app"}/uk`,
       "en-AU": `${process.env.NEXT_PUBLIC_SITE_URL || "https://clarivex-website.vercel.app"}/au`,
       "en-CA": `${process.env.NEXT_PUBLIC_SITE_URL || "https://clarivex-website.vercel.app"}/ca`,
-      "x-default": process.env.NEXT_PUBLIC_SITE_URL || "https://clarivex-website.vercel.app",
+      "x-default":
+        process.env.NEXT_PUBLIC_SITE_URL ||
+        "https://clarivex-website.vercel.app",
     },
   },
   icons: {
@@ -58,4 +78,3 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
- 

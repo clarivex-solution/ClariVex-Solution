@@ -21,7 +21,7 @@ export async function generateMetadata({ params }) {
     title,
     description,
     keywords: [post.category, `${post.country} finance news`, 'financial news', post.source, 'accounting'].join(', '),
-    authors: [{ name: 'ClariVex Solutions', url: siteUrl }],
+    authors: [{ name: 'ClariVex Solution', url: siteUrl }],
     alternates: {
       canonical: `${siteUrl}/news/${slug}`,
     },
@@ -34,7 +34,7 @@ export async function generateMetadata({ params }) {
       modifiedTime: isoDate,
       section: post.category,
       tags: [post.category, post.country, 'finance', 'accounting', 'news'],
-      siteName: 'ClariVex Solutions',
+      siteName: 'ClariVex Solution',
       images: [{ url: `${siteUrl}/og-image.png`, width: 1200, height: 630, alt: post.title }],
     },
     twitter: {

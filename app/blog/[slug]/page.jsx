@@ -22,7 +22,7 @@ export async function generateMetadata({ params }) {
     title: `${post.title} | ClariVex Blog`,
     description: post.excerpt,
     keywords: [post.category, post.country ? `${post.country} accounting` : 'accounting', 'finance', 'bookkeeping', 'ClariVex'].join(', '),
-    authors: [{ name: 'ClariVex Solutions', url: siteUrl }],
+    authors: [{ name: 'ClariVex Solution', url: siteUrl }],
     alternates: {
       canonical: `${siteUrl}/blog/${slug}`,
     },
@@ -36,7 +36,7 @@ export async function generateMetadata({ params }) {
       authors: [`${siteUrl}`],
       section: post.category,
       tags: [post.category, 'accounting', 'finance'],
-      siteName: 'ClariVex Solutions',
+      siteName: 'ClariVex Solution',
       images: ogImage,
     },
     twitter: {

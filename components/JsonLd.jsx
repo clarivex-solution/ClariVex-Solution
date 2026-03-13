@@ -3,7 +3,7 @@ import { siteUrl } from "@/lib/constants";
 // Shared org object — reused across all schemas to avoid duplication
 const CLARIVEX_ORG = {
   "@type": "Organization",
-  name: "ClariVex Solutions",
+  name: "ClariVex Solution",
   url: siteUrl,
   logo: {
     "@type": "ImageObject",
@@ -21,7 +21,7 @@ export function AccountingServiceSchema({ countryCode, content }) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "AccountingService",
-    name: "ClariVex Solutions",
+    name: "ClariVex Solution",
     description: content.seo.description,
     url: `${siteUrl}${path}`,
     telephone: schema.telephone || "+919898028812",
@@ -136,7 +136,7 @@ export function TestimonialsSchema({ testimonials, serviceUrl }) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "AccountingService",
-    "name": "ClariVex Solutions",
+    "name": "ClariVex Solution",
     "url": serviceUrl || siteUrl,
     "aggregateRating": {
       "@type": "AggregateRating",

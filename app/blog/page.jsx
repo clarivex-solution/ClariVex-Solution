@@ -4,23 +4,23 @@ import { prisma } from '@/lib/prisma'
 
 export function generateMetadata() {
   return {
-    title: 'Accounting & Finance Blog | ClariVex Solutions',
+    title: 'Accounting & Finance Blog | ClariVex Solution',
     description: 'Expert insights on bookkeeping, tax compliance, payroll, and financial management for US, UK, AU, and CA businesses.',
     keywords: 'accounting blog, bookkeeping tips, tax compliance, payroll guide, financial advice, HMRC, IRS, ATO, CRA, outsourced accounting',
     alternates: {
       canonical: `${siteUrl}/blog`,
     },
     openGraph: {
-      title: 'Accounting & Finance Blog | ClariVex Solutions',
+      title: 'Accounting & Finance Blog | ClariVex Solution',
       description: 'Expert accounting and finance insights for US, UK, AU & CA businesses.',
       url: `${siteUrl}/blog`,
       type: 'website',
-      siteName: 'ClariVex Solutions',
+      siteName: 'ClariVex Solution',
       images: [{ url: `${siteUrl}/og-image.png`, width: 1200, height: 630 }],
     },
     twitter: {
       card: 'summary_large_image',
-      title: 'Accounting & Finance Blog | ClariVex Solutions',
+      title: 'Accounting & Finance Blog | ClariVex Solution',
       description: 'Expert accounting insights for US, UK, AU & CA businesses.',
       images: [`${siteUrl}/og-image.png`],
     },
@@ -41,7 +41,7 @@ export default async function BlogPage() {
     '@type': 'Blog',
     name: 'ClariVex Accounting & Finance Blog',
     url: `${siteUrl}/blog`,
-    publisher: { '@type': 'Organization', name: 'ClariVex Solutions', url: siteUrl },
+    publisher: { '@type': 'Organization', name: 'ClariVex Solution', url: siteUrl },
     blogPost: recentBlogs.map((b, i) => ({
       '@type': 'BlogPosting',
       position: i + 1,

@@ -374,7 +374,7 @@ export default function HomeContent() {
                 Professional Expertise<br />You Can Trust
               </h2>
               <p className="mt-5 text-[#5a6478] leading-relaxed text-base max-w-[440px] sm:mt-6 sm:text-lg">
-                ClariVex Solutions combines deep accounting discipline with modern process control to help leadership teams make faster and safer financial decisions.
+                ClariVex Solution combines deep accounting discipline with modern process control to help leadership teams make faster and safer financial decisions.
               </p>
               <p className="mt-4 text-[#5a6478] leading-relaxed max-w-[440px]">
                 From monthly close readiness to growth-stage advisory, our objective is to reduce friction in finance operations while improving transparency for founders, management, and stakeholders.

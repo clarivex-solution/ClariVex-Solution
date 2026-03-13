@@ -2,8 +2,8 @@ import Breadcrumbs from '@/components/Breadcrumbs';
 
 export function generateMetadata() {
   return {
-    title: 'Privacy Policy | ClariVex Solutions',
-    description: 'Privacy policy for ClariVex Solutions - how we collect, use, and protect personal data for US, UK, AU, and CA clients.',
+    title: 'Privacy Policy | ClariVex Solution',
+    description: 'Privacy policy for ClariVex Solution - how we collect, use, and protect personal data for US, UK, AU, and CA clients.',
     alternates: { canonical: 'https://clarivex.net/privacy' },
     robots: { index: true, follow: true },
   }
@@ -19,7 +19,7 @@ const sections = [
     id: 'section-1',
     number: '01',
     title: 'Introduction',
-    body: 'ClariVex Solutions is an outsourced accounting and finance firm delivering services to clients in the United States, United Kingdom, Australia, and Canada. This Privacy Policy explains how we collect, use, share, and protect personal data. We are committed to handling all information responsibly and in compliance with applicable privacy laws.',
+    body: 'ClariVex Solution is an outsourced accounting and finance firm delivering services to clients in the United States, United Kingdom, Australia, and Canada. This Privacy Policy explains how we collect, use, share, and protect personal data. We are committed to handling all information responsibly and in compliance with applicable privacy laws.',
   },
   {
     id: 'section-2',
@@ -91,7 +91,7 @@ const sections = [
     id: 'section-13',
     number: '13',
     title: 'Contact',
-    body: 'Email: privacy@clarivex.net. Address: ClariVex Solutions, 421 Shivalik Shilp, Iscon Cross Road, S.G. Highway, Ahmedabad 380058, India. For UK data subjects, ICO registration is in progress.',
+    body: 'Email: privacy@clarivex.net. Address: ClariVex Solution, 421 Shivalik Shilp, Iscon Cross Road, S.G. Highway, Ahmedabad 380058, India. For UK data subjects, ICO registration is in progress.',
   },
 ];
 

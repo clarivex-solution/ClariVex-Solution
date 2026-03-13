@@ -79,7 +79,7 @@ export default function AdminShell({ authenticated, children }) {
             <Link href="/" onClick={() => setSidebarOpen(false)}>
               <Image
                 src="/logo-dark.png"
-                alt="ClariVex Solutions"
+                alt="ClariVex Solution"
                 width={140}
                 height={40}
                 className="w-auto h-9 object-contain"
