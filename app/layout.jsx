@@ -21,7 +21,7 @@ export const metadata = {
       "ClariVex Solution | Elite Outsourced Accounting for US, UK, AU & CA",
   },
   description:
-    "ClariVex Solution provides elite outsourced accounting, bookkeeping, tax planning and payroll services for businesses across the US, UK, Australia and Canada.",
+    "ClariVex Solution provides elite outsourced accounting, bookkeeping, tax planning and payroll services for businesses across the US, UK, Australia and Canada. 15+ years experience serving 280+ clients worldwide.",
 
   keywords: [
     "outsourced accounting",
