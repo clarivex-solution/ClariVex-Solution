@@ -7,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import SectionLink from "@/components/SectionLink";
 
 const navLinks = [
   { label: 'Home', href: '/' },
@@ -223,10 +224,10 @@ export default function Navbar() {
               )}
             </div>
 
-            <Link href="/#contact"
+            <SectionLink href="/#contact" sectionId="contact"
               className="whitespace-nowrap rounded-full bg-[#1a1a2e] px-4 py-2 text-[13px] font-semibold text-white transition-colors duration-300 hover:bg-[#2d3550] active:scale-95">
               Book a Call
-            </Link>
+            </SectionLink>
           </div>
 
           {/* Mobile hamburger */}
@@ -350,16 +351,18 @@ export default function Navbar() {
 
           {/* Fixed bottom CTA */}
           <div className="shrink-0 border-t border-[#e2e4e9] px-5 py-4 sm:px-6">
-            <Link
+            <SectionLink
               href="/#contact"
+              sectionId="contact"
               className="block w-full rounded-full bg-[#1a1a2e] py-3.5 text-center text-sm font-semibold text-white transition-colors hover:bg-[#2d3550] active:scale-95"
               onClick={() => setIsMobileOpen(false)}
             >
               Book a Call
-            </Link>
+            </SectionLink>
           </div>
         </div>
       )}
     </>
   );
 }
+

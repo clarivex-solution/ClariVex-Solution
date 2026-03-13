@@ -1,6 +1,6 @@
 import { Building2, CheckCircle, Clock, Handshake } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
+import SectionLink from "@/components/SectionLink";
 
 const heroStats = [
   { value: "15+", label: "YEARS", Icon: Clock },
@@ -136,12 +136,12 @@ export default function Hero({ countryLabel, h1Line1, h1Line2, subtitle = defaul
             <p className="mx-auto mt-5 max-w-[480px] text-base leading-relaxed text-[#5a6478] sm:mt-6 md:mx-0">{subtitle}</p>
 
             <div className="mt-6 flex flex-row justify-center gap-3 md:justify-start">
-              <Link href="#contact" className="whitespace-nowrap rounded-full bg-[#1a1a2e] px-5 py-3 text-sm font-semibold text-white transition-all duration-300 hover:bg-[#2d3550] active:scale-95 sm:px-7 sm:py-3.5">
+              <SectionLink href="#contact" sectionId="contact" className="whitespace-nowrap rounded-full bg-[#1a1a2e] px-5 py-3 text-sm font-semibold text-white transition-all duration-300 hover:bg-[#2d3550] active:scale-95 sm:px-7 sm:py-3.5">
                 Talk to Experts
-              </Link>
-              <Link href="#process" className="whitespace-nowrap rounded-full border-2 border-[#1a1a2e] bg-transparent px-5 py-3 text-sm font-semibold text-[#1a1a2e] transition-all duration-300 hover:bg-[#1a1a2e] hover:text-white active:scale-95 sm:px-7 sm:py-3.5">
+              </SectionLink>
+              <SectionLink href="#process" sectionId="process" className="whitespace-nowrap rounded-full border-2 border-[#1a1a2e] bg-transparent px-5 py-3 text-sm font-semibold text-[#1a1a2e] transition-all duration-300 hover:bg-[#1a1a2e] hover:text-white active:scale-95 sm:px-7 sm:py-3.5">
                 See How It Works
-              </Link>
+              </SectionLink>
             </div>
           </div>
 
@@ -184,3 +184,4 @@ export default function Hero({ countryLabel, h1Line1, h1Line2, subtitle = defaul
     </section>
   );
 }
+
