@@ -47,7 +47,6 @@ function buildPostViewModel(dbPost) {
     headings,
     renderedContent,
     seoImage: dbPost.coverImage || FALLBACK_BLOG_IMAGE,
-    displayCoverImage: dbPost.coverImage || "/og-image.png",
   };
 }
 
@@ -185,14 +184,6 @@ export default async function BlogArticlePage({ params }) {
                 </span>
               </div>
             </header>
-
-            <div className="mx-auto mt-8 max-w-4xl overflow-hidden rounded-[28px] border border-[#e2e4e9] bg-white shadow-sm">
-              <img
-                src={post.displayCoverImage}
-                alt={post.title}
-                className="aspect-[16/9] w-full object-cover"
-              />
-            </div>
 
             <div className="mx-auto mt-8 max-w-3xl lg:hidden">
               <TableOfContents headings={post.headings} />

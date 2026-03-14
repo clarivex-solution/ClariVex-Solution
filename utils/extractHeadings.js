@@ -1,4 +1,4 @@
-const HEADING_REGEX = /<(h2|h3)([^>]*)>([\s\S]*?)<\/\1>/gi
+const HEADING_REGEX = /<(h2)([^>]*)>([\s\S]*?)<\/\1>/gi
 const ID_ATTRIBUTE_REGEX = /\sid=(['"])(.*?)\1/i
 
 function stripTags(value) {
@@ -91,3 +91,4 @@ export function injectHeadingIds(html) {
     return `<${level}${attributes} id="${id}">${headingHtml}</${level}>`
   })
 }
+
