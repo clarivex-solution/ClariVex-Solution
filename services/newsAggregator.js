@@ -29,7 +29,11 @@ const RSS_FEEDS = {
   AU: [
     { name: 'SmartCompany AU', url: 'https://www.smartcompany.com.au/feed/' },
   ],
-  CA: [],
+  CA: [
+    { name: 'CBC Business', url: 'https://www.cbc.ca/cmlink/rss-business' },
+    { name: 'Financial Post', url: 'https://financialpost.com/feed' },
+    { name: 'Globe and Mail Business', url: 'https://www.theglobeandmail.com/arc/outboundfeeds/rss/category/business/' },
+  ],
   GENERAL: [],
 };
 
