@@ -31,7 +31,86 @@ import Link from "next/link";
 
 const SERVICES_INITIAL_MOBILE = 4;
 const SERVICES_INITIAL_TABLET = 6;
+const TESTIMONIAL_MARQUEE_COPIES = [0, 1];
+const testimonialRows = testimonials.reduce(
+  (rows, testimonial, index) => {
+    rows[index % 2].push(testimonial);
+    return rows;
+  },
+  [[], []]
+);
 
+function TestimonialCard({ testimonial }) {
+  return (
+    <article className="testimonial-marquee-card relative flex h-full shrink-0 flex-col overflow-hidden rounded-[1.5rem] border border-[#e2e4e9] bg-white p-5 shadow-sm transition-transform duration-300 hover:-translate-y-1 hover:shadow-xl sm:rounded-[1.75rem] sm:p-6">
+      <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#6aa595] via-[#c9a96e] to-[#5a688e]" />
+      <span className="absolute top-3 right-4 select-none text-5xl leading-none font-bold text-[#6aa595]/10 sm:top-4 sm:right-5 sm:text-6xl">
+        "
+      </span>
+
+      <div className="mb-3 flex gap-0.5 sm:mb-4">
+        {Array.from({ length: testimonial.rating }).map((_, index) => (
+          <span key={index} className="text-base text-[#c9a96e] sm:text-lg">
+            &#9733;
+          </span>
+        ))}
+      </div>
+
+      <p className="mb-5 text-[13px] leading-relaxed text-[#5a6478] italic sm:mb-6 sm:text-sm">
+        "{testimonial.text}"
+      </p>
+
+      <div className="mt-auto flex items-center gap-2.5 border-t border-[#e2e4e9] pt-3 sm:gap-3 sm:pt-4">
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#1a1a2e] sm:h-10 sm:w-10">
+          <span className="text-xs font-bold text-[#6aa595] sm:text-sm">{testimonial.name[0]}</span>
+        </div>
+        <div className="min-w-0">
+          <p className="truncate text-[13px] font-semibold text-[#1a1a2e] sm:text-sm">{testimonial.name}</p>
+          <p className="truncate text-[11px] text-[#8892a4] sm:text-xs">
+            {testimonial.role}, {testimonial.company}
+          </p>
+        </div>
+        {testimonial.logo && (
+          <div
+            className={`ml-auto flex h-8 w-20 shrink-0 items-center justify-center rounded-md px-2 py-1 sm:h-9 sm:w-24 ${
+              testimonial.company === "Travel Clues" ? "bg-[#1a1a2e]" : "bg-gray-100"
+            }`}
+          >
+            <img
+              src={testimonial.logo}
+              alt={testimonial.company}
+              className={`${testimonial.logoSize === "large" ? "max-h-8" : "max-h-6"} max-w-full w-auto object-contain`}
+            />
+          </div>
+        )}
+      </div>
+    </article>
+  );
+}
+
+
+function TestimonialMarqueeRow({ items, offset = false }) {
+  return (
+    <div className={`testimonial-marquee-row ${offset ? "testimonial-marquee-row-offset" : ""}`}>
+      <div className="testimonial-marquee-track flex w-max">
+        {TESTIMONIAL_MARQUEE_COPIES.map((copyIndex) => (
+          <div
+            key={copyIndex}
+            className="testimonial-marquee-set flex"
+            aria-hidden={copyIndex === 1 ? "true" : undefined}
+          >
+            {items.map((testimonial) => (
+              <TestimonialCard
+                key={`${copyIndex}-${testimonial.name}-${testimonial.company}`}
+                testimonial={testimonial}
+              />
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 export default function HomeContent() {
   const { country, ready } = useCountry();
   const content = getContent(country);
@@ -281,53 +360,38 @@ export default function HomeContent() {
         </div>
       </section>
 
-      <section id="testimonials" className="bg-white py-16 sm:py-20 lg:py-24">
+      <section id="testimonials" className="overflow-hidden bg-white py-16 sm:py-20 lg:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
           <div className="mb-4 h-px w-12 bg-[#c9a96e] sm:mb-6 sm:w-16" />
           <h2 className="font-[family-name:var(--font-playfair)] text-3xl font-bold text-[#1a1a2e] sm:text-4xl">
             What Our Clients Say
           </h2>
-          <p className="mt-3 text-[#5a6478] max-w-xl">
+          <p className="mt-3 max-w-xl text-[#5a6478]">
             Trusted by businesses and entrepreneurs across India and beyond.
           </p>
 
-          <div className="mt-10 grid gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
-            {testimonials.map((t) => (
-              <div key={t.name} className="relative rounded-2xl border border-[#e2e4e9] bg-white p-6 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden">
-                <span className="absolute top-4 right-5 text-6xl font-bold text-[#6aa595]/10 leading-none select-none">"</span>
+          <div className="relative mt-10">
+            <div className="pointer-events-none absolute inset-y-0 left-0 z-10 hidden w-12 bg-gradient-to-r from-white via-white/95 to-transparent sm:block lg:w-20" />
+            <div className="pointer-events-none absolute inset-y-0 right-0 z-10 hidden w-12 bg-gradient-to-l from-white via-white/95 to-transparent sm:block lg:w-20" />
 
-                <div className="flex gap-0.5 mb-4">
-                  {Array.from({ length: t.rating }).map((_, i) => (
-                    <span key={i} className="text-[#c9a96e] text-lg">&#9733;</span>
-                  ))}
-                </div>
-
-                <p className="text-[#5a6478] text-sm leading-relaxed italic mb-6">"{t.text}"</p>
-
-                <div className="flex items-center gap-3 mt-auto pt-4 border-t border-[#e2e4e9]">
-                  <div className="w-10 h-10 rounded-full bg-[#1a1a2e] flex items-center justify-center shrink-0">
-                    <span className="text-[#6aa595] font-bold text-sm">{t.name[0]}</span>
-                  </div>
-                  <div className="min-w-0">
-                    <p className="font-semibold text-[#1a1a2e] text-sm truncate">{t.name}</p>
-                    <p className="text-[#8892a4] text-xs truncate">{t.role}, {t.company}</p>
-                  </div>
-                  {t.logo && (
-                    <div
-                      className={`ml-auto rounded-md px-2 py-1 flex items-center justify-center w-24 h-9 shrink-0 ${
-                        t.company === "Travel Clues" ? "bg-[#1a1a2e]" : "bg-gray-100"
-                      }`}
-                    >
-                      <img
-                        src={t.logo}
-                        alt={t.company}
-                        className={`${t.logoSize === "large" ? "max-h-8" : "max-h-6"} max-w-full w-auto object-contain`}
-                      />
-                    </div>
-                  )}
-                </div>
+            <div
+              className="testimonial-marquee rounded-[1.5rem] border border-[#e2e4e9] bg-[#f8f9fa] p-3 shadow-sm sm:rounded-[2rem] sm:p-6"
+              role="region"
+              aria-label="Client testimonials"
+            >
+              <div className="sm:hidden">
+                <TestimonialMarqueeRow items={testimonials} />
               </div>
-            ))}
+              <div className="hidden sm:flex sm:flex-col sm:gap-6">
+                {testimonialRows.map((row, rowIndex) => (
+                  <TestimonialMarqueeRow
+                    key={`testimonial-row-${rowIndex}`}
+                    items={row}
+                    offset={rowIndex === 1}
+                  />
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
