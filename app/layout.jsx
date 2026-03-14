@@ -1,7 +1,7 @@
 import ClientLayout from "@/components/ClientLayout";
 import { CountryProvider } from "@/components/CountryProvider";
-import { GoogleAnalytics } from "@next/third-parties/google";
 import { Inter, Playfair_Display } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 
 const playfairDisplay = Playfair_Display({
@@ -73,17 +73,34 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+  const gaId = process.env.NEXT_PUBLIC_GA_ID;
+  const isProduction = process.env.NODE_ENV === "production";
+
   return (
     <html lang="en" className={`${playfairDisplay.variable} ${inter.variable}`}>
+      <head>
+        {isProduction && gaId && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
+              strategy="afterInteractive"
+            />
+            <Script id="google-analytics" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${gaId}');
+              `}
+            </Script>
+          </>
+        )}
+      </head>
       <body className="bg-white font-[family-name:var(--font-inter)] text-[#1a1a2e]">
         <CountryProvider>
           <ClientLayout>{children}</ClientLayout>
         </CountryProvider>
       </body>
-      {process.env.NODE_ENV === "production" &&
-        process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID && (
-          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID} />
-        )}
     </html>
   );
 }
