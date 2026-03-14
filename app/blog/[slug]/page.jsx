@@ -142,7 +142,7 @@ export default async function BlogArticlePage({ params }) {
   return (
     <main className="bg-[#f8f9fa] py-16 text-[#1a1a2e] sm:py-20 lg:py-32">
       <BlogPostingSchema post={post} />
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <Breadcrumbs
           items={[
             { name: "Home", href: "/" },
@@ -151,8 +151,8 @@ export default async function BlogArticlePage({ params }) {
           ]}
         />
 
-        <div className="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1fr)_320px]">
-          <article>
+        <div className="grid grid-cols-12 gap-10 mt-12">
+          <div className="col-span-12 lg:col-span-8">
             <header className="mx-auto max-w-4xl">
               <div className="mb-4 h-px w-12 bg-[#c9a96e]" />
               <div className="flex flex-wrap items-center gap-3 text-xs uppercase tracking-[0.2em] text-[#6aa595]">
@@ -189,36 +189,38 @@ export default async function BlogArticlePage({ params }) {
               <TableOfContents headings={post.headings} />
             </div>
 
-            <div className="mx-auto mt-10 max-w-3xl rounded-[28px] border border-[#e2e4e9] bg-white p-6 shadow-sm sm:p-8 lg:p-10">
-              <div
-                className={`
-                  prose lg:prose-lg max-w-none text-[#5a6478]
-                  [&_h1]:font-[family-name:var(--font-playfair)] [&_h1]:text-3xl [&_h1]:font-bold [&_h1]:text-[#1a1a2e] [&_h1]:mt-10 [&_h1]:mb-4 [&_h1]:leading-tight
-                  [&_h2]:scroll-mt-28 [&_h2]:border-t [&_h2]:border-[#e2e4e9] [&_h2]:pt-8 [&_h2]:font-[family-name:var(--font-playfair)] [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:text-[#1a1a2e] [&_h2]:mt-12 [&_h2]:mb-4
-                  [&_h3]:scroll-mt-28 [&_h3]:font-[family-name:var(--font-playfair)] [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:text-[#1a1a2e] [&_h3]:mt-8 [&_h3]:mb-3
-                  [&_h4]:text-base [&_h4]:font-semibold [&_h4]:text-[#1a1a2e] [&_h4]:mt-6 [&_h4]:mb-2
-                  [&_p]:text-[#5a6478] [&_p]:leading-relaxed [&_p]:mb-5 [&_p]:text-base
-                  [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:mb-5
-                  [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:mb-5
-                  [&_li]:text-[#5a6478] [&_li]:mb-2 [&_li]:leading-relaxed
-                  [&_li>p]:mb-0
-                  [&_blockquote]:border-l-4 [&_blockquote]:border-[#6aa595] [&_blockquote]:pl-5 [&_blockquote]:italic [&_blockquote]:text-[#5a6478] [&_blockquote]:my-6 [&_blockquote]:bg-[#f8f9fa] [&_blockquote]:py-3 [&_blockquote]:rounded-r-lg
-                  [&_strong]:font-semibold [&_strong]:text-[#1a1a2e]
-                  [&_em]:italic [&_em]:text-[#5a6478]
-                  [&_u]:underline [&_u]:underline-offset-2
-                  [&_a]:text-[#6aa595] [&_a]:underline [&_a]:underline-offset-2 [&_a:hover]:text-[#1a1a2e]
-                  [&_hr]:border-[#e2e4e9] [&_hr]:my-8
-                  [&_img]:rounded-2xl [&_img]:max-w-full [&_img]:my-6
-                  [&_pre]:bg-[#1a1a2e] [&_pre]:text-white [&_pre]:rounded-xl [&_pre]:p-5 [&_pre]:overflow-x-auto [&_pre]:text-sm [&_pre]:my-6
-                  [&_code]:bg-[#f8f9fa] [&_code]:text-[#1a1a2e] [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded [&_code]:text-sm [&_code]:font-mono
-                `}
-              >
-                <div dangerouslySetInnerHTML={{ __html: post.renderedContent }} />
+            <section className="mt-10">
+              <div className="bg-white border rounded-2xl shadow-sm p-8 lg:p-10">
+                <article
+                  className={`
+                    prose prose-slate max-w-none lg:prose-lg text-[#5a6478]
+                    [&_h1]:mt-10 [&_h1]:mb-4 [&_h1]:font-[family-name:var(--font-playfair)] [&_h1]:text-3xl [&_h1]:font-bold [&_h1]:leading-tight [&_h1]:text-[#1a1a2e]
+                    [&_h2]:mt-10 [&_h2]:mb-4 [&_h2]:ml-0 [&_h2]:scroll-mt-28 [&_h2]:font-[family-name:var(--font-playfair)] [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:text-[#1a1a2e]
+                    [&_h3]:mt-8 [&_h3]:mb-3 [&_h3]:ml-0 [&_h3]:scroll-mt-28 [&_h3]:font-[family-name:var(--font-playfair)] [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:text-[#1a1a2e]
+                    [&_h4]:mt-6 [&_h4]:mb-2 [&_h4]:font-semibold [&_h4]:text-[#1a1a2e]
+                    [&_p]:mb-5 [&_p]:text-base [&_p]:leading-relaxed [&_p]:text-[#5a6478]
+                    [&_ul]:mb-5 [&_ul]:list-disc [&_ul]:pl-6
+                    [&_ol]:mb-5 [&_ol]:list-decimal [&_ol]:pl-6
+                    [&_li]:mb-2 [&_li]:leading-relaxed [&_li]:text-[#5a6478]
+                    [&_li>p]:mb-0
+                    [&_blockquote]:my-6 [&_blockquote]:rounded-r-lg [&_blockquote]:border-l-4 [&_blockquote]:border-[#6aa595] [&_blockquote]:bg-[#f8f9fa] [&_blockquote]:py-3 [&_blockquote]:pl-5 [&_blockquote]:italic [&_blockquote]:text-[#5a6478]
+                    [&_strong]:font-semibold [&_strong]:text-[#1a1a2e]
+                    [&_em]:italic [&_em]:text-[#5a6478]
+                    [&_u]:underline [&_u]:underline-offset-2
+                    [&_a]:text-[#6aa595] [&_a]:underline [&_a]:underline-offset-2 [&_a:hover]:text-[#1a1a2e]
+                    [&_hr]:mx-0 [&_hr]:my-8 [&_hr]:border-[#e2e4e9]
+                    [&_img]:my-6 [&_img]:max-w-full [&_img]:rounded-2xl
+                    [&_pre]:my-6 [&_pre]:overflow-x-auto [&_pre]:rounded-xl [&_pre]:bg-[#1a1a2e] [&_pre]:p-5 [&_pre]:text-sm [&_pre]:text-white
+                    [&_code]:rounded [&_code]:bg-[#f8f9fa] [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:font-mono [&_code]:text-sm [&_code]:text-[#1a1a2e]
+                  `}
+                >
+                  <div dangerouslySetInnerHTML={{ __html: post.renderedContent }} />
+                </article>
               </div>
-            </div>
-          </article>
+            </section>
+          </div>
 
-          <aside className="hidden lg:block">
+          <aside className="col-span-12 hidden lg:col-span-4 lg:block">
             <div className="sticky top-28 space-y-6">
               <TableOfContents headings={post.headings} />
 
