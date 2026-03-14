@@ -27,7 +27,7 @@ export default function AdminResetPasswordLinkPage() {
         <div className="mb-8 text-left">
           <div className="h-px w-12 bg-[#c9a96e] mb-6" />
           <Image
-            src="/logo-dark.png"
+            src="/logo-dark.webp"
             alt="ClariVex"
             width={200}
             height={58}

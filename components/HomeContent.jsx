@@ -342,7 +342,7 @@ export default function HomeContent() {
               <div className="flex items-center gap-4 mb-6 sm:gap-5 sm:mb-8">
                 <div className="relative shrink-0">
                   <div className="w-20 h-20 rounded-full border-2 border-[#6aa595]/40 p-1 flex items-center justify-center bg-white shadow-sm overflow-hidden sm:w-24 sm:h-24">
-                    <img src="/dhimant-khatri.png" alt="Dhimant Khatri" className="w-full h-full rounded-full object-cover object-top scale-110 translate-y-2" />
+                    <img src="/dhimant-khatri.webp" alt="Dhimant Khatri" className="w-full h-full rounded-full object-cover object-top scale-110 translate-y-2" />
                   </div>
                   <div className="absolute bottom-0 right-0 w-7 h-7 bg-white rounded-full flex items-center justify-center p-[2px] shadow-sm">
                     <div className="w-full h-full rounded-full bg-[#6aa595] flex items-center justify-center">

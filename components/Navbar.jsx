@@ -158,7 +158,7 @@ export default function Navbar() {
       <header className={`fixed left-0 right-0 top-0 z-50 h-16 transition-all duration-500 ${isScrolled ? "border-b border-[#e2e4e9] bg-white/95 shadow-lg backdrop-blur-xl" : "bg-transparent"}`}>
         <div className="mx-auto flex h-full w-full max-w-7xl items-center justify-between px-4 lg:px-8">
           <Link href="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-            <Image src="/logo-dark.png" alt="ClariVex" width={120} height={36} className="w-[110px] lg:w-[130px]" />
+            <Image src="/logo-dark.webp" alt="ClariVex" width={120} height={36} className="w-[110px] lg:w-[130px]" />
           </Link>
 
           {/* Desktop nav */}
@@ -246,7 +246,7 @@ export default function Navbar() {
           <div className="flex h-16 shrink-0 items-center justify-between border-b border-[#e2e4e9] px-5">
             <Link href="/" onClick={() => setIsMobileOpen(false)}>
               <Image
-                src="/logo-dark.png"
+                src="/logo-dark.webp"
                 alt="ClariVex"
                 width={130}
                 height={38}

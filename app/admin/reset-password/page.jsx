@@ -65,7 +65,7 @@ export default function AdminResetPasswordPage() {
         <div className="mb-8">
           <div className="h-px w-12 bg-[#c9a96e] mb-6" />
           <Image
-            src="/logo-dark.png"
+            src="/logo-dark.webp"
             alt="ClariVex"
             width={200}
             height={58}

@@ -78,7 +78,7 @@ export default function AdminShell({ authenticated, children }) {
           <div>
             <Link href="/" onClick={() => setSidebarOpen(false)}>
               <Image
-                src="/logo-dark.png"
+                src="/logo-dark.webp"
                 alt="ClariVex Solution"
                 width={140}
                 height={40}
@@ -143,7 +143,7 @@ export default function AdminShell({ authenticated, children }) {
             <Menu className="h-5 w-5" />
           </button>
           <Image
-            src="/logo-dark.png"
+            src="/logo-dark.webp"
             alt="ClariVex"
             width={120}
             height={34}

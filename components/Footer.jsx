@@ -50,7 +50,7 @@ export default function Footer() {
             <div className="sm:col-span-2 lg:col-span-1">
               <Link href="/" className="inline-flex items-center">
                 <span className="mr-2.5 inline-block h-6 w-0.5 bg-[#c9a96e]" />
-                <Image src="/logo-white.png" alt="ClariVex Solution" width={180} height={52} className="h-9 w-auto object-contain sm:h-11" />
+                <Image src="/logo-white.webp" alt="ClariVex Solution" width={180} height={52} className="h-9 w-auto object-contain sm:h-11" />
               </Link>
               <p className="mt-4 text-sm leading-relaxed max-w-xs">
                 Elite outsourced accounting and finance operations for US, UK, AU, and CA businesses.
