@@ -379,8 +379,8 @@ export default function BlogEditor({ initialData, blogId, mode }) {
 
         <div className="space-y-2">
           <label className="text-sm font-medium text-[#1a1a2e]">Content</label>
-          <div className="border border-[#e2e4e9] rounded-xl overflow-hidden bg-white shadow-sm">
-            <div className="flex flex-wrap items-center gap-1 border-b border-[#e2e4e9] bg-[#f8f9fa] p-2">
+          <div className="border border-[#e2e4e9] rounded-xl bg-white shadow-sm">
+            <div className="sticky top-16 z-20 flex flex-wrap items-center gap-1 rounded-t-xl border-b border-[#e2e4e9] bg-[#f8f9fa]/95 p-2 backdrop-blur supports-[backdrop-filter]:bg-[#f8f9fa]/90 lg:top-4">
               <ToolbarButton
                 active={editor?.isActive('heading', { level: 1 }) === true}
                 disabled={!editorReady}
