@@ -2,61 +2,32 @@ import { prisma } from '@/lib/prisma'
 import bcrypt from 'bcryptjs'
 import { NextResponse } from 'next/server'
 
-const MAX_LOGIN_ATTEMPTS = 5
-const LOGIN_ATTEMPT_WINDOW_MS = 15 * 60 * 1000
 const loginAttempts = new Map()
 
-function getClientIp(request) {
-  const forwardedFor = request.headers.get('x-forwarded-for')
+function isRateLimited(ip) {
+  const now = Date.now()
+  const windowMs = 15 * 60 * 1000 // 15 minutes
+  const maxAttempts = 5
 
-  if (forwardedFor) {
-    return forwardedFor.split(',')[0].trim()
+  const record = loginAttempts.get(ip)
+
+  if (!record || now - record.firstAttempt > windowMs) {
+    loginAttempts.set(ip, { count: 1, firstAttempt: now })
+    return false
   }
 
-  return request.headers.get('x-real-ip') || 'unknown'
-}
-
-function cleanupExpiredLoginAttempts(now) {
-  for (const [ip, entry] of loginAttempts.entries()) {
-    const timestamps = entry.timestamps.filter(
-      (timestamp) => now - timestamp < LOGIN_ATTEMPT_WINDOW_MS,
-    )
-
-    if (timestamps.length === 0) {
-      loginAttempts.delete(ip)
-      continue
-    }
-
-    loginAttempts.set(ip, { count: timestamps.length, timestamps })
-  }
-}
-
-function getActiveAttemptTimestamps(ip, now) {
-  const entry = loginAttempts.get(ip)
-
-  if (!entry) {
-    return []
+  if (record.count >= maxAttempts) {
+    return true
   }
 
-  return entry.timestamps.filter(
-    (timestamp) => now - timestamp < LOGIN_ATTEMPT_WINDOW_MS,
-  )
-}
-
-function recordFailedLoginAttempt(ip, now) {
-  const timestamps = getActiveAttemptTimestamps(ip, now)
-  timestamps.push(now)
-  loginAttempts.set(ip, { count: timestamps.length, timestamps })
+  record.count += 1
+  return false
 }
 
 export async function POST(request) {
-  const now = Date.now()
-  const ip = getClientIp(request)
-
-  cleanupExpiredLoginAttempts(now)
-
-  if (getActiveAttemptTimestamps(ip, now).length >= MAX_LOGIN_ATTEMPTS) {
-    return NextResponse.json(
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
+  if (isRateLimited(ip)) {
+    return Response.json(
       { error: 'Too many login attempts. Please try again in 15 minutes.' },
       { status: 429 },
     )
@@ -75,7 +46,6 @@ export async function POST(request) {
       : inputPassword === String(process.env.ADMIN_PASSWORD || '')
 
   if (!isValid) {
-    recordFailedLoginAttempt(ip, now)
     return NextResponse.json({ error: 'Invalid password' }, { status: 401 })
   }
 
