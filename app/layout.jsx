@@ -18,10 +18,14 @@ export const metadata = {
   title: {
     template: "%s | ClariVex Solution",
     default:
-      "ClariVex Solution | Elite Outsourced Accounting for US, UK, AU & CA",
+      "ClariVex Solution | Outsourced Accounting, Bookkeeping & Tax Compliance",
   },
   description:
     "ClariVex Solution provides elite outsourced accounting, bookkeeping, tax planning and payroll services for businesses across the US, UK, Australia and Canada. 15+ years experience serving 280+ clients worldwide.",
+  openGraph: {
+    title:
+      "ClariVex Solution | Outsourced Accounting, Bookkeeping & Tax Compliance",
+  },
 
   keywords: [
     "outsourced accounting",
@@ -78,3 +82,4 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
+
