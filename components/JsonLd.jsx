@@ -1,6 +1,5 @@
 import { siteUrl } from "@/lib/constants";
 
-// Shared org object — reused across all schemas to avoid duplication
 const CLARIVEX_ORG = {
   "@type": "Organization",
   name: "ClariVex Solution",
@@ -11,9 +10,6 @@ const CLARIVEX_ORG = {
   },
 };
 
-/**
- * AccountingService JSON-LD for homepage and country pages.
- */
 export function AccountingServiceSchema({ countryCode, content }) {
   const path = countryCode === "general" ? "" : `/${countryCode}`;
   const schema = content.schema || {};
@@ -35,7 +31,7 @@ export function AccountingServiceSchema({ countryCode, content }) {
       addressCountry: "IN",
     },
     areaServed: Array.isArray(schema.areaServed)
-      ? schema.areaServed.map((c) => ({ "@type": "Country", name: c }))
+      ? schema.areaServed.map((country) => ({ "@type": "Country", name: country }))
       : { "@type": "Country", name: schema.areaServed || "US" },
     priceRange: "$$",
     image: `${siteUrl}/og-image.png`,
@@ -50,24 +46,29 @@ export function AccountingServiceSchema({ countryCode, content }) {
   );
 }
 
-/**
- * BlogPosting JSON-LD for individual blog posts.
- */
 export function BlogPostingSchema({ post }) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     headline: post.title,
     description: post.excerpt,
-    datePublished: post.isoDate || "2026-03-01",
-    dateModified: post.isoDate || "2026-03-01",
-    author: CLARIVEX_ORG,
+    datePublished: post.publishedIsoDate || post.isoDate || "2026-03-01",
+    dateModified: post.modifiedIsoDate || post.publishedIsoDate || post.isoDate || "2026-03-01",
+    author: {
+      "@type": "Person",
+      name: post.authorName || "ClariVex Team",
+    },
     publisher: CLARIVEX_ORG,
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": `${siteUrl}/blog/${post.slug}`,
     },
-    image: post.coverImage || `${siteUrl}/og-image.png`,
+    image: [post.seoImage || post.coverImage || `${siteUrl}/og-image.png`],
+    articleSection: post.category,
+    keywords: [post.category, post.country || "Global", "accounting", "finance"]
+      .filter(Boolean)
+      .join(", "),
+    timeRequired: post.readingTime ? `PT${post.readingTime}M` : undefined,
   };
 
   return (
@@ -78,9 +79,6 @@ export function BlogPostingSchema({ post }) {
   );
 }
 
-/**
- * NewsArticle JSON-LD for individual news posts.
- */
 export function NewsArticleSchema({ post }) {
   const jsonLd = {
     "@context": "https://schema.org",
@@ -105,16 +103,13 @@ export function NewsArticleSchema({ post }) {
   );
 }
 
-/**
- * BreadcrumbList JSON-LD.
- */
 export function BreadcrumbSchema({ items }) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
-    itemListElement: items.map((item, i) => ({
+    itemListElement: items.map((item, index) => ({
       "@type": "ListItem",
-      position: i + 1,
+      position: index + 1,
       name: item.name,
       item: item.href ? `${siteUrl}${item.href}` : undefined,
     })),
@@ -128,29 +123,35 @@ export function BreadcrumbSchema({ items }) {
   );
 }
 
-/**
- * AggregateRating + Review schema for testimonials section.
- * Add to homepage and country pages.
- */
 export function TestimonialsSchema({ testimonials, serviceUrl }) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "AccountingService",
-    "name": "ClariVex Solution",
-    "url": serviceUrl || siteUrl,
-    "aggregateRating": {
+    name: "ClariVex Solution",
+    url: serviceUrl || siteUrl,
+    aggregateRating: {
       "@type": "AggregateRating",
-      "ratingValue": "5",
-      "reviewCount": String(testimonials.length),
-      "bestRating": "5",
-      "worstRating": "1"
+      ratingValue: "5",
+      reviewCount: String(testimonials.length),
+      bestRating: "5",
+      worstRating: "1",
     },
-    "review": testimonials.map(t => ({
+    review: testimonials.map((testimonial) => ({
       "@type": "Review",
-      "author": { "@type": "Person", "name": t.name },
-      "reviewRating": { "@type": "Rating", "ratingValue": String(t.rating), "bestRating": "5" },
-      "reviewBody": t.text,
-    }))
-  }
-  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      author: { "@type": "Person", name: testimonial.name },
+      reviewRating: {
+        "@type": "Rating",
+        ratingValue: String(testimonial.rating),
+        bestRating: "5",
+      },
+      reviewBody: testimonial.text,
+    })),
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
+  );
 }

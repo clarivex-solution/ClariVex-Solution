@@ -2,6 +2,7 @@
 
 import Heading from '@tiptap/extension-heading'
 import Underline from '@tiptap/extension-underline'
+import { DOMParser as ProseMirrorDOMParser } from '@tiptap/pm/model'
 import { EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import { useRouter } from 'next/navigation'
@@ -10,6 +11,41 @@ import { toast } from 'sonner'
 
 const CATEGORY_OPTIONS = ['Bookkeeping', 'Tax & Compliance', 'Payroll', 'Advisory', 'Reconciliation', 'AP & AR', 'Data Security', 'General']
 const COUNTRY_OPTIONS = ['US', 'UK', 'AU', 'CA', 'All']
+const HTML_TAG_PATTERN = /<\/?[a-z][^>]*>/i
+
+function looksLikeHtml(value) {
+  return HTML_TAG_PATTERN.test(value.trim())
+}
+
+function sanitizePastedHtml(html) {
+  if (!html) {
+    return ''
+  }
+
+  const parser = new window.DOMParser()
+  const documentFragment = parser.parseFromString(html, 'text/html')
+
+  documentFragment.body.querySelectorAll('script,style,iframe,object,embed,link,meta').forEach((node) => {
+    node.remove()
+  })
+
+  documentFragment.body.querySelectorAll('*').forEach((element) => {
+    Array.from(element.attributes).forEach((attribute) => {
+      const attributeName = attribute.name.toLowerCase()
+
+      if (attributeName.startsWith('on')) {
+        element.removeAttribute(attribute.name)
+        return
+      }
+
+      if ((attributeName === 'href' || attributeName === 'src') && /^\s*javascript:/i.test(attribute.value)) {
+        element.removeAttribute(attribute.name)
+      }
+    })
+  })
+
+  return documentFragment.body.innerHTML.trim()
+}
 
 function slugify(value) {
   return value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
@@ -87,7 +123,29 @@ export default function BlogEditor({ initialData, blogId, mode }) {
     content: initialData?.content || '',
     editorProps: {
       transformPastedHTML(html) {
-        return html
+        return sanitizePastedHtml(html) || html
+      },
+      transformPastedText(text) {
+        return text
+      },
+      clipboardTextParser(text, $context, plain, view) {
+        if (!looksLikeHtml(text)) {
+          return null
+        }
+
+        const sanitizedHtml = sanitizePastedHtml(text)
+
+        if (!sanitizedHtml) {
+          return null
+        }
+
+        const container = document.createElement('div')
+        container.innerHTML = sanitizedHtml
+
+        return ProseMirrorDOMParser.fromSchema(view.state.schema).parseSlice(container, {
+          context: $context,
+          preserveWhitespace: plain ? 'full' : false,
+        })
       },
       attributes: {
         class: 'prose-editor min-h-[320px] focus:outline-none p-4 text-[#1a1a2e] bg-white',
