@@ -1,7 +1,7 @@
 import ClientLayout from "@/components/ClientLayout";
 import { CountryProvider } from "@/components/CountryProvider";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { Inter, Playfair_Display } from "next/font/google";
-import Script from "next/script";
 import "./globals.css";
 
 const playfairDisplay = Playfair_Display({
@@ -79,22 +79,11 @@ export default function RootLayout({ children }) {
         <CountryProvider>
           <ClientLayout>{children}</ClientLayout>
         </CountryProvider>
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-D1KB80YGF0"
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-D1KB80YGF0');
-          `}
-        </Script>
       </body>
+      {process.env.NODE_ENV === "production" &&
+        process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID && (
+          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID} />
+        )}
     </html>
   );
 }
-
-
-
