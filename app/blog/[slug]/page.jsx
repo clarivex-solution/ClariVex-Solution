@@ -1,13 +1,13 @@
 export const dynamic = "force-dynamic";
 
-import Breadcrumbs from "@/components/Breadcrumbs";
 import TableOfContents from "@/components/blog/TableOfContents";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import { BlogPostingSchema } from "@/components/JsonLd";
 import { siteUrl } from "@/lib/constants";
 import { prisma } from "@/lib/prisma";
 import { extractHeadings, injectHeadingIds } from "@/utils/extractHeadings";
 import { calculateReadingTime } from "@/utils/readingTime";
-import { Calendar, Clock3, User } from "lucide-react";
+import { Calendar, ChevronRight, Clock3, User } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -151,8 +151,9 @@ export default async function BlogArticlePage({ params }) {
           ]}
         />
 
-        <div className="grid grid-cols-12 gap-10 mt-12">
-          <div className="col-span-12 lg:col-span-8">
+        {/* Change grid to single column on mobile */}
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-12 items-start mt-10">
+          <div>
             <header className="mx-auto max-w-4xl">
               <div className="mb-4 h-px w-12 bg-[#c9a96e]" />
               <div className="flex flex-wrap items-center gap-3 text-xs uppercase tracking-[0.2em] text-[#6aa595]">
@@ -163,7 +164,7 @@ export default async function BlogArticlePage({ params }) {
                   </span>
                 ) : null}
               </div>
-              <h1 className="mt-6 font-[family-name:var(--font-playfair)] text-4xl leading-tight text-[#1a1a2e] md:text-5xl lg:text-6xl">
+              <h1 className="font-[family-name:var(--font-playfair)] font-black text-3xl sm:text-4xl lg:text-5xl text-[#1a1a2e] leading-tight mt-4">
                 {post.title}
               </h1>
               <p className="mt-5 max-w-3xl text-base leading-relaxed text-[#5a6478] md:text-lg">
@@ -185,15 +186,24 @@ export default async function BlogArticlePage({ params }) {
               </div>
             </header>
 
-            <div className="mx-auto mt-8 max-w-3xl lg:hidden">
-              <TableOfContents headings={post.headings} />
+            {/* Table of Contents — sidebar on desktop, collapsible on mobile */}
+            <div className="lg:hidden mb-8 mt-8">
+              <details className="rounded-xl border border-[#e2e4e9] bg-white overflow-hidden">
+                <summary className="flex items-center justify-between px-5 py-4 cursor-pointer font-semibold text-[#1a1a2e] text-sm list-none">
+                  Table of Contents
+                  <ChevronRight className="h-4 w-4 text-[#6aa595] transition-transform duration-200 [[open]_&]:rotate-90" />
+                </summary>
+                <div className="px-5 pb-4 border-t border-[#e2e4e9]">
+                  <TableOfContents headings={post.headings} />
+                </div>
+              </details>
             </div>
 
             <section className="mt-10">
-              <div className="bg-white border rounded-2xl shadow-sm p-8 lg:p-10">
+              <div className="bg-white border rounded-2xl shadow-sm p-5 sm:p-8 lg:p-10 px-4 sm:px-8">
                 <article
                   className={`
-                    prose prose-slate max-w-none lg:prose-lg text-[#5a6478]
+                    px-0 sm:px-0 max-w-none prose prose-slate lg:prose-lg text-[#5a6478]
                     [&_h1]:mt-10 [&_h1]:mb-4 [&_h1]:font-[family-name:var(--font-playfair)] [&_h1]:text-3xl [&_h1]:font-bold [&_h1]:leading-tight [&_h1]:text-[#1a1a2e]
                     [&_h2]:mt-10 [&_h2]:mb-4 [&_h2]:ml-0 [&_h2]:scroll-mt-28 [&_h2]:font-[family-name:var(--font-playfair)] [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:text-[#1a1a2e]
                     [&_h3]:mt-8 [&_h3]:mb-3 [&_h3]:ml-0 [&_h3]:scroll-mt-28 [&_h3]:font-[family-name:var(--font-playfair)] [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:text-[#1a1a2e]
@@ -220,7 +230,8 @@ export default async function BlogArticlePage({ params }) {
             </section>
           </div>
 
-          <aside className="col-span-12 hidden lg:col-span-4 lg:block">
+          {/* Sidebar — hidden on mobile, visible lg+ */}
+          <aside className="hidden lg:block lg:col-span-1 space-y-6">
             <div className="sticky top-28 space-y-6">
               <TableOfContents headings={post.headings} />
 
