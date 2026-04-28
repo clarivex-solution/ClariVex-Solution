@@ -1,61 +1,97 @@
 "use client";
 
 import { countries } from "@/lib/countryData";
-import { Calendar, CalendarCheck, CalendarDays, ChevronDown, Globe, LayoutGrid, Locate } from "lucide-react";
+import {
+  Calendar,
+  CalendarCheck,
+  CalendarDays,
+  ChevronDown,
+  Globe,
+  LayoutGrid,
+  Locate,
+} from "lucide-react";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 
-function CustomSelect({ value, onChange, options, header, footer, defaultIcon }) {
+function CustomSelect({
+  value,
+  onChange,
+  options,
+  header,
+  footer,
+  defaultIcon,
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const selectRef = useRef(null);
 
   useEffect(() => {
     function handleClickOutside(event) {
-      if (selectRef.current && !selectRef.current.contains(event.target)) setIsOpen(false);
+      if (selectRef.current && !selectRef.current.contains(event.target))
+        setIsOpen(false);
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const selectedOption = options.find((opt) => opt.value === value) || options[0];
+  const selectedOption =
+    options.find((opt) => opt.value === value) || options[0];
 
   return (
     <div className="relative w-full sm:w-auto" ref={selectRef}>
-      <button type="button" onClick={() => setIsOpen(!isOpen)}
-        className={`flex items-center justify-between gap-3 rounded-full border bg-white px-4 py-2 text-sm font-medium transition-colors w-full sm:px-5 sm:py-2.5 ${isOpen ? "border-[#6aa595] ring-2 ring-[#6aa595]/20 text-[#1a1a2e]" : "border-[#e2e4e9] text-[#5a6478] hover:border-[#6aa595]/40 hover:text-[#1a1a2e]"}`}>
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        className={`flex items-center justify-between gap-3 rounded-full border bg-white px-4 py-2 text-sm font-medium transition-colors w-full sm:px-5 sm:py-2.5 ${isOpen ? "border-[#6aa595] ring-2 ring-[#6aa595]/20 text-[#1a1a2e]" : "border-[#e2e4e9] text-[#5a6478] hover:border-[#6aa595]/40 hover:text-[#1a1a2e]"}`}
+      >
         <span className="flex items-center gap-2">
           {selectedOption.icon || defaultIcon}
           <span className="truncate">{selectedOption.label}</span>
         </span>
-        <ChevronDown className={`h-4 w-4 text-[#8892a4] transition-transform duration-300 shrink-0 ${isOpen ? "rotate-180" : ""}`} />
+        <ChevronDown
+          className={`h-4 w-4 text-[#8892a4] transition-transform duration-300 shrink-0 ${isOpen ? "rotate-180" : ""}`}
+        />
       </button>
 
       {isOpen && (
         <div className="absolute z-50 left-0 mt-2 w-full min-w-[220px] rounded-xl border border-[#e2e4e9] bg-white shadow-[0_8px_30px_rgb(0,0,0,0.12)] flex flex-col overflow-hidden">
           {header && (
             <div className="px-4 py-3 border-b border-[#e2e4e9] sm:px-5 sm:py-4">
-              <span className="text-xs uppercase tracking-[0.15em] text-[#5a688e] font-semibold">{header}</span>
+              <span className="text-xs uppercase tracking-[0.15em] text-[#5a688e] font-semibold">
+                {header}
+              </span>
             </div>
           )}
           <div className="flex flex-col py-2 max-h-64 overflow-y-auto">
             {options.map((option) => {
               const isActive = value === option.value;
               return (
-                <button key={option.value} type="button"
+                <button
+                  key={option.value}
+                  type="button"
                   className={`w-full px-4 py-2.5 flex items-center justify-between text-left text-sm transition-colors sm:px-5 sm:py-3 ${isActive ? "bg-[#f8f9fa] text-[#6aa595] font-semibold" : "text-[#5a6478] hover:bg-[#f8f9fa] hover:text-[#1a1a2e]"}`}
-                  onClick={() => { onChange(option.value); setIsOpen(false); }}>
+                  onClick={() => {
+                    onChange(option.value);
+                    setIsOpen(false);
+                  }}
+                >
                   <span className="flex items-center gap-3">
-                    <span className="flex w-5 justify-center items-center shrink-0">{option.icon}</span>
+                    <span className="flex w-5 justify-center items-center shrink-0">
+                      {option.icon}
+                    </span>
                     <span>{option.label}</span>
                   </span>
-                  {isActive && <div className="w-1.5 h-1.5 rounded-full bg-[#6aa595] ml-2 shrink-0" />}
+                  {isActive && (
+                    <div className="w-1.5 h-1.5 rounded-full bg-[#6aa595] ml-2 shrink-0" />
+                  )}
                 </button>
               );
             })}
           </div>
           {footer && (
             <div className="px-4 py-3 border-t border-[#e2e4e9] bg-[#f8f9fa] sm:px-5">
-              <span className="text-xs text-[#5a6478] leading-relaxed block">{footer}</span>
+              <span className="text-xs text-[#5a6478] leading-relaxed block">
+                {footer}
+              </span>
             </div>
           )}
         </div>
@@ -78,9 +114,12 @@ export default function NewsPageClient() {
       try {
         const response = await fetch("/api/news");
         const data = await response.json();
-        setNewsPosts(Array.isArray(data?.articles) ? data.articles : [])
-      } catch { setNewsPosts([]); }
-      finally { setLoading(false); }
+        setNewsPosts(Array.isArray(data?.articles) ? data.articles : []);
+      } catch {
+        setNewsPosts([]);
+      } finally {
+        setLoading(false);
+      }
     };
     fetchNews();
   }, []);
@@ -88,25 +127,45 @@ export default function NewsPageClient() {
   const filteredNews = useMemo(() => {
     const now = Date.now();
     return newsPosts.filter((item) => {
-      const countryOk = selectedCountry === "all" || item.country === selectedCountry || item.country === "General" || item.country === "GENERAL";
-      const categoryOk = selectedCategory === "All" || item.category === selectedCategory;
+      const countryOk =
+        selectedCountry === "all" ||
+        item.country === selectedCountry ||
+        item.country === "General" ||
+        item.country === "GENERAL";
+      const categoryOk =
+        selectedCategory === "All" || item.category === selectedCategory;
       const ageMs = now - new Date(item.publishedAt).getTime();
-      const dateOk = dateFilter === "today" ? ageMs < 86400000 : dateFilter === "week" ? ageMs < 604800000 : true;
+      const dateOk =
+        dateFilter === "today"
+          ? ageMs < 86400000
+          : dateFilter === "week"
+            ? ageMs < 604800000
+            : true;
       return countryOk && categoryOk && dateOk;
     });
   }, [newsPosts, selectedCountry, selectedCategory, dateFilter]);
 
-  useEffect(() => { setVisibleCount(9); setLoadingMore(false); }, [selectedCountry, selectedCategory, dateFilter]);
+  useEffect(() => {
+    setVisibleCount(9);
+    setLoadingMore(false);
+  }, [selectedCountry, selectedCategory, dateFilter]);
 
   const visibleNews = filteredNews.slice(0, visibleCount);
   const hasMore = visibleCount < filteredNews.length;
 
-  function clearFilters() { setSelectedCountry("all"); setSelectedCategory("All"); setDateFilter("all"); }
+  function clearFilters() {
+    setSelectedCountry("all");
+    setSelectedCategory("All");
+    setDateFilter("all");
+  }
 
   function handleLoadMore() {
     if (loadingMore) return;
     setLoadingMore(true);
-    setTimeout(() => { setVisibleCount((v) => v + 9); setLoadingMore(false); }, 180);
+    setTimeout(() => {
+      setVisibleCount((v) => v + 9);
+      setLoadingMore(false);
+    }, 180);
   }
 
   return (
@@ -117,12 +176,15 @@ export default function NewsPageClient() {
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.03)_1px,transparent_1px)] bg-[size:60px_60px] sm:bg-[size:80px_80px]" />
         <div className="relative z-10 mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-12">
           <div className="mx-auto h-px w-12 bg-[#c9a96e] sm:w-16" />
-          <p className="mt-5 text-xs uppercase tracking-[0.2em] text-[#6aa595] sm:mt-6">Market Intelligence</p>
+          <p className="mt-5 text-xs uppercase tracking-[0.2em] text-[#6aa595] sm:mt-6">
+            Market Intelligence
+          </p>
           <h1 className="mt-4 font-[family-name:var(--font-playfair)] text-2xl text-[#1a1a2e] sm:text-4xl lg:text-6xl">
             Finance &amp; Tax News
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-sm text-[#5a6478] sm:text-base">
-            Latest accounting and tax updates for businesses across global markets.
+            Latest accounting and tax updates for businesses across global
+            markets.
           </p>
         </div>
       </section>
@@ -133,21 +195,81 @@ export default function NewsPageClient() {
           <div className="flex flex-col gap-3 py-4 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4 sm:py-6">
             {/* Country */}
             <div className="flex items-center gap-2">
-              <label className="text-xs uppercase tracking-widest text-[#8892a4] font-medium whitespace-nowrap shrink-0">Country</label>
+              <label className="text-xs uppercase tracking-widest text-[#8892a4] font-medium whitespace-nowrap shrink-0">
+                Country
+              </label>
               <CustomSelect
                 value={selectedCountry}
-                onChange={(val) => { if (val === "detect") { alert("Location detection available soon."); return; } setSelectedCountry(val); }}
+                onChange={(val) => {
+                  if (val === "detect") {
+                    alert("Location detection available soon.");
+                    return;
+                  }
+                  setSelectedCountry(val);
+                }}
                 header="SELECT REGION"
                 footer="Content adapts to your selected region"
                 defaultIcon={<Globe className="w-4 h-4 text-[#8892a4]" />}
                 options={[
-                  { value: "all", label: "All Countries", icon: <Globe className="w-4 h-4 text-[#8892a4]" /> },
-                  { value: "US", label: "United States", icon: <img src="/flags/us.svg" alt="US" className="w-4 h-[11px] rounded-[1px] object-cover" /> },
-                  { value: "UK", label: "United Kingdom", icon: <img src="/flags/uk.svg" alt="UK" className="w-4 h-[11px] rounded-[1px] object-cover" /> },
-                  { value: "AU", label: "Australia", icon: <img src="/flags/au.svg" alt="AU" className="w-4 h-[11px] rounded-[1px] object-cover" /> },
-                  { value: "CA", label: "Canada", icon: <img src="/flags/ca.svg" alt="CA" className="w-4 h-[11px] rounded-[1px] object-cover" /> },
-                  { value: "GENERAL", label: "Global", icon: <Globe className="w-4 h-4 text-[#6aa595]" /> },
-                  { value: "detect", label: "Detect location", icon: <Locate className="w-4 h-4 text-[#5a688e]" /> },
+                  {
+                    value: "all",
+                    label: "All Countries",
+                    icon: <Globe className="w-4 h-4 text-[#8892a4]" />,
+                  },
+                  {
+                    value: "US",
+                    label: "United States",
+                    icon: (
+                      <img
+                        src="/flags/us.svg"
+                        alt="US"
+                        className="w-4 h-[11px] rounded-[1px] object-cover"
+                      />
+                    ),
+                  },
+                  {
+                    value: "UK",
+                    label: "United Kingdom",
+                    icon: (
+                      <img
+                        src="/flags/uk.svg"
+                        alt="UK"
+                        className="w-4 h-[11px] rounded-[1px] object-cover"
+                      />
+                    ),
+                  },
+                  {
+                    value: "AU",
+                    label: "Australia",
+                    icon: (
+                      <img
+                        src="/flags/au.svg"
+                        alt="AU"
+                        className="w-4 h-[11px] rounded-[1px] object-cover"
+                      />
+                    ),
+                  },
+                  {
+                    value: "CA",
+                    label: "Canada",
+                    icon: (
+                      <img
+                        src="/flags/ca.svg"
+                        alt="CA"
+                        className="w-4 h-[11px] rounded-[1px] object-cover"
+                      />
+                    ),
+                  },
+                  {
+                    value: "GENERAL",
+                    label: "Global",
+                    icon: <Globe className="w-4 h-4 text-[#6aa595]" />,
+                  },
+                  {
+                    value: "detect",
+                    label: "Detect location",
+                    icon: <Locate className="w-4 h-4 text-[#5a688e]" />,
+                  },
                 ]}
               />
             </div>
@@ -156,23 +278,65 @@ export default function NewsPageClient() {
 
             {/* Category */}
             <div className="flex items-center gap-2">
-              <label className="text-xs uppercase tracking-widest text-[#8892a4] font-medium whitespace-nowrap shrink-0">Category</label>
+              <label className="text-xs uppercase tracking-widest text-[#8892a4] font-medium whitespace-nowrap shrink-0">
+                Category
+              </label>
               <CustomSelect
                 value={selectedCategory}
                 onChange={setSelectedCategory}
                 header="CONTENT TOPIC"
                 defaultIcon={<LayoutGrid className="w-4 h-4 text-[#8892a4]" />}
                 options={[
-                  { value: "All", label: "All Categories", icon: <LayoutGrid className="w-4 h-4 text-[#8892a4]" /> },
-                  { value: "Markets & Investing", label: "Markets & Investing", icon: <div className="w-2 h-2 rounded-full bg-[#5a688e]" /> },
-                  { value: "Banking & Finance", label: "Banking & Finance", icon: <div className="w-2 h-2 rounded-full bg-[#6aa595]" /> },
-                  { value: "Cryptocurrency", label: "Cryptocurrency", icon: <div className="w-2 h-2 rounded-full bg-[#c9a96e]" /> },
-                  { value: "Commodities", label: "Commodities", icon: <div className="w-2 h-2 rounded-full bg-[#1a1a2e]" /> },
-                  { value: "Currency & Forex", label: "Currency & Forex", icon: <div className="w-2 h-2 rounded-full bg-[#5a688e]" /> },
-                  { value: "Tax Compliance", label: "Tax Compliance", icon: <div className="w-2 h-2 rounded-full bg-[#6aa595]" /> },
-                  { value: "Payroll", label: "Payroll", icon: <div className="w-2 h-2 rounded-full bg-[#c9a96e]" /> },
-                  { value: "Regulation Update", label: "Regulation Update", icon: <div className="w-2 h-2 rounded-full bg-[#1a1a2e]" /> },
-                  { value: "Bookkeeping", label: "Bookkeeping", icon: <div className="w-2 h-2 rounded-full bg-[#5a688e]" /> },
+                  {
+                    value: "All",
+                    label: "All Categories",
+                    icon: <LayoutGrid className="w-4 h-4 text-[#8892a4]" />,
+                  },
+                  {
+                    value: "Markets & Investing",
+                    label: "Markets & Investing",
+                    icon: <div className="w-2 h-2 rounded-full bg-[#5a688e]" />,
+                  },
+                  {
+                    value: "Banking & Finance",
+                    label: "Banking & Finance",
+                    icon: <div className="w-2 h-2 rounded-full bg-[#6aa595]" />,
+                  },
+                  {
+                    value: "Cryptocurrency",
+                    label: "Cryptocurrency",
+                    icon: <div className="w-2 h-2 rounded-full bg-[#c9a96e]" />,
+                  },
+                  {
+                    value: "Commodities",
+                    label: "Commodities",
+                    icon: <div className="w-2 h-2 rounded-full bg-[#1a1a2e]" />,
+                  },
+                  {
+                    value: "Currency & Forex",
+                    label: "Currency & Forex",
+                    icon: <div className="w-2 h-2 rounded-full bg-[#5a688e]" />,
+                  },
+                  {
+                    value: "Tax Compliance",
+                    label: "Tax Compliance",
+                    icon: <div className="w-2 h-2 rounded-full bg-[#6aa595]" />,
+                  },
+                  {
+                    value: "Payroll",
+                    label: "Payroll",
+                    icon: <div className="w-2 h-2 rounded-full bg-[#c9a96e]" />,
+                  },
+                  {
+                    value: "Regulation Update",
+                    label: "Regulation Update",
+                    icon: <div className="w-2 h-2 rounded-full bg-[#1a1a2e]" />,
+                  },
+                  {
+                    value: "Bookkeeping",
+                    label: "Bookkeeping",
+                    icon: <div className="w-2 h-2 rounded-full bg-[#5a688e]" />,
+                  },
                 ]}
               />
             </div>
@@ -181,16 +345,30 @@ export default function NewsPageClient() {
 
             {/* Date */}
             <div className="flex items-center gap-2">
-              <label className="text-xs uppercase tracking-widest text-[#8892a4] font-medium whitespace-nowrap shrink-0">Date</label>
+              <label className="text-xs uppercase tracking-widest text-[#8892a4] font-medium whitespace-nowrap shrink-0">
+                Date
+              </label>
               <CustomSelect
                 value={dateFilter}
                 onChange={setDateFilter}
                 header="TIMEFRAME"
                 defaultIcon={<Calendar className="w-4 h-4 text-[#8892a4]" />}
                 options={[
-                  { value: "all", label: "All Time", icon: <CalendarDays className="w-4 h-4 text-[#8892a4]" /> },
-                  { value: "week", label: "This Week", icon: <Calendar className="w-4 h-4 text-[#8892a4]" /> },
-                  { value: "today", label: "Today", icon: <CalendarCheck className="w-4 h-4 text-[#8892a4]" /> },
+                  {
+                    value: "all",
+                    label: "All Time",
+                    icon: <CalendarDays className="w-4 h-4 text-[#8892a4]" />,
+                  },
+                  {
+                    value: "week",
+                    label: "This Week",
+                    icon: <Calendar className="w-4 h-4 text-[#8892a4]" />,
+                  },
+                  {
+                    value: "today",
+                    label: "Today",
+                    icon: <CalendarCheck className="w-4 h-4 text-[#8892a4]" />,
+                  },
                 ]}
               />
             </div>
@@ -198,7 +376,8 @@ export default function NewsPageClient() {
             {/* Results count */}
             <div className="sm:ml-auto">
               <span className="text-xs text-[#8892a4]">
-                Showing {Math.min(visibleCount, filteredNews.length)} of {filteredNews.length} articles
+                Showing {Math.min(visibleCount, filteredNews.length)} of{" "}
+                {filteredNews.length} articles
               </span>
             </div>
           </div>
@@ -209,12 +388,17 @@ export default function NewsPageClient() {
       <section className="bg-white py-10 lg:py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
           <div className="mb-4 h-px w-12 bg-[#c9a96e] sm:mb-6 sm:w-16" />
-          <p className="text-xs uppercase tracking-[0.2em] text-[#6aa595]">Latest News</p>
+          <p className="text-xs uppercase tracking-[0.2em] text-[#6aa595]">
+            Latest News
+          </p>
 
           {loading ? (
             <div className="mt-8 grid gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
               {[1, 2, 3, 4, 5, 6].map((item) => (
-                <div key={item} className="rounded-xl border border-[#e2e4e9] bg-[#f8f9fa] p-6 animate-pulse">
+                <div
+                  key={item}
+                  className="rounded-xl border border-[#e2e4e9] bg-[#f8f9fa] p-6 animate-pulse"
+                >
                   <div className="mb-4 flex items-center justify-between gap-3">
                     <div className="h-5 w-24 rounded-full bg-[#e2e4e9]" />
                     <div className="h-5 w-16 rounded-full bg-[#e2e4e9]" />
@@ -228,10 +412,17 @@ export default function NewsPageClient() {
           ) : filteredNews.length === 0 ? (
             <div className="mt-8 rounded-xl border border-[#e2e4e9] bg-[#f8f9fa] p-10 text-center sm:p-12">
               <div className="mx-auto mb-4 h-px w-12 bg-[#c9a96e]" />
-              <p className="text-base font-medium text-[#1a1a2e]">No articles found</p>
-              <p className="mt-2 text-sm text-[#5a6478]">Try adjusting your filters or check back later.</p>
-              <button type="button" onClick={clearFilters}
-                className="mt-4 rounded-full border border-[#5a688e] px-6 py-2 text-sm text-[#5a688e] cursor-pointer hover:bg-[#5a688e] hover:text-white active:scale-95 transition-colors">
+              <p className="text-base font-medium text-[#1a1a2e]">
+                No articles found
+              </p>
+              <p className="mt-2 text-sm text-[#5a6478]">
+                Try adjusting your filters or check back later.
+              </p>
+              <button
+                type="button"
+                onClick={clearFilters}
+                className="mt-4 rounded-full border border-[#5a688e] px-6 py-2 text-sm text-[#5a688e] cursor-pointer hover:bg-[#5a688e] hover:text-white active:scale-95 transition-colors"
+              >
                 Clear all filters
               </button>
             </div>
@@ -239,9 +430,15 @@ export default function NewsPageClient() {
             <>
               <div className="mt-8 grid gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
                 {visibleNews.map((item) => {
-                  const countryCode = String(item.country || '').toLowerCase();
-                  const countryMeta = countries.find((country) => country.code === countryCode);
-                  const showCountry = item.country && item.country !== 'All' && item.country !== 'General' && item.country !== 'GENERAL';
+                  const countryCode = String(item.country || "").toLowerCase();
+                  const countryMeta = countries.find(
+                    (country) => country.code === countryCode,
+                  );
+                  const showCountry =
+                    item.country &&
+                    item.country !== "All" &&
+                    item.country !== "General" &&
+                    item.country !== "GENERAL";
 
                   return (
                     <Link
@@ -251,9 +448,6 @@ export default function NewsPageClient() {
                     >
                       <div className="p-5 sm:p-6">
                         <div className="flex flex-wrap items-center gap-2">
-                          <span className="bg-[#6aa595]/10 text-[#6aa595] px-3 py-1 text-xs rounded-full">
-                            {item.sourceType || item.source}
-                          </span>
                           <span className="bg-[#5a688e]/10 text-[#5a688e] text-xs rounded-full px-2 py-0.5">
                             {item.category}
                           </span>
@@ -263,17 +457,22 @@ export default function NewsPageClient() {
                           {item.title}
                         </h2>
 
-                        <p className="text-sm text-[#5a6478] leading-relaxed mt-2 line-clamp-2">{item.summary}</p>
+                        <p className="text-sm text-[#5a6478] leading-relaxed mt-2 line-clamp-2">
+                          {item.summary}
+                        </p>
 
                         <div className="mt-4 flex items-center justify-between gap-2 text-xs text-[#8892a4]">
                           <span>
                             {item.publishedAt
-                              ? new Date(item.publishedAt).toLocaleDateString('en-US', {
-                                  month: 'short',
-                                  day: 'numeric',
-                                  year: 'numeric',
-                                })
-                              : ''}
+                              ? new Date(item.publishedAt).toLocaleDateString(
+                                  "en-US",
+                                  {
+                                    month: "short",
+                                    day: "numeric",
+                                    year: "numeric",
+                                  },
+                                )
+                              : ""}
                           </span>
 
                           <span className="inline-flex items-center gap-1.5 min-w-0">
@@ -284,7 +483,11 @@ export default function NewsPageClient() {
                                 className="w-4 h-[11px] rounded-[1px] object-cover shrink-0"
                               />
                             ) : null}
-                            {showCountry ? <span className="text-[#5a6478]">{item.country}</span> : null}
+                            {showCountry ? (
+                              <span className="text-[#5a6478]">
+                                {item.country}
+                              </span>
+                            ) : null}
                             <span className="truncate">{item.source}</span>
                           </span>
                         </div>
@@ -300,16 +503,18 @@ export default function NewsPageClient() {
 
               {hasMore && (
                 <div className="mt-10 text-center">
-                  <button type="button" disabled={loadingMore} onClick={handleLoadMore}
-                    className="border border-[#1a1a2e] text-[#1a1a2e] rounded-full px-8 py-3 text-sm font-medium cursor-pointer transition-all hover:bg-[#1a1a2e] hover:text-white active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed">
+                  <button
+                    type="button"
+                    disabled={loadingMore}
+                    onClick={handleLoadMore}
+                    className="border border-[#1a1a2e] text-[#1a1a2e] rounded-full px-8 py-3 text-sm font-medium cursor-pointer transition-all hover:bg-[#1a1a2e] hover:text-white active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
+                  >
                     {loadingMore ? "Loading..." : "Load More"}
                   </button>
                 </div>
               )}
             </>
           )}
-
-          
         </div>
       </section>
     </main>
