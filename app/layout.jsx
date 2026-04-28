@@ -3,6 +3,7 @@ import { CountryProvider } from "@/components/CountryProvider";
 import { Inter, Playfair_Display } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
+import { siteUrl } from "@/lib/constants";
 
 const playfairDisplay = Playfair_Display({
   subsets: ["latin"],
@@ -15,6 +16,9 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
+
+// ...fonts stay the same, add siteUrl import at the top of the file...
+
 export const metadata = {
   title: {
     template: "%s | ClariVex Solution",
@@ -23,10 +27,6 @@ export const metadata = {
   },
   description:
     "ClariVex Solution provides elite outsourced accounting, bookkeeping, tax planning and payroll services for businesses across the US, UK, Australia and Canada. 15+ years experience serving 280+ clients worldwide.",
-  openGraph: {
-    title:
-      "ClariVex Solution | Outsourced Accounting, Bookkeeping & Tax Compliance",
-  },
 
   keywords: [
     "outsourced accounting",
@@ -43,22 +43,46 @@ export const metadata = {
     follow: true,
   },
 
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "https://clarivex-website.vercel.app",
-  ),
+  metadataBase: new URL(siteUrl),
+
+  openGraph: {
+    title:
+      "ClariVex Solution | Outsourced Accounting, Bookkeeping & Tax Compliance",
+    description:
+      "ClariVex Solution provides elite outsourced accounting, bookkeeping, tax planning and payroll services for businesses across the US, UK, Australia and Canada.",
+    url: siteUrl,
+    siteName: "ClariVex Solution",
+    type: "website",
+    images: [
+      {
+        url: `${siteUrl}/og-image.png`,
+        width: 1200,
+        height: 630,
+        alt: "ClariVex Solution",
+      },
+    ],
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title:
+      "ClariVex Solution | Outsourced Accounting, Bookkeeping & Tax Compliance",
+    description:
+      "Elite outsourced accounting, bookkeeping & tax compliance for US, UK, AU, CA businesses.",
+    images: [`${siteUrl}/og-image.png`],
+  },
+
   alternates: {
-    canonical:
-      process.env.NEXT_PUBLIC_SITE_URL || "https://clarivex-website.vercel.app",
+    canonical: siteUrl,
     languages: {
-      "en-US": `${process.env.NEXT_PUBLIC_SITE_URL || "https://clarivex-website.vercel.app"}/us`,
-      "en-GB": `${process.env.NEXT_PUBLIC_SITE_URL || "https://clarivex-website.vercel.app"}/uk`,
-      "en-AU": `${process.env.NEXT_PUBLIC_SITE_URL || "https://clarivex-website.vercel.app"}/au`,
-      "en-CA": `${process.env.NEXT_PUBLIC_SITE_URL || "https://clarivex-website.vercel.app"}/ca`,
-      "x-default":
-        process.env.NEXT_PUBLIC_SITE_URL ||
-        "https://clarivex-website.vercel.app",
+      "en-US": `${siteUrl}/us`,
+      "en-GB": `${siteUrl}/uk`,
+      "en-AU": `${siteUrl}/au`,
+      "en-CA": `${siteUrl}/ca`,
+      "x-default": siteUrl,
     },
   },
+
   icons: {
     icon: [
       { url: "/favicon.ico" },

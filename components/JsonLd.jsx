@@ -6,7 +6,7 @@ const CLARIVEX_ORG = {
   url: siteUrl,
   logo: {
     "@type": "ImageObject",
-    url: `${siteUrl}/logo.png`,
+    url: `${siteUrl}/logo-dark.png`,
   },
 };
 
@@ -31,7 +31,10 @@ export function AccountingServiceSchema({ countryCode, content }) {
       addressCountry: "IN",
     },
     areaServed: Array.isArray(schema.areaServed)
-      ? schema.areaServed.map((country) => ({ "@type": "Country", name: country }))
+      ? schema.areaServed.map((country) => ({
+          "@type": "Country",
+          name: country,
+        }))
       : { "@type": "Country", name: schema.areaServed || "US" },
     priceRange: "$$",
     image: `${siteUrl}/og-image.png`,
@@ -53,7 +56,11 @@ export function BlogPostingSchema({ post }) {
     headline: post.title,
     description: post.excerpt,
     datePublished: post.publishedIsoDate || post.isoDate || "2026-03-01",
-    dateModified: post.modifiedIsoDate || post.publishedIsoDate || post.isoDate || "2026-03-01",
+    dateModified:
+      post.modifiedIsoDate ||
+      post.publishedIsoDate ||
+      post.isoDate ||
+      "2026-03-01",
     author: {
       "@type": "Person",
       name: post.authorName || "ClariVex Team",
