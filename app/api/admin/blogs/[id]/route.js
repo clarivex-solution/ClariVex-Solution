@@ -1,5 +1,6 @@
 import { verifyAdminRequest } from '@/lib/adminAuth';
 import { prisma } from '@/lib/prisma';
+import { sanitizeBlogHtml } from '@/lib/sanitizeHtml';
 import { NextResponse } from 'next/server';
 
 export async function GET(request, { params }) {
@@ -42,6 +43,9 @@ export async function PUT(request, { params }) {
     }
 
     const updateData = { ...body };
+    if (updateData.content !== undefined) {
+      updateData.content = sanitizeBlogHtml(updateData.content);
+    }
 
     // If status becomes "published" and no publishedAt exists, set it
     if (updateData.status === 'published' && !existingBlog.publishedAt) {
@@ -68,9 +72,14 @@ export async function PATCH(request, { params }) {
 
   const { id } = await params;
   const body = await request.json();
+  const updateData = { status: body.status };
+  if (body.content !== undefined) {
+    updateData.content = sanitizeBlogHtml(body.content);
+  }
+
   const updated = await prisma.blog.update({
     where: { id },
-    data: { status: body.status },
+    data: updateData,
   });
 
   return NextResponse.json(updated);

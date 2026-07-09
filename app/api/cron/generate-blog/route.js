@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic";
 export const maxDuration = 60;
 
 import { prisma } from "@/lib/prisma";
+import { sanitizeBlogHtml } from "@/lib/sanitizeHtml";
 import { NextResponse } from "next/server";
 
 // ─── Topic Pool ───────────────────────────────────────────────────────────────
@@ -237,7 +238,7 @@ Respond ONLY with a valid JSON object. No markdown, no backticks, no explanation
         title: generated.title,
         slug,
         excerpt: generated.excerpt,
-        content: generated.content,
+        content: sanitizeBlogHtml(generated.content),
         category,
         country,
         status: "published",

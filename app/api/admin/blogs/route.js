@@ -1,5 +1,6 @@
 import { verifyAdminRequest } from '@/lib/adminAuth';
 import { prisma } from '@/lib/prisma';
+import { sanitizeBlogHtml } from '@/lib/sanitizeHtml';
 import { NextResponse } from 'next/server';
 
 export async function GET(request) {
@@ -34,7 +35,7 @@ export async function POST(request) {
       title,
       slug,
       excerpt,
-      content,
+      content: sanitizeBlogHtml(content),
       coverImage,
       category,
       country,
