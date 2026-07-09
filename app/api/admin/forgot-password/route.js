@@ -3,7 +3,6 @@ import { prisma } from '@/lib/prisma'
 import { NextResponse } from 'next/server'
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
 const isDev = process.env.NODE_ENV !== 'production'
 
 function buildResetUrl(token) {
@@ -40,6 +39,7 @@ export async function POST(request) {
     const resetUrl = buildResetUrl(token)
 
     try {
+      const resend = new Resend(process.env.RESEND_API_KEY)
       const sendResult = await resend.emails.send({
         from: process.env.FROM_EMAIL || 'ClariVex Admin <onboarding@resend.dev>',
         to: submittedEmail,

@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
 const rateLimitMap = new Map();
 
 // Escape HTML to prevent XSS injection into the email body
@@ -28,7 +27,7 @@ export async function POST(request) {
   if (timestamps.length >= 3) {
     return NextResponse.json(
       { success: false, error: "Too many requests. Please try again later." },
-      { status: 429 }
+      { status: 429 },
     );
   }
 
@@ -45,14 +44,16 @@ export async function POST(request) {
     }
 
     // Sanitize all user inputs before inserting into HTML
-    const safeName    = escapeHtml(name);
-    const safeEmail   = escapeHtml(email);
-    const safePhone   = escapeHtml(phone);
+    const safeName = escapeHtml(name);
+    const safeEmail = escapeHtml(email);
+    const safePhone = escapeHtml(phone);
     const safeService = escapeHtml(service);
     const safeMessage = escapeHtml(message);
 
+    const resend = new Resend(process.env.RESEND_API_KEY);
     await resend.emails.send({
-      from: process.env.FROM_EMAIL || "ClariVex Solutions <onboarding@resend.dev>",
+      from:
+        process.env.FROM_EMAIL || "ClariVex Solutions <onboarding@resend.dev>",
       to: process.env.CONTACT_EMAIL,
       replyTo: safeEmail,
       subject: safeService
@@ -93,7 +94,7 @@ export async function POST(request) {
   } catch (error) {
     return NextResponse.json(
       { success: false, error: "Failed to send message. Please try again." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
