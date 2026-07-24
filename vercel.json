@@ -5,6 +5,7 @@
     { "path": "/api/cron/fetch-news?country=CA",      "schedule": "0 14 * * *" },
     { "path": "/api/cron/fetch-news?country=AU",      "schedule": "0 22 * * *" },
     { "path": "/api/cron/fetch-news?country=GENERAL", "schedule": "0 6 * * *"  },
-    { "path": "/api/cron/generate-blog",              "schedule": "0 9 * * 2,5" }
+    { "path": "/api/cron/generate-blog",              "schedule": "0 9 * * 2,5" },
+    { "path": "/api/cron/cleanup-news",               "schedule": "0 0 * * *" }
   ]
 }
