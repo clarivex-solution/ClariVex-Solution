@@ -16,13 +16,16 @@ export async function GET(request) {
 
     const result = await prisma.newsArticle.deleteMany({
       where: {
-        publishedAt: { lt: thirtyDaysAgo }
-      }
+        publishedAt: { lt: thirtyDaysAgo },
+      },
     });
 
     return NextResponse.json({ deleted: result.count, status: "ok" });
   } catch (error) {
     console.error("Cleanup error:", error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 },
+    );
   }
 }
