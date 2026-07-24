@@ -1,49 +1,80 @@
-import { siteUrl } from '@/lib/constants'
-import { prisma } from '@/lib/prisma'
-import { NextResponse } from 'next/server'
-import { Resend } from 'resend'
+import { siteUrl } from "@/lib/constants";
+import { prisma } from "@/lib/prisma";
+import { NextResponse } from "next/server";
+import { Resend } from "resend";
 
-const isDev = process.env.NODE_ENV !== 'production'
+const isDev = process.env.NODE_ENV !== "production";
+
+// Rate limit: 3 attempts per 15 minutes per IP
+const attempts = new Map();
+function isRateLimited(ip) {
+  const now = Date.now();
+  const windowMs = 15 * 60 * 1000;
+  const maxAttempts = 3;
+  const record = attempts.get(ip);
+  if (!record || now - record.firstAttempt > windowMs) {
+    attempts.set(ip, { count: 1, firstAttempt: now });
+    return false;
+  }
+  if (record.count >= maxAttempts) return true;
+  record.count += 1;
+  return false;
+}
 
 function buildResetUrl(token) {
-  const rawBaseUrl = String(process.env.NEXT_PUBLIC_SITE_URL || siteUrl || '').trim()
-  const normalizedBaseUrl = rawBaseUrl.replace(/\/+$/, '')
-  return `${normalizedBaseUrl}/admin/reset-password-link?token=${encodeURIComponent(token)}`
+  const rawBaseUrl = String(
+    process.env.NEXT_PUBLIC_SITE_URL || siteUrl || "",
+  ).trim();
+  const normalizedBaseUrl = rawBaseUrl.replace(/\/+$/, "");
+  return `${normalizedBaseUrl}/admin/reset-password-link?token=${encodeURIComponent(token)}`;
 }
 
 export async function POST(request) {
+  const ip =
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+
+  if (isRateLimited(ip)) {
+    return NextResponse.json({ success: true }); // silent — don't reveal rate limit
+  }
+
   try {
-    const { email } = await request.json()
+    const { email } = await request.json();
 
-    const submittedEmail = String(email || '').trim().toLowerCase()
-    const adminEmail = String(process.env.ADMIN_EMAIL || '').trim().toLowerCase()
+    const submittedEmail = String(email || "")
+      .trim()
+      .toLowerCase();
+    const adminEmail = String(process.env.ADMIN_EMAIL || "")
+      .trim()
+      .toLowerCase();
 
-    // Always return 200 - do not reveal if email matched.
     if (!submittedEmail || !adminEmail || submittedEmail !== adminEmail) {
-      if (isDev) {
-        console.log('[forgot-password] Ignored request: email did not match ADMIN_EMAIL')
-      }
-      return NextResponse.json({ success: true })
+      if (isDev)
+        console.log(
+          "[forgot-password] Ignored: email did not match ADMIN_EMAIL",
+        );
+      return NextResponse.json({ success: true });
     }
 
-    // Clean up old tokens for this email
-    await prisma.adminPasswordReset.deleteMany({ where: { email: submittedEmail } })
+    await prisma.adminPasswordReset.deleteMany({
+      where: { email: submittedEmail },
+    });
 
-    const token = crypto.randomUUID()
-    const expiresAt = new Date(Date.now() + 60 * 60 * 1000) // 1 hour
+    const token = crypto.randomUUID();
+    const expiresAt = new Date(Date.now() + 60 * 60 * 1000);
 
     await prisma.adminPasswordReset.create({
       data: { token, email: submittedEmail, expiresAt },
-    })
+    });
 
-    const resetUrl = buildResetUrl(token)
+    const resetUrl = buildResetUrl(token);
 
     try {
-      const resend = new Resend(process.env.RESEND_API_KEY)
+      const resend = new Resend(process.env.RESEND_API_KEY);
       const sendResult = await resend.emails.send({
-        from: process.env.FROM_EMAIL || 'ClariVex Admin <onboarding@resend.dev>',
+        from:
+          process.env.FROM_EMAIL || "ClariVex Admin <onboarding@resend.dev>",
         to: submittedEmail,
-        subject: 'ClariVex Admin - Password Reset',
+        subject: "ClariVex Admin - Password Reset",
         html: `
           <div style="font-family:sans-serif;max-width:480px;margin:0 auto;padding:32px">
             <div style="height:2px;width:48px;background:#c9a96e;margin-bottom:24px"></div>
@@ -54,20 +85,19 @@ export async function POST(request) {
             <p style="word-break:break-all;color:#5a6478;font-size:12px;margin-top:8px">${resetUrl}</p>
           </div>
         `,
-      })
-
-      if (isDev) {
-        console.log('[forgot-password] Reset email accepted by provider', sendResult?.data?.id || null)
-        console.log('[forgot-password] Reset URL used:', resetUrl)
-      }
+      });
+      if (isDev)
+        console.log(
+          "[forgot-password] Email sent",
+          sendResult?.data?.id || null,
+        );
     } catch (emailError) {
-      console.error('Forgot password email send failed:', emailError)
+      console.error("Forgot password email send failed:", emailError);
     }
 
-    return NextResponse.json({ success: true })
+    return NextResponse.json({ success: true });
   } catch (error) {
-    console.error('Forgot password request failed:', error)
-    return NextResponse.json({ success: true })
+    console.error("Forgot password request failed:", error);
+    return NextResponse.json({ success: true });
   }
 }
-
