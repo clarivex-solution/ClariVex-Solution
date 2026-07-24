@@ -1,3 +1,4 @@
+export const revalidate = 3600;
 import BlogPageClient from "@/components/BlogPageClient";
 import { siteUrl } from "@/lib/constants";
 import { prisma } from "@/lib/prisma";

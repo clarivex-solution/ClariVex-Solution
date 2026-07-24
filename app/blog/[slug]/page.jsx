@@ -1,5 +1,4 @@
-export const dynamic = "force-dynamic";
-
+import { unstable_cache } from "next/cache";
 import TableOfContents from "@/components/blog/TableOfContents";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { BlogPostingSchema } from "@/components/JsonLd";
@@ -10,6 +9,8 @@ import { calculateReadingTime } from "@/utils/readingTime";
 import { Calendar, ChevronRight, Clock3, User } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+
+export const revalidate = 3600;
 
 const BLOG_AUTHOR_NAME = "ClariVex Team";
 const FALLBACK_BLOG_IMAGE = `${siteUrl}/og-image.png`;
@@ -26,11 +27,42 @@ function formatDate(value) {
   });
 }
 
-async function getPublishedPost(slug) {
-  return prisma.blog.findFirst({
-    where: { slug, status: "published" },
-  });
-}
+const getPublishedPost = unstable_cache(
+  async (slug) => {
+    return prisma.blog.findFirst({
+      where: { slug, status: "published" },
+    });
+  },
+  ["blog-post"],
+  { revalidate: 3600, tags: ["blog"] },
+);
+
+const getRelatedPosts = unstable_cache(
+  async (slug, category) => {
+    const related = await prisma.blog.findMany({
+      where: { status: "published", NOT: { slug }, category },
+      take: 3,
+      orderBy: { publishedAt: "desc" },
+      select: { slug: true, title: true, category: true },
+    });
+
+    if (related.length < 3) {
+      const needed = 3 - related.length;
+      const usedSlugs = [slug, ...related.map((item) => item.slug)];
+      const fill = await prisma.blog.findMany({
+        where: { status: "published", NOT: { slug: { in: usedSlugs } } },
+        take: needed,
+        orderBy: { publishedAt: "desc" },
+        select: { slug: true, title: true, category: true },
+      });
+      related.push(...fill);
+    }
+
+    return related;
+  },
+  ["blog-related"],
+  { revalidate: 3600, tags: ["blog"] },
+);
 
 function buildPostViewModel(dbPost) {
   const publishedAt = dbPost.publishedAt || dbPost.createdAt;
@@ -41,7 +73,9 @@ function buildPostViewModel(dbPost) {
     ...dbPost,
     authorName: BLOG_AUTHOR_NAME,
     publishedIsoDate: publishedAt ? publishedAt.toISOString() : undefined,
-    modifiedIsoDate: dbPost.updatedAt ? dbPost.updatedAt.toISOString() : undefined,
+    modifiedIsoDate: dbPost.updatedAt
+      ? dbPost.updatedAt.toISOString()
+      : undefined,
     date: formatDate(publishedAt),
     readingTime: calculateReadingTime(dbPost.content),
     headings,
@@ -52,7 +86,12 @@ function buildPostViewModel(dbPost) {
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
-  const dbPost = await getPublishedPost(slug);
+  let dbPost = null;
+  try {
+    dbPost = await getPublishedPost(slug);
+  } catch (err) {
+    console.warn("[blog/slug] generateMetadata DB unavailable:", err.message);
+  }
 
   if (!dbPost) {
     return { title: "Post Not Found" };
@@ -83,7 +122,11 @@ export async function generateMetadata({ params }) {
       modifiedTime: post.modifiedIsoDate,
       authors: [post.authorName],
       section: post.category,
-      tags: [post.category, post.country ? `${post.country} accounting` : "accounting", "finance"],
+      tags: [
+        post.category,
+        post.country ? `${post.country} accounting` : "accounting",
+        "finance",
+      ],
       siteName: "ClariVex Solution",
       images: [
         {
@@ -111,7 +154,12 @@ export async function generateMetadata({ params }) {
 
 export default async function BlogArticlePage({ params }) {
   const { slug } = await params;
-  const dbPost = await getPublishedPost(slug);
+  let dbPost = null;
+  try {
+    dbPost = await getPublishedPost(slug);
+  } catch (err) {
+    console.warn("[blog/slug] DB unavailable:", err.message);
+  }
 
   if (!dbPost) {
     notFound();
@@ -119,24 +167,11 @@ export default async function BlogArticlePage({ params }) {
 
   const post = buildPostViewModel(dbPost);
 
-  const relatedPosts = await prisma.blog.findMany({
-    where: { status: "published", NOT: { slug }, category: post.category },
-    take: 3,
-    orderBy: { publishedAt: "desc" },
-    select: { slug: true, title: true, category: true },
-  });
-
-  if (relatedPosts.length < 3) {
-    const needed = 3 - relatedPosts.length;
-    const usedSlugs = [slug, ...relatedPosts.map((item) => item.slug)];
-    const fill = await prisma.blog.findMany({
-      where: { status: "published", NOT: { slug: { in: usedSlugs } } },
-      take: needed,
-      orderBy: { publishedAt: "desc" },
-      select: { slug: true, title: true, category: true },
-    });
-
-    relatedPosts.push(...fill);
+  let relatedPosts = [];
+  try {
+    relatedPosts = await getRelatedPosts(slug, post.category);
+  } catch (err) {
+    console.warn("[blog/slug] related posts DB unavailable:", err.message);
   }
 
   return (
@@ -157,7 +192,9 @@ export default async function BlogArticlePage({ params }) {
             <header className="mx-auto max-w-4xl">
               <div className="mb-4 h-px w-12 bg-[#c9a96e]" />
               <div className="flex flex-wrap items-center gap-3 text-xs uppercase tracking-[0.2em] text-[#6aa595]">
-                <span className="rounded-full bg-[#6aa595]/10 px-3 py-1">{post.category}</span>
+                <span className="rounded-full bg-[#6aa595]/10 px-3 py-1">
+                  {post.category}
+                </span>
                 {post.country && post.country !== "All" ? (
                   <span className="rounded-full bg-[#5a688e]/10 px-3 py-1 text-[#5a688e]">
                     {post.country}
@@ -175,7 +212,10 @@ export default async function BlogArticlePage({ params }) {
                   <User className="h-4 w-4" />
                   {post.authorName}
                 </span>
-                <time dateTime={post.publishedIsoDate} className="inline-flex items-center gap-2">
+                <time
+                  dateTime={post.publishedIsoDate}
+                  className="inline-flex items-center gap-2"
+                >
                   <Calendar className="h-4 w-4" />
                   {post.date}
                 </time>
@@ -224,7 +264,9 @@ export default async function BlogArticlePage({ params }) {
                     [&_code]:rounded [&_code]:bg-[#f8f9fa] [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:font-mono [&_code]:text-sm [&_code]:text-[#1a1a2e]
                   `}
                 >
-                  <div dangerouslySetInnerHTML={{ __html: post.renderedContent }} />
+                  <div
+                    dangerouslySetInnerHTML={{ __html: post.renderedContent }}
+                  />
                 </article>
               </div>
             </section>
@@ -259,7 +301,8 @@ export default async function BlogArticlePage({ params }) {
                   Book a Consultation
                 </h2>
                 <p className="mt-3 text-sm text-[#8892a4]">
-                  Need support with accounting, payroll, or tax compliance? Speak with our team.
+                  Need support with accounting, payroll, or tax compliance?
+                  Speak with our team.
                 </p>
                 <Link
                   href="/#contact"

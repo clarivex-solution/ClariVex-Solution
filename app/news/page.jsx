@@ -1,3 +1,4 @@
+export const revalidate = 3600;
 import NewsPageClient from "@/components/NewsPageClient";
 import { siteUrl } from "@/lib/constants";
 import { prisma } from "@/lib/prisma";
