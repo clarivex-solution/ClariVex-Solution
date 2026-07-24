@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 
 export const runtime = "nodejs";
@@ -11,7 +10,7 @@ const PUBLIC_ADMIN_PATHS = new Set([
   "/admin/reset-password-link",
 ]);
 
-export async function middleware(request: NextRequest) {
+export async function middleware(request) {
   const { pathname } = request.nextUrl;
 
   if (!pathname.startsWith("/admin") || PUBLIC_ADMIN_PATHS.has(pathname)) {
@@ -38,8 +37,8 @@ export async function middleware(request: NextRequest) {
       return response;
     }
   } catch {
-    // DB unavailable — fail open to avoid locking out admin during outage
-    // Remove this once DB is stable, or change to fail closed if preferred
+    // DB unavailable — fail open during outage
+    // TODO: change to fail-closed after Aug 1 when Neon quota resets
     return NextResponse.next();
   }
 
