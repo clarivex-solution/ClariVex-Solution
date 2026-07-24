@@ -10,7 +10,7 @@ const PUBLIC_ADMIN_PATHS = new Set([
   "/admin/reset-password-link",
 ]);
 
-export async function middleware(request) {
+export async function proxy(request) {
   const { pathname } = request.nextUrl;
 
   if (!pathname.startsWith("/admin") || PUBLIC_ADMIN_PATHS.has(pathname)) {
