@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-export const runtime = "nodejs";
-
 const PUBLIC_ADMIN_PATHS = new Set([
   "/admin/login",
   "/admin/forgot-password",
@@ -44,7 +42,3 @@ export async function proxy(request) {
 
   return NextResponse.next();
 }
-
-export const config = {
-  matcher: ["/admin/:path*"],
-};
