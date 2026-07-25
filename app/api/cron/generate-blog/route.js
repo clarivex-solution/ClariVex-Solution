@@ -216,9 +216,48 @@ Respond ONLY with a valid JSON object. No markdown, no backticks, no explanation
     const data = await response.json();
     const rawText = data.content?.[0]?.text || "";
 
-    // Clean and parse JSON
-    const cleaned = rawText.replace(/```json|```/g, "").trim();
-    const generated = JSON.parse(cleaned);
+    // Clean and parse JSON — retry once if malformed
+    let generated;
+    try {
+      const cleaned = rawText.replace(/```json|```/g, "").trim();
+      generated = JSON.parse(cleaned);
+    } catch {
+      console.warn(
+        "[generate-blog] Malformed JSON on first attempt, retrying...",
+      );
+      const retryResponse = await fetch(
+        "https://api.anthropic.com/v1/messages",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-key": anthropicKey,
+            "anthropic-version": "2023-06-01",
+          },
+          body: JSON.stringify({
+            model: "claude-haiku-4-5-20251001",
+            max_tokens: 2000,
+            messages: [{ role: "user", content: prompt }],
+          }),
+        },
+      );
+
+      if (!retryResponse.ok) {
+        throw new Error("Anthropic API error on retry");
+      }
+
+      const retryData = await retryResponse.json();
+      const retryText = retryData.content?.[0]?.text || "";
+      const retryCleaned = retryText.replace(/```json|```/g, "").trim();
+
+      try {
+        generated = JSON.parse(retryCleaned);
+      } catch {
+        throw new Error(
+          "Malformed JSON from Anthropic after retry — skipping this run",
+        );
+      }
+    }
 
     // Validate required fields
     if (!generated.title || !generated.content || !generated.excerpt) {
