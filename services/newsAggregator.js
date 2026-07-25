@@ -1,7 +1,7 @@
-import { Prisma } from '@prisma/client';
-import Parser from 'rss-parser';
+import { Prisma } from "@prisma/client";
+import Parser from "rss-parser";
 
-import { prisma } from '@/lib/prisma';
+import { prisma } from "@/lib/prisma";
 import {
   categoriseArticle,
   dedupeArticles,
@@ -10,7 +10,7 @@ import {
   normaliseLinkKey,
   normaliseRssItem,
   toSlug,
-} from './newsAggregatorUtils.mjs';
+} from "./newsAggregatorUtils.mjs";
 
 const FETCH_CONCURRENCY = 5;
 const LOCK_NAMESPACE = 8312457;
@@ -19,90 +19,101 @@ const memoryLocks = new Set();
 
 const RSS_FEEDS = {
   US: [
-    { name: 'CPA Journal', url: 'https://www.cpajournal.com/feed/' },
-    { name: 'Tax Foundation', url: 'https://taxfoundation.org/feed/' },
+    { name: "CPA Journal", url: "https://www.cpajournal.com/feed/" },
+    { name: "Tax Foundation", url: "https://taxfoundation.org/feed/" },
   ],
   UK: [
-    { name: 'HMRC Updates', url: 'https://www.gov.uk/government/organisations/hm-revenue-customs.atom' },
-    { name: 'GOV.UK Tax', url: 'https://www.gov.uk/search/news-and-communications.atom?keywords=tax&organisations%5B%5D=hm-revenue-customs' },
+    {
+      name: "HMRC Updates",
+      url: "https://www.gov.uk/government/organisations/hm-revenue-customs.atom",
+    },
+    {
+      name: "GOV.UK Tax",
+      url: "https://www.gov.uk/search/news-and-communications.atom?keywords=tax&organisations%5B%5D=hm-revenue-customs",
+    },
   ],
   AU: [
-    { name: 'SmartCompany AU', url: 'https://www.smartcompany.com.au/feed/' },
+    { name: "SmartCompany AU", url: "https://www.smartcompany.com.au/feed/" },
   ],
   CA: [
-    { name: 'CBC Business', url: 'https://www.cbc.ca/cmlink/rss-business' },
-    { name: 'Financial Post', url: 'https://financialpost.com/feed' },
-    { name: 'Globe and Mail Business', url: 'https://www.theglobeandmail.com/arc/outboundfeeds/rss/category/business/' },
+    { name: "CBC Business", url: "https://www.cbc.ca/cmlink/rss-business" },
+    { name: "Financial Post", url: "https://financialpost.com/feed" },
+    {
+      name: "Globe and Mail Business",
+      url: "https://www.theglobeandmail.com/arc/outboundfeeds/rss/category/business/",
+    },
   ],
   GENERAL: [],
 };
 
 const GNEWS_QUERIES = {
   US: [
-    'US stock market S&P 500 investor outlook',
-    'Federal Reserve interest rate decision',
-    'US banking sector earnings results',
-    'gold price forecast United States',
-    'cryptocurrency Bitcoin regulation US',
-    'IRS tax filing deadline compliance',
-    'US payroll small business accounting',
-    'crude oil price US energy market',
-    'US dollar exchange rate forecast',
-    'inflation CPI Federal Reserve update',
+    "US stock market S&P 500 investor outlook",
+    "Federal Reserve interest rate decision",
+    "US banking sector earnings results",
+    "gold price forecast United States",
+    "cryptocurrency Bitcoin regulation US",
+    "IRS tax filing deadline compliance",
+    "US payroll small business accounting",
+    "crude oil price US energy market",
+    "US dollar exchange rate forecast",
+    "inflation CPI Federal Reserve update",
   ],
   UK: [
-    'UK stock market FTSE 100 update',
-    'Bank of England interest rate decision',
-    'UK banking Barclays HSBC results',
-    'gold price GBP UK investor',
-    'cryptocurrency regulation UK FCA',
-    'HMRC tax return self assessment deadline',
-    'UK payroll PAYE national insurance update',
-    'pound sterling exchange rate forecast',
-    'UK inflation CPI Bank of England',
-    'UK economy GDP growth outlook',
+    "UK stock market FTSE 100 update",
+    "Bank of England interest rate decision",
+    "UK banking Barclays HSBC results",
+    "gold price GBP UK investor",
+    "cryptocurrency regulation UK FCA",
+    "HMRC tax return self assessment deadline",
+    "UK payroll PAYE national insurance update",
+    "pound sterling exchange rate forecast",
+    "UK inflation CPI Bank of England",
+    "UK economy GDP growth outlook",
   ],
   AU: [
-    'ASX 200 Australian stock market update',
-    'Reserve Bank of Australia interest rate',
-    'Australian banking ANZ Westpac results',
-    'gold price AUD Australia mining',
-    'cryptocurrency regulation Australia ASIC',
-    'ATO tax return lodgement deadline',
-    'superannuation guarantee payroll Australia',
-    'Australian dollar exchange rate forecast',
-    'Australia inflation CPI RBA update',
-    'crude oil energy market Australia',
+    "ASX 200 Australian stock market update",
+    "Reserve Bank of Australia interest rate",
+    "Australian banking ANZ Westpac results",
+    "gold price AUD Australia mining",
+    "cryptocurrency regulation Australia ASIC",
+    "ATO tax return lodgement deadline",
+    "superannuation guarantee payroll Australia",
+    "Australian dollar exchange rate forecast",
+    "Australia inflation CPI RBA update",
+    "crude oil energy market Australia",
   ],
   CA: [
-    'TSX Toronto stock market update',
-    'Bank of Canada interest rate decision',
-    'Canadian banking TD RBC results',
-    'gold price CAD Canada mining',
-    'cryptocurrency Bitcoin Canada regulation',
-    'CRA tax filing deadline Canada',
-    'Canada payroll CPP EI compliance',
-    'Canadian dollar exchange rate forecast',
-    'Canada inflation CPI Bank of Canada',
-    'crude oil Alberta energy Canada',
+    "TSX Toronto stock market update",
+    "Bank of Canada interest rate decision",
+    "Canadian banking TD RBC results",
+    "gold price CAD Canada mining",
+    "cryptocurrency Bitcoin Canada regulation",
+    "CRA tax filing deadline Canada",
+    "Canada payroll CPP EI compliance",
+    "Canadian dollar exchange rate forecast",
+    "Canada inflation CPI Bank of Canada",
+    "crude oil Alberta energy Canada",
   ],
   GENERAL: [
-    'global stock markets outlook investors',
-    'gold price forecast global markets',
-    'cryptocurrency Bitcoin Ethereum market update',
-    'central banks interest rates global economy',
-    'crude oil price OPEC forecast',
-    'IFRS accounting standards global update',
-    'global banking sector earnings',
-    'inflation global economy outlook',
-    'forex currency exchange rates forecast',
-    'fintech digital banking payments trends',
+    "global stock markets outlook investors",
+    "gold price forecast global markets",
+    "cryptocurrency Bitcoin Ethereum market update",
+    "central banks interest rates global economy",
+    "crude oil price OPEC forecast",
+    "IFRS accounting standards global update",
+    "global banking sector earnings",
+    "inflation global economy outlook",
+    "forex currency exchange rates forecast",
+    "fintech digital banking payments trends",
   ],
 };
 
 function normaliseCountry(country) {
-  const normalized = String(country || 'GENERAL').trim().toUpperCase();
-  return RSS_FEEDS[normalized] ? normalized : 'GENERAL';
+  const normalized = String(country || "GENERAL")
+    .trim()
+    .toUpperCase();
+  return RSS_FEEDS[normalized] ? normalized : "GENERAL";
 }
 
 function normaliseSince(since) {
@@ -112,7 +123,7 @@ function normaliseSince(since) {
 }
 
 function getFeeds(country) {
-  if (country === 'GENERAL') {
+  if (country === "GENERAL") {
     return RSS_FEEDS.GENERAL || [];
   }
   return RSS_FEEDS[country] || [];
@@ -170,12 +181,12 @@ function advisoryLockId(country) {
 }
 
 function asBool(value) {
-  return value === true || value === 't' || value === 1 || value === '1';
+  return value === true || value === "t" || value === 1 || value === "1";
 }
 
 async function acquireLock(country) {
   if (memoryLocks.has(country)) {
-    return { acquired: false, release: async () => { } };
+    return { acquired: false, release: async () => {} };
   }
 
   memoryLocks.add(country);
@@ -183,13 +194,16 @@ async function acquireLock(country) {
 
   try {
     dbLockId = advisoryLockId(country);
-    const rows = await prisma.$queryRaw`SELECT pg_try_advisory_lock(${dbLockId}) AS acquired`;
+    const rows =
+      await prisma.$queryRaw`SELECT pg_try_advisory_lock(${dbLockId}) AS acquired`;
     const row = Array.isArray(rows) ? rows[0] : null;
 
     if (!row || !asBool(row.acquired)) {
       memoryLocks.delete(country);
-      console.log(`[newsAggregator] Lock not acquired for ${country} - another process running`);
-      return { acquired: false, release: async () => { } };
+      console.log(
+        `[newsAggregator] Lock not acquired for ${country} - another process running`,
+      );
+      return { acquired: false, release: async () => {} };
     }
 
     return {
@@ -198,7 +212,10 @@ async function acquireLock(country) {
         try {
           await prisma.$queryRaw`SELECT pg_advisory_unlock(${dbLockId})`;
         } catch (unlockErr) {
-          console.error('[newsAggregator] Failed to release advisory lock:', unlockErr);
+          console.error(
+            "[newsAggregator] Failed to release advisory lock:",
+            unlockErr,
+          );
         } finally {
           memoryLocks.delete(country);
         }
@@ -207,7 +224,10 @@ async function acquireLock(country) {
   } catch (error) {
     memoryLocks.delete(country);
     // Log but do not throw - fall back to memory-only lock.
-    console.error('[newsAggregator] Advisory lock error (falling back to memory lock):', error.message);
+    console.error(
+      "[newsAggregator] Advisory lock error (falling back to memory lock):",
+      error.message,
+    );
     memoryLocks.add(country);
     return {
       acquired: true,
@@ -223,7 +243,10 @@ async function fetchRssSource(feed, maxPerSource) {
   const timer = setTimeout(() => controller.abort(), 8000);
 
   try {
-    const response = await fetch(feed.url, { cache: 'no-store', signal: controller.signal });
+    const response = await fetch(feed.url, {
+      cache: "no-store",
+      signal: controller.signal,
+    });
     clearTimeout(timer);
 
     if (!response.ok) {
@@ -232,7 +255,9 @@ async function fetchRssSource(feed, maxPerSource) {
 
     const xml = await response.text();
     const parsed = await parser.parseString(xml);
-    const rawItems = Array.isArray(parsed.items) ? parsed.items.slice(0, maxPerSource) : [];
+    const rawItems = Array.isArray(parsed.items)
+      ? parsed.items.slice(0, maxPerSource)
+      : [];
 
     return rawItems
       .map((item) => normaliseRssItem(item, feed.name))
@@ -240,7 +265,7 @@ async function fetchRssSource(feed, maxPerSource) {
       .map((item) => ({ ...item, source: item.source || feed.name }));
   } catch (err) {
     clearTimeout(timer);
-    if (err.name === 'AbortError') {
+    if (err.name === "AbortError") {
       throw new Error(`RSS timeout (8s) for ${feed.url}`);
     }
     throw err;
@@ -257,14 +282,14 @@ async function fetchRssArticles(country, maxPerSource) {
       const items = await fetchRssSource(feed, maxPerSource);
       sourceCountIncrement(sourceCounts, feed.name, items.length);
       return items;
-    })
+    }),
   );
 
   const settled = await Promise.allSettled(tasks);
   const articles = [];
 
   settled.forEach((result, index) => {
-    if (result.status === 'fulfilled') {
+    if (result.status === "fulfilled") {
       articles.push(...result.value);
       return;
     }
@@ -282,7 +307,7 @@ async function fetchGnewsFallback(country, maxPerSource) {
   }
 
   const queries = GNEWS_QUERIES[country] || GNEWS_QUERIES.GENERAL;
-  const lang = 'en';
+  const lang = "en";
   const gnewsMax = Math.max(1, Math.min(10, maxPerSource));
   const sourceCounts = {};
   const runWithSemaphore = createSemaphore(FETCH_CONCURRENCY);
@@ -290,28 +315,32 @@ async function fetchGnewsFallback(country, maxPerSource) {
   const tasks = queries.map((query) =>
     runWithSemaphore(async () => {
       const apiUrl = `https://gnews.io/api/v4/search?q=${encodeURIComponent(query)}&lang=${lang}&max=${gnewsMax}&apikey=${apiKey}`;
-      const response = await fetch(apiUrl, { cache: 'no-store' });
+      const response = await fetch(apiUrl, { cache: "no-store" });
       if (!response.ok) {
-        throw new Error(`GNEWS fetch failed (${response.status}) for query: ${query}`);
+        throw new Error(
+          `GNEWS fetch failed (${response.status}) for query: ${query}`,
+        );
       }
 
       const data = await response.json();
       const rawItems = Array.isArray(data?.articles) ? data.articles : [];
-      const normalized = rawItems.map((item) => normaliseGNewsItem(item)).filter(Boolean);
+      const normalized = rawItems
+        .map((item) => normaliseGNewsItem(item))
+        .filter(Boolean);
 
       for (const item of normalized) {
-        sourceCountIncrement(sourceCounts, item.source || 'GNEWS', 1);
+        sourceCountIncrement(sourceCounts, item.source || "GNEWS", 1);
       }
 
       return normalized;
-    })
+    }),
   );
 
   const settled = await Promise.allSettled(tasks);
   const articles = [];
 
   settled.forEach((result, index) => {
-    if (result.status === 'fulfilled') {
+    if (result.status === "fulfilled") {
       articles.push(...result.value);
       return;
     }
@@ -323,7 +352,9 @@ async function fetchGnewsFallback(country, maxPerSource) {
 }
 
 async function existingArticleSets(candidates) {
-  const links = candidates.map((item) => normaliseLinkKey(item.link)).filter(Boolean);
+  const links = candidates
+    .map((item) => normaliseLinkKey(item.link))
+    .filter(Boolean);
   const slugs = candidates.map((item) => item.slug).filter(Boolean);
   const uniqueLinks = [...new Set(links)];
   const uniqueSlugs = [...new Set(slugs)];
@@ -335,23 +366,36 @@ async function existingArticleSets(candidates) {
   const [existingArticles, blockedUrls] = await Promise.all([
     whereOr.length > 0
       ? prisma.newsArticle.findMany({
-        where: { OR: whereOr },
-        select: { url: true, slug: true },
-      })
+          where: { OR: whereOr },
+          select: { url: true, slug: true },
+        })
       : Promise.resolve([]),
     uniqueLinks.length > 0
-      ? prisma.blockedUrl.findMany({ where: { url: { in: uniqueLinks } }, select: { url: true } })
+      ? prisma.blockedUrl.findMany({
+          where: { url: { in: uniqueLinks } },
+          select: { url: true },
+        })
       : Promise.resolve([]),
   ]);
 
-  const existingUrlSet = new Set(existingArticles.map((item) => normaliseLinkKey(item.url)).filter(Boolean));
-  const existingSlugSet = new Set(existingArticles.map((item) => item.slug).filter(Boolean));
-  const blockedUrlSet = new Set(blockedUrls.map((item) => normaliseLinkKey(item.url)).filter(Boolean));
+  const existingUrlSet = new Set(
+    existingArticles.map((item) => normaliseLinkKey(item.url)).filter(Boolean),
+  );
+  const existingSlugSet = new Set(
+    existingArticles.map((item) => item.slug).filter(Boolean),
+  );
+  const blockedUrlSet = new Set(
+    blockedUrls.map((item) => normaliseLinkKey(item.url)).filter(Boolean),
+  );
 
   return { existingUrlSet, existingSlugSet, blockedUrlSet };
 }
 
-export async function fetchAndSaveNews({ country, maxPerSource = 20, since } = {}) {
+export async function fetchAndSaveNews({
+  country,
+  maxPerSource = 20,
+  since,
+} = {}) {
   const normalizedCountry = normaliseCountry(country);
   const sinceDate = normaliseSince(since);
   const lock = await acquireLock(normalizedCountry);
@@ -372,6 +416,14 @@ export async function fetchAndSaveNews({ country, maxPerSource = 20, since } = {
     let fetched = 0;
     let saved = 0;
     let skipped = 0;
+    const skipReasons = {
+      duplicate: 0,
+      tooOld: 0,
+      notRelevant: 0,
+      noSlug: 0,
+      blockedUrl: 0,
+      existingUrl: 0,
+    };
     const sourceCounts = {};
 
     const rssResult = await fetchRssArticles(normalizedCountry, maxPerSource);
@@ -380,8 +432,11 @@ export async function fetchAndSaveNews({ country, maxPerSource = 20, since } = {
     let allFetched = rssResult.articles;
 
     // Trigger GNews if RSS returned nothing OR very few articles (under 3)
-    if (allFetched.length < 5) {
-      const gnewsResult = await fetchGnewsFallback(normalizedCountry, maxPerSource);
+    if (allFetched.length < 3) {
+      const gnewsResult = await fetchGnewsFallback(
+        normalizedCountry,
+        maxPerSource,
+      );
       mergeSourceCounts(sourceCounts, gnewsResult.sourceCounts);
       allFetched = [...allFetched, ...gnewsResult.articles];
     }
@@ -390,24 +445,27 @@ export async function fetchAndSaveNews({ country, maxPerSource = 20, since } = {
 
     const deduped = dedupeArticles(allFetched);
     skipped += deduped.duplicateCount;
+    skipReasons.duplicate += deduped.duplicateCount;
 
     const candidates = [];
 
     for (const item of deduped.unique) {
-
       if (sinceDate && item.publishedAt <= sinceDate) {
         skipped += 1;
+        skipReasons.tooOld += 1;
         continue;
       }
 
       if (!isFinanceRelevant(item)) {
         skipped += 1;
+        skipReasons.notRelevant += 1;
         continue;
       }
 
       const slug = toSlug(item.title);
       if (!slug) {
         skipped += 1;
+        skipReasons.noSlug += 1;
         continue;
       }
 
@@ -418,18 +476,24 @@ export async function fetchAndSaveNews({ country, maxPerSource = 20, since } = {
       });
     }
 
-    const { existingUrlSet, existingSlugSet, blockedUrlSet } = await existingArticleSets(candidates);
+    const { existingUrlSet, existingSlugSet, blockedUrlSet } =
+      await existingArticleSets(candidates);
 
     for (const article of candidates) {
       const urlKey = normaliseLinkKey(article.link);
 
       if (urlKey && blockedUrlSet.has(urlKey)) {
         skipped += 1;
+        skipReasons.blockedUrl += 1;
         continue;
       }
 
-      if ((urlKey && existingUrlSet.has(urlKey)) || existingSlugSet.has(article.slug)) {
+      if (
+        (urlKey && existingUrlSet.has(urlKey)) ||
+        existingSlugSet.has(article.slug)
+      ) {
         skipped += 1;
+        skipReasons.existingUrl += 1;
         continue;
       }
 
@@ -440,10 +504,10 @@ export async function fetchAndSaveNews({ country, maxPerSource = 20, since } = {
             slug: article.slug,
             summary: article.summary || article.title,
             url: urlKey || null,
-            source: article.source || 'Unknown',
+            source: article.source || "Unknown",
             category: article.category,
             country: normalizedCountry,
-            sourceType: 'automated',
+            sourceType: "automated",
             publishedAt: article.publishedAt,
           },
         });
@@ -452,7 +516,10 @@ export async function fetchAndSaveNews({ country, maxPerSource = 20, since } = {
         if (urlKey) existingUrlSet.add(urlKey);
         existingSlugSet.add(article.slug);
       } catch (error) {
-        if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
+        if (
+          error instanceof Prisma.PrismaClientKnownRequestError &&
+          error.code === "P2002"
+        ) {
           skipped += 1;
           continue;
         }
@@ -460,10 +527,16 @@ export async function fetchAndSaveNews({ country, maxPerSource = 20, since } = {
       }
     }
 
+    console.log(
+      `[newsAggregator] ${normalizedCountry} — fetched: ${fetched}, saved: ${saved}, skipped: ${skipped}`,
+      skipReasons,
+    );
+
     return {
       fetched,
       saved,
       skipped,
+      skipReasons,
       sourceCounts,
       country: normalizedCountry,
       since: sinceDate ? sinceDate.toISOString() : null,

@@ -35,8 +35,14 @@ export async function proxy(request) {
       return response;
     }
   } catch {
-    // DB unavailable — fail open during outage
-    // TODO: change to fail-closed after Aug 1 when Neon quota resets
+    // Fail-closed after Aug 1 when Neon quota resets
+    if (new Date() >= new Date("2025-08-01")) {
+      const response = NextResponse.redirect(
+        new URL("/admin/login", request.url),
+      );
+      response.cookies.delete("admin_token");
+      return response;
+    }
     return NextResponse.next();
   }
 
