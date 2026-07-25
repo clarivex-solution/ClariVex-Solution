@@ -12,6 +12,18 @@ import { notFound } from "next/navigation";
 
 export const revalidate = 3600;
 
+export async function generateStaticParams() {
+  try {
+    const posts = await prisma.blogPost.findMany({
+      where: { published: true },
+      select: { slug: true },
+    });
+    return posts.map((p) => ({ slug: p.slug }));
+  } catch {
+    return [];
+  }
+}
+
 const BLOG_AUTHOR_NAME = "ClariVex Team";
 const FALLBACK_BLOG_IMAGE = `${siteUrl}/og-image.png`;
 

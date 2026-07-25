@@ -8,6 +8,17 @@ import { notFound } from "next/navigation";
 
 export const revalidate = 3600;
 
+export async function generateStaticParams() {
+  try {
+    const articles = await prisma.newsArticle.findMany({
+      select: { slug: true },
+    });
+    return articles.map((a) => ({ slug: a.slug }));
+  } catch {
+    return [];
+  }
+}
+
 const getNewsPost = unstable_cache(
   async (slug) => {
     return prisma.newsArticle.findUnique({ where: { slug } });
